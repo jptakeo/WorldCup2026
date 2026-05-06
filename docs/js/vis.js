@@ -610,7 +610,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     {
       year: 2026,
       name: "Maple, Zayu & Clutch",
-      img: "https://digitalhub.fifa.com/transform/2685c8dc-d642-4941-92b8-266f438d29d4/FIFA-World-Cup-26-mascots-Maple-Zayu-and-Clutch?&io=transform:fill,width:1024&quality=75",
+      img: "images\\mascotes\\wc-mct-2026.png",
       desc: "Primeira vez com trio de mascotes representando os três países-sede. Maple é um alce canadense (goleiro nº 1), Zayu é um jaguar mexicano (atacante nº 9), e Clutch é uma águia-careca americana (meia nº 10). Primeira Copa com 48 seleções.",
       host: "EUA / Canadá / México"
     },
@@ -624,100 +624,98 @@ document.addEventListener('DOMContentLoaded',()=>{
     {
       year: 2018,
       name: "Zabivaka",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2aDbsNdVROQeODxs1wkhxErqQw43qKKxRCQ&s",
+      img: "images/mascotes/wc-mct-2018.png",
       desc: "Lobo cinzento com óculos esportivos, camisa branco-e-azul e calção vermelho. O nome significa 'aquele que marca gols' em russo. Escolhido por voto popular com 53% dos votos entre um milhão de participantes. França bicampeã.",
       host: "Rússia"
     },
     {
       year: 2014,
       name: "Fuleco",
-      img: "https://img.olympics.com/images/image/private//t_s_w2440/f_auto/primary/ffobcfhsxhp7qkhlescx",
+      img: "images/mascotes/wc-mct-2014.png",
       desc: "Tatu-bola azul com detalhes verde e amarelo, espécie ameaçada nativa do Nordeste do Brasil. Nome é junção de 'futebol' e 'ecologia'. Eleito por voto popular e muito presente nos estádios. Alemanha tetracampeã.",
       host: "Brasil"
     },
     {
       year: 2010,
       name: "Zakumi",
-      img: "https://img.olympics.com/images/image/private//t_s_w2440/f_auto/primary/y4rfevvtsrw86smh4yhx",
+      img: "images/mascotes/wc-mct-2010.png",
       desc: "Leopardo com juba verde e uniforme dourado, cores dos esportes sul-africanos. O nome vem de 'ZA' (África do Sul) e 'kumi' (dez, em várias línguas africanas). Primeira Copa realizada no continente africano. Espanha campeã.",
       host: "África do Sul"
     },
     {
       year: 2006,
       name: "Goleo VI & Pille",
-      // img: "https://img.olympics.com/images/image/private//t_s_w2440/f_auto/primary/kqimdzxntfprtznqrnpx",
-      img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmLOxIDNIr5LqUUqXb3QgCd5ac-JJLl49nCw&s",
+      img:"images/mascotes/wc-mct-2006.png",
       desc: "Leão vestindo a camisa alemã com o número '06' e seu parceiro inseparável Pille, uma bola de futebol falante. Criado pela Jim Henson Creature Shop. Polêmico por não usar calça. Itália campeã — Zidane dá a histórica cabeçada em Materazzi.",
       host: "Alemanha"
     },
     {
       year: 2002,
       name: "Ato, Kaz & Nik",
-      img: "https://img.olympics.com/images/image/private//t_s_w2440/f_auto/primary/jnsknnvb3a3yrvsntali",
+      img: "images/mascotes/wc-mct-2002.png",
       desc: "Trio de criaturas futuristas geradas por computador (os 'Spheriks'): Ato (laranja), Kaz (azul) e Nik (roxo). Inspirados em animes e videogames, jogavam um esporte fictício chamado 'Atmosball'. Segunda vez com múltiplos mascotes. Brasil pentacampeão.",
       host: "Coreia / Japão"
     },
     {
       year: 1998,
       name: "Footix",
-      img: "https://img.olympics.com/images/image/private//t_s_w2440/f_auto/primary/tyychti2gt90uxcqhjoe",
+      img: "images/mascotes/wc-mct-1998.png",
       desc: "Galo azul com crista vermelha, símbolo nacional da França. Um dos mascotes mais populares e carismáticos da história — mais de 1 milhão de bonecos vendidos. O nome mistura 'football' e o sufixo '-ix' de Asterix. França campeã em casa.",
       host: "França"
     },
     {
       year: 1994,
       name: "Striker",
-      img: "https://digitalhub.fifa.com/transform/1ba820b0-147a-43dc-a365-c1ac0178ff6a/mascot-demo-hof-1994",
-      // https://img.olympics.com/images/image/private//t_s_w2440/f_auto/primary/vm14dnltysmae1jecfio
+      img: "images/mascotes/wc-mct-1994.png",
       desc: "Cachorro esportista criado pela equipe de animação da Warner Bros., vestindo as cores vermelha, branca e azul dos EUA. Copa que popularizou o futebol no país-sede. Brasil tetracampeão — Baggio perde o pênalti decisivo na final.",
       host: "Estados Unidos"
     },
     {
       year: 1990,
       name: "Ciao",
-      img: "https://img.olympics.com/images/image/private//t_s_w2440/f_auto/primary/mminfna6f8f8mkywtzea",
+      img: "images/mascotes/wc-mct-1990.png",
       desc: "Figura geométrica com corpo nas cores da bandeira italiana (verde, branco, vermelho) e uma bola de futebol como cabeça. Design vanguardista criado por Lucio Boscardin, vencedor de concurso com mais de 50 mil inscritos. Alemanha campeã.",
       host: "Itália"
     },
     {
       year: 1986,
       name: "Pique",
-      img: "https://img.olympics.com/images/image/private//t_s_w2440/f_auto/primary/wprzj7sq4k7t9k9vdjak",
+      img: "images/mascotes/wc-mct-1986.png",
       desc: "Pimenta jalapeño antropomórfica com bigode e sombrero, ícone da culinária mexicana. O nome vem de 'picante'. Controverso no México por estereotipar a cultura local. Copa do México — mão de Deus e gol do século de Maradona.",
       host: "México"
     },
     {
       year: 1982,
       name: "Naranjito",
-      img: "https://img.olympics.com/images/image/private//t_s_w2440/f_auto/primary/ppgswcibvytjqfxasshj",
+      img: "images/mascotes/wc-mct-1982.png",
       desc: "Laranja antropomórfica usando o uniforme da Espanha — fruto abundante e símbolo do país. Primeiro mascote não humano da Copa. Estrelou até um desenho animado de 26 episódios. Rompeu com a tradição de figuras humanas. Itália tricampeã.",
       host: "Espanha"
     },
     {
       year: 1978,
       name: "Gauchito",
-      img: "https://img.olympics.com/images/image/private//t_s_w2440/f_auto/primary/lcjaq8qshcijjf3ogqqv",
+      img: "images/mascotes/wc-mct-1978.png",
       desc: "Menino com traje típico de gaúcho argentino: chapéu de aba larga com 'ARGENTINA 78', lenço no pescoço, calça bombacha e facão. Inspirado no folklore dos campos da América Latina. Argentina campeã em casa pela primeira vez.",
       host: "Argentina"
     },
     {
       year: 1974,
       name: "Tip & Tap",
-      img: "https://img.olympics.com/images/image/private//t_s_w2440/f_auto/primary/esyl1omvg9t4fwynexgx",
+      img: "images/mascotes/wc-mct-1974.png",
       desc: "Dois garotos sorrindo: um com 'WM' (Weltmeisterschaft) na camisa, outro com '74'. Criados para simbolizar a união entre Alemanha Oriental e Ocidental, que competiam no mesmo torneio. Primeira dupla de mascotes da história da Copa. Alemanha Ocidental campeã.",
       host: "Alemanha Ocidental"
     },
     {
       year: 1970,
       name: "Juanito",
-      img: "https://img.olympics.com/images/image/private//t_s_w2440/f_auto/primary/e6amdz2lt6zeqoe7e1jj",
+      img: "images/mascotes/wc-mct-1970.png",
       desc: "Menino de uniforme verde e branco do México, com sombrero estampado 'MEXICO 70'. Primeiro mascote humano da Copa e pioneiro no álbum de figurinhas Panini. Primeira Copa televisionada para o mundo. Pelé ergue a taça pela terceira e última vez.",
       host: "México"
     },
     {
       year: 1966,
       name: "World Cup Willie",
-      img: "https://img.olympics.com/images/image/private//t_s_w2440/f_auto/primary/s7pntlrniouix2ehxfmr",
+      img: "images/mascotes/wc-mct-1966.png",
       desc: "O primeiro mascote oficial da história das Copas. Leão com camisa estampada com a Union Jack e os dizeres 'WORLD CUP'. Criado pelo ilustrador Reg Hoye. Apareceu em centenas de produtos e ganhou música própria com Lonnie Donegan. Inglaterra campeã.",
       host: "Inglaterra"
     }
@@ -954,101 +952,111 @@ document.addEventListener('DOMContentLoaded',()=>{
 (function () {
 
   const SHIRTS = [
-      {
-      year: 1930, era: '1930-1950', img:"https://images.tcdn.com.br/img/img_prod/311840/camisa_brasil_1930_retro_branca_50832_1_20201130180836.jpg",
-        desc: 'Camisa branca com gola em V. O Brasil usava branco antes do amarelo se tornar padrão, após o trauma de 1950.', kit: 'away'
-      },
-      {
-        year: 1934, era: '1930-1950', img: "https://images.tcdn.com.br/img/img_prod/311840/camisa_brasil_1930_retro_branca_50832_1_20201130180836.jpg", // Link de referência para visualização
-        desc: 'Similar ao modelo de 1930, manteve o branco como cor principal e a gola polo azul. Foi o uniforme da única partida do Brasil naquela Copa (contra a Espanha).', 
-        kit: 'home'
-      },
+    {
+      year: 1930, era: '1930-1950', 
+      img:"images\\shirts\\wc-shirt-1930.png",
+      desc: 'Camisa branca com gola em V. O Brasil usava branco antes do amarelo se tornar padrão, após o trauma de 1950.', kit: 'away'
+    },
+    {
+      year: 1934, era: '1930-1950', 
+      img: "images\\shirts\\wc-shirt-1934.png",
+      desc: 'Similar ao modelo de 1930, manteve o branco como cor principal e a gola polo azul. Foi o uniforme da única partida do Brasil naquela Copa (contra a Espanha).', 
+      kit: 'home'
+    },
 
-      {
-        year: 1938, era: '1930-1950', img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQC81mJb9ExZpDbD_AlrlNd7kzBzzrxrH7Law&s",
-        desc: 'Camisa branca com detalhes verdes. Copa da França — Brasil ficou em 3º lugar, com Leônidas artilheiro.', kit: 'away'
-      },
-      {
-        year: 1950, era: '1930-1950', img:"https://cdn.awsli.com.br/1166/1166432/produto/44805095/b5d11169b2.jpg",
-        desc: 'Camisa branca — o Brasil perdeu a final (Maracanazo) com essa camisa. Foi o trauma que levou à adoção do amarelo.', kit: 'away'
-      },
-      {
-        year: 1954, era: '1954-1965', img:"https://www.tetereinaldim.com.br/wp-content/uploads/2014/06/Camisa-do-Brasil-de-1954.jpg",
-        desc: 'Primeira vez com amarelo! A nova camisa, desenhada pelo artista Aldyr Garcia Schlee, surge após o trauma de 1950.', kit: 'home'
-      },
-      {
-        year: 1958, era: '1954-1965', img:"https://cdn.awsli.com.br/2500x2500/1166/1166432/produto/44826973/f4fc1e472d.jpg",
-        desc: 'Com a camisa amarela, Pelé com 17 anos marca seu primeiro gol na Copa. Brasil bicampeão na Suécia.', kit: 'home'
-      },
-      {
-        year: 1962, era: '1954-1965', img:"https://cdn.awsli.com.br/600x450/1166/1166432/produto/44803145/0cdf8fae63.jpg",
-        desc: 'Brasil tricampeão no Chile. Garrincha assume o protagonismo após lesão de Pelé na fase de grupos.', kit: 'home'
-      },
-      {
-        year: 1966, era: '1954-1965', img:"https://http2.mlstatic.com/D_NQ_NP_698094-MLB96522843993_102025-O-camisa-seleco-brasileira-1966-retro-original-athleta.webp",
-        desc: 'Eliminação precoce na fase de grupos pela primeira vez. Pelé sofre muitas faltas e jura não jogar mais Copas.', kit: 'home'
-      },
-      {
-        year: 1970, era: '1970-1982', img:"https://http2.mlstatic.com/D_NQ_NP_2X_770749-MLB88871631525_072025-F-camisa-brasil-retr-1970-amarela-e-verde.webp",
-        desc: 'Camisa com gola V, considerada o melhor time da história. Pelé, Jairzinho, Tostão — tetracampeão! Número 10 icônico.', kit: 'home'
-      },
-      {
-        year: 1974, era: '1970-1982', img:"https://cdn.awsli.com.br/600x450/1166/1166432/produto/44803823/72d39125d8.jpg",
-        desc: 'Geração pós-1970, 4º lugar. Rivelino e Zico presentes. Camisa com gola V ajustada.', kit: 'home'
-      },
-      {
-        year: 1978, era: '1970-1982', img:"images/shirts/wc-shirt-1978.png",
-        desc: 'Brasil fica em 3º lugar, invicto no torneio. Zico, Rivellino, Roberto Dinamite. Controverso 3x0 sobre Polônia.', kit: 'home'
-      },
-      {
-        year: 1982, era: '1970-1982', img:"images/shirts/wc-shirt-1982.png",
-        desc: 'A camisa mais amada da história do Brasil! Listras verdes nas mangas. Seleção de Zico, Sócrates, Falcão — eliminada pela Itália de Rossi.', kit: 'home'
-      },
-      {
-        year: 1986, era: '1986-1994', img:"https://minasretro.com.br/wp-content/uploads/2023/04/brasil86.jpg",
-        desc: 'Listras verdes finas nas mangas. Eliminados pela França nos pênaltis. Zico perde o pênalti. Sócrates também.', kit: 'home'
-      },
-      {
-        year: 1990, era: '1986-1994',   img:"images/shirts/wc-shirt-1990.png",
-        desc: 'Camisa com listras verdes nas mangas. Eliminados pela Argentina de Maradona no jogo que ficou famoso pelo gol de Caniggia.', kit: 'home'
-      },
-      {
-        year: 1994, era: '1986-1994',   img:"images/shirts/wc-shirt-1994.png",
-        desc: 'Tetracampeão! Romário e Bebeto. Baggio perde o pênalti. Copa dos EUA. Camisa com detalhes verdes nas mangas e ombros.', kit: 'home'
-      },
-      {
-        year: 1998, era: '1998-2006',   img:"images/shirts/wc-shirt-1998.png",
-        desc: 'Camisa com detalhe azul. Vice-campeão — Brasil perde a final para a França. Ronaldo joga doente — o episódio do desmaio.', kit: 'home'
-      },
-      {
-        year: 2002, era: '1998-2006',   img:"images/shirts/wc-shirt-2002.png",
-        desc: 'PENTACAMPEÃO! Ronaldo ressurge, marca 8 gols. Ronaldinho, Rivaldo. Camisa sem gola, com detalhe verde.', kit: 'home'
-      },
-      {
-        year: 2006, era: '1998-2006', img:"images/shirts/wc-shirt-2006.png",
-        desc: 'Eliminados pela França nas quartas. Ronaldo iguala o recorde de Gerd Müller. Camisa mais simples, sem detalhes.', kit: 'home'
-      },
-      {
-        year: 2010, era: '2010-2018', img:"images/shirts/wc-shirt-2010.png",
-        desc: 'Eliminados pela Holanda nas quartas. Robinho, Kaká. Camisa com ombros verdes e faixa central.', kit: 'home'
-      },
-      {
-        year: 2014, era: '2010-2018', img:"images/shirts/wc-shirt-2014.png",
-        desc: 'Eliminação dolorosa: 7x1 para a Alemanha. Neymar se machuca nas quartas. 4º lugar em casa. Camisa com faixas diagonais.', kit: 'home'
-      },
-      {
-        year: 2018, era: '2010-2018', img:"images/shirts/wc-shirt-2018.png",
-        desc: 'Eliminados pela Bélgica nas quartas. Neymar lidera a equipe. Camisa com detalhes azuis e verde nas laterais.', kit: 'home'
-      },
-      {
-        year: 2022, era: '2022-2026', img:"images/shirts/wc-shirt-2022.png",
-        desc: 'Eliminados pela Croácia nas quartas (pênaltis). Neymar marca gol olímpico. Copa do Catar. Camisa com trama especial amarela e verde.', kit: 'home'
-      },
-      {
-        year: 2026, era: '2022-2026', img:"images/shirts/wc-shirt-2026.png",
-        desc: 'Copa do Mundo nos EUA, México e Canadá. Primeira Copa com 48 seleções. A busca pelo hexacampeonato.', kit: 'home'
-      },
-    ];
+    {
+      year: 1938, era: '1930-1950',
+      img:"images\\shirts\\wc-shirt-1938.png",
+      desc: 'Camisa branca com detalhes verdes. Copa da França — Brasil ficou em 3º lugar, com Leônidas artilheiro.', kit: 'away'
+    },
+    {
+      year: 1950, era: '1930-1950',
+      img:"images\\shirts\\wc-shirt-1950.png",
+      desc: 'Camisa branca — o Brasil perdeu a final (Maracanazo) com essa camisa. Foi o trauma que levou à adoção do amarelo.', kit: 'away'
+    },
+    {
+      year: 1954, era: '1954-1965', 
+      img:"images\\shirts\\wc-shirt-1954.png",
+      desc: 'Primeira vez com amarelo! A nova camisa, desenhada pelo artista Aldyr Garcia Schlee, surge após o trauma de 1950.', kit: 'home'
+    },
+    {
+      year: 1958, era: '1954-1965', img:"images\\shirts\\wc-shirt-1958.png",
+      desc: 'Com a camisa amarela, Pelé com 17 anos marca seu primeiro gol na Copa. Brasil Campeão na Suécia.', kit: 'home'
+    },
+    {
+      year: 1962, era: '1954-1965', 
+      img:"images\\shirts\\wc-shirt-1962.png",
+      desc: 'Brasil Bicampeão no Chile. Garrincha assume o protagonismo após lesão de Pelé na fase de grupos.', kit: 'home'
+    },
+    {
+      year: 1966, era: '1954-1965', 
+      img:"images\\shirts\\wc-shirt-1966.png",
+      desc: 'Eliminação precoce na fase de grupos pela primeira vez. Pelé sofre muitas faltas e jura não jogar mais Copas.', kit: 'home'
+    },
+    {
+      year: 1970, era: '1970-1982', 
+      img:"images\\shirts\\wc-shirt-1970.png",
+      desc: 'Considerado o melhor time da história. Pelé, Jairzinho, Tostão — Tricampeão! Número 10 icônico.', kit: 'home'
+    },
+    {
+      year: 1974, era: '1970-1982', 
+      img:"images\\shirts\\wc-shirt-1974.png",
+      desc: 'Geração pós-1970, 4º lugar. Rivelino e Zico presentes. Camisa com gola V ajustada.', kit: 'home'
+    },
+    {
+      year: 1978, era: '1970-1982', img:"images\\shirts\\wc-shirt-1978.png",
+      desc: 'Brasil fica em 3º lugar, invicto no torneio. Zico, Rivellino, Roberto Dinamite. Controverso 3x0 sobre Polônia.', kit: 'home'
+    },
+    {
+      year: 1982, era: '1970-1982', img:"images\\shirts\\wc-shirt-1982.png",
+      desc: 'A camisa mais amada da história do Brasil! Listras verdes nas mangas. Seleção de Zico, Sócrates, Falcão — eliminada pela Itália de Rossi.', kit: 'home'
+    },
+    {
+      year: 1986, era: '1986-1994', 
+      img:"images\\shirts\\wc-shirt-1986.png",
+      desc: 'Listras verdes finas nas mangas. Eliminados pela França nos pênaltis. Zico perde o pênalti. Sócrates também.', kit: 'home'
+    },
+    {
+      year: 1990, era: '1986-1994',   img:"images\\shirts\\wc-shirt-1990.png",
+      desc: 'Camisa com listras verdes nas mangas. Eliminados pela Argentina de Maradona no jogo que ficou famoso pelo gol de Caniggia.', kit: 'home'
+    },
+    {
+      year: 1994, era: '1986-1994',   img:"images\\shirts\\wc-shirt-1994.png",
+      desc: 'Tetracampeão! Romário e Bebeto. Baggio perde o pênalti. Copa dos EUA. Camisa com detalhes verdes nas mangas e ombros.', kit: 'home'
+    },
+    {
+      year: 1998, era: '1998-2006',   img:"images\\shirts\\wc-shirt-1998.png",
+      desc: 'Camisa com detalhe azul. Vice-campeão — Brasil perde a final para a França. Ronaldo joga doente — o episódio do desmaio.', kit: 'home'
+    },
+    {
+      year: 2002, era: '1998-2006',   img:"images\\shirts\\wc-shirt-2002.png",
+      desc: 'PENTACAMPEÃO! Ronaldo ressurge, marca 8 gols. Ronaldinho, Rivaldo. Camisa sem gola, com detalhe verde.', kit: 'home'
+    },
+    {
+      year: 2006, era: '1998-2006', img:"images\\shirts\\wc-shirt-2006.png",
+      desc: 'Eliminados pela França nas quartas. Ronaldo iguala o recorde de Gerd Müller. Camisa mais simples, sem detalhes.', kit: 'home'
+    },
+    {
+      year: 2010, era: '2010-2018', img:"images\\shirts\\wc-shirt-2010.png",
+      desc: 'Eliminados pela Holanda nas quartas. Robinho, Kaká. Camisa com ombros verdes e faixa central.', kit: 'home'
+    },
+    {
+      year: 2014, era: '2010-2018', img:"images\\shirts\\wc-shirt-2014.png",
+      desc: 'Eliminação dolorosa: 7x1 para a Alemanha. Neymar se machuca nas quartas. 4º lugar em casa', kit: 'home'
+    },
+    {
+      year: 2018, era: '2010-2018', img:"images\\shirts\\wc-shirt-2018.png",
+      desc: 'Eliminados pela Bélgica nas quartas. Neymar lidera a equipe. Camisa com detalhes azuis e verde nas laterais.', kit: 'home'
+    },
+    {
+      year: 2022, era: '2022-2026', img:"images\\shirts\\wc-shirt-2022.png",
+      desc: 'Eliminados pela Croácia nas quartas (pênaltis). Neymar marca gol olímpico. Copa do Catar. Camisa com trama especial amarela e verde.', kit: 'home'
+    },
+    {
+      year: 2026, era: '2022-2026', img:"images\\shirts\\wc-shirt-2026.png",
+      desc: 'Copa do Mundo nos EUA, México e Canadá. Primeira Copa com 48 seleções. A busca pelo hexacampeonato.', kit: 'home'
+    },
+  ];
 
   let selectedYear = 2026;
 
