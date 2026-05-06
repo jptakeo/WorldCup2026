@@ -81,64 +81,56 @@
             <div class="container" style="display:flex;">
                 <div id="conteudo" style="width:100%;margin:0 auto;">
                     <div class="texto font-16" style="width: 100%; max-width: 850px; margin: 0 auto;">
-                        <!-- CHAVEAMENTO ELIMINATÓRIO -->
-                        <p id="chaveamentos-anteriores" class="secao-visualizacao"><b>Chaveamento das últimas 5 edições da Copa do Mundo.</b><br>
-                        <font size="2"><i>Passe o mouse sobre um time para destacar sua trajetória no torneio.</i></font>
+                        <!-- ══════════════════════════════════════════
+                        ESTATÍSTICAS e CHAVEAMENTO 
+                        ══════════════════════════════════════════ -->
+                        <p id="chaveamentos-anteriores" class="secao-visualizacao">
+                           <b>Estatísticas e Chaveamento das últimas 5 edições da Copa do Mundo da FIFA </b><br>
                         </p>
 
-                        <div
-                        style="width:100%;max-width:900px;background:#fff;border:1px solid #e0e0e0;border-radius:6px;padding:18px 18px 14px;margin-bottom:28px;font-family:'Lato','Helvetica Neue',sans-serif;font-size:13px;">
-
-                        <!-- Controls -->
-                        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px">
-                            <span style="font-size:11px;font-weight:700;color:#888;letter-spacing:.5px;text-transform:uppercase;">Edição:</span>
-                            <div id="bk-pills" style="display:flex;gap:4px;flex-wrap:wrap;"></div>
-                            <div id="bk-badge"
-                            style="margin-left:auto;display:flex;align-items:center;gap:8px;border:1.5px solid #f0c040;border-radius:5px;padding:5px 13px 5px 10px;">
-                            <span style="font-size:20px;">🏆</span>
-                            <div>
-                                <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#b8860b;">
-                                Campeão </div>
-                                <div id="bk-cbName" style="font-size:14px;font-weight:900;color:#1a1a1a;line-height:1;">—</div>
-                                <div id="bk-cbYear" style="font-size:10px;color:#aaa;">—</div>
+                        <div class="wc-wrap">
+                            <div style="padding:4px 0 0;">
+                                <div class="wc-sub">Estatísticas</div>
+                                <div class="pills-row" id="pills"></div>
                             </div>
+
+                            <div class="edition-badge" id="edition-badge"></div>
+                            <div class="podium-row"   id="podium"></div>
+
+                            <div class="info-grid">
+                                <div class="stats-panel"  id="stats"></div>
+                                <div class="awards-panel" id="awards"></div>
+                            </div>
+
+                            <div class="wc-sub" style="margin-bottom:8px;">Chaveamento</div>
+
+                            <div class="bracket-card">
+                                <div style="overflow-x:auto;padding-bottom:6px;">
+                                    <div id="bk-bw">
+                                        <svg id="bk-svg"></svg>
+                                    </div>
+                                </div>
+                                <div class="legend-row">
+                                    <div class="legend-item"><div class="legend-line" style="background:#f0c820;"></div>Trajetória do campeão</div>
+                                    <div class="legend-item"><div class="legend-line" style="background:#2ab8cc;"></div>Time em destaque</div>
+                                    <div class="legend-item"><div class="legend-line" style="background:#6a3a10;"></div>3º Lugar</div>
+                                    <div class="legend-item"><div class="legend-line" style="background:#121e28;"></div>Eliminado</div>
+                                </div>
+                            </div>
+
+                            <div class="path-section">
+                                <div class="path-title" id="path-title">TRAJETÓRIA DO CAMPEÃO</div>
+                                <div class="path-cards" id="path-cards"></div>
                             </div>
                         </div>
+                        <br>
 
-                        <!--<p style="font-size:11px;color:#bbb;font-style:italic;margin-bottom:10px;">
-                            Passe o mouse sobre um time para destacar sua trajetória no torneio.</p> -->
-
-                        <!-- Bracket scroll -->
-                        <div id="bk-scroll" style="overflow-x:auto;padding-bottom:6px;">
-                            <div id="bk-bw" style="position:relative;display:flex;min-width:800px;transition:opacity .18s;">
-                            <svg id="bk-svg" style="position:absolute;top:0;left:0;pointer-events:none;overflow:visible;z-index:0;"></svg>
-                            </div>
-                        </div>
-
-                        <!-- Legend -->
-                        <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap;">
-                            <div style="display:flex;align-items:center;gap:6px;font-size:10px;color:#aaa;">
-                            <div style="width:22px;height:2px;border-radius:1px;background:#d4aa18;"></div>
-                            Trajetória do campeão
-                            </div>
-                            <div style="display:flex;align-items:center;gap:6px;font-size:10px;color:#aaa;">
-                            <div style="width:22px;height:2px;border-radius:1px;background:#1a5276;"></div> Time
-                            em destaque
-                            </div>
-                            <div style="display:flex;align-items:center;gap:6px;font-size:10px;color:#aaa;">
-                            <div style="width:22px;height:2px;border-radius:1px;background:#ddd;"></div>
-                            Eliminado
-                            </div>
-                        </div>
-
-                        <!-- Path summary -->
-                        <div style="margin-top:16px;border-top:1.5px solid #eee;padding-top:14px;">
-                            <div id="bk-pathTitle"
-                            style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#aaa;margin-bottom:12px;">
-                            TRAJETÓRIA DO CAMPEÃO</div>
-                            <div id="bk-pathCards" style="display:flex;gap:10px;flex-wrap:wrap;align-items:stretch;"></div>
-                        </div>
-                        </div>
+                        <!-- fonte chaveamento -->
+                        <p style="font-size:12px; color:#777;">
+                            Fonte: &copy; WIKIPEDIA. <strong>FIFA World Cup</strong>. Wikipedia, The Free Encyclopedia.
+                            Disponível em: <a href="https://en.wikipedia.org/wiki/FIFA_World_Cup" target="_blank" rel="noopener noreferrer">https://en.wikipedia.org/wiki/FIFA_World_Cup</a>. 
+                            Acesso em: 03 mai. 2026.
+                        </p>
 
                         <br>
 
@@ -179,6 +171,42 @@
 
                         <br>
 
+                        <!-- ====== EVOLUÇÃO DOS MASCOTES DA COPA DO MUNDO ====== -->
+                        <p id="evolucao-dos-mascotes" class="secao-visualizacao"><b>Evolução dos Mascotes da Copa do Mundo (1966–2026)</b></p>
+
+                        <div id="mascots-container" style="background:#fff; border:1px solid #e0e0e0; border-radius:8px; padding:24px;">
+                            <div id="mascot-detail" style="display:flex; background:#f7f9fc; border:1.5px solid #e8edf4; border-radius:8px; padding:20px; margin-bottom:20px; align-items:center; gap:20px; flex-wrap:wrap;">
+                            <!-- O JS vai preencher o conteúdo aqui -->
+                            </div>
+
+                            <div id="mascots-grid"
+                            style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center;">
+                            </div>
+                        </div>
+
+                        <!-- fonte mascotes -->
+                        <div style="font-size:12px; color:#777; line-height: 1.4;">
+                            <p>
+                                Fonte: &copy; FIFA. <strong>De 1966 até hoje: a história das mascotes da Copa do Mundo da FIFA</strong>. FIFA.com, 2026. 
+                                Disponível em: <a href="https://www.fifa.com/pt/tournaments/mens/worldcup/canadamexicousa2026/articles/historia-mascotes-copa-do-mundo" target="_blank" rel="noopener noreferrer">https://www.fifa.com/pt/tournaments/mens/worldcup/canadamexicousa2026/articles/historia-mascotes-copa-do-mundo</a>. 
+                                Acesso em: 03 mai. 2026.
+                            </p>
+
+                            
+                            <p>
+                                &copy; OLYMPICS. <strong>Copa do Mundo: Relembre todos os mascotes da história</strong>. Olympics.com, 2022. 
+                                Disponível em: <a href="https://www.olympics.com/pt/noticias/copa-do-mundo-relembre-mascotes" target="_blank" rel="noopener noreferrer">https://www.olympics.com/pt/noticias/copa-do-mundo-relembre-mascotes</a>. 
+                                Acesso em: 03 mai. 2026.
+                            </p>
+
+                            <p>
+                                &copy; GE GLOBO. <strong>Copa do Mundo 2022: relembre os mascotes das Copas do Mundo</strong>. Globo Esporte, 2022. 
+                                Disponível em: <a href="https://ge.globo.com/futebol/copa-do-mundo/noticia/2022/08/17/copa-do-mundo-2022-relembre-os-mascotes-das-copas-do-mundo.ghtml" target="_blank" rel="noopener noreferrer">https://ge.globo.com/futebol/copa-do-mundo/noticia/2022/08/17/copa-do-mundo-2022-relembre-os-mascotes-das-copas-do-mundo.ghtml</a>. 
+                                Acesso em: 03 mai. 2026.
+                            </p>
+                        </div>
+
+
 
                         <!-- ====== EVOLUÇÃO DAS BOLAS DA COPA DO MUNDO ====== -->
                         <!-- <div style="width:100%; max-width:960px; margin:32px auto; font-family:'Lato',sans-serif;"> -->
@@ -194,10 +222,13 @@
                             </div>
 
                         </div>
+                        <!-- fonte bolas -->
                         <p style="font-size:12px; color:#777;">
-                            Fonte: © FIFA
+                            Fonte: &copy; FIFA. <strong>The history of the FIFA World Cup™ official match balls</strong>. FIFA.com, 2026. 
+                            Disponível em: <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ball-balls-history" target="_blank" rel="noopener noreferrer">https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ball-balls-history</a>. 
+                            Acesso em: 03 mai. 2026.
                         </p>
-                        <!-- </div> -->
+                        
 
                         <br>
 
@@ -215,7 +246,35 @@
                         <div id="shirts-grid" style="display:flex; flex-wrap:wrap; gap:14px; justify-content:center;">
                         </div>
                         <br>
+                        <!-- fonte camisas -->
+                        <div style="font-size:12px; color:#777; line-height: 1.4;">
+                            
+                            <p>
+                                Fonte: &copy; OLYMPICS. <strong>Camisas do Brasil em Copas do Mundo: relembre todos os modelos da história</strong>. Olympics.com, 2022. 
+                                Disponível em: <a href="https://www.olympics.com/pt/noticias/camisas-brasil-copas-do-mundo-modelos" target="_blank" rel="noopener noreferrer" >https://www.olympics.com/pt/noticias/camisas-brasil-copas-do-mundo-modelos</a>. 
+                                Acesso em: 03 mai. 2026.
+                            </p>
 
+                            <p>
+                                &copy; FOOTBALL KIT ARCHIVE. <strong>Brazil Kit History</strong>. &copy; 2026. 
+                                Disponível em: <a href="https://www.footballkitarchive.com/brazil-kits-t130/" target="_blank" rel="noopener noreferrer" >https://www.footballkitarchive.com/brazil-kits-t130/</a>. 
+                                Acesso em: 03 mai. 2026.
+                            </p>
+
+                            <p>
+                                &copy; GE GLOBO. <strong>Evolução do Manto: as camisas da Seleção em todas as Copas</strong>. Globo Esporte, 2022. 
+                                Disponível em: <a href="https://app.globoesporte.globo.com/copa-do-mundo/camisas-da-selecao/index.html" target="_blank" rel="noopener noreferrer" >https://app.globoesporte.globo.com/copa-do-mundo/camisas-da-selecao/index.html</a>. 
+                                Acesso em: 03 mai. 2026.
+                            </p>
+
+                            <p>
+                                &copy; GOOGLE ARTS & CULTURE. <strong>A história da icônica camisa amarela do Brasil</strong>. Museu do Futebol, [s.d.]. 
+                                Disponível em: <a href="https://artsandculture.google.com/story/DQWBCiIxN2jqKQ?hl=pt-br" target="_blank" rel="noopener noreferrer">https://artsandculture.google.com/story/DQWBCiIxN2jqKQ?hl=pt-br</a>. 
+                                Acesso em: 03 mai. 2026.
+                            </p>
+
+                        </div>
+                        <br>
 
                         <p id="quem-vestiu-a-selecao" class="secao-visualizacao"><b>Quem vestiu a seleção nos últimos anos? </b></p>   
                         <div class="timeline-container">
@@ -314,6 +373,11 @@
                             
                             </div>
                         </div>
+                        <p style="font-size:12px; color:#777; line-height: 1.4;">
+                            Fonte: &copy; FOOTBALL KIT ARCHIVE. <strong>Brazil Kit History</strong>. &copy; 2026. 
+                            Disponível em: <a href="https://www.footballkitarchive.com/brazil-kits-t130/" target="_blank" rel="noopener noreferrer" >https://www.footballkitarchive.com/brazil-kits-t130/</a>. 
+                            Acesso em: 03 mai. 2026.
+                        </p>
 
                     </div>
                 </div>
@@ -324,11 +388,13 @@
                     <div class="menu-caixa">
                         <div class="titulo-menu">Copa do Mundo</div>
                         <ul>
-                            <li><a href="#chaveamentos-anteriores">Chaveamentos Anteriores</a></li>
+                            <li><a href="#chaveamentos-anteriores">Estatísticas e Chaveamento</a></li>
                             <li><a href="#total-de-gols">Total de Gols</a></li>
                             <li><a href="#total-de-partidas">Total de Partidas</a></li>
 			                <li><a href="#melhor-classificacao">Melhor Classificação</a></li>
                             <li><a href="#bola-de-ouro-prata-bronze">Bola de Ouro, Prata e Bronze</a></li>
+                            <li><a href="#evolucao-dos-mascotes">Evolução dos Mascotes</a></li>
+                            <li><a href="#evolucao-das-bolas">Evolução das Bolas</a></li>
                             <!--<li><a href="page_rank.html">Page Rank</a></li>-->
                         </ul>
                     </div>
@@ -336,7 +402,7 @@
  		            <div class="menu-caixa margin-top-40">
                         <div class="titulo-menu">Seleção Brasileira </div>
                         <ul>
-                            <li><a href="#evolucao-das-bolas">Evolução das Bolas</a></li>
+                            <!-- <li><a href="#evolucao-das-bolas">Evolução das Bolas</a></li> -->
                                 <li><a href="#evolucao-das-camisas">Evolução das Camisas</a></li>
                             <li><a href="#quem-vestiu-a-selecao">Quem Vestiu a Seleção?</a></li>
                         </ul>
@@ -345,6 +411,7 @@
                     <div class="menu-caixa margin-top-40">
                         <div class="titulo-menu">Explore Outras Ferramentas</div>
                         <ul>
+                            <li><a href="calendario.html" target="_blank">Calendário da Copa</a></li>
                             <li><a href="https://boleco42.web.app" target="_blank">Bolão Entre Amigos</a></li>
                             <li><a href="https://albumfigurinhascopa-zkdsn6ezbdhqfsbri9jc6w.streamlit.app/" target="_blank">Simulador p/ Álbum da Copa</a></li>
                         </ul>
