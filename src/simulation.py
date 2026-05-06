@@ -306,7 +306,6 @@ def simular_copa_2026(post_draws, teams_list, grupos, df_schedule=df_jogos_reais
             
             g1_g, g2_g = g1[:, g], g2[:, g]
             
-            # ADICIONADO: Probabilidades gerais de Vitória e Empate
             match_info = {
                 'group': list(grupos.keys())[g],
                 'home_team': team1,
@@ -314,10 +313,11 @@ def simular_copa_2026(post_draws, teams_list, grupos, df_schedule=df_jogos_reais
                 'date': match_date,
                 'home_win': np.mean(g1_g > g2_g) * 100,
                 'draw': np.mean(g1_g == g2_g) * 100,
-                'away_win': np.mean(g1_g < g2_g) * 100
+                'away_win': np.mean(g1_g < g2_g) * 100,
+                'home_real': None,
+                'away_real': None
             }
             
-            # Probabilidades de placares exatos
             for i in range(5):
                 for j in range(5):
                     col_name = f"{num_to_word[i]}_{num_to_word[j]}"
@@ -357,7 +357,7 @@ def simular_copa_2026(post_draws, teams_list, grupos, df_schedule=df_jogos_reais
 
     contar_fase(classificados, "avancou_grupos")
 
-    # --- MATA-MATA ---
+    # --- MATA-MATA (Simulação Monte Carlo) ---
     def rodada(competidores):
         n = competidores.shape[1] // 2
         a, b = competidores[:, 0::2], competidores[:, 1::2]
@@ -387,18 +387,16 @@ def simular_copa_2026(post_draws, teams_list, grupos, df_schedule=df_jogos_reais
     champ = rodada(fin)
     contar_fase(champ, "champion")
 
-    # --- EXPORTAÇÃO PARA CSV ---
+    # --- EXPORTAÇÃO PARA CSV (Sumário e Partidas) ---
     df_summary = pd.DataFrame(stats)
     df_summary = (df_summary / n_sim * 100).round(2)
     df_summary.insert(0, 'team', teams_list)
     
     times_nos_grupos = [time for lista_times in grupos.values() for time in lista_times]
     df_summary = df_summary[df_summary['team'].isin(times_nos_grupos)]
-    
     df_summary = df_summary.sort_values(by='champion', ascending=False).reset_index(drop=True)
-    df_summary.insert(0, 'position', df_summary.index + 1)
     
-    cols_csv = ['position', 'team', 'champion', 'finalists', 'semi_finalists', 'quarter_finalists', 
+    cols_csv = ['team', 'champion', 'finalists', 'semi_finalists', 'quarter_finalists', 
                 'round_of_16', 'round_of_32', 'group_first_place', 'group_second_place', 'group_third_place']
     
     df_csv = df_summary[cols_csv].rename(columns={
@@ -410,6 +408,126 @@ def simular_copa_2026(post_draws, teams_list, grupos, df_schedule=df_jogos_reais
 
     df_matches = pd.DataFrame(match_stats).round(4)
     df_matches.to_csv("data/probs_fase_de_grupos.csv", index=False)
+    df_matches.to_csv("docs/csv/previsoes/partidas.csv", index=False)
+
+    # ======================================================================
+    # --- CHAVEAMENTO DETERMINÍSTICO (NOVO FORMATO DE COLUNAS/ORDEM) ---
+    # ======================================================================
+    
+    group_winners = {}
+    group_runners_up = {}
+    third_places = []
+    
+    for g_idx, (g_name, g_teams) in enumerate(grupos.items()):
+        g_df = df_summary[df_summary['team'].isin(g_teams)].copy()
+        
+        first = g_df.sort_values(by='group_first_place', ascending=False).iloc[0]['team']
+        group_winners[g_name] = first
+        g_df = g_df[g_df['team'] != first]
+        
+        second = g_df.sort_values(by='group_second_place', ascending=False).iloc[0]['team']
+        group_runners_up[g_name] = second
+        g_df = g_df[g_df['team'] != second]
+        
+        third = g_df.sort_values(by='group_third_place', ascending=False).iloc[0]['team']
+        prob_adv = df_summary[df_summary['team'] == third]['round_of_32'].values[0]
+        third_places.append({'team': third, 'prob': prob_adv})
+        
+    best_thirds = [t['team'] for t in sorted(third_places, key=lambda x: x['prob'], reverse=True)[:8]]
+    
+    # 16 matches for R32 (ordered to match 0-7 = L1-L8, 8-15 = R1-R8)
+    r32_matches = [
+        (group_winners['A'], best_thirds[0] if len(best_thirds) > 0 else "TBD"),
+        (group_runners_up['B'], group_runners_up['C']),
+        (group_winners['D'], best_thirds[1] if len(best_thirds) > 1 else "TBD"),
+        (group_winners['E'], group_runners_up['F']),
+        (group_winners['G'], best_thirds[2] if len(best_thirds) > 2 else "TBD"),
+        (group_runners_up['H'], group_runners_up['I']),
+        (group_winners['J'], best_thirds[3] if len(best_thirds) > 3 else "TBD"),
+        (group_winners['K'], group_runners_up['L']),
+        (group_winners['B'], best_thirds[4] if len(best_thirds) > 4 else "TBD"),
+        (group_runners_up['A'], group_runners_up['D']),
+        (group_winners['C'], best_thirds[5] if len(best_thirds) > 5 else "TBD"),
+        (group_winners['F'], group_runners_up['E']),
+        (group_winners['H'], best_thirds[6] if len(best_thirds) > 6 else "TBD"),
+        (group_runners_up['G'], group_runners_up['J']),
+        (group_winners['I'], best_thirds[7] if len(best_thirds) > 7 else "TBD"),
+        (group_winners['L'], group_runners_up['K'])
+    ]
+    
+    # Mapeamentos Exatos Solicitados
+    order_map = {
+        'L1': 1, 'L2': 2, 'L3': 3, 'L4': 4, 'L5': 5, 'L6': 6, 'L7': 7, 'L8': 8,
+        'RL1': 9, 'RL2': 10, 'RL3': 11, 'RL4': 12, 'QL1': 13, 'QL2': 14, 'SL': 15,
+        'R1': 16, 'R2': 17, 'R3': 18, 'R4': 19, 'R5': 20, 'R6': 21, 'R7': 22, 'R8': 23,
+        'RR1': 24, 'RR2': 25, 'RR3': 26, 'RR4': 27, 'QR1': 28, 'QR2': 29, 'SR': 30, 'F': 31
+    }
+    
+    fase_advancement_target = {
+        'R32': 'round_of_16',
+        'Oitavas': 'quarter_finalists',
+        'Quartas': 'semi_finalists',
+        'Semifinal': 'finalists',
+        'Final': 'champion'
+    }
+
+    fases_finais = [
+        ('R32', 0, r32_matches, ['L1','L2','L3','L4','L5','L6','L7','L8', 'R1','R2','R3','R4','R5','R6','R7','R8']),
+        ('Oitavas', 1, [], ['RL1','RL2','RL3','RL4', 'RR1','RR2','RR3','RR4']),
+        ('Quartas', 2, [], ['QL1','QL2', 'QR1','QR2']),
+        ('Semifinal', 3, [], ['SL', 'SR']),
+        ('Final', 4, [], ['F'])
+    ]
+    
+    chaveamento_dados = []
+    
+    for i, (round_label, round_index, matches, ids) in enumerate(fases_finais):
+        next_matches_teams = []
+        target_fase_prob = fase_advancement_target[round_label]
+        
+        for m_idx, match in enumerate(matches):
+            t1, t2 = match
+            match_id = ids[m_idx]
+            
+            # Determinando o Side (left, right, final) baseado no ID
+            if 'L' in match_id:
+                side = 'left'
+            elif 'R' in match_id:
+                side = 'right'
+            else:
+                side = 'final'
+            
+            prob_t1 = df_summary[df_summary['team'] == t1][target_fase_prob].values[0] if t1 in df_summary['team'].values else 0
+            prob_t2 = df_summary[df_summary['team'] == t2][target_fase_prob].values[0] if t2 in df_summary['team'].values else 0
+            
+            winner = t1 if prob_t1 >= prob_t2 else t2
+            next_matches_teams.append(winner)
+            
+            chaveamento_dados.append({
+                'side': side,
+                'round_index': round_index,
+                'round_label': round_label,
+                'order': order_map[match_id],
+                'id': match_id,
+                'home_team': t1,
+                'prob_home': prob_t1,
+                'away_team': t2,
+                'prob_away': prob_t2,
+                'winner': winner
+            })
+            
+        if i < len(fases_finais) - 1:
+            fases_finais[i+1][2].extend(list(zip(next_matches_teams[0::2], next_matches_teams[1::2])))
+            
+    # Cria o dataframe, ordena estritamente por "order" e garante a sequência das colunas
+    df_chaveamento = pd.DataFrame(chaveamento_dados)
+    df_chaveamento = df_chaveamento.sort_values(by='order').reset_index(drop=True)
+    
+    cols_requeridas = ['side', 'round_index', 'round_label', 'order', 'id', 'home_team', 'prob_home', 'away_team', 'prob_away', 'winner']
+    df_chaveamento = df_chaveamento[cols_requeridas]
+    
+    df_chaveamento.to_csv("docs/csv/previsoes/chaveamento_probs.csv", index=False)
+    df_chaveamento.to_csv("data/chaveamento_probs.csv", index=False)
 
     probs = {fase: stats[fase] / n_sim for fase in fases_originais}
     return probs

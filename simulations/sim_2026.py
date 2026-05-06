@@ -1,6 +1,7 @@
 import os
 import json
 import numpy as np
+import pandas as pd
 from src.data_prep import preparar_dados_ciclo
 from src.simulation import simular_copa_2026
 from src.dashboard import generate_dashboard
