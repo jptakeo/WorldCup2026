@@ -1144,7 +1144,8 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     const img = document.createElement('img');
     img.src = shirt.img;
-    img.style.width = '140px';
+    img.style.width = '160px';
+    img.style.height = '172px';
     img.style.objectFit = 'contain';
     img.style.flexShrink = '0';
 
