@@ -456,7 +456,6 @@ def simular_copa_2026(post_draws, teams_list, grupos, df_schedule=df_jogos_reais
     
     for i, (round_label, round_index, matches, ids) in enumerate(fases_finais):
         next_matches_teams = []
-        target_fase_prob = fase_advancement_target[round_label]
         
         for m_idx, match in enumerate(matches):
             t1, t2 = match
@@ -470,10 +469,30 @@ def simular_copa_2026(post_draws, teams_list, grupos, df_schedule=df_jogos_reais
             else:
                 side = 'final'
             
-            prob_t1 = df_summary[df_summary['team'] == t1][target_fase_prob].values[0] if t1 in df_summary['team'].values else 0
-            prob_t2 = df_summary[df_summary['team'] == t2][target_fase_prob].values[0] if t2 in df_summary['team'].values else 0
-            
-            winner = t1 if prob_t1 >= prob_t2 else t2
+            # Calculando a probabilidade Head-to-Head real do confronto
+            if t1 == "TBD" or t2 == "TBD":
+                prob_t1 = 100.0 if t1 != "TBD" else 0.0
+                prob_t2 = 100.0 if t2 != "TBD" else 0.0
+                winner = t1 if t1 != "TBD" else t2
+            else:
+                idx1 = t_to_idx[t1]
+                idx2 = t_to_idx[t2]
+                
+                # Força do ataque/defesa para o confronto direto
+                la = np.exp(atk[:, idx1] - dfn[:, idx2] + et[:, 0]).reshape(-1, 1)
+                lb = np.exp(atk[:, idx2] - dfn[:, idx1] + et[:, 0]).reshape(-1, 1)
+                rho_exp = rho.reshape(-1, 1) if usa_dixon_coles else None
+                
+                # Simula o jogo 10.000 vezes usando as distribuições já sorteadas
+                ga, gb = simular_jogos(la, lb, rho_exp, n_sim)
+                
+                # Probabilidade Pura de Vitória (sem pênaltis / ignorando empates)
+                prob_t1 = np.mean(ga > gb) * 100
+                prob_t2 = np.mean(gb > ga) * 100
+                
+                # Avança a equipe com maior probabilidade de vencer no tempo normal
+                winner = t1 if prob_t1 >= prob_t2 else t2
+
             next_matches_teams.append(winner)
 
             # Determina a flag 'home' ou 'away' para o CSV
