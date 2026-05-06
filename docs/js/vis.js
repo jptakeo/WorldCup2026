@@ -276,161 +276,329 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-//  CHAVEAMENTO ELIMINATÓRIO 
-(function () {
-const BK_ED = {
-    2022: {
-    host: 'Qatar', champion: 'Argentina', champFlag: '🇦🇷', rounds: [
-        [{ a: 'Países Baixos', af: '🇳🇱', as: 3, b: 'Estados Unidos', bf: '🇺🇸', bs: 1, w: 'a' }, { a: 'Argentina', af: '🇦🇷', as: 2, b: 'Austrália', bf: '🇦🇺', bs: 1, w: 'a' }, { a: 'Japão', af: '🇯🇵', as: 1, b: 'Croácia', bf: '🇭🇷', bs: 1, w: 'b', n: 'pens' }, { a: 'Brasil', af: '🇧🇷', as: 4, b: 'Coreia do Sul', bf: '🇰🇷', bs: 1, w: 'a' }, { a: 'França', af: '🇫🇷', as: 3, b: 'Polônia', bf: '🇵🇱', bs: 1, w: 'a' }, { a: 'Inglaterra', af: '🇬🇧', as: 3, b: 'Senegal', bf: '🇸🇳', bs: 0, w: 'a' }, { a: 'Marrocos', af: '🇲🇦', as: 0, b: 'Espanha', bf: '🇪🇸', bs: 0, w: 'a', n: 'pens' }, { a: 'Portugal', af: '🇵🇹', as: 6, b: 'Suíça', bf: '🇨🇭', bs: 1, w: 'a' }],
-        [{ a: 'Países Baixos', af: '🇳🇱', as: 2, b: 'Argentina', bf: '🇦🇷', bs: 2, w: 'b', n: 'pens' }, { a: 'Croácia', af: '🇭🇷', as: 1, b: 'Brasil', bf: '🇧🇷', bs: 1, w: 'a', n: 'pens' }, { a: 'França', af: '🇫🇷', as: 2, b: 'Inglaterra', bf: '🇬🇧', bs: 1, w: 'a' }, { a: 'Marrocos', af: '🇲🇦', as: 1, b: 'Portugal', bf: '🇵🇹', bs: 0, w: 'a' }],
-        [{ a: 'Argentina', af: '🇦🇷', as: 3, b: 'Croácia', bf: '🇭🇷', bs: 0, w: 'a' }, { a: 'França', af: '🇫🇷', as: 2, b: 'Marrocos', bf: '🇲🇦', bs: 0, w: 'a' }],
-        [{ a: 'Argentina', af: '🇦🇷', as: 3, b: 'França', bf: '🇫🇷', bs: 3, w: 'a', n: 'pens' }]]
-    },
-    2018: {
-    host: 'Rússia', champion: 'França', champFlag: '🇫🇷', rounds: [
-        [{ a: 'França', af: '🇫🇷', as: 4, b: 'Argentina', bf: '🇦🇷', bs: 3, w: 'a' }, { a: 'Uruguai', af: '🇺🇾', as: 2, b: 'Portugal', bf: '🇵🇹', bs: 1, w: 'a' }, { a: 'Bélgica', af: '🇧🇪', as: 3, b: 'Japão', bf: '🇯🇵', bs: 2, w: 'a' }, { a: 'Brasil', af: '🇧🇷', as: 2, b: 'México', bf: '🇲🇽', bs: 0, w: 'a' }, { a: 'Croácia', af: '🇭🇷', as: 1, b: 'Dinamarca', bf: '🇩🇰', bs: 1, w: 'a', n: 'pens' }, { a: 'Rússia', af: '🇷🇺', as: 1, b: 'Espanha', bf: '🇪🇸', bs: 1, w: 'a', n: 'pens' }, { a: 'Suécia', af: '🇸🇪', as: 1, b: 'Suíça', bf: '🇨🇭', bs: 0, w: 'a' }, { a: 'Colômbia', af: '🇨🇴', as: 1, b: 'Inglaterra', bf: '🇬🇧', bs: 1, w: 'b', n: 'pens' }],
-        [{ a: 'França', af: '🇫🇷', as: 2, b: 'Uruguai', bf: '🇺🇾', bs: 0, w: 'a' }, { a: 'Bélgica', af: '🇧🇪', as: 2, b: 'Brasil', bf: '🇧🇷', bs: 1, w: 'a' }, { a: 'Croácia', af: '🇭🇷', as: 2, b: 'Rússia', bf: '🇷🇺', bs: 2, w: 'a', n: 'pens' }, { a: 'Suécia', af: '🇸🇪', as: 0, b: 'Inglaterra', bf: '🇬🇧', bs: 2, w: 'b' }],
-        [{ a: 'França', af: '🇫🇷', as: 1, b: 'Bélgica', bf: '🇧🇪', bs: 0, w: 'a' }, { a: 'Croácia', af: '🇭🇷', as: 2, b: 'Inglaterra', bf: '🇬🇧', bs: 1, w: 'a' , n: 'AET'}],
-        [{ a: 'França', af: '🇫🇷', as: 4, b: 'Croácia', bf: '🇭🇷', bs: 2, w: 'a' }]]
-    },
-    2014: {
-    host: 'Brasil', champion: 'Alemanha', champFlag: '🇩🇪', rounds: [
-        [{ a: 'Alemanha', af: '🇩🇪', as: 2, b: 'Argélia', bf: '🇩🇿', bs: 1, w: 'a', n: 'AET' }, { a: 'França', af: '🇫🇷', as: 2, b: 'Nigéria', bf: '🇳🇬', bs: 0, w: 'a' }, { a: 'Brasil', af: '🇧🇷', as: 1, b: 'Chile', bf: '🇨🇱', bs: 1, w: 'a', n: 'pens' }, { a: 'Colômbia', af: '🇨🇴', as: 2, b: 'Uruguai', bf: '🇺🇾', bs: 0, w: 'a' }, { a: 'Países Baixos', af: '🇳🇱', as: 2, b: 'México', bf: '🇲🇽', bs: 1, w: 'a' }, { a: 'Costa Rica', af: '🇨🇷', as: 1, b: 'Grécia', bf: '🇬🇷', bs: 1, w: 'a', n: 'pens' }, { a: 'Argentina', af: '🇦🇷', as: 1, b: 'Suíça', bf: '🇨🇭', bs: 0, w: 'a', n: 'AET' }, { a: 'Bélgica', af: '🇧🇪', as: 2, b: 'Estados Unidos', bf: '🇺🇸', bs: 1, w: 'a', n: 'AET' }],
-        [{ a: 'Alemanha', af: '🇩🇪', as: 1, b: 'França', bf: '🇫🇷', bs: 0, w: 'a' }, { a: 'Brasil', af: '🇧🇷', as: 2, b: 'Colômbia', bf: '🇨🇴', bs: 1, w: 'a' }, { a: 'Países Baixos', af: '🇳🇱', as: 0, b: 'Costa Rica', bf: '🇨🇷', bs: 0, w: 'a', n: 'pens' }, { a: 'Argentina', af: '🇦🇷', as: 1, b: 'Bélgica', bf: '🇧🇪', bs: 0, w: 'a' }],
-        [{ a: 'Alemanha', af: '🇩🇪', as: 7, b: 'Brasil', bf: '🇧🇷', bs: 1, w: 'a' }, { a: 'Países Baixos', af: '🇳🇱', as: 0, b: 'Argentina', bf: '🇦🇷', bs: 0, w: 'b', n: 'pens' }],
-        [{ a: 'Alemanha', af: '🇩🇪', as: 1, b: 'Argentina', bf: '🇦🇷', bs: 0, w: 'a', n: 'AET' }]]
-    },
-    2010: {
-    host: 'África do Sul', champion: 'Espanha', champFlag: '🇪🇸', rounds: [
-        [{ a: 'Espanha', af: '🇪🇸', as: 1, b: 'Portugal', bf: '🇵🇹', bs: 0, w: 'a' }, { a: 'Paraguai', af: '🇵🇾', as: 0, b: 'Japão', bf: '🇯🇵', bs: 0, w: 'a', n: 'pens' }, { a: 'Alemanha', af: '🇩🇪', as: 4, b: 'Inglaterra', bf: '🇬🇧', bs: 1, w: 'a' }, { a: 'Argentina', af: '🇦🇷', as: 3, b: 'México', bf: '🇲🇽', bs: 1, w: 'a' }, { a: 'Países Baixos', af: '🇳🇱', as: 2, b: 'Eslováquia', bf: '🇸🇰', bs: 1, w: 'a' }, { a: 'Brasil', af: '🇧🇷', as: 3, b: 'Chile', bf: '🇨🇱', bs: 0, w: 'a' }, { a: 'Uruguai', af: '🇺🇾', as: 2, b: 'Coreia do Sul', bf: '🇰🇷', bs: 1, w: 'a' }, { a: 'Gana', af: '🇬🇭', as: 2, b: 'Estados Unidos', bf: '🇺🇸', bs: 1, w: 'a', n: 'AET' }],
-        [{ a: 'Espanha', af: '🇪🇸', as: 1, b: 'Paraguai', bf: '🇵🇾', bs: 0, w: 'a' }, { a: 'Alemanha', af: '🇩🇪', as: 4, b: 'Argentina', bf: '🇦🇷', bs: 0, w: 'a' }, { a: 'Países Baixos', af: '🇳🇱', as: 2, b: 'Brasil', bf: '🇧🇷', bs: 1, w: 'a' }, { a: 'Uruguai', af: '🇺🇾', as: 1, b: 'Gana', bf: '🇬🇭', bs: 1, w: 'a', n: 'pens' }],
-        [{ a: 'Espanha', af: '🇪🇸', as: 1, b: 'Alemanha', bf: '🇩🇪', bs: 0, w: 'a' }, { a: 'Países Baixos', af: '🇳🇱', as: 3, b: 'Uruguai', bf: '🇺🇾', bs: 2, w: 'a' }],
-        [{ a: 'Espanha', af: '🇪🇸', as: 1, b: 'Países Baixos', bf: '🇳🇱', bs: 0, w: 'a', n: 'AET' }]]
-    },
-    2006: {
-    host: 'Alemanha', champion: 'Itália', champFlag: '🇮🇹', rounds: [
-        [{ a: 'Itália', af: '🇮🇹', as: 1, b: 'Austrália', bf: '🇦🇺', bs: 0, w: 'a' }, { a: 'Ucrânia', af: '🇺🇦', as: 0, b: 'Suíça', bf: '🇨🇭', bs: 0, w: 'a', n: 'pens' }, { a: 'Alemanha', af: '🇩🇪', as: 2, b: 'Suécia', bf: '🇸🇪', bs: 0, w: 'a' }, { a: 'Argentina', af: '🇦🇷', as: 2, b: 'México', bf: '🇲🇽', bs: 1, w: 'a', n: 'AET' }, { a: 'Inglaterra', af: '🇬🇧', as: 1, b: 'Equador', bf: '🇪🇨', bs: 0, w: 'a' }, { a: 'Portugal', af: '🇵🇹', as: 1, b: 'Países Baixos', bf: '🇳🇱', bs: 0, w: 'a' }, { a: 'Brasil', af: '🇧🇷', as: 3, b: 'Gana', bf: '🇬🇭', bs: 0, w: 'a' }, { a: 'França', af: '🇫🇷', as: 3, b: 'Espanha', bf: '🇪🇸', bs: 1, w: 'a' }],
-        [{ a: 'Itália', af: '🇮🇹', as: 3, b: 'Ucrânia', bf: '🇺🇦', bs: 0, w: 'a' }, { a: 'Alemanha', af: '🇩🇪', as: 1, b: 'Argentina', bf: '🇦🇷', bs: 1, w: 'a', n: 'pens' }, { a: 'Inglaterra', af: '🇬🇧', as: 0, b: 'Portugal', bf: '🇵🇹', bs: 0, w: 'b', n: 'pens' }, { a: 'Brasil', af: '🇧🇷', as: 0, b: 'França', bf: '🇫🇷', bs: 1, w: 'b' }],
-        [{ a: 'Itália', af: '🇮🇹', as: 2, b: 'Alemanha', bf: '🇩🇪', bs: 0, w: 'a', n: 'AET' }, { a: 'Portugal', af: '🇵🇹', as: 0, b: 'França', bf: '🇫🇷', bs: 1, w: 'b' }],
-        [{ a: 'Itália', af: '🇮🇹', as: 1, b: 'França', bf: '🇫🇷', bs: 1, w: 'a', n: 'pens' }]]
-    }
+//  ESTATÍSTICAS e CHAVEAMENTO
+const ISO_MAP = {
+    'argentina':'ar','franca':'fr','alemanha':'de','italia':'it','espanha':'es',
+    'brasil':'br','croacia':'hr','marrocos':'ma','paises baixos':'nl','portugal':'pt',
+    'uruguai':'uy','belgica':'be','inglaterra':'gb-eng','japao':'jp','coreia do sul':'kr',
+    'australia':'au','senegal':'sn','estados unidos':'us','polonia':'pl','suica':'ch',
+    'dinamarca':'dk','russia':'ru','suecia':'se','colombia':'co','mexico':'mx',
+    'argelia':'dz','nigeria':'ng','chile':'cl','costa rica':'cr','grecia':'gr',
+    'gana':'gh','eslovaquia':'sk','paraguai':'py','ucrania':'ua','equador':'ec',
+    'qatar':'qa','africa do sul':'za'
 };
-const BK_RL = ['Oitavas de Final', 'Quartas de Final', 'Semifinais', 'Final'];
-const BK_RS = ['Oitavas', 'Quartas', 'Semifinal', 'Final'];
-let bkYear = 2022, bkHov = null, bkLM = {};
-const bkW = m => m.w === 'a' ? m.a : m.b;
-function bkRP(el, c) { const er = el.getBoundingClientRect(), cr = c.getBoundingClientRect(); return { right: er.right - cr.left, left: er.left - cr.left, cy: er.top - cr.top + er.height / 2 }; }
-function bkInit() { bkPills(); bkEdition(); }
-function bkPills() {
-    const el = document.getElementById('bk-pills'); el.innerHTML = '';
-    Object.keys(BK_ED).sort((a, b) => +b - +a).forEach(y => {
-    const btn = document.createElement('button'); btn.className = 'bk-pill' + (y == bkYear ? ' bk-active' : ''); btn.textContent = y; btn.onclick = () => bkSwitch(+y); el.appendChild(btn);
-    });
+function norm(s){return String(s||'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ');}
+function getISO(name){return ISO_MAP[norm(name)]||'';}
+function fi(code,w,h){if(!code)return '<span style="opacity:.2">—</span>';return `<img class="flag-img" src="https://flagcdn.com/w40/${code}.png" alt="" style="width:${w||18}px;height:${h||13}px;" onerror="this.style.display='none'">`;}
+
+const wcTooltip=document.createElement('div');
+wcTooltip.className='wc-tooltip';
+document.body.appendChild(wcTooltip);
+
+function getTitles(team){
+    const key=norm(team),t=WC_TITLES[key],iso=getISO(team);
+    const flag=iso?`<img src="https://flagcdn.com/w40/${iso}.png" style="width:20px;height:14px;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.3);">`:'';
+    if(!t)return `<div style="display:flex;align-items:center;gap:6px;">${flag}<span>${team}</span></div><div style="margin-top:4px;">Sem títulos</div>`;
+    return `<div style="display:flex;align-items:center;gap:6px;">${flag}<strong>${team}</strong></div><div style="margin-top:4px;">🏆 ${t.gold} &nbsp; 🥈 ${t.silver} &nbsp; 🥉 ${t.bronze}</div>`;
 }
-function bkEdition() {
-    const ed = BK_ED[bkYear];
-    document.getElementById('bk-cbName').textContent = ed.champFlag + ' ' + ed.champion;
-    document.getElementById('bk-cbYear').textContent = ed.host + ' · ' + bkYear;
-    bkBracket(ed); bkPath(ed);
-    bkHL();
-}
-function bkBracket(ed) {
-    const bw = document.getElementById('bk-bw'); bw.querySelectorAll('.bk-rc').forEach(e => e.remove());
-    ed.rounds.forEach((matches, ri) => {
-    const col = document.createElement('div'); col.className = 'bk-rc';
-    col.innerHTML = `<div class="bk-rc-head">${BK_RL[ri]}</div>`;
-    const body = document.createElement('div'); body.className = 'bk-rc-body';
-    matches.forEach((m, mi) => {
-        const card = document.createElement('div'); card.className = 'bk-mc'; card.dataset.r = ri; card.dataset.m = mi;
-        ['a', 'b'].forEach(slot => {
-        const row = document.createElement('div'); row.className = 'bk-tr' + (m.w === slot ? ' bk-won' : ''); row.dataset.team = m[slot] || '';
-        const note = m.w === slot && m.n ? `<span class="bk-nt">${m.n}</span>` : '';
-        row.innerHTML = `<span class="bk-tf">${m[slot + 'f'] || ''}</span><span class="bk-tn${!m[slot] ? ' bk-tbd' : ''}">${m[slot] || 'A definir'}</span>${m[slot + 's'] !== undefined ? `<span class="bk-ts">${m[slot + 's']}</span>` : ''}${note}`;
-        row.addEventListener('mouseenter', () => { bkHov = m[slot]; bkHL(); });
-        row.addEventListener('mouseleave', () => { bkHov = null; bkHL(); });
-        card.appendChild(row);
-        });
-        body.appendChild(card);
-    });
-    col.appendChild(body); bw.appendChild(col);
-    });
-    requestAnimationFrame(() => requestAnimationFrame(bkLines));
-}
-function bkLines() {
-    const ed = BK_ED[bkYear], bw = document.getElementById('bk-bw'), svg = document.getElementById('bk-svg');
-    svg.setAttribute('width', bw.scrollWidth); svg.setAttribute('height', bw.offsetHeight);
-    svg.innerHTML = ''; bkLM = {}; const champ = ed.champion;
-    ed.rounds.forEach((matches, ri) => {
-    if (ri >= ed.rounds.length - 1) return;
-    matches.forEach((match, mi) => {
-        const nextMi = Math.floor(mi / 2), isTop = mi % 2 === 0;
-        const srcCard = bw.querySelector(`.bk-mc[data-r="${ri}"][data-m="${mi}"]`);
-        const tgtCard = bw.querySelector(`.bk-mc[data-r="${ri + 1}"][data-m="${nextMi}"]`);
-        if (!srcCard || !tgtCard) return;
-        const sr = bkRP(srcCard, bw), tr = bkRP(tgtCard, bw);
-        const x0 = sr.right, y0 = sr.cy;
-        const tgtRows = tgtCard.querySelectorAll('.bk-tr');
-        const trr = bkRP(isTop ? tgtRows[0] : tgtRows[1], bw);
-        const x3 = tr.left, y3 = trr.cy, mx = x0 + (x3 - x0) * 0.5;
-        const d = `M ${x0} ${y0} H ${mx} V ${y3} H ${x3}`;
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('d', d); path.setAttribute('fill', 'none'); path.setAttribute('stroke-linecap', 'round'); path.setAttribute('stroke-linejoin', 'round');
-        const winner = bkW(match); bkLM[`${ri}-${mi}`] = { path, winner };
-        bkLS(path, winner === champ, false); svg.appendChild(path);
-    });
+
+const ED={
+    2022:{host:'Qatar',champion:'Argentina',runners_up:'França',third:'Croácia',fourth:'Marrocos',
+    stats:{matches:64,goals:172,gpm:'2.69',att:'3.404.252',apm:'53.191'},
+    awards:{topScorer:{name:'Kylian Mbappé',fc:'fr',goals:8},bestPlayer:{name:'Lionel Messi',fc:'ar'},bestYoung:{name:'Enzo Fernández',fc:'ar'},bestGK:{name:'Emiliano Martínez',fc:'ar'},fairPlay:{name:'Argentina',fc:'ar'}},
+    thirdPlace:{a:'Croácia',af:'hr',as:2,b:'Marrocos',bf:'ma',bs:1,w:'a'},
+    rounds:[
+        [{a:'Países Baixos',af:'nl',as:3,b:'Estados Unidos',bf:'us',bs:1,w:'a'},{a:'Argentina',af:'ar',as:2,b:'Austrália',bf:'au',bs:1,w:'a'},{a:'Japão',af:'jp',as:1,b:'Croácia',bf:'hr',bs:1,w:'b',n:'pens'},{a:'Brasil',af:'br',as:4,b:'Coreia do Sul',bf:'kr',bs:1,w:'a'},{a:'França',af:'fr',as:3,b:'Polônia',bf:'pl',bs:1,w:'a'},{a:'Inglaterra',af:'gb-eng',as:3,b:'Senegal',bf:'sn',bs:0,w:'a'},{a:'Marrocos',af:'ma',as:0,b:'Espanha',bf:'es',bs:0,w:'a',n:'pens'},{a:'Portugal',af:'pt',as:6,b:'Suíça',bf:'ch',bs:1,w:'a'}],
+        [{a:'Países Baixos',af:'nl',as:2,b:'Argentina',bf:'ar',bs:2,w:'b',n:'pens'},{a:'Croácia',af:'hr',as:1,b:'Brasil',bf:'br',bs:1,w:'a',n:'pens'},{a:'França',af:'fr',as:2,b:'Inglaterra',bf:'gb-eng',bs:1,w:'a'},{a:'Marrocos',af:'ma',as:1,b:'Portugal',bf:'pt',bs:0,w:'a'}],
+        [{a:'Argentina',af:'ar',as:3,b:'Croácia',bf:'hr',bs:0,w:'a'},{a:'França',af:'fr',as:2,b:'Marrocos',bf:'ma',bs:0,w:'a'}],
+        [{a:'Argentina',af:'ar',as:3,b:'França',bf:'fr',bs:3,w:'a',n:'pens'}]
+    ]},
+    2018:{host:'Rússia',champion:'França',runners_up:'Croácia',third:'Bélgica',fourth:'Inglaterra',
+    stats:{matches:64,goals:169,gpm:'2.64',att:'3.031.768',apm:'47.371'},
+    awards:{topScorer:{name:'Harry Kane',fc:'gb-eng',goals:6},bestPlayer:{name:'Luka Modrić',fc:'hr'},bestYoung:{name:'Kylian Mbappé',fc:'fr'},bestGK:{name:'Thibaut Courtois',fc:'be'},fairPlay:{name:'Espanha',fc:'es'}},
+    thirdPlace:{a:'Bélgica',af:'be',as:2,b:'Inglaterra',bf:'gb-eng',bs:0,w:'a'},
+    rounds:[
+        [{a:'França',af:'fr',as:4,b:'Argentina',bf:'ar',bs:3,w:'a'},{a:'Uruguai',af:'uy',as:2,b:'Portugal',bf:'pt',bs:1,w:'a'},{a:'Bélgica',af:'be',as:3,b:'Japão',bf:'jp',bs:2,w:'a'},{a:'Brasil',af:'br',as:2,b:'México',bf:'mx',bs:0,w:'a'},{a:'Croácia',af:'hr',as:1,b:'Dinamarca',bf:'dk',bs:1,w:'a',n:'pens'},{a:'Rússia',af:'ru',as:1,b:'Espanha',bf:'es',bs:1,w:'a',n:'pens'},{a:'Suécia',af:'se',as:1,b:'Suíça',bf:'ch',bs:0,w:'a'},{a:'Colômbia',af:'co',as:1,b:'Inglaterra',bf:'gb-eng',bs:1,w:'b',n:'pens'}],
+        [{a:'França',af:'fr',as:2,b:'Uruguai',bf:'uy',bs:0,w:'a'},{a:'Bélgica',af:'be',as:2,b:'Brasil',bf:'br',bs:1,w:'a'},{a:'Croácia',af:'hr',as:2,b:'Rússia',bf:'ru',bs:2,w:'a',n:'pens'},{a:'Suécia',af:'se',as:0,b:'Inglaterra',bf:'gb-eng',bs:2,w:'b'}],
+        [{a:'França',af:'fr',as:1,b:'Bélgica',bf:'be',bs:0,w:'a'},{a:'Croácia',af:'hr',as:2,b:'Inglaterra',bf:'gb-eng',bs:1,w:'a',n:'AET'}],
+        [{a:'França',af:'fr',as:4,b:'Croácia',bf:'hr',bs:2,w:'a'}]
+    ]},
+    2014:{host:'Brasil',champion:'Alemanha',runners_up:'Argentina',third:'Países Baixos',fourth:'Brasil',
+    stats:{matches:64,goals:171,gpm:'2.67',att:'3.429.873',apm:'53.592'},
+    awards:{topScorer:{name:'James Rodríguez',fc:'co',goals:6},bestPlayer:{name:'Lionel Messi',fc:'ar'},bestYoung:{name:'Paul Pogba',fc:'fr'},bestGK:{name:'Manuel Neuer',fc:'de'},fairPlay:{name:'Colômbia',fc:'co'}},
+    thirdPlace:{a:'Brasil',af:'br',as:0,b:'Países Baixos',bf:'nl',bs:3,w:'b'},
+    rounds:[
+        [{a:'Alemanha',af:'de',as:2,b:'Argélia',bf:'dz',bs:1,w:'a',n:'AET'},{a:'França',af:'fr',as:2,b:'Nigéria',bf:'ng',bs:0,w:'a'},{a:'Brasil',af:'br',as:1,b:'Chile',bf:'cl',bs:1,w:'a',n:'pens'},{a:'Colômbia',af:'co',as:2,b:'Uruguai',bf:'uy',bs:0,w:'a'},{a:'Países Baixos',af:'nl',as:2,b:'México',bf:'mx',bs:1,w:'a'},{a:'Costa Rica',af:'cr',as:1,b:'Grécia',bf:'gr',bs:1,w:'a',n:'pens'},{a:'Argentina',af:'ar',as:1,b:'Suíça',bf:'ch',bs:0,w:'a',n:'AET'},{a:'Bélgica',af:'be',as:2,b:'Estados Unidos',bf:'us',bs:1,w:'a',n:'AET'}],
+        [{a:'Alemanha',af:'de',as:1,b:'França',bf:'fr',bs:0,w:'a'},{a:'Brasil',af:'br',as:2,b:'Colômbia',bf:'co',bs:1,w:'a'},{a:'Países Baixos',af:'nl',as:0,b:'Costa Rica',bf:'cr',bs:0,w:'a',n:'pens'},{a:'Argentina',af:'ar',as:1,b:'Bélgica',bf:'be',bs:0,w:'a'}],
+        [{a:'Alemanha',af:'de',as:7,b:'Brasil',bf:'br',bs:1,w:'a'},{a:'Países Baixos',af:'nl',as:0,b:'Argentina',bf:'ar',bs:0,w:'b',n:'pens'}],
+        [{a:'Alemanha',af:'de',as:1,b:'Argentina',bf:'ar',bs:0,w:'a',n:'AET'}]
+    ]},
+    2010:{host:'África do Sul',champion:'Espanha',runners_up:'Países Baixos',third:'Alemanha',fourth:'Uruguai',
+    stats:{matches:64,goals:145,gpm:'2.27',att:'3.178.856',apm:'49.670'},
+    awards:{topScorer:{name:'Müller / Villa / Sneijder / Forlán',fc:'',goals:5},bestPlayer:{name:'Diego Forlán',fc:'uy'},bestYoung:{name:'Thomas Müller',fc:'de'},bestGK:{name:'Iker Casillas',fc:'es'},fairPlay:{name:'Espanha',fc:'es'}},
+    thirdPlace:{a:'Uruguai',af:'uy',as:2,b:'Alemanha',bf:'de',bs:3,w:'b'},
+    rounds:[
+        [{a:'Espanha',af:'es',as:1,b:'Portugal',bf:'pt',bs:0,w:'a'},{a:'Paraguai',af:'py',as:0,b:'Japão',bf:'jp',bs:0,w:'a',n:'pens'},{a:'Alemanha',af:'de',as:4,b:'Inglaterra',bf:'gb-eng',bs:1,w:'a'},{a:'Argentina',af:'ar',as:3,b:'México',bf:'mx',bs:1,w:'a'},{a:'Países Baixos',af:'nl',as:2,b:'Eslováquia',bf:'sk',bs:1,w:'a'},{a:'Brasil',af:'br',as:3,b:'Chile',bf:'cl',bs:0,w:'a'},{a:'Uruguai',af:'uy',as:2,b:'Coreia do Sul',bf:'kr',bs:1,w:'a'},{a:'Gana',af:'gh',as:2,b:'Estados Unidos',bf:'us',bs:1,w:'a',n:'AET'}],
+        [{a:'Espanha',af:'es',as:1,b:'Paraguai',bf:'py',bs:0,w:'a'},{a:'Alemanha',af:'de',as:4,b:'Argentina',bf:'ar',bs:0,w:'a'},{a:'Países Baixos',af:'nl',as:2,b:'Brasil',bf:'br',bs:1,w:'a'},{a:'Uruguai',af:'uy',as:1,b:'Gana',bf:'gh',bs:1,w:'a',n:'pens'}],
+        [{a:'Espanha',af:'es',as:1,b:'Alemanha',bf:'de',bs:0,w:'a'},{a:'Países Baixos',af:'nl',as:3,b:'Uruguai',bf:'uy',bs:2,w:'a'}],
+        [{a:'Espanha',af:'es',as:1,b:'Países Baixos',bf:'nl',bs:0,w:'a',n:'AET'}]
+    ]},
+    2006:{host:'Alemanha',champion:'Itália',runners_up:'França',third:'Alemanha',fourth:'Portugal',
+    stats:{matches:64,goals:147,gpm:'2.30',att:'3.359.439',apm:'52.491'},
+    awards:{topScorer:{name:'Miroslav Klose',fc:'de',goals:5},bestPlayer:{name:'Zinedine Zidane',fc:'fr'},bestYoung:{name:'Lukas Podolski',fc:'de'},bestGK:{name:'Gianluigi Buffon',fc:'it'},fairPlay:{name:'Brasil / Espanha',fc:''}},
+    thirdPlace:{a:'Alemanha',af:'de',as:3,b:'Portugal',bf:'pt',bs:1,w:'a'},
+    rounds:[
+        [{a:'Itália',af:'it',as:1,b:'Austrália',bf:'au',bs:0,w:'a'},{a:'Ucrânia',af:'ua',as:0,b:'Suíça',bf:'ch',bs:0,w:'a',n:'pens'},{a:'Alemanha',af:'de',as:2,b:'Suécia',bf:'se',bs:0,w:'a'},{a:'Argentina',af:'ar',as:2,b:'México',bf:'mx',bs:1,w:'a',n:'AET'},{a:'Inglaterra',af:'gb-eng',as:1,b:'Equador',bf:'ec',bs:0,w:'a'},{a:'Portugal',af:'pt',as:1,b:'Países Baixos',bf:'nl',bs:0,w:'a'},{a:'Brasil',af:'br',as:3,b:'Gana',bf:'gh',bs:0,w:'a'},{a:'França',af:'fr',as:3,b:'Espanha',bf:'es',bs:1,w:'a'}],
+        [{a:'Itália',af:'it',as:3,b:'Ucrânia',bf:'ua',bs:0,w:'a'},{a:'Alemanha',af:'de',as:1,b:'Argentina',bf:'ar',bs:1,w:'a',n:'pens'},{a:'Inglaterra',af:'gb-eng',as:0,b:'Portugal',bf:'pt',bs:0,w:'b',n:'pens'},{a:'Brasil',af:'br',as:0,b:'França',bf:'fr',bs:1,w:'b'}],
+        [{a:'Itália',af:'it',as:2,b:'Alemanha',bf:'de',bs:0,w:'a',n:'AET'},{a:'Portugal',af:'pt',as:0,b:'França',bf:'fr',bs:1,w:'b'}],
+        [{a:'Itália',af:'it',as:1,b:'França',bf:'fr',bs:1,w:'a',n:'pens'}]
+    ]}
+};
+
+const WC_DATA={
+    2006:{logo:"https://upload.wikimedia.org/wikipedia/en/thumb/6/6b/2006_FIFA_World_Cup.svg/250px-2006_FIFA_World_Cup.svg.png",dates:"9 June – 9 July",teams:32,venues:12,cities:12},
+    2010:{logo:"https://upload.wikimedia.org/wikipedia/en/thumb/0/0d/2010_FIFA_World_Cup.svg/500px-2010_FIFA_World_Cup.svg.png",dates:"11 June – 11 July",teams:32,venues:10,cities:9},
+    2014:{logo:"https://upload.wikimedia.org/wikipedia/en/thumb/1/1d/2014_FIFA_World_Cup.svg/250px-2014_FIFA_World_Cup.svg.png",dates:"12 June – 13 July",teams:32,venues:12,cities:12},
+    2018:{logo:"https://upload.wikimedia.org/wikipedia/en/thumb/6/67/2018_FIFA_World_Cup.svg/250px-2018_FIFA_World_Cup.svg.png",dates:"14 June – 15 July",teams:32,venues:12,cities:11},
+    2022:{logo:"https://upload.wikimedia.org/wikipedia/en/thumb/e/e3/2022_FIFA_World_Cup.svg/500px-2022_FIFA_World_Cup.svg.png",dates:"20 November – 18 December",teams:32,venues:8,cities:5}
+};
+
+const WC_TITLES={
+    brasil:{gold:5,silver:2,bronze:2},alemanha:{gold:4,silver:4,bronze:4},
+    italia:{gold:4,silver:2,bronze:1},argentina:{gold:3,silver:3,bronze:0},
+    franca:{gold:2,silver:2,bronze:2},uruguai:{gold:2,silver:0,bronze:0},
+    inglaterra:{gold:1,silver:0,bronze:0},espanha:{gold:1,silver:0,bronze:0},
+    'paises baixos':{gold:0,silver:3,bronze:1},croacia:{gold:0,silver:1,bronze:2},
+    suecia:{gold:0,silver:1,bronze:2},hungria:{gold:0,silver:2,bronze:0},
+    tchecoslovaquia:{gold:0,silver:2,bronze:0},polonia:{gold:0,silver:0,bronze:2},
+    austria:{gold:0,silver:0,bronze:1},belgica:{gold:0,silver:0,bronze:1},
+    chile:{gold:0,silver:0,bronze:1},portugal:{gold:0,silver:0,bronze:1},
+    turquia:{gold:0,silver:0,bronze:1},eua:{gold:0,silver:0,bronze:1}
+};
+
+const RL=['Oitavas de Final','Quartas de Final','Semifinais'];
+const RS=['Oitavas','Quartas','Semifinal','Final'];
+let curYear=2022,hovTeam=null,linksMap={};
+
+function init(){renderPills();renderEdition();}
+
+function renderPills(){
+    const el=document.getElementById('pills');
+    el.innerHTML='';
+    const label=document.createElement('span');
+    label.textContent='Edição:';
+    label.style.cssText='font-size:11px;font-weight:800;text-transform:uppercase;color:#7f8692;letter-spacing:1px;margin-right:8px;';
+    el.appendChild(label);
+    Object.keys(ED).sort((a,b)=>+b-+a).forEach(y=>{
+    const btn=document.createElement('button');
+    btn.className='pill'+(+y===curYear?' active':'');
+    btn.textContent=y;
+    btn.onclick=()=>switchYear(+y);
+    el.appendChild(btn);
     });
 }
 
-function bkLS(path, isChamp, isHov) {
-    if (isHov) { path.setAttribute('stroke', '#4c9bc2'); path.setAttribute('stroke-width', '2'); path.setAttribute('opacity', '0.9'); }
-    else if (isChamp) { path.setAttribute('stroke', '#f7db09'); path.setAttribute('stroke-width', '1.8'); path.setAttribute('opacity', '0.65'); }
-    else { path.setAttribute('stroke', '#e2e3e0'); path.setAttribute('stroke-width', '1.5'); path.setAttribute('opacity', '1'); }
+function switchYear(y){
+    if(y===curYear)return;
+    const bw=document.getElementById('bk-bw');
+    hovTeam=null;bw.style.opacity=0;
+    setTimeout(()=>{curYear=y;renderPills();renderEdition();bw.style.opacity=1;},180);
 }
 
-function bkHL() {
-    const ed = BK_ED[bkYear], champ = ed.champion;
-    document.querySelectorAll('.bk-mc').forEach(card => {
-    card.classList.remove('bk-is-champ', 'bk-is-hover');
-    const m = ed.rounds[+card.dataset.r][+card.dataset.m];
-    if (bkHov && (m.a === bkHov || m.b === bkHov)) card.classList.add('bk-is-hover');
-    else if (m.a === champ || m.b === champ) card.classList.add('bk-is-champ');
-    });
-    document.querySelectorAll('.bk-tr').forEach(row => { row.classList.remove('bk-hl'); if (bkHov && row.dataset.team === bkHov) row.classList.add('bk-hl'); });
-    Object.values(bkLM).forEach(({ path, winner }) => bkLS(path, winner === champ, bkHov && winner === bkHov));
-    const t = document.getElementById('bk-pathTitle');
-    if (bkHov) { t.innerHTML = `TRAJETÓRIA — <span style="color:#1a5276">${bkHov}</span>`; bkPath(ed, bkHov); }
-    else { t.innerHTML = 'TRAJETÓRIA DO CAMPEÃO'; bkPath(ed); }
+function renderEdition(){
+    const ed=ED[curYear];
+    renderBadge(ed);renderPodium(ed);renderStats(ed);renderAwards(ed);
+    renderBracket(ed);renderPath(ed);
 }
-function bkPath(ed, over) {
-    const target = over || ed.champion;
-    let tf = over ? '' : ed.champFlag;
-    if (over) for (const r of ed.rounds) for (const m of r) { if (m.a === target) { tf = m.af; break; } if (m.b === target) { tf = m.bf; break; } }
-    const c = document.getElementById('bk-pathCards'); c.innerHTML = '';
-    const tr = document.createElement('div'); tr.className = 'bk-trophy';
-    tr.innerHTML = `<div style="font-size:20px">${over ? '⚽' : '🏆'}</div><div style="font-size:28px;line-height:1">${tf}</div><div style="font-size:13px;font-weight:900;color:#7d5a00;line-height:1;margin-top:2px">${target}</div><div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#bbb">${over ? bkYear : 'Campeão ' + bkYear}</div>`;
+
+function renderBadge(ed){
+    const fc=getISO(ed.champion),extra=WC_DATA[curYear]||{};
+    document.getElementById('edition-badge').innerHTML=`
+    <div class="eb-left"><div class="eb-meta"><div class="eb-host">${ed.host}</div>${extra.dates||''}<br>${extra.teams||''} seleções<br>${extra.venues||''} estádios · ${extra.cities||''} cidades</div></div>
+    <div class="eb-logo">${extra.logo?`<img src="${extra.logo}" alt="Logo ${curYear}">`:''}  </div>
+    <div class="eb-champ">${fi(fc,52,38)}<div class="eb-champ-info"><div class="eb-champ-label">Campeã</div><div class="eb-champ-name">${ed.champion}</div></div></div>`;
+}
+
+function renderPodium(ed){
+    const pos=[{n:ed.champion,cls:'p1',pos:'🥇 1º Lugar'},{n:ed.runners_up,cls:'p2',pos:'🥈 2º Lugar'},{n:ed.third,cls:'p3',pos:'🥉 3º Lugar'},{n:ed.fourth,cls:'p4',pos:'4º Lugar'}];
+    document.getElementById('podium').innerHTML=pos.map(p=>`<div class="podium-card ${p.cls}"><div class="podium-pos">${p.pos}</div><div class="podium-flag">${fi(getISO(p.n),36,25)}</div><div class="podium-team">${p.n}</div></div>`).join('');
+}
+
+function renderStats(ed){
+    const s=ed.stats;
+    document.getElementById('stats').innerHTML=`
+    <div class="stat-item"><div class="stat-val">${s.matches}</div><div class="stat-lbl">Partidas</div></div>
+    <div class="stat-item"><div class="stat-val">${s.goals}</div><div class="stat-lbl">Gols</div><div class="stat-sub">${s.gpm} por jogo</div></div>
+    <div class="stat-item"><div class="stat-val" style="font-size:38px;">${s.att}</div><div class="stat-lbl">Público</div><div class="stat-sub">${s.apm} por jogo</div></div>`;
+}
+
+function renderAwards(ed){
+    const a=ed.awards;
+    const rows=[
+    {lbl:'Artilheiro',d:a.topScorer,extra:`<span class="award-goals">${a.topScorer.goals} gols</span>`},
+    {lbl:'Melhor Jogador',d:a.bestPlayer},{lbl:'Melhor Jovem',d:a.bestYoung},
+    {lbl:'Melhor Goleiro',d:a.bestGK},{lbl:'Fair Play',d:a.fairPlay}
+    ];
+    document.getElementById('awards').innerHTML=rows.map(r=>`<div class="award-row"><div class="award-lbl">${r.lbl}</div><div class="award-val">${r.d.fc?fi(r.d.fc,14,10):''}${r.d.name}${r.extra||''}</div></div>`).join('');
+}
+
+function renderBracket(ed){
+    const bw=document.getElementById('bk-bw');
+    bw.querySelectorAll('.bk-rc,.bk-last-col').forEach(e=>e.remove());
+    ed.rounds.slice(0,3).forEach((matches,ri)=>{
+    const col=document.createElement('div');col.className='bk-rc';
+    col.innerHTML=`<div class="bk-rc-head">${RL[ri]}</div>`;
+    const body=document.createElement('div');body.className='bk-rc-body';
+    matches.forEach((m,mi)=>body.appendChild(makeCard(m,ri,mi,ed.champion,false)));
+    col.appendChild(body);bw.appendChild(col);
+    });
+    const lastCol=document.createElement('div');lastCol.className='bk-last-col';
+    lastCol.style.cssText='display:flex;flex-direction:column;height:100%;';
+    const finalWrap=document.createElement('div');
+    finalWrap.style.cssText='flex:1;display:flex;flex-direction:column;justify-content:center;';
+    const finalHead=document.createElement('div');finalHead.className='bk-rc-head';finalHead.textContent='Final';
+    const finalBody=document.createElement('div');finalBody.className='bk-rc-body';
+    finalBody.appendChild(makeCard(ed.rounds[3][0],3,0,ed.champion,false));
+    finalWrap.appendChild(finalHead);finalWrap.appendChild(finalBody);
+    const thirdWrap=document.createElement('div');thirdWrap.style.marginTop='auto';
+    const thirdHead=document.createElement('div');thirdHead.className='bk-rc-head';thirdHead.textContent='3º Lugar';
+    const thirdBody=document.createElement('div');thirdBody.className='bk-rc-body';
+    thirdBody.appendChild(makeCard(ed.thirdPlace,99,0,ed.champion,true));
+    thirdWrap.appendChild(thirdHead);thirdWrap.appendChild(thirdBody);
+    lastCol.appendChild(finalWrap);lastCol.appendChild(thirdWrap);bw.appendChild(lastCol);
+    requestAnimationFrame(()=>{
+    const h=bw.offsetHeight;lastCol.style.height=h+'px';
+    requestAnimationFrame(()=>drawLines(ed));
+    });
+}
+
+function makeCard(m,ri,mi,champ,isThird){
+    const card=document.createElement('div');
+    card.className='bk-mc'+(isThird?' is-third':'');
+    card.dataset.r=ri;card.dataset.m=mi;
+    ['a','b'].forEach(slot=>{
+    const row=document.createElement('div');
+    const won=m.w===slot;
+    row.className='bk-tr'+(won?' won':'');
+    row.dataset.team=m[slot]||'';
+    const note=won&&m.n?`<span class="bk-nt">${m.n}</span>`:'';
+    const code=m[slot+'f']||'';
+    const flagHtml=code?`<img class="flag-img" src="https://flagcdn.com/w40/${code}.png" alt="" onerror="this.style.display='none'">`:`<span style="width:18px;display:inline-block;"></span>`;
+    row.innerHTML=`${flagHtml}<span class="bk-tn${!m[slot]?' tbd':''}">${m[slot]||'—'}</span>${m[slot+'s']!==undefined?`<span class="bk-ts">${m[slot+'s']}</span>`:''}${note}`;
+    row.addEventListener('mouseenter',()=>{hovTeam=m[slot];doHL(ED[curYear]);wcTooltip.innerHTML=getTitles(m[slot]);wcTooltip.style.opacity=1;});
+    row.addEventListener('mousemove',(e)=>{wcTooltip.style.left=e.pageX+'px';wcTooltip.style.top=e.pageY+'px';});
+    row.addEventListener('mouseleave',()=>{hovTeam=null;doHL(ED[curYear]);wcTooltip.style.opacity=0;});
+    card.appendChild(row);
+    });
+    if(!isThird&&(m.a===champ||m.b===champ))card.classList.add('is-champ');
+    return card;
+}
+
+function drawLines(ed){
+    const bw=document.getElementById('bk-bw'),svg=document.getElementById('bk-svg');
+    svg.setAttribute('width',bw.scrollWidth);svg.setAttribute('height',bw.offsetHeight);
+    svg.innerHTML='';linksMap={};
+    const champ=ed.champion;
+    [0,1].forEach(ri=>{
+    ed.rounds[ri].forEach((match,mi)=>{
+        const nextMi=Math.floor(mi/2),isTop=mi%2===0;
+        const src=bw.querySelector(`.bk-mc[data-r="${ri}"][data-m="${mi}"]`);
+        const tgt=bw.querySelector(`.bk-mc[data-r="${ri+1}"][data-m="${nextMi}"]`);
+        if(!src||!tgt)return;
+        const s=rp(src,bw),t=rp(tgt,bw);
+        const tRows=tgt.querySelectorAll('.bk-tr');
+        const tr=rp(isTop?tRows[0]:tRows[1],bw);
+        const mx=s.right+(t.left-s.right)*0.5;
+        const d=`M${s.right} ${s.cy} H${mx} V${tr.cy} H${t.left}`;
+        const path=mkPath(d);
+        const winner=match.w==='a'?match.a:match.b;
+        linksMap[`${ri}-${mi}`]={path,winner};
+        stLink(path,winner===champ,false);svg.appendChild(path);
+    });
+    });
+    ed.rounds[2].forEach((match,mi)=>{
+    const src=bw.querySelector(`.bk-mc[data-r="2"][data-m="${mi}"]`);
+    const tgt=bw.querySelector(`.bk-mc[data-r="3"][data-m="0"]`);
+    if(!src||!tgt)return;
+    const s=rp(src,bw),t=rp(tgt,bw);
+    const tRows=tgt.querySelectorAll('.bk-tr');
+    const tr=rp(mi===0?tRows[0]:tRows[1],bw);
+    const mx=s.right+(t.left-s.right)*0.5;
+    const d=`M${s.right} ${s.cy} H${mx} V${tr.cy} H${t.left}`;
+    const path=mkPath(d);
+    const winner=match.w==='a'?match.a:match.b;
+    linksMap[`2-${mi}`]={path,winner};
+    stLink(path,winner===champ,false);svg.appendChild(path);
+    });
+}
+
+function rp(el,c){const er=el.getBoundingClientRect(),cr=c.getBoundingClientRect();return{right:er.right-cr.left,left:er.left-cr.left,cy:er.top-cr.top+er.height/2};}
+function mkPath(d){const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',d);p.setAttribute('fill','none');p.setAttribute('stroke-linecap','round');p.setAttribute('stroke-linejoin','round');return p;}
+function stLink(p,isChamp,isHov){
+    if(isHov)       {p.setAttribute('stroke','#2ab8cc');p.setAttribute('stroke-width','2');  p.setAttribute('opacity','0.8');}
+    else if(isChamp){p.setAttribute('stroke','#f0c820');p.setAttribute('stroke-width','1.8');p.setAttribute('opacity','0.55');}
+    else            {p.setAttribute('stroke','#121e28');p.setAttribute('stroke-width','1.5');p.setAttribute('opacity','1');}
+}
+
+function doHL(ed){
+    const champ=ed.champion;
+    document.querySelectorAll('.bk-mc:not(.is-third)').forEach(card=>{
+    card.classList.remove('is-champ','is-hover');
+    const ri=+card.dataset.r,mi=+card.dataset.m;
+    const m=ed.rounds[ri]?.[mi];if(!m)return;
+    if(hovTeam&&(m.a===hovTeam||m.b===hovTeam))card.classList.add('is-hover');
+    else if(m.a===champ||m.b===champ)card.classList.add('is-champ');
+    });
+    const tp3=document.querySelector('.bk-mc.is-third');
+    if(tp3){const m3=ed.thirdPlace;if(hovTeam&&(m3.a===hovTeam||m3.b===hovTeam))tp3.classList.add('is-hover');else tp3.classList.remove('is-hover');}
+    document.querySelectorAll('.bk-tr').forEach(row=>{row.classList.remove('hl');if(hovTeam&&row.dataset.team===hovTeam)row.classList.add('hl');});
+    Object.values(linksMap).forEach(({path,winner})=>stLink(path,winner===champ,hovTeam&&winner===hovTeam));
+    const t=document.getElementById('path-title');
+    if(hovTeam){t.innerHTML=`TRAJETÓRIA — <span style="color:#0b3560">${hovTeam}</span>`;renderPath(ed,hovTeam);}
+    else{t.innerHTML='TRAJETÓRIA DO CAMPEÃO';renderPath(ed);}
+}
+
+function renderPath(ed,over){
+    const target=over||ed.champion;
+    let fc='';
+    outer:for(const r of ed.rounds)for(const m of r){if(m.a===target){fc=m.af;break outer;}if(m.b===target){fc=m.bf;break outer;}}
+    if(!fc){const tp=ed.thirdPlace;if(tp.a===target)fc=tp.af;else if(tp.b===target)fc=tp.bf;}
+    if(!fc)fc=getISO(target);
+    const c=document.getElementById('path-cards');c.innerHTML='';
+    const isChamp=!over||over===ed.champion;
+    const flagSrc=fc?`https://flagcdn.com/w40/${fc}.png`:'';
+    const fEl=(w,h,op)=>flagSrc?`<img src="${flagSrc}" style="width:${w}px;height:${h}px;object-fit:cover;border-radius:1px;${op?'opacity:'+op+';':''}" alt="">`:'';
+    const tr=document.createElement('div');tr.className='path-trophy';
+    tr.innerHTML=`<div style="font-size:16px"></div>${fEl(28,20)}<div class="pt-name">${target}</div><div class="pt-label">${isChamp?'Campeão '+curYear:curYear}</div>`;
     c.appendChild(tr);
-    ed.rounds.forEach((round, ri) => {
-    round.forEach(m => {
-        const isA = m.a === target, isB = m.b === target; if (!isA && !isB) return;
-        const won = (isA && m.w === 'a') || (isB && m.w === 'b');
-        const myS = isA ? m.as : m.bs, oppS = isA ? m.bs : m.as, opp = isA ? m.b : m.a, oppF = isA ? m.bf : m.af;
-        const card = document.createElement('div'); card.className = 'bk-pc'; if (!won) card.style.opacity = '0.5';
-        card.innerHTML = `<div class="bk-pc-rnd">${BK_RS[ri]}</div><div class="bk-pc-w"><span class="wf">${tf}</span><span class="wn">${target}</span><span class="ws">${myS}</span></div><div class="bk-pc-sep"></div><div class="bk-pc-l"><span class="lf">${oppF}</span><span class="ln">${opp}</span><span class="ls">${oppS}</span></div>${m.n ? `<span class="bk-pc-note">${m.n}</span>` : ''}`;
+    ed.rounds.forEach((round,ri)=>{
+    round.forEach(m=>{
+        const isA=m.a===target,isB=m.b===target;if(!isA&&!isB)return;
+        const won=(isA&&m.w==='a')||(isB&&m.w==='b');
+        const myS=isA?m.as:m.bs,oppS=isA?m.bs:m.as;
+        const opp=isA?m.b:m.a,oppFc=isA?m.bf:m.af;
+        const card=document.createElement('div');card.className='path-card'+(won?'':' lost');
+        const oppSrc=oppFc?`https://flagcdn.com/w40/${oppFc}.png`:'';
+        card.innerHTML=`<div class="pc-rnd">${RS[ri]}</div><div class="pc-team">${fEl(15,11)}<span class="ptn">${target}</span><span class="pts">${myS}</span></div><div class="pc-sep"></div><div class="pc-opp">${oppSrc?`<img src="${oppSrc}" style="width:15px;height:11px;object-fit:cover;border-radius:1px;opacity:.5;" alt="">`:''}<span class="pon">${opp}</span><span class="pos">${oppS}</span></div>${m.n?`<span class="pc-note">${m.n}</span>`:''}`;
         c.appendChild(card);
     });
     });
+    const tp=ed.thirdPlace,isA3=tp.a===target,isB3=tp.b===target;
+    if(isA3||isB3){
+    const won3=(isA3&&tp.w==='a')||(isB3&&tp.w==='b');
+    const myS3=isA3?tp.as:tp.bs,oppS3=isA3?tp.bs:tp.as;
+    const opp3=isA3?tp.b:tp.a,oppFc3=isA3?tp.bf:tp.af;
+    const card=document.createElement('div');card.className='path-card'+(won3?'':' lost');
+    const oppSrc3=oppFc3?`https://flagcdn.com/w40/${oppFc3}.png`:'';
+    card.innerHTML=`<div class="pc-rnd third-rnd">3º Lugar</div><div class="pc-team">${fEl(15,11)}<span class="ptn">${target}</span><span class="pts">${myS3}</span></div><div class="pc-sep"></div><div class="pc-opp">${oppSrc3?`<img src="${oppSrc3}" style="width:15px;height:11px;object-fit:cover;border-radius:1px;opacity:.5;" alt="">`:''}<span class="pon">${opp3}</span><span class="pos">${oppS3}</span></div>${tp.n?`<span class="pc-note">${tp.n}</span>`:''}`;
+    c.appendChild(card);
+    }
 }
-function bkSwitch(y) {
-    if (y === bkYear) return;
-    const bw = document.getElementById('bk-bw'); bkHov = null; bw.style.opacity = 0;
-    setTimeout(() => { bkYear = y; bkPills(); bkEdition(); bw.style.opacity = 1; }, 180);
-}
-document.addEventListener('DOMContentLoaded', () => {
-    bkInit();
-    window.addEventListener('resize', () => requestAnimationFrame(bkLines));
-});
-})();
 
+document.addEventListener('DOMContentLoaded',()=>{
+    init();
+    window.addEventListener('resize',()=>requestAnimationFrame(()=>drawLines(ED[curYear])));
+});
 
 
 /* =========================================================
