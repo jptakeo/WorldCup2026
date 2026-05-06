@@ -35,7 +35,7 @@ if __name__ == "__main__":
         "L": ["England", "Croatia", "Ghana", "Panama"]
     }
 
-    print("\n--- SIMULANDO 2026 ---")
+    # print("\n--- SIMULANDO 2026 ---")
 
     # 1. Pega os nomes dos times em ordem alfabética
     _, times_26, _ = preparar_dados_ciclo(
