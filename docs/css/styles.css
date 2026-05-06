@@ -723,6 +723,9 @@ color: red;
 /* ══════════════════════════════════════
     ESTATÍSTICAS e CHAVEAMENTO 
  ══════════════════════════════════════ */
+/* ══════════════════════════════════════
+    ESTATÍSTICAS e CHAVEAMENTO 
+ ══════════════════════════════════════ */
 .wc-wrap { max-width: 100%; margin: 0 auto; }
 .wc-sub  { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: #3a5a6a; margin-top: 4px; }
 
@@ -733,17 +736,77 @@ color: red;
 .pills-row { display:flex; justify-content:flex-end; align-items:center; gap:6px; flex-wrap:wrap; margin:12px 0 16px; }
 
 /* EDITION BADGE */
-.edition-badge { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:20px; width:100%; padding:20px 32px; background:radial-gradient(circle at top,#ffffff,#ffffff 70%); border:1.5px solid rgba(164,164,163,.25); border-radius:14px; margin-bottom:16px; }
-.eb-left  { text-align:left; margin-right:20px; }
-.eb-host  { font-size:22px; letter-spacing:3px; text-transform:uppercase; color:#013f5e; margin-top:2px; }
-.eb-logo  { display:flex; flex-direction:column; align-items:center; gap:6px; }
-.eb-logo img { height:180px; object-fit:contain; transition:transform .25s ease; }
-.eb-logo img:hover { transform:scale(1.08); }
-.eb-meta  { font-size:13px; text-align:center; color:#3a5a6a; line-height:1.4; }
-.eb-champ { display:flex; align-items:center; justify-content:flex-end; gap:10px; }
-.eb-champ-info { text-align:left; }
-.eb-champ-label { font-size:16px; letter-spacing:2px; color:#7a6010; text-transform:uppercase; }
-.eb-champ-name  { font-size:22px; font-weight:700; color:#006089; }
+
+.edition-badge {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 20px;
+  width: 100%;         
+  margin: 0 0 20px;   
+  padding: 20px 32px;   
+  background: radial-gradient(circle at top, #ffffff, #ffffff 70%);
+  border: 1.5px solid rgba(164, 164, 163, 0.25);
+  border-radius: 14px;
+}
+
+/* RESPONSIVIDADE PARA CELULAR */
+@media (max-width: 768px) {
+  .edition-badge {
+    /* Logo à esquerda e Texto à direita */
+    grid-template-columns: auto 1fr; 
+    padding: 15px 20px;
+    gap: 15px;
+  }
+
+  .eb-logo {
+    display: flex !important;
+    /* Move o logo para a primeira posição visual */
+    order: 1; 
+  }
+
+  .eb-logo img {
+    height: 100px; /* Tamanho ajustado para celular */
+  }
+
+  .eb-left {
+    /* Move o texto para a segunda posição visual */
+    order: 2; 
+    text-align: left;
+    margin-right: 0;
+  }
+
+  .eb-year {
+    font-size: 28px;
+  }
+
+  .eb-host {
+    font-size: 14px;
+    letter-spacing: 1.5px;
+  }
+
+  .eb-champ {
+    display: none !important;
+  }
+}
+
+
+/*  Desktop */
+.eb-left { text-align: left; margin-right: 20px; }
+.eb-year { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 900; color: #0b3560; line-height: 1; }
+.eb-host { font-size: 22px; letter-spacing: 3px; text-transform: uppercase; color: #013f5e; margin-top: 2px; }
+
+.eb-logo { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.eb-logo img { height: 180px; object-fit: contain; transition: transform .25s ease; }
+.eb-logo img:hover { transform: scale(1.08); }
+.eb-meta { font-size: 13px; text-align: center; color: #3a5a6a; line-height: 1.4; }
+
+.eb-champ { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+.eb-champ img { width: 152px; height: 138px; border-radius: 3px; box-shadow: 0 2px 6px rgba(0,0,0,.4); }
+.eb-champ-info { text-align: left; }
+.eb-champ-label { font-size: 18px; letter-spacing: 2px; color: #7a6010; text-transform: uppercase; }
+.eb-champ-name { font-size: 28px; font-weight: 700; color: #006089; }
+
 
 /* PODIUM */
 .podium-row { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:16px; }
@@ -820,27 +883,207 @@ color: red;
 .legend-line { width:20px; height:1.5px; border-radius:1px; }
 
 /* PATH */
-.path-section { background:#ffffff; border:1px solid rgba(164,164,163,.25); border-radius:8px; padding:12px; margin-bottom:16px; box-shadow:0 4px 12px rgba(0,51,102,.05); }
-.path-title   { font-size:8px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#003366; margin-bottom:12px; }
-.path-cards   { display:flex; gap:8px; flex-wrap:wrap; align-items:stretch; }
-.path-trophy  { display:flex; flex-direction:column; align-items:center; justify-content:center; min-width:80px; padding:10px 8px; border:1.7px solid #f4c804af; border-radius:6px; background:linear-gradient(160deg,#ffffff,#fcfaf0); gap:4px; flex-shrink:0; box-shadow:0 2px 8px rgba(212,175,55,.2); }
-.path-trophy img { width:28px; height:20px; object-fit:cover; border-radius:2px; }
-.pt-name { font-size:12px; font-weight:900; color:#d4af37; line-height:1; text-transform:uppercase; }
-.pt-label { font-size:9px; letter-spacing:1px; text-transform:uppercase; color:#003366; }
-.path-card    { background:#ffffff; border:1px solid #003366; border-radius:5px; padding:8px 10px; flex:1; min-width:15px; max-width:255px; }
-.path-card.lost { opacity:.6; border-color:#d1d8dd; }
-.pc-rnd  { font-size:7px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#003366; margin-bottom:6px; }
-.pc-rnd.third-rnd { color:#808080; }
-.pc-team { display:flex; align-items:center; gap:5px; margin-bottom:3px; }
-.pc-team img { width:15px; height:11px; object-fit:cover; border-radius:1px; }
-.pc-team .ptn { font-size:10px; font-weight:700; color:#003366; flex:1; }
-.pc-team .pts { font-size:13px; font-weight:900; color:#d4af37; font-family:'IBM Plex Mono',monospace; }
-.pc-sep  { height:1px; background:#eef2f5; margin:3px 0; }
-.pc-opp  { display:flex; align-items:center; gap:5px; }
-.pc-opp img { width:15px; height:11px; object-fit:cover; border-radius:1px; opacity:.7; }
-.pc-opp .pon { font-size:9px; color:#667c8f; flex:1; }
-.pc-opp .pos { font-size:11px; font-weight:700; color:#003366; font-family:'IBM Plex Mono',monospace; }
-.pc-note { display:inline-block; margin-top:4px; font-size:6.5px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:#ffffff; background:#003366; padding:2px 5px; border-radius:2px; }
+.path-title {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #003366; /* Azul Marinho */
+    margin-bottom: 12px;
+}
+
+.path-cards {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+    
+    /* Habilita o deslize horizontal */
+    overflow-x: auto;
+    overflow-y: hidden;
+    
+    /* Impede que os cards quebrem para a linha de baixo */
+    flex-wrap: nowrap; 
+    
+    /* Melhora o deslize no mobile */
+    -webkit-overflow-scrolling: touch;
+    
+    /* Espaçamento extra para o scroll não cortar a sombra */
+    padding-bottom: 8px;
+    
+    /* Esconde a barra de scroll em navegadores modernos se desejar */
+    scrollbar-width: thin;
+    scrollbar-color: #d1d8dd transparent;
+}
+
+
+/* Card do Troféu / Campeão */
+.path-trophy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    padding: 10px 8px;
+    border: 1.7px solid #f4c804af; /* Gold */
+    border-radius: 6px;
+    background: linear-gradient(160deg, #ffffff, #fcfaf0);
+    gap: 4px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
+}
+
+.path-trophy img {
+    width: 28px;
+    height: 20px;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+.pt-name {
+    font-size: 12px;
+    font-weight: 900;
+    color: #d4af37; /* Gold */
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.pt-label {
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #003366; /* Azul Marinho */
+}
+
+/* Cards das Fases */
+.path-card {
+    background: #ffffff;
+    border: 1px solid #003366; 
+    border-radius: 5px;
+    padding: 8px 10px;
+    flex: 1;
+    min-width: 15px;
+    max-width: 255px;
+}
+
+/* Ajuste fino nos cards para não encolherem */
+.path-card {
+    background: #ffffff;
+    border: 1px solid #003366;
+    border-radius: 5px;
+    padding: 8px 10px;
+    
+    /* Define um tamanho fixo para o card no scroll */
+    flex: 0 0 150px; 
+    min-width: 150px;
+}
+
+/* Opcional: Estilizar a barra de rolagem para ficar elegante */
+.path-cards::-webkit-scrollbar {
+    height: 4px;
+}
+.path-cards::-webkit-scrollbar-track {
+    background: transparent;
+}
+.path-cards::-webkit-scrollbar-thumb {
+    background: #d1d8dd;
+    border-radius: 10px;
+}
+
+.path-card.lost {
+    opacity: .6;
+    border-color: #d1d8dd;
+}
+
+.pc-rnd {
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #003366; /* Azul Marinho */
+    margin-bottom: 6px;
+}
+
+/* Destaque para disputa de terceiro lugar */
+.pc-rnd.third-rnd {
+    color: #808080; /* Cinza/Prata */
+}
+
+/* Time em foco no Path */
+.pc-team {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 3px;
+}
+
+.pc-team img {
+    width: 15px;
+    height: 11px;
+    object-fit: cover;
+    border-radius: 1px;
+}
+
+.pc-team .ptn {
+    font-size: 10px;
+    font-weight: 700;
+    color: #003366; /* Azul Marinho */
+    flex: 1;
+}
+
+.pc-team .pts {
+    font-size: 13px;
+    font-weight: 900;
+    color: #d4af37; /* Gold para o placar do time principal */
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+.pc-sep {
+    height: 1px;
+    background: #eef2f5;
+    margin: 3px 0;
+}
+
+/* Adversário */
+.pc-opp {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.pc-opp img {
+    width: 15px;
+    height: 11px;
+    object-fit: cover;
+    border-radius: 1px;
+    opacity: .7;
+}
+
+.pc-opp .pon {
+    font-size: 9px;
+    color: #667c8f; /* Azul acinzentado para o oponente */
+    flex: 1;
+}
+
+.pc-opp .pos {
+    font-size: 11px;
+    font-weight: 700;
+    color: #003366; /* Azul Marinho */
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+/* Nota de rodapé (ex: Penaltis) */
+.pc-note {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 6.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #ffffff;
+    background: #003366; /* Fundo Azul com texto branco */
+    padding: 2px 5px;
+    border-radius: 2px;
+}
 
 
 /* ======= MASCOTES ======= */
