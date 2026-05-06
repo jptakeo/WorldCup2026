@@ -521,6 +521,8 @@ def simular_copa_2026(post_draws, teams_list, grupos, df_schedule=df_jogos_reais
     cols_requeridas = ['side', 'round_index', 'round_label', 'order', 'id', 'home_team', 'prob_home', 'away_team', 'prob_away', 'winner']
     df_chaveamento = df_chaveamento[cols_requeridas]
     
+    df_chaveamento['prob_home'] = df_chaveamento['prob_home'].round(2)
+    df_chaveamento['prob_away'] = df_chaveamento['prob_away'].round(2)
     df_chaveamento['home_team'] = df_chaveamento['home_team'].replace(TEAM_MAP_EN_TO_PT)
     df_chaveamento['away_team'] = df_chaveamento['away_team'].replace(TEAM_MAP_EN_TO_PT)
     df_chaveamento.to_csv("docs/csv/previsoes/chaveamento_probs.csv", index=False)
