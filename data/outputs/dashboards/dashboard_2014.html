@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang='pt-br'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Dashboard Copa</title>
+    <script src='https://d3js.org/d3.v7.min.js'></script>
+    <style>
+        body { background-color: #0d1117; color: #c9d1d9; font-family: sans-serif; margin: 0; overflow: hidden; height: 100vh; }
+        svg { cursor: grab; } svg:active { cursor: grabbing; }
+        .link { fill: none; stroke: #30363d; stroke-width: 2px; opacity: 0.8; }
+        .visual-node { fill: #0d1117; stroke: #58a6ff; stroke-width: 2.5px; pointer-events: none; }
+        .has-children { fill: #58a6ff !important; }
+        .node text { font-size: 14px; fill: #f0f6fc; pointer-events: none; text-shadow: 1px 1px 2px rgba(0,0,0,0.9); }
+        .hitbox { fill: transparent; cursor: pointer; }
+        image { pointer-events: none; }
+        
+        /* Novo estilo para a caixa de título flutuante */
+        #title-box {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            pointer-events: none; /* Deixa o mouse clicar no gráfico através da div */
+        }
+        #title-box h1 { margin: 0; font-size: 24px; color: #f0f6fc; }
+        #title-box h3 { margin: 5px 0 0 0; font-size: 14px; color: #8b949e; font-weight: normal; }
+    </style>
+</head>
+<body>
+    <!-- Nova Caixa de Título -->
+    <div id='title-box'>
+        <h1>Copa do Mundo 2014</h1>
+        <h3>Modelo: draws_2014_st_dc_noranking.npz</h3>
+    </div>
+
+    <div id='graph-container'></div>
+    <script>
+        const treeData = {"name": "Copa do Mundo 2014", "children": [{"name": "Oitavas de Final", "children": [{"name": "Top 8", "children": [{"name": "Argentina: 98.18%", "icon": "https://flagcdn.com/w40/ar.png"}, {"name": "Brazil: 97.53%", "icon": "https://flagcdn.com/w40/br.png"}, {"name": "Ghana: 94.97%", "icon": "https://flagcdn.com/w40/gh.png"}, {"name": "Spain: 91.79%", "icon": "https://flagcdn.com/w40/es.png"}, {"name": "Australia: 91.00%", "icon": "https://flagcdn.com/w40/au.png"}, {"name": "Uruguay: 90.82%", "icon": "https://flagcdn.com/w40/uy.png"}, {"name": "Bosnia and Herzegovina: 89.77%", "icon": "https://flagcdn.com/w40/ba.png"}, {"name": "Switzerland: 85.47%", "icon": "https://flagcdn.com/w40/ch.png"}]}, {"name": "Top 16", "children": [{"name": "Greece: 75.92%", "icon": ""}, {"name": "Belgium: 74.84%", "icon": "https://flagcdn.com/w40/be.png"}, {"name": "Ivory Coast: 69.06%", "icon": "https://flagcdn.com/w40/ci.png"}, {"name": "France: 57.55%", "icon": "https://flagcdn.com/w40/fr.png"}, {"name": "Italy: 55.43%", "icon": ""}, {"name": "Croatia: 51.46%", "icon": "https://flagcdn.com/w40/hr.png"}, {"name": "United States: 50.37%", "icon": "https://flagcdn.com/w40/us.png"}, {"name": "South Korea: 42.27%", "icon": "https://flagcdn.com/w40/kr.png"}]}, {"name": "Top 24", "children": [{"name": "Algeria: 42.15%", "icon": "https://flagcdn.com/w40/dz.png"}, {"name": "Russia: 40.73%", "icon": ""}, {"name": "Cameroon: 38.18%", "icon": "https://flagcdn.com/w40/cm.png"}, {"name": "Portugal: 36.29%", "icon": "https://flagcdn.com/w40/pt.png"}, {"name": "Ecuador: 33.61%", "icon": "https://flagcdn.com/w40/ec.png"}, {"name": "Colombia: 29.68%", "icon": "https://flagcdn.com/w40/co.png"}, {"name": "England: 27.74%", "icon": "https://flagcdn.com/w40/gb-eng.png"}, {"name": "Costa Rica: 26.00%", "icon": "https://flagcdn.com/w40/cr.png"}]}, {"name": "Top 32", "children": [{"name": "Japan: 25.34%", "icon": "https://flagcdn.com/w40/jp.png"}, {"name": "Honduras: 23.37%", "icon": ""}, {"name": "Germany: 18.37%", "icon": "https://flagcdn.com/w40/de.png"}, {"name": "Chile: 15.32%", "icon": ""}, {"name": "Mexico: 12.84%", "icon": "https://flagcdn.com/w40/mx.png"}, {"name": "Nigeria: 8.93%", "icon": ""}, {"name": "Iran: 3.12%", "icon": "https://flagcdn.com/w40/ir.png"}, {"name": "Netherlands: 1.89%", "icon": "https://flagcdn.com/w40/nl.png"}]}]}, {"name": "Quartas de Final", "children": [{"name": "Top 8", "children": [{"name": "Brazil: 85.45%", "icon": "https://flagcdn.com/w40/br.png"}, {"name": "Argentina: 81.60%", "icon": "https://flagcdn.com/w40/ar.png"}, {"name": "Ghana: 71.51%", "icon": "https://flagcdn.com/w40/gh.png"}, {"name": "Bosnia and Herzegovina: 58.44%", "icon": "https://flagcdn.com/w40/ba.png"}, {"name": "Uruguay: 54.97%", "icon": "https://flagcdn.com/w40/uy.png"}, {"name": "Greece: 47.74%", "icon": ""}, {"name": "Belgium: 41.83%", "icon": "https://flagcdn.com/w40/be.png"}, {"name": "Ivory Coast: 40.29%", "icon": "https://flagcdn.com/w40/ci.png"}]}, {"name": "Top 16", "children": [{"name": "Spain: 34.08%", "icon": "https://flagcdn.com/w40/es.png"}, {"name": "Switzerland: 33.94%", "icon": "https://flagcdn.com/w40/ch.png"}, {"name": "Australia: 31.32%", "icon": "https://flagcdn.com/w40/au.png"}, {"name": "Croatia: 26.32%", "icon": "https://flagcdn.com/w40/hr.png"}, {"name": "United States: 22.35%", "icon": "https://flagcdn.com/w40/us.png"}, {"name": "Italy: 21.13%", "icon": ""}, {"name": "Cameroon: 17.47%", "icon": "https://flagcdn.com/w40/cm.png"}, {"name": "South Korea: 15.36%", "icon": "https://flagcdn.com/w40/kr.png"}]}, {"name": "Top 24", "children": [{"name": "Algeria: 14.93%", "icon": "https://flagcdn.com/w40/dz.png"}, {"name": "Portugal: 14.36%", "icon": "https://flagcdn.com/w40/pt.png"}, {"name": "France: 13.91%", "icon": "https://flagcdn.com/w40/fr.png"}, {"name": "Russia: 13.87%", "icon": ""}, {"name": "Colombia: 11.43%", "icon": "https://flagcdn.com/w40/co.png"}, {"name": "Japan: 9.21%", "icon": "https://flagcdn.com/w40/jp.png"}, {"name": "England: 7.79%", "icon": "https://flagcdn.com/w40/gb-eng.png"}, {"name": "Costa Rica: 7.43%", "icon": "https://flagcdn.com/w40/cr.png"}]}, {"name": "Top 32", "children": [{"name": "Germany: 5.80%", "icon": "https://flagcdn.com/w40/de.png"}, {"name": "Ecuador: 5.48%", "icon": "https://flagcdn.com/w40/ec.png"}, {"name": "Mexico: 3.96%", "icon": "https://flagcdn.com/w40/mx.png"}, {"name": "Honduras: 3.41%", "icon": ""}, {"name": "Nigeria: 2.62%", "icon": ""}, {"name": "Chile: 1.32%", "icon": ""}, {"name": "Iran: 0.59%", "icon": "https://flagcdn.com/w40/ir.png"}, {"name": "Netherlands: 0.07%", "icon": "https://flagcdn.com/w40/nl.png"}]}]}, {"name": "Semifinais", "children": [{"name": "Top 8", "children": [{"name": "Brazil: 70.39%", "icon": "https://flagcdn.com/w40/br.png"}, {"name": "Argentina: 56.05%", "icon": "https://flagcdn.com/w40/ar.png"}, {"name": "Ghana: 49.28%", "icon": "https://flagcdn.com/w40/gh.png"}, {"name": "Uruguay: 29.50%", "icon": "https://flagcdn.com/w40/uy.png"}, {"name": "Bosnia and Herzegovina: 26.20%", "icon": "https://flagcdn.com/w40/ba.png"}, {"name": "Belgium: 20.22%", "icon": "https://flagcdn.com/w40/be.png"}, {"name": "Greece: 19.48%", "icon": ""}, {"name": "Spain: 15.95%", "icon": "https://flagcdn.com/w40/es.png"}]}, {"name": "Top 16", "children": [{"name": "Ivory Coast: 15.84%", "icon": "https://flagcdn.com/w40/ci.png"}, {"name": "Australia: 14.23%", "icon": "https://flagcdn.com/w40/au.png"}, {"name": "Switzerland: 12.43%", "icon": "https://flagcdn.com/w40/ch.png"}, {"name": "Croatia: 12.22%", "icon": "https://flagcdn.com/w40/hr.png"}, {"name": "United States: 7.54%", "icon": "https://flagcdn.com/w40/us.png"}, {"name": "Cameroon: 7.22%", "icon": "https://flagcdn.com/w40/cm.png"}, {"name": "South Korea: 5.78%", "icon": "https://flagcdn.com/w40/kr.png"}, {"name": "Italy: 5.41%", "icon": ""}]}, {"name": "Top 24", "children": [{"name": "Algeria: 5.38%", "icon": "https://flagcdn.com/w40/dz.png"}, {"name": "Russia: 4.75%", "icon": ""}, {"name": "Portugal: 4.45%", "icon": "https://flagcdn.com/w40/pt.png"}, {"name": "France: 4.11%", "icon": "https://flagcdn.com/w40/fr.png"}, {"name": "Colombia: 3.18%", "icon": "https://flagcdn.com/w40/co.png"}, {"name": "Japan: 2.65%", "icon": "https://flagcdn.com/w40/jp.png"}, {"name": "Germany: 1.36%", "icon": "https://flagcdn.com/w40/de.png"}, {"name": "England: 1.28%", "icon": "https://flagcdn.com/w40/gb-eng.png"}]}, {"name": "Top 32", "children": [{"name": "Ecuador: 1.27%", "icon": "https://flagcdn.com/w40/ec.png"}, {"name": "Costa Rica: 1.26%", "icon": "https://flagcdn.com/w40/cr.png"}, {"name": "Mexico: 1.11%", "icon": "https://flagcdn.com/w40/mx.png"}, {"name": "Honduras: 0.73%", "icon": ""}, {"name": "Nigeria: 0.41%", "icon": ""}, {"name": "Chile: 0.28%", "icon": ""}, {"name": "Iran: 0.05%", "icon": "https://flagcdn.com/w40/ir.png"}, {"name": "Netherlands: 0.01%", "icon": "https://flagcdn.com/w40/nl.png"}]}]}, {"name": "Finalistas", "children": [{"name": "Top 8", "children": [{"name": "Brazil: 51.10%", "icon": "https://flagcdn.com/w40/br.png"}, {"name": "Argentina: 37.30%", "icon": "https://flagcdn.com/w40/ar.png"}, {"name": "Ghana: 25.23%", "icon": "https://flagcdn.com/w40/gh.png"}, {"name": "Uruguay: 13.29%", "icon": "https://flagcdn.com/w40/uy.png"}, {"name": "Bosnia and Herzegovina: 10.73%", "icon": "https://flagcdn.com/w40/ba.png"}, {"name": "Belgium: 10.61%", "icon": "https://flagcdn.com/w40/be.png"}, {"name": "Greece: 8.59%", "icon": ""}, {"name": "Ivory Coast: 6.24%", "icon": "https://flagcdn.com/w40/ci.png"}]}, {"name": "Top 16", "children": [{"name": "Spain: 5.54%", "icon": "https://flagcdn.com/w40/es.png"}, {"name": "Australia: 4.74%", "icon": "https://flagcdn.com/w40/au.png"}, {"name": "Croatia: 4.37%", "icon": "https://flagcdn.com/w40/hr.png"}, {"name": "Switzerland: 3.99%", "icon": "https://flagcdn.com/w40/ch.png"}, {"name": "United States: 2.92%", "icon": "https://flagcdn.com/w40/us.png"}, {"name": "Cameroon: 2.27%", "icon": "https://flagcdn.com/w40/cm.png"}, {"name": "South Korea: 2.06%", "icon": "https://flagcdn.com/w40/kr.png"}, {"name": "Algeria: 1.93%", "icon": "https://flagcdn.com/w40/dz.png"}]}, {"name": "Top 24", "children": [{"name": "Russia: 1.67%", "icon": ""}, {"name": "Portugal: 1.60%", "icon": "https://flagcdn.com/w40/pt.png"}, {"name": "Italy: 1.44%", "icon": ""}, {"name": "France: 1.23%", "icon": "https://flagcdn.com/w40/fr.png"}, {"name": "Colombia: 0.80%", "icon": "https://flagcdn.com/w40/co.png"}, {"name": "Japan: 0.66%", "icon": "https://flagcdn.com/w40/jp.png"}, {"name": "Germany: 0.38%", "icon": "https://flagcdn.com/w40/de.png"}, {"name": "Ecuador: 0.32%", "icon": "https://flagcdn.com/w40/ec.png"}]}, {"name": "Top 32", "children": [{"name": "Costa Rica: 0.26%", "icon": "https://flagcdn.com/w40/cr.png"}, {"name": "England: 0.25%", "icon": "https://flagcdn.com/w40/gb-eng.png"}, {"name": "Mexico: 0.23%", "icon": "https://flagcdn.com/w40/mx.png"}, {"name": "Honduras: 0.15%", "icon": ""}, {"name": "Nigeria: 0.06%", "icon": ""}, {"name": "Chile: 0.03%", "icon": ""}, {"name": "Iran: 0.01%", "icon": "https://flagcdn.com/w40/ir.png"}, {"name": "Netherlands: 0.00%", "icon": "https://flagcdn.com/w40/nl.png"}]}]}, {"name": "Campe\u00e3o", "children": [{"name": "Top 8", "children": [{"name": "Brazil: 37.70%", "icon": "https://flagcdn.com/w40/br.png"}, {"name": "Argentina: 19.65%", "icon": "https://flagcdn.com/w40/ar.png"}, {"name": "Ghana: 14.86%", "icon": "https://flagcdn.com/w40/gh.png"}, {"name": "Uruguay: 4.74%", "icon": "https://flagcdn.com/w40/uy.png"}, {"name": "Belgium: 4.09%", "icon": "https://flagcdn.com/w40/be.png"}, {"name": "Bosnia and Herzegovina: 3.82%", "icon": "https://flagcdn.com/w40/ba.png"}, {"name": "Greece: 3.36%", "icon": ""}, {"name": "Ivory Coast: 2.13%", "icon": "https://flagcdn.com/w40/ci.png"}]}, {"name": "Top 16", "children": [{"name": "Spain: 1.55%", "icon": "https://flagcdn.com/w40/es.png"}, {"name": "Switzerland: 1.27%", "icon": "https://flagcdn.com/w40/ch.png"}, {"name": "Australia: 1.27%", "icon": "https://flagcdn.com/w40/au.png"}, {"name": "Croatia: 1.18%", "icon": "https://flagcdn.com/w40/hr.png"}, {"name": "United States: 0.74%", "icon": "https://flagcdn.com/w40/us.png"}, {"name": "Algeria: 0.58%", "icon": "https://flagcdn.com/w40/dz.png"}, {"name": "South Korea: 0.58%", "icon": "https://flagcdn.com/w40/kr.png"}, {"name": "Cameroon: 0.52%", "icon": "https://flagcdn.com/w40/cm.png"}]}, {"name": "Top 24", "children": [{"name": "Russia: 0.49%", "icon": ""}, {"name": "Portugal: 0.37%", "icon": "https://flagcdn.com/w40/pt.png"}, {"name": "Italy: 0.31%", "icon": ""}, {"name": "France: 0.25%", "icon": "https://flagcdn.com/w40/fr.png"}, {"name": "Colombia: 0.15%", "icon": "https://flagcdn.com/w40/co.png"}, {"name": "Japan: 0.14%", "icon": "https://flagcdn.com/w40/jp.png"}, {"name": "Germany: 0.06%", "icon": "https://flagcdn.com/w40/de.png"}, {"name": "Costa Rica: 0.05%", "icon": "https://flagcdn.com/w40/cr.png"}]}, {"name": "Top 32", "children": [{"name": "Ecuador: 0.04%", "icon": "https://flagcdn.com/w40/ec.png"}, {"name": "England: 0.04%", "icon": "https://flagcdn.com/w40/gb-eng.png"}, {"name": "Mexico: 0.03%", "icon": "https://flagcdn.com/w40/mx.png"}, {"name": "Honduras: 0.03%", "icon": ""}, {"name": "Nigeria: 0.01%", "icon": ""}, {"name": "Chile: 0.01%", "icon": ""}, {"name": "Iran: 0.00%", "icon": "https://flagcdn.com/w40/ir.png"}, {"name": "Netherlands: 0.00%", "icon": "https://flagcdn.com/w40/nl.png"}]}]}]};
+        const margin = {top: 20, right: 350, bottom: 20, left: 150};
+        const svg = d3.select('#graph-container').append('svg')
+            .attr('width', window.innerWidth).attr('height', window.innerHeight)
+            .call(d3.zoom().scaleExtent([0.1, 4]).on('zoom', e => g.attr('transform', e.transform)))
+            .append('g').attr('transform', `translate(${margin.left},${window.innerHeight / 2})`);
+
+        const g = svg;
+        const tree = d3.tree().nodeSize([35, 300]);
+        const root = d3.hierarchy(treeData, d => d.children);
+        root.x0 = 0; root.y0 = 0;
+
+        if (root.children) { root.children.forEach(collapse); }
+
+        function collapse(d) {
+            if (d.children) {
+                d._children = d.children;
+                d._children.forEach(collapse);
+                d.children = null;
+            }
+        }
+
+        function update(source) {
+            const treeData = tree(root);
+            const nodes = treeData.descendants(), links = treeData.descendants().slice(1);
+            nodes.forEach(d => d.y = d.depth * 300);
+
+            const node = g.selectAll('g.node').data(nodes, d => d.id || (d.id = ++i));
+
+            const nodeEnter = node.enter().append('g').attr('class', 'node')
+                .attr('transform', d => `translate(${source.y0},${source.x0})`);
+
+            nodeEnter.append('circle').attr('r', 12).attr('class', 'hitbox').on('click', (e, d) => {
+                if (d.children) { d._children = d.children; d.children = null; }
+                else { d.children = d._children; d._children = null; }
+                update(d);
+            });
+
+            nodeEnter.append('circle').attr('r', 6).attr('class', 'visual-node')
+                .classed('has-children', d => d._children || d.children);
+
+            nodeEnter.filter(d => d.data.icon).append('image')
+                .attr('href', d => d.data.icon).attr('x', 15).attr('y', -10).attr('width', 20).attr('height', 20);
+
+            nodeEnter.append('text').attr('dy', '.35em').attr('x', d => d.data.icon ? 40 : 15).text(d => d.data.name);
+
+            const nodeUpdate = nodeEnter.merge(node);
+            nodeUpdate.transition().duration(400).attr('transform', d => `translate(${d.y},${d.x})`);
+            nodeUpdate.select('.visual-node').classed('has-children', d => d._children);
+
+            const nodeExit = node.exit().transition().duration(400)
+                .attr('transform', d => `translate(${source.y},${source.x})`).remove();
+
+            const link = g.selectAll('path.link').data(links, d => d.id);
+            const linkEnter = link.enter().insert('path', 'g').attr('class', 'link')
+                .attr('d', d => { const o = {x: source.x0, y: source.y0}; return diagonal(o, o); });
+
+            const linkUpdate = linkEnter.merge(link);
+            linkUpdate.transition().duration(400).attr('d', d => diagonal(d, d.parent));
+
+            link.exit().transition().duration(400).attr('d', d => { const o = {x: source.x, y: source.y}; return diagonal(o, o); }).remove();
+            nodes.forEach(d => { d.x0 = d.x; d.y0 = d.y; });
+        }
+
+        function diagonal(s, d) { return `M ${s.y} ${s.x} C ${(s.y + d.y) / 2} ${s.x}, ${(s.y + d.y) / 2} ${d.x}, ${d.y} ${d.x}`; }
+
+        let i = 0; update(root);
+    </script>
+</body>
+</html>

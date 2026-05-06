@@ -1,10 +1,6 @@
 import pandas as pd
 import numpy as np
 import os
-from scipy.special import logsumexp
-import matplotlib.pyplot as plt
-
-import pandas as pd
 
 
 def remover_selecoes_sem_volume(df, min_jogos=20, col_home='home_team', col_away='away_team'):
