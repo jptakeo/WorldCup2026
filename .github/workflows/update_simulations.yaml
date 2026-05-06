@@ -38,7 +38,7 @@ jobs:
 
       - name: Run simulation
         run: |
-          uv run python -m src.simulate
+          uv run python -m simulations.update_2026
 
       - name: Commit changes (if any)
         run: |
