@@ -364,8 +364,9 @@ def simular_copa_2026(post_draws, teams_list, grupos, df_schedule=df_jogos_reais
     times_nos_grupos = [time for lista_times in grupos.values() for time in lista_times]
     df_summary = df_summary[df_summary['team'].isin(times_nos_grupos)]
     df_summary = df_summary.sort_values(by='champion', ascending=False).reset_index(drop=True)
+    df_summary['position'] = df_summary.index + 1
     
-    cols_csv = ['team', 'champion', 'finalists', 'semi_finalists', 'quarter_finalists', 
+    cols_csv = ['position', 'team', 'champion', 'finalists', 'semi_finalists', 'quarter_finalists', 
                 'round_of_16', 'round_of_32', 'group_first_place', 'group_second_place', 'group_third_place']
     
     df_csv = df_summary[cols_csv].copy()

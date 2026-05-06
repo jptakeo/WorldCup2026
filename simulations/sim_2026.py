@@ -3,8 +3,11 @@ import json
 import numpy as np
 import pandas as pd
 from src.data_prep import preparar_dados_ciclo
-from src.simulation import simular_copa_2026
+from src.simulate import simular_copa_2026
 from src.dashboard import generate_dashboard
+from src.export_probs import (
+    update_html_from_summary,
+)
 
 
 def carregar_draws(caminho):
@@ -66,3 +69,5 @@ if __name__ == "__main__":
                        'data/outputs/dashboards/dashboard_2026.html', fases_26, participantes_26, 12, "Copa 2026", nome_modelo)
 
     print("Sucesso! Dashboard gerado em data/outputs/dashboards/dashboard_2026.html")
+
+    update_html_from_summary()
