@@ -274,12 +274,9 @@ def simular_copa_2026(post_draws, teams_list, grupos, df_schedule=df_jogos_reais
     # --- ADICIONANDO IDs AO DATAFRAME DE JOGOS ---
     name_to_idx_clean = {name.strip().lower(): idx for name, idx in t_to_idx.items()}
     
-    # Cria as colunas home_id e away_id baseadas nos nomes exatos (ignorando espaços/maiúsculas)
-    # .astype('Int64') garante que os IDs fiquem como inteiros, mesmo se algum time não for encontrado (NaN)
     df_schedule['home_id'] = df_schedule['home_team'].astype(str).str.strip().str.lower().map(name_to_idx_clean).astype('Int64')
     df_schedule['away_id'] = df_schedule['away_team'].astype(str).str.strip().str.lower().map(name_to_idx_clean).astype('Int64')
-
-    # Cria o dicionário O(1) para buscar as datas rapidamente pelos IDs
+    
     date_map = {}
     for _, row in df_schedule.iterrows():
         if pd.notna(row['home_id']) and pd.notna(row['away_id']):
@@ -305,18 +302,22 @@ def simular_copa_2026(post_draws, teams_list, grupos, df_schedule=df_jogos_reais
             t1_idx, t2_idx = g_indices[g, p1], g_indices[g, p2]
             team1, team2 = teams_list[t1_idx], teams_list[t2_idx]
             
-            # Busca a data usando diretamente os IDs inteiros
             match_date = date_map.get(frozenset([t1_idx, t2_idx]), "Data não encontrada")
             
+            g1_g, g2_g = g1[:, g], g2[:, g]
+            
+            # ADICIONADO: Probabilidades gerais de Vitória e Empate
             match_info = {
                 'group': list(grupos.keys())[g],
                 'home_team': team1,
                 'away_team': team2,
-                'date': match_date
+                'date': match_date,
+                'home_win': np.mean(g1_g > g2_g) * 100,
+                'draw': np.mean(g1_g == g2_g) * 100,
+                'away_win': np.mean(g1_g < g2_g) * 100
             }
             
-            g1_g, g2_g = g1[:, g], g2[:, g]
-            
+            # Probabilidades de placares exatos
             for i in range(5):
                 for j in range(5):
                     col_name = f"{num_to_word[i]}_{num_to_word[j]}"
