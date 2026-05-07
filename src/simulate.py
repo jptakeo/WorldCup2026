@@ -1,75 +1,12 @@
 import numpy as np
 import pandas as pd
+from src.constants import TEAM_MAP_EN_TO_PT, TEAM_MAP_PT_TO_EN
 
 # O Segredo da Velocidade: Calculamos o fatorial na mão para evitar a lentidão das bibliotecas!
 # Vai de 0! (1) até 10! (3628800)
 FACTORIALS = np.array([1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800])
 
 df_jogos_reais = pd.read_csv('data/world_cup_results.csv')
-TEAM_MAP_EN_TO_PT = {
-    # Group A
-    "Mexico": "México",
-    "South Korea": "Coreia do Sul",
-    "South Africa": "África do Sul",
-    "Czech Republic": "Tchéquia",
-    # Group B
-    "Canada": "Canadá",
-    "Switzerland": "Suíça",
-    "Qatar": "Catar",
-    "Bosnia and Herzegovina": "Bósnia e Herzegovina",
-    # Group C
-    "Brazil": "Brasil",
-    "Morocco": "Marrocos",
-    "Scotland": "Escócia",
-    "Haiti": "Haiti",
-    # Group D
-    "United States": "EUA",
-    "Australia": "Austrália",
-    "Paraguay": "Paraguai",
-    "Turkey": "Turquia",
-    # Group E
-    "Germany": "Alemanha",
-    "Ecuador": "Equador",
-    "Ivory Coast": "Costa do Marfim",
-    "Curaçao": "Curaçao",
-    # Group F
-    "Netherlands": "Países Baixos",
-    "Japan": "Japão",
-    "Tunisia": "Tunísia",
-    "Sweden": "Suécia",
-    # Group G
-    "Belgium": "Bélgica",
-    "Egypt": "Egito",
-    "Iran": "Irã",
-    "New Zealand": "Nova Zelândia",
-    # Group H
-    "Spain": "Espanha",
-    "Uruguay": "Uruguai",
-    "Saudi Arabia": "Arábia Saudita",
-    "Cape Verde": "Cabo Verde",
-    # Group I
-    "France": "França",
-    "Senegal": "Senegal",
-    "Norway": "Noruega",
-    "Iraq": "Iraque",
-    # Group J
-    "Argentina": "Argentina",
-    "Austria": "Áustria",
-    "Algeria": "Argélia",
-    "Jordan": "Jordânia",
-    # Group K
-    "Portugal": "Portugal",
-    "Colombia": "Colômbia",
-    "Uzbekistan": "Uzbequistão",
-    "DR Congo": "República Democrática do Congo",
-    # Group L
-    "England": "Inglaterra",
-    "Croatia": "Croácia",
-    "Ghana": "Gana",
-    "Panama": "Panamá",
-}
-
-TEAM_MAP_PT_TO_EN = {v: k for k, v in TEAM_MAP_EN_TO_PT.items()}
 
 
 def simular_jogos(mu1, mu2, rho_draws=None, n_sim=100000, max_gols=10):
@@ -531,3 +468,139 @@ def simular_copa_2026(post_draws, teams_list, grupos, df_schedule=df_jogos_reais
 
     probs = {fase: stats[fase] / n_sim for fase in fases_originais}
     return probs
+
+
+def simular_fase_e_restante(post_draws, teams_list, df_partidas, fases_nomes=None, n_sim=10_000):
+    """
+    Simula uma fase específica e todas as subsequentes até o campeão.
+    O df_partidas deve estar ordenado em formato de chaveamento (0 enfrenta 1, 2 enfrenta 3...).
+    """
+    atk_draws, dfn_draws, eta_draws = post_draws['attack'], post_draws['defense'], post_draws['eta']
+    usa_dixon_coles = 'rho' in post_draws
+    rho_draws = post_draws['rho'] if usa_dixon_coles else None
+
+    n_samples, n_teams_total = len(eta_draws), len(teams_list)
+    t_to_idx = {name: i for i, name in enumerate(teams_list)}
+
+    idx_samples = np.random.choice(n_samples, n_sim)
+    atk, dfn = atk_draws[idx_samples], dfn_draws[idx_samples]
+    et = eta_draws[idx_samples].reshape(-1, 1)
+    rho = rho_draws[idx_samples] if usa_dixon_coles else None
+
+    num_matches = len(df_partidas)
+    
+    # Auto-detecta os nomes das fases com base no número de partidas iniciais
+    if fases_nomes is None:
+        mapeamento_fases = {
+            16: ["round_of_32", "round_of_16", "quarter_finalists", "semi_finalists", "finalists", "champion"],
+            8: ["round_of_16", "quarter_finalists", "semi_finalists", "finalists", "champion"],
+            4: ["quarter_finalists", "semi_finalists", "finalists", "champion"],
+            2: ["semi_finalists", "finalists", "champion"],
+            1: ["finalists", "champion"]
+        }
+        # Fallback genérico caso seja um formato não padrão
+        fases_nomes = mapeamento_fases.get(num_matches, ["fase_atual"] + [f"avanco_{i}" for i in range(1, int(np.log2(num_matches))+2)])
+
+    stats = {f: np.zeros(n_teams_total) for f in fases_nomes}
+    match_stats = []
+    num_to_word = {0: 'zero', 1: 'one', 2: 'two', 3: 'three', 4: 'four'}
+
+    # Array que controlará quem está vivo na competição, shape: (10000, n_times_nesta_fase)
+    competidores = np.zeros((n_sim, num_matches * 2), dtype=int)
+    
+    times_envolvidos = []
+    for m in range(num_matches):
+        row = df_partidas.iloc[m]
+        t1, t2 = row['home_team'], row['away_team']
+        times_envolvidos.extend([t1, t2])
+        i1, i2 = t_to_idx[t1], t_to_idx[t2]
+        
+        competidores[:, m*2] = i1
+        competidores[:, m*2+1] = i2
+        
+        # Registra 100% de presença (n_sim) na fase atual inicial para esses times
+        stats[fases_nomes[0]][i1] = n_sim
+        stats[fases_nomes[0]][i2] = n_sim
+
+    fase_idx = 1
+    is_first_round = True
+    
+    # Loop vetorial que simula as rodadas em cascata até sobrar apenas 1 time
+    while competidores.shape[1] > 1:
+        n = competidores.shape[1] // 2
+        a, b = competidores[:, 0::2], competidores[:, 1::2]
+        
+        la = np.exp(atk[np.arange(n_sim)[:, None], a] - dfn[np.arange(n_sim)[:, None], b] + et)
+        lb = np.exp(atk[np.arange(n_sim)[:, None], b] - dfn[np.arange(n_sim)[:, None], a] + et)
+        rho_exp = np.repeat(rho[:, None], n, axis=1) if usa_dixon_coles else None
+        
+        # Simula todos os jogos da rodada atual de uma vez (presume-se que simular_jogos() exista no ambiente)
+        ga, gb = simular_jogos(la, lb, rho_exp, n_sim)
+        
+        # Decide quem passa: vitória no normal, ou 50/50 em caso de empate (pênaltis)
+        vence_a = (ga > gb)
+        
+        # Na primeira rodada (a do DataFrame), extraímos as estatísticas completas jogo a jogo
+        if is_first_round:
+            for m in range(num_matches):
+                g1, g2 = ga[:, m], gb[:, m]
+                
+                match_info = {
+                    'home_team': df_partidas.iloc[m]['home_team'],
+                    'away_team': df_partidas.iloc[m]['away_team'],
+                    'date': df_partidas.iloc[m].get('date', "Data não encontrada"),
+                    'home_win': np.mean(g1 > g2) * 100,
+                    'draw': np.mean(g1 == g2) * 100,
+                    'away_win': np.mean(g1 < g2) * 100
+                }
+                
+                for i in range(5):
+                    for j in range(5):
+                        col_name = f"{num_to_word[i]}_{num_to_word[j]}"
+                        match_info[col_name] = np.mean((g1 == i) & (g2 == j)) * 100
+                        
+                match_stats.append(match_info)
+            is_first_round = False
+        
+        # Atualiza os competidores com a metade que venceu
+        competidores = np.where(vence_a, a, b)
+        
+        # Contabiliza a entrada na nova fase
+        if fase_idx < len(fases_nomes):
+            unique, counts = np.unique(competidores, return_counts=True)
+            stats[fases_nomes[fase_idx]][unique] += counts
+            
+        fase_idx += 1
+
+    # --- MONTAGEM DOS RETORNOS ---
+    probs = {fase: stats[fase] / n_sim for fase in fases_nomes}
+    
+    df_summary = pd.DataFrame(stats)
+    df_summary = (df_summary / n_sim * 100).round(2)
+    df_summary.insert(0, 'team', teams_list)
+    
+    # Mantém no sumário final apenas as equipes que existiam no DataFrame inicial
+    df_summary = df_summary[df_summary['team'].isin(times_envolvidos)]
+    
+    # Ordena com base na probabilidade de ser campeão (ou última fase calculada)
+    sort_col = fases_nomes[-1]
+    df_summary = df_summary.sort_values(by=sort_col, ascending=False).reset_index(drop=True)
+    df_summary.insert(0, 'position', df_summary.index + 1)
+
+    cols_csv = ['position', 'team', 'champion', 'finalists', 'semi_finalists', 'quarter_finalists', 
+                'round_of_16', 'round_of_32']
+    
+    df_csv = df_summary[cols_csv].copy()
+    df_csv = df_summary[cols_csv].rename(columns={
+        'finalists': 'final',
+        'semi_finalists': 'semifinals',
+        'quarter_finalists': 'quarterfinals'
+    })
+    df_csv['team'] = df_csv['team'].replace(TEAM_MAP_EN_TO_PT)
+
+    df_matches = pd.DataFrame(match_stats).round(2)
+    df_matches.reset_index(drop=True, inplace=True)
+    df_matches['home_team'] = df_matches['home_team'].replace(TEAM_MAP_EN_TO_PT)
+    df_matches['away_team'] = df_matches['away_team'].replace(TEAM_MAP_EN_TO_PT)
+
+    return probs, df_csv, df_matches
