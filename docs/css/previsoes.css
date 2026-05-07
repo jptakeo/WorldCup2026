@@ -520,6 +520,46 @@ width: 100%;
 .champ-n { font-size: 12px; font-weight: 900; color: #d4aa30; letter-spacing: .3px; }
 .champ-p { font-size: 9px; color: #162c42; margin-top: 3px; }
 
+/* ── THIRD-PLACE BOX ── */
+
+/* Divisor visual entre a final e o 3º lugar */
+.tp-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #c0853a55, transparent);
+    margin: 15px 0 10px;        /* Aumente o primeiro valor (25px) para afastar o 3º lugar da Final */
+}
+
+/* Rótulo "3º Lugar" */
+.tp-lbl {
+font-size: 9px;
+font-weight: 700;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: #8b5c1a;
+text-align: center;
+/* margin-bottom: 5px; */
+}
+
+/* Card do jogo do terceiro lugar */
+.tmc {
+border: 1.5px solid #b87333;
+border-radius: 4px;
+overflow: hidden;
+background: #fff9f4;
+width: 126px;
+box-shadow: 0 2px 5px rgba(184, 115, 51, 0.18);
+}
+
+.tmc .tn { font-size: 9.5px; color: #1a1a1a; font-weight: 700; }
+.tmc .tp-pct { min-width: 26px; font-size: 9px; color: #b87333; font-weight: 800; flex-shrink: 0; text-align: right; }
+.tmc .tr { padding: 5px 6px; border-bottom: 1px solid #f2e4d6; display: flex; align-items: center; gap: 3px; }
+.tmc .tr:last-child { border-bottom: none; }
+.tmc .tr.won { background: #8b5028ea; }
+.tmc .tr.won .tn { color: #fff; font-weight: 700; }
+.tmc .tr.won .tp-pct { color: #f6d07a; }
+
+
 /* ── BRACKET LEGEND ── */
 
 /* Legenda do chaveamento. */
