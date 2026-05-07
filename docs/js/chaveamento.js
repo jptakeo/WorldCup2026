@@ -669,7 +669,7 @@ function showTT(name, e) {
     } else {
     medals = `
         <div class="medals">
-        ${wc[0] ? `<span class="med g">🥇 ${wc[0]}×</span>` : ''}
+        ${wc[0] ? `<span class="med g">🏆 ${wc[0]}×</span>` : ''}
         ${wc[1] ? `<span class="med s">🥈 ${wc[1]}×</span>` : ''}
         ${wc[2] ? `<span class="med b">🥉 ${wc[2]}×</span>` : ''}
         </div>

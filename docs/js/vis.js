@@ -387,7 +387,7 @@ function renderPills(){
     el.innerHTML='';
     const label=document.createElement('span');
     label.textContent='Edição:';
-    label.style.cssText='font-size:11px;font-weight:800;text-transform:uppercase;color:#7f8692;letter-spacing:1px;margin-right:8px;';
+    label.style.cssText='font-size:11px;font-weight:800;text-transform:uppercase;color:#7f8692;letter-spacing:1px;margin-right:8px;';    
     el.appendChild(label);
     Object.keys(ED).sort((a,b)=>+b-+a).forEach(y=>{
     const btn=document.createElement('button');
