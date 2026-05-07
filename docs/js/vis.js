@@ -356,11 +356,11 @@ const ED={
 };
 
 const WC_DATA={
-    2006:{logo:"https://upload.wikimedia.org/wikipedia/en/thumb/6/6b/2006_FIFA_World_Cup.svg/250px-2006_FIFA_World_Cup.svg.png",dates:"9 June – 9 July",teams:32,venues:12,cities:12},
-    2010:{logo:"https://upload.wikimedia.org/wikipedia/en/thumb/0/0d/2010_FIFA_World_Cup.svg/500px-2010_FIFA_World_Cup.svg.png",dates:"11 June – 11 July",teams:32,venues:10,cities:9},
-    2014:{logo:"https://upload.wikimedia.org/wikipedia/en/thumb/1/1d/2014_FIFA_World_Cup.svg/250px-2014_FIFA_World_Cup.svg.png",dates:"12 June – 13 July",teams:32,venues:12,cities:12},
-    2018:{logo:"https://upload.wikimedia.org/wikipedia/en/thumb/6/67/2018_FIFA_World_Cup.svg/250px-2018_FIFA_World_Cup.svg.png",dates:"14 June – 15 July",teams:32,venues:12,cities:11},
-    2022:{logo:"https://upload.wikimedia.org/wikipedia/en/thumb/e/e3/2022_FIFA_World_Cup.svg/500px-2022_FIFA_World_Cup.svg.png",dates:"20 November – 18 December",teams:32,venues:8,cities:5}
+    2006:{logo:"https://upload.wikimedia.org/wikipedia/en/thumb/6/6b/2006_FIFA_World_Cup.svg/250px-2006_FIFA_World_Cup.svg.png",dates:"9 Junho – 9 Julho",teams:32,venues:12,cities:12},
+    2010:{logo:"https://upload.wikimedia.org/wikipedia/en/thumb/0/0d/2010_FIFA_World_Cup.svg/500px-2010_FIFA_World_Cup.svg.png",dates:"11 Junho – 11 Julho",teams:32,venues:10,cities:9},
+    2014:{logo:"https://upload.wikimedia.org/wikipedia/en/thumb/1/1d/2014_FIFA_World_Cup.svg/250px-2014_FIFA_World_Cup.svg.png",dates:"12 Junho – 13 Julho",teams:32,venues:12,cities:12},
+    2018:{logo:"https://upload.wikimedia.org/wikipedia/en/thumb/6/67/2018_FIFA_World_Cup.svg/250px-2018_FIFA_World_Cup.svg.png",dates:"14 Junho – 15 Julho",teams:32,venues:12,cities:11},
+    2022:{logo:"https://upload.wikimedia.org/wikipedia/en/thumb/e/e3/2022_FIFA_World_Cup.svg/500px-2022_FIFA_World_Cup.svg.png",dates:"20 Novembro – 18 Dezembro",teams:32,venues:8,cities:5}
 };
 
 const WC_TITLES={
@@ -429,7 +429,7 @@ function renderStats(ed){
     document.getElementById('stats').innerHTML=`
     <div class="stat-item"><div class="stat-val">${s.matches}</div><div class="stat-lbl">Partidas</div></div>
     <div class="stat-item"><div class="stat-val">${s.goals}</div><div class="stat-lbl">Gols</div><div class="stat-sub">${s.gpm} por jogo</div></div>
-    <div class="stat-item"><div class="stat-val" style="font-size:38px;">${s.att}</div><div class="stat-lbl">Público</div><div class="stat-sub">${s.apm} por jogo</div></div>`;
+    <div class="stat-item"><div class="stat-val">${s.att}</div><div class="stat-lbl">Público</div><div class="stat-sub">${s.apm} por jogo</div></div>`;
 }
 
 function renderAwards(ed){

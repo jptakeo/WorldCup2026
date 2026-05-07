@@ -727,7 +727,7 @@ color: red;
     ESTATÍSTICAS e CHAVEAMENTO 
  ══════════════════════════════════════ */
 .wc-wrap { max-width: 100%; margin: 0 auto; }
-.wc-sub  { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: #3a5a6a; margin-top: 4px; }
+.wc-sub  { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: #3a5a6a }
 
 /* PILLS */
 .pill { font-size:12px; font-weight:700; padding:5px 16px; border-radius:3px; border:1.5px solid #1a2530; background:transparent; color:#4a6070; cursor:pointer; transition:all .15s; letter-spacing:.5px; font-family:'Lato',sans-serif; }
@@ -766,7 +766,7 @@ color: red;
   }
 
   .eb-logo img {
-    height: 100px; /* Tamanho ajustado para celular */
+    height: 80px; /* Tamanho ajustado para celular */
   }
 
   .eb-left {
@@ -805,7 +805,7 @@ color: red;
 .eb-champ img { width: 152px; height: 138px; border-radius: 3px; box-shadow: 0 2px 6px rgba(0,0,0,.4); }
 .eb-champ-info { text-align: left; }
 .eb-champ-label { font-size: 18px; letter-spacing: 2px; color: #7a6010; text-transform: uppercase; }
-.eb-champ-name { font-size: 28px; font-weight: 700; color: #006089; }
+.eb-champ-name { font-size: 24px; font-weight: 700; color: #006089; }
 
 
 /* PODIUM */
@@ -828,15 +828,15 @@ color: red;
     .stats-panel { grid-template-columns:1fr !important; gap:12px !important; }
     .stat-item { border-right:none !important; border-bottom:1px solid #eef2f5; padding-bottom:10px !important; }
     .stat-item:last-child { border-bottom:none; }
-    .stat-val { font-size:36px !important; }
+    .stat-val { font-size:30px !important; }
     .award-lbl { min-width:60px !important; font-size:10px !important; }
 }
 .stats-panel { background:#ffffff; border:2px solid rgba(164,164,163,.25); border-radius:8px; padding:16px; display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
 .stat-item   { text-align:center; padding:6px; border-right:2px solid rgba(164,164,163,.25); }
 .stat-item:last-child { border-right:none; }
-.stat-val    { font-size:38px; font-weight:950; color:#eeb809; font-family:'IBM Plex Mono',monospace; line-height:1; display:block; }
-.stat-lbl    { font-size:18px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:#003366; margin-top:4px; }
-.stat-sub    { font-size:16px; font-weight:600; color:#7f8692; margin-top:2px; }
+.stat-val    { font-size:30px; font-weight:900; color:#eeb809; font-family:'IBM Plex Mono',monospace; line-height:1; display:block; }
+.stat-lbl    { font-size:16px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:#003366; margin-top:4px; }
+.stat-sub    { font-size:14px; font-weight:600; color:#7f8692; margin-top:2px; }
 .awards-panel { background:#ffffff; border:2px solid rgba(164,164,163,.25); border-radius:8px; padding:16px; display:flex; flex-direction:column; gap:10px; }
 .award-row   { display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid #eef2f5; }
 .award-row:last-child { border-bottom:none; }
@@ -846,7 +846,7 @@ color: red;
 .award-goals { font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:900; color:#070137; background:#f6d56a; padding:2px 6px; border-radius:4px; }
 
 /* TOOLTIP */
-.wc-tooltip { position:absolute; background:#eae4e4f3; color:#003366; padding:8px 10px; border-radius:6px; font-size:11px; pointer-events:none; white-space:nowrap; z-index:9999; transform:translate(-50%,-120%); opacity:0; transition:opacity .15s; border:1px solid rgba(0,51,102,.2); box-shadow:0 4px 12px rgba(0,0,0,.08); }
+.wc-tooltip { position:absolute; background:#eae4e4f3; color:#003366; padding:8px 10px; border-radius:6px; font-size:11px; pointer-events:none; white-space:nowrap; z-index:9999; transform:translate(-50%,-120%); opacity:0; transition:opacity .15s; border:1px solid rgba(0,51,102,.2) }
 
 /* BRACKET */
 .bracket-card { background:#ffffff; border:1px solid rgba(164,164,163,.25); border-radius:8px; padding:16px 12px; margin-bottom:14px; }
