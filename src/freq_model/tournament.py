@@ -18,10 +18,7 @@ from src.constants import (
     ROUND_OF_32_FIXED,
     SEMIFINAL_PAIRS,
 )
-from src.freq_model.data_classes import (
-    TournamentModelParams,
-    TournamentParamsSeries,
-)
+from src.freq_model.data_classes import TournamentModelParams, TournamentParamsSeries
 from src.freq_model.utils import (
     effective_home_gamma_vec,
     resolve_team_name,

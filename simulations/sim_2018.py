@@ -1,9 +1,11 @@
-import os
 import json
+import os
+
 import numpy as np
-from src.data_prep import preparar_dados_ciclo
-from src.simulation import simular_copa_2022
+
 from src.dashboard import generate_dashboard
+from src.data_prep import preparar_dados_ciclo
+from src.simulate import simular_copa_2022
 
 
 def carregar_draws(caminho):
@@ -13,10 +15,10 @@ def carregar_draws(caminho):
 
 
 if __name__ == "__main__":
-    os.makedirs('data/outputs/results', exist_ok=True)
-    os.makedirs('data/outputs/dashboards', exist_ok=True)
+    os.makedirs("data/outputs/results", exist_ok=True)
+    os.makedirs("data/outputs/dashboards", exist_ok=True)
 
-    # Grupos oficiais da Copa do Mundo de 2018
+    # Official 2018 World Cup groups.
     grupos_2018 = {
         "A": ["Russia", "Saudi Arabia", "Egypt", "Uruguay"],
         "B": ["Portugal", "Spain", "Morocco", "Iran"],
@@ -25,53 +27,56 @@ if __name__ == "__main__":
         "E": ["Brazil", "Switzerland", "Costa Rica", "Serbia"],
         "F": ["Germany", "Mexico", "Sweden", "South Korea"],
         "G": ["Belgium", "Panama", "Tunisia", "England"],
-        "H": ["Poland", "Senegal", "Colombia", "Japan"]
+        "H": ["Poland", "Senegal", "Colombia", "Japan"],
     }
 
     print("\n--- SIMULANDO 2018 ---")
 
-    # 1. Pega os nomes dos times em ordem alfabética (usando as datas do ciclo de 2018)
+    # Rebuild the team order used when the 2018 model was trained.
     _, times_18, _ = preparar_dados_ciclo(
-        'data/raw/results.csv', '2014-07-14', '2018-06-13', aplicar_decaimento=True)
+        "data/raw/results.csv", "2014-07-14", "2018-06-13", aplicar_decaimento=True
+    )
 
-    # 2. Carrega o modelo que você quiser testar (ajuste o nome se necessário)
-    nome_modelo = 'draws_2018_n_poisson_ranking.npz'
-    caminho_modelo = f'data/outputs/models/{nome_modelo}'
+    # Select the saved posterior draws to simulate from.
+    nome_modelo = "draws_2018_n_poisson_ranking.npz"
+    caminho_modelo = f"data/outputs/models/{nome_modelo}"
     print(f"Carregando: {caminho_modelo}")
     draws_18 = carregar_draws(caminho_modelo)
 
-    # 3. Roda a simulação de 100 mil universos paralelos (reaproveitando a função de 2022)
-    probs_2018 = simular_copa_2022(
-        draws_18, times_18, grupos_2018, n_sim=100000)
+    # The 2018 and 2022 tournaments share the same 32-team bracket format.
+    probs_2018 = simular_copa_2022(draws_18, times_18, grupos_2018, n_sim=100000)
 
-    # 4. Salva o JSON
-    json_output_18 = {fase: [{'team': times_18[i], 'probability': probs_2018[fase][i]}
-                             for i in range(len(times_18))] for fase in probs_2018.keys()}
+    # Dashboard generator expects probabilities grouped by stage.
+    json_output_18 = {
+        fase: [
+            {"team": times_18[i], "probability": probs_2018[fase][i]}
+            for i in range(len(times_18))
+        ]
+        for fase in probs_2018.keys()
+    }
 
-    with open('data/outputs/results/sim_results_2018.json', 'w') as f:
+    with open("data/outputs/results/sim_results_2018.json", "w") as f:
         json.dump(json_output_18, f)
 
-    # 5. Gera o Dashboard HTML
-    participantes_18 = set(team for teams in grupos_2018.values()
-                           for team in teams)
+    participantes_18 = set(team for teams in grupos_2018.values() for team in teams)
 
-    # Ajustei os nomes para ficarem mais precisos visualmente no painel
+    # Dashboard labels use public-facing stage names.
     fases_18 = {
         "avancou_grupos": "Oitavas de Final",
         "quarter_finalists": "Quartas de Final",
         "semi_finalists": "Semifinais",
         "finalists": "Finalistas",
-        "champion": "Campeão"
+        "champion": "Campeão",
     }
 
     generate_dashboard(
-        'data/outputs/results/sim_results_2018.json',
-        'data/outputs/dashboards/dashboard_2018.html',
+        "data/outputs/results/sim_results_2018.json",
+        "data/outputs/dashboards/dashboard_2018.html",
         fases_18,
         participantes_18,
         8,
         "Copa do Mundo 2018",
-        nome_modelo
+        nome_modelo,
     )
 
     print("Sucesso! Dashboard gerado em data/outputs/dashboards/dashboard_2018.html")

@@ -98,7 +98,7 @@ def detect_phase(
     return "final"
 
 
-# --- Dixon–Coles score probabilities (used by models, simulation, future Bayes) ---
+# Dixon-Coles score probabilities shared by model fitting and simulation.
 
 
 def effective_home_gamma(home_effect: float, neutral: bool, home_boost: float) -> float:
