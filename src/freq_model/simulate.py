@@ -25,9 +25,9 @@ from src.export_probs import (
     export_phase_probs,
     update_html_from_summary,
 )
-from src.model import build_model
-from src.tournament import WorldCup2026
-from src.utils import load_wc_results, resolve_team_name
+from src.freq_model.model import build_model
+from src.freq_model.tournament import WorldCup2026
+from src.freq_model.utils import load_wc_results, resolve_team_name
 
 
 def print_top_n(

@@ -1,7 +1,7 @@
 import json
 import os
 
-# Constante com o template D3.js
+# Standalone D3 template used by generated dashboard files.
 HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang='pt-br'>
 <head>
@@ -19,20 +19,20 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         .hitbox { fill: transparent; cursor: pointer; }
         image { pointer-events: none; }
         
-        /* Novo estilo para a caixa de título flutuante */
+        /* Floating title overlay; pointer events pass through to the graph. */
         #title-box {
             position: absolute;
             top: 20px;
             left: 20px;
             z-index: 10;
-            pointer-events: none; /* Deixa o mouse clicar no gráfico através da div */
+            pointer-events: none;
         }
         #title-box h1 { margin: 0; font-size: 24px; color: #f0f6fc; }
         #title-box h3 { margin: 5px 0 0 0; font-size: 14px; color: #8b949e; font-weight: normal; }
     </style>
 </head>
 <body>
-    <!-- Nova Caixa de Título -->
+    <!-- Floating title box -->
     <div id='title-box'>
         <h1>{{TITULO_COPA}}</h1>
         <h3>Modelo: {{NOME_MODELO}}</h3>
@@ -111,23 +111,68 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 </body>
 </html>"""
 
-# Unificação de todas as flags (2022 e 2026)
+# ISO/flagcdn codes used in generated dashboards.
 ISO_FLAGS = {
-    'Argentina': 'ar', 'Brazil': 'br', 'Ecuador': 'ec', 'Uruguay': 'uy', 'Colombia': 'co',
-    'Paraguay': 'py', 'Spain': 'es', 'Switzerland': 'ch', 'England': 'gb-eng', 'Germany': 'de',
-    'France': 'fr', 'Netherlands': 'nl', 'Croatia': 'hr', 'Portugal': 'pt', 'Belgium': 'be',
-    'Austria': 'at', 'Norway': 'no', 'Czech Republic': 'cz', 'Scotland': 'gb-sct', 'Turkey': 'tr',
-    'Sweden': 'se', 'Bosnia and Herzegovina': 'ba', 'Morocco': 'ma', 'Senegal': 'sn', 'Ivory Coast': 'ci',
-    'Algeria': 'dz', 'Egypt': 'eg', 'Tunisia': 'tn', 'South Africa': 'za', 'DR Congo': 'cd',
-    'Ghana': 'gh', 'Cape Verde': 'cv', 'Japan': 'jp', 'South Korea': 'kr', 'Iran': 'ir',
-    'Uzbekistan': 'uz', 'Qatar': 'qa', 'Saudi Arabia': 'sa', 'Iraq': 'iq', 'Jordan': 'jo',
-    'Australia': 'au', 'Canada': 'ca', 'Mexico': 'mx', 'United States': 'us', 'Panama': 'pa',
-    'Haiti': 'ht', 'Curaçao': 'cw', 'New Zealand': 'nz', 'Poland': 'pl', 'Denmark': 'dk',
-    'Serbia': 'rs', 'Cameroon': 'cm', 'Costa Rica': 'cr', 'Wales': 'gb-wls'
+    "Argentina": "ar",
+    "Brazil": "br",
+    "Ecuador": "ec",
+    "Uruguay": "uy",
+    "Colombia": "co",
+    "Paraguay": "py",
+    "Spain": "es",
+    "Switzerland": "ch",
+    "England": "gb-eng",
+    "Germany": "de",
+    "France": "fr",
+    "Netherlands": "nl",
+    "Croatia": "hr",
+    "Portugal": "pt",
+    "Belgium": "be",
+    "Austria": "at",
+    "Norway": "no",
+    "Czech Republic": "cz",
+    "Scotland": "gb-sct",
+    "Turkey": "tr",
+    "Sweden": "se",
+    "Bosnia and Herzegovina": "ba",
+    "Morocco": "ma",
+    "Senegal": "sn",
+    "Ivory Coast": "ci",
+    "Algeria": "dz",
+    "Egypt": "eg",
+    "Tunisia": "tn",
+    "South Africa": "za",
+    "DR Congo": "cd",
+    "Ghana": "gh",
+    "Cape Verde": "cv",
+    "Japan": "jp",
+    "South Korea": "kr",
+    "Iran": "ir",
+    "Uzbekistan": "uz",
+    "Qatar": "qa",
+    "Saudi Arabia": "sa",
+    "Iraq": "iq",
+    "Jordan": "jo",
+    "Australia": "au",
+    "Canada": "ca",
+    "Mexico": "mx",
+    "United States": "us",
+    "Panama": "pa",
+    "Haiti": "ht",
+    "Curaçao": "cw",
+    "New Zealand": "nz",
+    "Poland": "pl",
+    "Denmark": "dk",
+    "Serbia": "rs",
+    "Cameroon": "cm",
+    "Costa Rica": "cr",
+    "Wales": "gb-wls",
 }
 
 
-def generate_dashboard(json_file, output_file, fases_nome, participantes, chunk_size, title, nome_modelo):
+def generate_dashboard(
+    json_file, output_file, fases_nome, participantes, chunk_size, title, nome_modelo
+):
     """
     Gera o dashboard HTML genérico para qualquer configuração de Copa,
     incluindo o título da simulação e o modelo estatístico utilizado.
@@ -135,7 +180,7 @@ def generate_dashboard(json_file, output_file, fases_nome, participantes, chunk_
     if not os.path.exists(json_file):
         raise FileNotFoundError(f"Arquivo {json_file} não encontrado.")
 
-    with open(json_file, 'r') as f:
+    with open(json_file, "r") as f:
         data = json.load(f)
 
     root = {"name": title, "children": []}
@@ -144,41 +189,37 @@ def generate_dashboard(json_file, output_file, fases_nome, participantes, chunk_
     for key in fases_exibir:
         node = {"name": fases_nome.get(key, key), "children": []}
 
-        # Filtra apenas participantes e ordena
-        team_probs = [x for x in data.get(
-            key, []) if x['team'] in participantes]
-        team_probs = sorted(
-            team_probs, key=lambda x: x['probability'], reverse=True)
+        # Show only tournament participants, ordered by probability.
+        team_probs = [x for x in data.get(key, []) if x["team"] in participantes]
+        team_probs = sorted(team_probs, key=lambda x: x["probability"], reverse=True)
 
-        # Agrupa em chunks dinâmicos (12 para 2026, 8 para 2022)
+        # Split large rankings into readable expandable groups.
         for i in range(0, len(team_probs), chunk_size):
-            chunk = team_probs[i:i + chunk_size]
-            if not chunk or chunk[0]['probability'] == 0:
+            chunk = team_probs[i : i + chunk_size]
+            if not chunk or chunk[0]["probability"] == 0:
                 continue
 
             aba = {"name": f"Top {i+len(chunk)}", "children": []}
             for item in chunk:
-                flag = ISO_FLAGS.get(item['team'], '')
-                aba["children"].append({
-                    "name": f"{item['team']}: {item['probability']*100:.2f}%",
-                    "icon": f"https://flagcdn.com/w40/{flag}.png" if flag else ""
-                })
+                flag = ISO_FLAGS.get(item["team"], "")
+                aba["children"].append(
+                    {
+                        "name": f"{item['team']}: {item['probability']*100:.2f}%",
+                        "icon": f"https://flagcdn.com/w40/{flag}.png" if flag else "",
+                    }
+                )
             node["children"].append(aba)
 
         root["children"].append(node)
 
-    # Cria diretório caso não exista
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
-    # --- INÍCIO DA MODIFICAÇÃO DAS TAGS DO HTML ---
     html_final = HTML_TEMPLATE
     html_final = html_final.replace("__JSON_DATA__", json.dumps(root))
     html_final = html_final.replace("{{TITULO_COPA}}", title)
     html_final = html_final.replace("{{NOME_MODELO}}", nome_modelo)
 
-    # Salva o HTML com as strings injetadas
-    with open(output_file, 'w', encoding='utf-8') as f:
+    with open(output_file, "w", encoding="utf-8") as f:
         f.write(html_final)
-    # --- FIM DA MODIFICAÇÃO ---
 
     print(f"Dashboard '{title}' gerado com sucesso em: {output_file}")
