@@ -534,7 +534,13 @@ color: red;
   transform-style: preserve-3d;
 }
 
-.flip-card:hover .flip-card-inner {
+@media (hover: hover) and (pointer: fine) {
+  .flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+}
+
+.flip-card.is-flipped .flip-card-inner {
   transform: rotateY(180deg);
 }
 
@@ -899,7 +905,112 @@ color: red;
 .award-goals { font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:900; color:#070137; background:#f6d56a; padding:2px 6px; border-radius:4px; }
 
 /* TOOLTIP */
-.wc-tooltip { position:absolute; background:#eae4e4f3; color:#003366; padding:8px 10px; border-radius:6px; font-size:11px; pointer-events:none; white-space:nowrap; z-index:9999; transform:translate(-50%,-120%); opacity:0; transition:opacity .15s; border:1px solid rgba(0,51,102,.2) }
+/* TOOLTIP */
+.wc-tooltip {
+    position: absolute;
+    background: linear-gradient(135deg, #ffffff, #f7fbff);
+    border: 1px solid #d6e4f2;
+    border-radius: 12px;
+    padding: 5px 5px;
+    width: auto;
+    min-width: 135px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .18);
+    z-index: 9999;
+    pointer-events: none;
+    font-family: 'Lato', sans-serif;
+    box-sizing: border-box;
+
+    /* mantém o comportamento atual do tooltip de vis.js */
+    transform: translate(-50%, -120%);
+    opacity: 0;
+    transition: opacity .15s;
+}
+
+.wc-tooltip * {
+    box-sizing: border-box;
+}
+
+.wc-tooltip .tt-h {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #d6e4f2;
+}
+
+.wc-tooltip .tt-flag {
+    width: 25px;
+    height: 16.7px;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #f7fbff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wc-tooltip .tt-flag .flag-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: inline-block;
+}
+
+.wc-tooltip .tt-name {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #213d7a;
+    line-height: 1.1;
+}
+
+.wc-tooltip .tt-div {
+    display: none;
+}
+
+.wc-tooltip .medals {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+}
+
+.wc-tooltip .med {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 9.5px;
+    font-weight: 700;
+    line-height: 1;
+    padding: 3px 7px;
+    border-radius: 999px;
+    color: #4a5568;
+}
+
+.wc-tooltip .med.g {
+    background: rgba(240, 192, 40, .12);
+    color: #c9940a;
+    border: 1px solid rgba(201, 148, 10, .25);
+}
+
+.wc-tooltip .med.s {
+    background: rgba(40, 47, 240, 0.077);
+    color: #000000b8;
+    border: 1px solid rgba(30, 22, 149, 0.098);
+}
+
+.wc-tooltip .med.b {
+    background: rgba(160, 90, 30, .1);
+    color: #8a6030;
+    border: 1px solid rgba(160, 120, 50, .18);
+}
+
+.flag-img {
+    width: 18px;
+    height: 13px;
+    object-fit: cover;
+    border-radius: 1px;
+    flex-shrink: 0;
+}
 
 /* BRACKET */
 .bracket-card { background:#ffffff; border:1px solid rgba(164,164,163,.25); border-radius:8px; padding:16px 12px; margin-bottom:14px; }
@@ -920,7 +1031,6 @@ color: red;
 .bk-tr.won { background:#003366; }
 .bk-mc.is-champ .bk-tr.won { background:linear-gradient(135deg,#f7db09,#d4aa18); }
 .bk-tr.hl { background:#eef2f5; }
-.flag-img { width:18px; height:13px; object-fit:cover; border-radius:1px; flex-shrink:0; box-shadow:0 1px 2px rgba(0,0,0,.2); }
 .bk-tn  { flex:1; font-size:10.5px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:#003366; }
 .bk-tn.tbd { color:#a0a0a0; font-style:italic; }
 .bk-tr.won .bk-tn { color:#ffffff; font-weight:700; }
@@ -1580,6 +1690,24 @@ box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     font-size: 14px;
 }
 
+/* Mapa Vega — melhor classificação histórica */
+#vis {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+#vis .vega-embed {
+    width: 100%;
+    max-width: 800px;
+}
+
+#vis .vega-embed svg {
+    width: 100% !important;
+    height: auto !important;
+    display: block;
+}
+
 /*.flourish-credit,
 .flourish-footer {
   display: none !important;
@@ -1735,14 +1863,158 @@ box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 @media (max-width: 700px) {
-    .ball-award-grid {
-        grid-template-columns: repeat(3, minmax(50px, 1fr));
-        align-items: start;
+    .ball-award-header {
+        align-items: flex-start;
         gap: 10px;
     }
 
+    .ball-award-header p {
+        width: 100%;
+        margin-bottom: 6px;
+    }
+
     .ball-award-filter {
-    margin-bottom: 10px;
+        margin-bottom: 10px;
+    }
+
+    .ball-award-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: stretch;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .flip-card {
+        height: 390px;
+        min-width: 0;
+        touch-action: manipulation;
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+        border-width: 4px;
+        border-radius: 15px;
+    }
+
+    .flip-card-front img {
+        object-fit: cover;
+        object-position: top;
+    }
+
+    .scorer-info {
+        flex: 1;
+        padding: 10px 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        text-align: center;
+    }
+
+    .scorer-info h3 {
+        margin: 0 0 7px;
+        line-height: 1.15;
+    }
+
+    #conteudo .scorer-info h3 a {
+        font-size: 14px;
+        line-height: 1.15;
+    }
+
+    .scorer-team {
+        font-size: 12px;
+        line-height: 1.15;
+        margin-bottom: 7px;
+    }
+
+    .scorer-award,
+    .ball-award-prize {
+        font-size: 11.5px;
+        line-height: 1.25;
+        margin-bottom: 5px;
+    }
+
+    .flip-card-front .ball-award-icon {
+        width: 42px;
+        height: 42px;
+        margin: 6px auto 0;
+        object-fit: contain;
+    }
+
+    .flip-card-back {
+        padding: 12px 7px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .card-back-title {
+        font-size: 15px;
+        line-height: 1.15;
+        margin-bottom: 12px;
+        text-align: center;
+    }
+
+    .card-back-list {
+        width: 100%;
+        gap: 8px;
+    }
+
+    .card-back-item {
+        padding: 8px 7px;
+        font-size: 11.5px;
+        line-height: 1.15;
+        text-align: left;
+    }
+
+    .card-back-item strong {
+        font-size: 10.5px;
+        line-height: 1.15;
+        margin-bottom: 3px;
+    }
+}
+
+@media (max-width: 380px) {
+    .ball-award-grid {
+        gap: 6px;
+    }
+
+    .flip-card {
+        height: 365px;
+    }
+
+    .flip-card-front img {
+        height: 145px;
+    }
+
+    #conteudo .scorer-info h3 a {
+        font-size: 13px;
+    }
+
+    .scorer-team {
+        font-size: 11px;
+    }
+
+    .scorer-award,
+    .ball-award-prize {
+        font-size: 10.5px;
+    }
+
+    .flip-card-front .ball-award-icon {
+        width: 38px;
+        height: 38px;
+    }
+
+    .card-back-title {
+        font-size: 14px;
+    }
+
+    .card-back-item {
+        font-size: 10.5px;
+        padding: 7px 6px;
+    }
+
+    .card-back-item strong {
+        font-size: 9.8px;
     }
 }
 

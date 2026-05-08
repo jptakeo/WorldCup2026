@@ -91,9 +91,36 @@ gtag('config', 'UA-119803899-1');
         throw error;
     }
 
+    function getResponsiveSpec(el) {
+        const responsiveSpec = JSON.parse(JSON.stringify(spec));
+
+        const containerWidth = el.getBoundingClientRect().width || 800;
+        const width = Math.min(800, Math.max(280, Math.floor(containerWidth)));
+
+        responsiveSpec.width = width;
+        responsiveSpec.height = Math.round(width * 0.5);
+
+        return responsiveSpec;
+    }
+
+    let visResizeTimer;
+
+    function renderResponsiveMap() {
+        const el = document.getElementById("vis");
+        if (!el) return;
+
+        vegaEmbed("#vis", getResponsiveSpec(el), embedOpt)
+            .catch(error => showError(el, error));
+    }
+
     const el = document.getElementById("vis");
     if (el) {
-        vegaEmbed("#vis", spec, embedOpt).catch(error => showError(el, error));
+        renderResponsiveMap();
+
+        window.addEventListener("resize", () => {
+            clearTimeout(visResizeTimer);
+            visResizeTimer = setTimeout(renderResponsiveMap, 150);
+        });
     }
 })(vegaEmbed);
 
@@ -166,6 +193,32 @@ document.addEventListener("DOMContentLoaded", function () {
     return /^https?:\/\//i.test(link) ? link : "#";
   }
 
+   function isMobileCardMode() {
+    return window.matchMedia("(hover: none), (pointer: coarse)").matches;
+  }
+
+  function setupMobileFlipCards(container) {
+    const cards = container.querySelectorAll(".flip-card");
+
+    cards.forEach(card => {
+      card.addEventListener("click", function (event) {
+        if (!isMobileCardMode()) return;
+
+        event.preventDefault();
+
+        const wasFlipped = card.classList.contains("is-flipped");
+
+        cards.forEach(otherCard => {
+          otherCard.classList.remove("is-flipped");
+        });
+
+        if (!wasFlipped) {
+          card.classList.add("is-flipped");
+        }
+      });
+    });
+  }
+
   function renderCards(data, selectedYear) {
     const container = document.getElementById("ballAwardGrid");
     if (!container) return;
@@ -236,6 +289,8 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       </div>
     `).join("");
+
+    setupMobileFlipCards(container);
   }
 
   Papa.parse(CSV_PATH, {
@@ -296,10 +351,36 @@ wcTooltip.className='wc-tooltip';
 document.body.appendChild(wcTooltip);
 
 function getTitles(team){
-    const key=norm(team),t=WC_TITLES[key],iso=getISO(team);
-    const flag=iso?`<img src="https://flagcdn.com/w40/${iso}.png" style="width:20px;height:14px;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.3);">`:'';
-    if(!t)return `<div style="display:flex;align-items:center;gap:6px;">${flag}<span>${team}</span></div><div style="margin-top:4px;">Sem títulos</div>`;
-    return `<div style="display:flex;align-items:center;gap:6px;">${flag}<strong>${team}</strong></div><div style="margin-top:4px;">🏆 ${t.gold} &nbsp; 🥈 ${t.silver} &nbsp; 🥉 ${t.bronze}</div>`;
+    const key = norm(team);
+    const t = WC_TITLES[key];
+    const iso = getISO(team);
+
+    const flag = iso
+        ? `<img class="flag-img" src="https://flagcdn.com/w40/${iso}.png" alt="${team}" onerror="this.style.display='none'">`
+        : '🏳️';
+
+    let medals;
+
+    if (!t || (!t.gold && !t.silver && !t.bronze)) {
+        medals = `<div class="medals"><span class="med">Sem títulos / pódios</span></div>`;
+    } else {
+        medals = `
+            <div class="medals">
+                ${t.gold ? `<span class="med g">🏆 ${t.gold}×</span>` : ''}
+                ${t.silver ? `<span class="med s">🥈 ${t.silver}×</span>` : ''}
+                ${t.bronze ? `<span class="med b">🥉 ${t.bronze}×</span>` : ''}
+            </div>
+        `;
+    }
+
+    return `
+        <div class="tt-h">
+            <div class="tt-flag">${flag}</div>
+            <div class="tt-name">${team}</div>
+        </div>
+        ${medals}
+        <div class="tt-div"></div>
+    `;
 }
 
 const ED={

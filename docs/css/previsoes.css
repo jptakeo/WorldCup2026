@@ -813,14 +813,13 @@ letter-spacing: 1px;
 TOOLTIP (floating, pointer-events: none)
 ════════════════════════════════════════ */
 .tt {
-position: fixed;
+position: absolute;
 background: linear-gradient(135deg, #ffffff, var(--navy2));
 border: 1px solid var(--border);
 border-radius: 12px;
 padding: 5px 5px;
 width: auto;
 min-width: 135px;
-box-shadow: 0 12px 30px rgba(0, 0, 0, .18);
 z-index: 9999;
 display: none;
 pointer-events: none;
@@ -833,7 +832,7 @@ box-sizing: border-box;
 }
 
 .tt.pinned {
-position: fixed;
+position: absolute;
 }
 
 .tt.on { display: block; }

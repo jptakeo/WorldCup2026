@@ -351,17 +351,27 @@ function mkRow(name, prob, won, mid) {
     applyHov(name);
     showStats(name);
     showPath(name);
-    showTT(name, e);
+
+    if (!isMobilePointer()) {
+        showTT(name, e);
+    }
     });
 
-    row.addEventListener('mousemove', moveTT);
+    row.addEventListener('mousemove', (e) => {
+    if (!isMobilePointer()) {
+        moveTT(e);
+    }
+    });
 
     row.addEventListener('mouseleave', () => {
     // Restore the pinned team when the cursor leaves
     applyHov(selectedTeam);
     showStats(selectedTeam);
     showPath(selectedTeam);
-    hideTT();
+
+    if (!isMobilePointer()) {
+        hideTT();
+    }
     });
 
     row.addEventListener('click', (e) => selectTeam(name, e));
@@ -435,16 +445,26 @@ function buildFinal() {
             applyHov(team.name);
             showStats(team.name);
             showPath(team.name);
-            showTT(team.name, e);
+
+            if (!isMobilePointer()) {
+                showTT(team.name, e);
+            }
         });
 
-        row.addEventListener('mousemove', moveTT);
+        row.addEventListener('mousemove', (e) => {
+            if (!isMobilePointer()) {
+                moveTT(e);
+            }
+        });
 
         row.addEventListener('mouseleave', () => {
             applyHov(selectedTeam);
             showStats(selectedTeam);
             showPath(selectedTeam);
-            hideTT();
+
+            if (!isMobilePointer()) {
+                hideTT();
+            }
         });
 
         row.addEventListener('click', (e) => selectTeam(team.name, e));
@@ -499,16 +519,29 @@ function buildThirdPlace() {
             applyHov(team.name);
             showStats(team.name);
             showPath(team.name);
-            showTT(team.name, e);
+
+            if (!isMobilePointer()) {
+                showTT(team.name, e);
+            }
         });
-        row.addEventListener('mousemove', moveTT);
+
+        row.addEventListener('mousemove', (e) => {
+            if (!isMobilePointer()) {
+                moveTT(e);
+            }
+        });
+
         row.addEventListener('mouseleave', () => {
             applyHov(selectedTeam);
             showStats(selectedTeam);
             showPath(selectedTeam);
-            hideTT();
+
+            if (!isMobilePointer()) {
+                hideTT();
+            }
         });
-        row.addEventListener('click', () => selectTeam(team.name));
+
+        row.addEventListener('click', (e) => selectTeam(team.name, e));
 
         tmc.appendChild(row);
     });
@@ -739,11 +772,10 @@ function clearHov() {
 // TOOLTIP
 // ════════════════════════════════════════
 
-function showTT(name, e, pin = isMobilePointer()) {
+function showTT(name, e, pin = false) {
     const d   = gt(name);
     const svgUrl = getFlag(name);
     const ttFlag = svgUrl ? `<img class="flag-img" src="${svgUrl}" alt="${name}">`: d.flag;
-    const bw  = Math.min(100, (d.prob / 15) * 100);
     const wc  = d.wc || [0, 0, 0];
 
     let medals;
@@ -761,7 +793,7 @@ function showTT(name, e, pin = isMobilePointer()) {
     }
     
     const tt = document.getElementById('tt');
-    // <div class="tt-flag">${ttFlag}</div>
+
     tt.innerHTML = `
     <div class="tt-h">
         <div class="tt-flag">${ttFlag}</div>
@@ -778,24 +810,42 @@ function showTT(name, e, pin = isMobilePointer()) {
     moveTT(e, true);
 }
 
-function moveTT(e, force = false) {
-    const tt = document.getElementById('tt');
+function eventPagePoint(e) {
+    const point = e?.touches?.[0] || e?.changedTouches?.[0] || e;
 
-    if (!e) return;
+    if (!point) return null;
 
-    // No mobile, após o clique/toque, a posição fica travada.
-    if (tooltipPinned && !force) return;
-
-    const point = e.touches?.[0] || e.changedTouches?.[0] || e;
-    const x = point.clientX + 14;
-    const y = point.clientY - 115;
-
-    tt.style.left = Math.min(x, window.innerWidth  - 252) + 'px';
-    tt.style.top  = Math.max(6, Math.min(y, window.innerHeight - 370)) + 'px';
+    return {
+        x: point.pageX ?? point.clientX + window.scrollX,
+        y: point.pageY ?? point.clientY + window.scrollY
+    };
 }
 
-function hideTT() {
+function moveTT(e, force = false) {
     const tt = document.getElementById('tt');
+    const point = eventPagePoint(e);
+
+    if (!point) return;
+
+    if (tooltipPinned && !force) return;
+
+    const x = point.x + 14;
+    const y = point.y - 115;
+
+    const minLeft = window.scrollX + 6;
+    const maxLeft = window.scrollX + window.innerWidth - 252;
+
+    const minTop = window.scrollY + 6;
+    const maxTop = window.scrollY + window.innerHeight - 370;
+
+    tt.style.left = Math.max(minLeft, Math.min(x, maxLeft)) + 'px';
+    tt.style.top  = Math.max(minTop, Math.min(y, maxTop)) + 'px';
+}
+
+function hideTT(force = false) {
+    const tt = document.getElementById('tt');
+
+    if (tooltipPinned && !force) return;
 
     tooltipPinned = false;
     tt.classList.remove('on', 'pinned');
@@ -933,6 +983,7 @@ async function initChaveamento() {
             applyHov(selectedTeam);
             showStats(selectedTeam);
             showPath(selectedTeam);
+            hideTT(true);
             }
         });
     } catch (error) {
