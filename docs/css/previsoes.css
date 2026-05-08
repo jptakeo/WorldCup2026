@@ -305,6 +305,11 @@ BRACKET
 ════════════════════════════════════════ */
 #panel-bracket { background: #ffffff; padding: 14px 10px; overflow-x: auto; }
 
+/* Container rolável apenas do chaveamento */
+.bk-scroll {
+width: 100%;
+}
+
 /* Disclaimer bar (Projeção do Modelo FGV EMAp...) */
 .disc {
 font-size: 12px;
@@ -327,6 +332,25 @@ display: flex;
 align-items: stretch;
 width: 100%;
 min-width: 980px;
+}
+
+@media (max-width: 768px) {
+    #panel-bracket {
+        overflow-x: hidden;
+    }
+
+    .bk-scroll {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .bk-scroll::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 /* Linhas SVG que conectam os cards do chaveamento */

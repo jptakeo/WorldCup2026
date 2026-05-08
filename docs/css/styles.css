@@ -1736,7 +1736,12 @@ box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 
 @media (max-width: 700px) {
     .ball-award-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(3, minmax(50px, 1fr));
+        align-items: start;
+    }
+
+    .ball-award-filter {
+    margin-bottom: 10px;
     }
 }
 
