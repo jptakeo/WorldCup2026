@@ -1738,6 +1738,7 @@ box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     .ball-award-grid {
         grid-template-columns: repeat(3, minmax(50px, 1fr));
         align-items: start;
+        gap: 10px;
     }
 
     .ball-award-filter {

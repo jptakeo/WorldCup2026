@@ -282,9 +282,16 @@ let ALL = [];
 // Currently selected (pinned) team
 let selectedTeam = CHAMP;
 
+// Controla se o tooltip deve ficar travado no mobile
+let tooltipPinned = false;
+
 // ════════════════════════════════════════
 // HELPERS
 // ════════════════════════════════════════
+
+function isMobilePointer() {
+    return window.matchMedia('(hover: none), (pointer: coarse)').matches;
+}
 
 // Returns a Set of match IDs in which a given team participates
 function teamMatchIds(team) {
@@ -292,11 +299,15 @@ function teamMatchIds(team) {
 }
 
 // Unified handler: select a team and update all UI sections at once
-function selectTeam(team) {
+function selectTeam(team, e) {
     selectedTeam = team;
     applyHov(team);
     showStats(team);
     showPath(team);
+
+    if (e && isMobilePointer()) {
+        showTT(team, e, true);
+    }
 }
 
 // ════════════════════════════════════════
@@ -353,7 +364,7 @@ function mkRow(name, prob, won, mid) {
     hideTT();
     });
 
-    row.addEventListener('click', () => selectTeam(name));
+    row.addEventListener('click', (e) => selectTeam(name, e));
 
     return row;
 }
@@ -436,7 +447,7 @@ function buildFinal() {
             hideTT();
         });
 
-        row.addEventListener('click', () => selectTeam(team.name));
+        row.addEventListener('click', (e) => selectTeam(team.name, e));
 
         fmc.appendChild(row);
     });
@@ -728,7 +739,7 @@ function clearHov() {
 // TOOLTIP
 // ════════════════════════════════════════
 
-function showTT(name, e) {
+function showTT(name, e, pin = isMobilePointer()) {
     const d   = gt(name);
     const svgUrl = getFlag(name);
     const ttFlag = svgUrl ? `<img class="flag-img" src="${svgUrl}" alt="${name}">`: d.flag;
@@ -760,20 +771,34 @@ function showTT(name, e) {
     <div class="tt-div"></div>
     `;
 
+    tooltipPinned = pin;
+    tt.classList.toggle('pinned', pin);
     tt.classList.add('on');
-    moveTT(e);
+
+    moveTT(e, true);
 }
 
-function moveTT(e) {
+function moveTT(e, force = false) {
     const tt = document.getElementById('tt');
-    const x  = e.clientX + 14;
-    const y  = e.clientY - 115;
+
+    if (!e) return;
+
+    // No mobile, após o clique/toque, a posição fica travada.
+    if (tooltipPinned && !force) return;
+
+    const point = e.touches?.[0] || e.changedTouches?.[0] || e;
+    const x = point.clientX + 14;
+    const y = point.clientY - 115;
+
     tt.style.left = Math.min(x, window.innerWidth  - 252) + 'px';
     tt.style.top  = Math.max(6, Math.min(y, window.innerHeight - 370)) + 'px';
 }
 
 function hideTT() {
-    document.getElementById('tt').classList.remove('on');
+    const tt = document.getElementById('tt');
+
+    tooltipPinned = false;
+    tt.classList.remove('on', 'pinned');
 }
 
 // ════════════════════════════════════════

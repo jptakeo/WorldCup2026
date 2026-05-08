@@ -335,6 +335,7 @@ min-width: 980px;
 }
 
 @media (max-width: 768px) {
+@media (max-width: 768px) {
     #panel-bracket {
         overflow-x: hidden;
     }
@@ -344,13 +345,34 @@ min-width: 980px;
         overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior-x: contain;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
+        padding-bottom: 6px;
     }
 
-    .bk-scroll::-webkit-scrollbar {
-        display: none;
+    /* Firefox */
+    .bk-scroll {
+        scrollbar-width: thin;
+        scrollbar-color: #b8c3d1 #eceff4;
     }
+
+    /* Chrome / Edge / Safari */
+    .bk-scroll::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .bk-scroll::-webkit-scrollbar-track {
+        background: #eceff4;
+        border-radius: 999px;
+    }
+
+    .bk-scroll::-webkit-scrollbar-thumb {
+        background: #b8c3d1;
+        border-radius: 999px;
+    }
+
+    .bk-scroll::-webkit-scrollbar-thumb:hover {
+        background: #97a6b8;
+    }
+}
 }
 
 /* Linhas SVG que conectam os cards do chaveamento */
@@ -802,6 +824,16 @@ box-shadow: 0 12px 30px rgba(0, 0, 0, .18);
 z-index: 9999;
 display: none;
 pointer-events: none;
+font-family: 'Lato', sans-serif;
+box-sizing: border-box;
+}
+
+.tt * {
+box-sizing: border-box;
+}
+
+.tt.pinned {
+position: fixed;
 }
 
 .tt.on { display: block; }
@@ -1498,7 +1530,7 @@ PROBABILIDADES DE PREVISÃO
     }
 
     .tab {
-        flex: 1 1 28%;
+        flex: 1 1 40%;
         min-width: 90px;
         padding: 7px 14px;
         font-size: 12px;
