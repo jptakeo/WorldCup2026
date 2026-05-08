@@ -71,7 +71,7 @@ There are two modeling tracks in the repo:
 | `src/dashboard.py` | Generates D3-based standalone HTML dashboards from simulation JSON outputs. |
 | `src/export_probs.py` | Exports match score probability matrices, stage summaries, and updates the website probability table in `docs/chances.html`. |
 
-## Frequency Model Track
+## Frequentist Model Track
 
 The `src/freq_model/` package implements a fast Dixon-Coles-style model and a
 2026 tournament simulator.
