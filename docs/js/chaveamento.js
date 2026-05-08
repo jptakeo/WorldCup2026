@@ -146,6 +146,7 @@ function parseTeamDatabase(rows) {
 function parseMatchDatabase(rows) {
     const bySide = { left: [], right: [] };
     let finalMatch = null;
+    let thirdMatch = null;
 
     rows
         .slice()
@@ -165,6 +166,11 @@ function parseMatchDatabase(rows) {
                 return;
             }
 
+            if (row.side === 'terceiro') {
+                thirdMatch = match;
+                return;
+            }
+
             const side = bySide[row.side];
             if (!side) return;
 
@@ -176,7 +182,8 @@ function parseMatchDatabase(rows) {
     return {
         ML: bySide.left,
         MR: bySide.right,
-        MF: finalMatch
+        MF: finalMatch,
+        MT: thirdMatch
     };
 }
 
@@ -198,7 +205,8 @@ async function loadBracketData() {
     ML = matchData.ML;
     MR = matchData.MR;
     MF = matchData.MF;
-    ALL = [...ML.flat(), ...MR.flat(), MF].filter(Boolean);
+    MT = matchData.MT;
+    ALL = [...ML.flat(), ...MR.flat(), MF, MT].filter(Boolean);
 }
 
 // Safe accessor — returns a blank placeholder for unknown teams
@@ -262,8 +270,11 @@ let MR = [];
 // Final match
 let MF = null;
 
+// Third-place match
+let MT = null;
+
 // Projected champion
-const CHAMP = 'Brasil';
+const CHAMP = 'Argentina';
 
 // Flat list of all matches — used for path lookups
 let ALL = [];
@@ -432,12 +443,68 @@ function buildFinal() {
 
     // Campeão em Baixo da FINAL
     const cbox = document.createElement('div');
-    cbox.innerHTML = `
-    <div class="champ-n">${t.flag} ${CHAMP}</div>
-    `; //<div class="champ-n">${flagHTML(CHAMP)} ${CHAMP}</div>
+    // cbox.innerHTML = `
+    // <div class="champ-n">${t.flag} ${CHAMP}</div>
+    // `; //<div class="champ-n">${flagHTML(CHAMP)} ${CHAMP}</div>
     fc.appendChild(lbl);
     fc.appendChild(fmc);
     fc.appendChild(cbox);
+}
+
+
+/**
+* Builds the third-place match box below the champion summary in the center column.
+*/
+function buildThirdPlace() {
+    if (!MT) return;
+    const fc = document.getElementById('fc');
+
+    const divider = document.createElement('div');
+    divider.className = 'tp-divider';
+
+    const lbl = document.createElement('div');
+    lbl.className = 'tp-lbl';
+    lbl.textContent = '3º LUGAR · 19/Jul · Miami';
+
+    const tmc = document.createElement('div');
+    tmc.className = 'tmc';
+    tmc.id = 'tmc';
+
+    [{ key: 'a', name: MT.home, prob: MT.pa },
+     { key: 'b', name: MT.away, prob: MT.pb }]
+    .forEach(team => {
+        const won = MT.w === team.key;
+        const row = document.createElement('div');
+        row.className = 'tr' + (won ? ' won' : '');
+        row.dataset.team = team.name;
+        row.dataset.mid  = 'T';
+        row.innerHTML = `
+            <span class="tp-pct">${team.prob}%</span>
+            <span class="tf">${flagHTML(team.name)}</span>
+            <span class="tn">${team.name}</span>
+        `;
+
+        row.addEventListener('mouseenter', (e) => {
+            applyHov(team.name);
+            showStats(team.name);
+            showPath(team.name);
+            showTT(team.name, e);
+        });
+        row.addEventListener('mousemove', moveTT);
+        row.addEventListener('mouseleave', () => {
+            applyHov(selectedTeam);
+            showStats(selectedTeam);
+            showPath(selectedTeam);
+            hideTT();
+        });
+        row.addEventListener('click', () => selectTeam(team.name));
+
+        tmc.appendChild(row);
+    });
+
+    fc.appendChild(divider);
+    fc.appendChild(lbl);
+    fc.appendChild(tmc);
 }
 
 // ════════════════════════════════════════
@@ -622,6 +689,12 @@ function applyHov(team) {
     const fmc = document.getElementById('fmc');
     if (fmc) {
     fmc.style.borderColor = pids.has('F') ? '#f0c040' : '';
+    }
+
+    // Highlight the Third-place card border
+    const tmc = document.getElementById('tmc');
+    if (tmc) {
+    tmc.style.borderColor = pids.has('T') ? '#f0c040' : '';
     }
 
     // Re-style all SVG connector lines
@@ -812,6 +885,7 @@ async function initChaveamento() {
         buildHalf(ML, 'lh');
         buildHalf(MR, 'rh');
         buildFinal();
+        buildThirdPlace();
 
         // First render: draw lines and apply champion highlight
         requestAnimationFrame(() => {
