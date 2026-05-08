@@ -937,7 +937,7 @@ color: red;
 
 /* PATH */
 .path-title {
-    font-size: 8px;
+    font-size: 9px;
     font-weight: 700;
     letter-spacing: 3px;
     text-transform: uppercase;
@@ -993,11 +993,11 @@ color: red;
 }
 
 .pt-name {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 900;
     color: #d4af37; /* Gold */
+    margin-top:5px;
     line-height: 1;
-    text-transform: uppercase;
 }
 
 .pt-label {
@@ -1048,7 +1048,7 @@ color: red;
 }
 
 .pc-rnd {
-    font-size: 7px;
+    font-size: 8px;
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -1112,7 +1112,7 @@ color: red;
 }
 
 .pc-opp .pon {
-    font-size: 9px;
+    font-size: 10px;
     color: #667c8f; /* Azul acinzentado para o oponente */
     flex: 1;
 }

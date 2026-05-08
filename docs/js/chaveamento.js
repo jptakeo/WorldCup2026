@@ -786,10 +786,10 @@ function hideTT() {
 function showStats(name) {
     const d     = gt(name);
     const panel = document.getElementById('stats-panel');
-    // {flagHTML(name)}
+    // <div class="sp-flag">${d.flag}</div>
     panel.innerHTML = `
     <div class="sp-header">
-        <div class="sp-flag">${d.flag}</div>
+        <div class="sp-flag">${flagHTML(name)}</div>
         <div class="sp-name">${name}</div>
     </div>
     <div class="sp-grid">
@@ -850,18 +850,18 @@ function showPath(name) {
 
     const card = document.createElement('div');
     card.className = `pc ${rCls}`;
-    // <span class="pc-wf">${flagHTML(name)}</span>
-    // <span class="pc-lf">${flagHTML(opp)}</span>
+    // <span class="pc-wf">${myData.flag}</span>
+    // <span class="pc-lf">${myData.flag}</span>
     card.innerHTML = `
         <div class="pc-rnd">${rLbl}</div>
         <div class="pc-w">
-        <span class="pc-wf">${myData.flag}</span>
+        <span class="pc-wf">${flagHTML(name)}</span>
         <span class="pc-wn">${name}</span>
         <span class="pc-ws">${myProb}%</span>
         </div>
         <div class="pc-sep"></div>
         <div class="pc-l">
-        <span class="pc-lf">${myData.flag}</span>
+        <span class="pc-lf">${flagHTML(opp)}</span>
         <span class="pc-ln">${opp}</span>
         <span class="pc-ls">${oppProb}%</span>
         </div>

@@ -264,11 +264,10 @@ margin-bottom: 9px;
 
 .pc-w  {display: flex; align-items: center; gap: 6px; margin-bottom: 4px;} /* Linha do vencedor previsto no card de caminho. */
 .pc-wf {font-size: 15px; line-height: 1;} /* Bandeira do vencedor previsto. */
-.pc-wn {font-size: 12px; font-weight: 700; color: #1a5276; flex: 1; line-height: 1.2;}
-.pc-ws {font-size: 17px; font-weight: 800; color: var(--gold); line-height: 1;} /* Probabilidade ou score do vencedor previsto. */
+.pc-wn {font-size: 11px; font-weight: 700; color: #1a5276; flex: 1; line-height: 1.2;}
+.pc-ws {font-size: 15px; font-weight: 800; color: var(--gold); line-height: 1;} /* Probabilidade ou score do vencedor previsto. */
 
 /* Valor do vencedor na final com maior destaque. */
-.pc.fin .pc-ws { color: var(--gold); font-size: 19px; }
 .pc.fin .pc-wn { color: var(--gold2); }
 /* Separador entre vencedor e adversário no card de caminho. */
 .pc-sep { height: 1px; background: var(--border); margin: 5px 0; }
@@ -548,7 +547,6 @@ border-radius: 4px;
 overflow: hidden;
 background: #fff9f4;
 width: 126px;
-box-shadow: 0 2px 5px rgba(184, 115, 51, 0.18);
 }
 
 .tmc .tn { font-size: 9.5px; color: #1a1a1a; font-weight: 700; }
