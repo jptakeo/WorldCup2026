@@ -41,7 +41,7 @@
         </script>
     </head>
 
-    <body class="page">
+    <body>
         <!-- Início do cabeçalho-->
         <div class="page">   
             <header>
@@ -75,98 +75,97 @@
             <div class="banner-cabecalho">
                 <div class="texto-banner">Previsões de Jogos e Placares</div>
             </div>
-            <!--Fim do banner das páginas-->
+
             <!-- Conteudo principal -->
             <div class="container"> 
                 <div id="conteudo" style="width: 100%; max-width: 1200px; margin: 0 auto;">
                     <div class="dash">
+                        <!-- ── HEADER ── -->
+                        <div class="dh">
+                            <div class="dh-top">
+                                <div class="dh-icon">
+                                    <img src="images/logo-rodape.png" alt="Logo">
+                                </div>
+                                <div>
+                                    <div class="dh-ti">Copa do Mundo 2026 — Nossa Projeção Estatística</div>
+                                    <div class="dh-su">EUA · Canadá · México &nbsp;|&nbsp; 11 Jun - 19 Jul 2026 &nbsp;|&nbsp; 48 seleções · 12 grupos</div>
+                                </div>
+                                <div class="dh-badge">
+                                    <div class="dh-bl">Campeão projetado</div>
+                                    <div class="dh-bv">🇧🇷 Brasil</div>
+                                </div>
+                            </div>
 
-                    <!-- ── HEADER ── -->
-                    <div class="dh">
-                        <div class="dh-top">
-                        <div class="dh-icon">
-                            <img src="images/logo-rodape.png" alt="Logo">
-                        </div>
-                        <div>
-                            <div class="dh-ti">Copa do Mundo 2026 — Nossa Projeção Estatística</div>
-                            <div class="dh-su">EUA · Canadá · México &nbsp;|&nbsp; 11 Jun - 19 Jul 2026 &nbsp;|&nbsp; 48 seleções · 12 grupos</div>
-                        </div>
-                        <div class="dh-badge">
-                            <div class="dh-bl">Campeão projetado</div>
-                            <div class="dh-bv">🇧🇷 Brasil</div>
-                        </div>
-                        </div>
-
-                        <!-- Tab navigation -->
-                        <div class="tabs">
-                            <button class="tab active" onclick="switchTab('bracket',this)">📊 Chaveamento</button>
-                            <button class="tab" onclick="switchTab('grupos',this)">⚽ Fase de Grupos</button>
-                            <button class="tab" onclick="switchTab('r32',this)">⚔️ R 32</button>
-                            <button class="tab" onclick="switchTab('oitavas',this)">⚔️ Oitavas</button>
-                            <button class="tab" onclick="switchTab('quartas',this)">⚔️ Quartas</button>
-                            <button class="tab" onclick="switchTab('semis',this)">🏅 Semifinais</button>
-                            <button class="tab" onclick="switchTab('final',this)">🏆 Final</button>
-                        </div>
-                    </div>
-
-                    <!-- ── BRACKET PANEL ── -->
-                    <div class="panel active" id="panel-bracket">
-
-                        <p class="disc">
-                        ⚠️ <b>Projeção do modelo da FGV EMAp.</b> 
-                        
-                        &nbsp; % = Chance de vencer a partida.
-                        </p>
-
-                        <div class="bk-scroll">
-                            <div class="bk-wrap" id="bw">
-                                <svg id="bsv"></svg>
-                                <div class="half lh" id="lh"></div>
-                                <div class="fc"      id="fc"></div>
-                            <div class="half rh" id="rh"></div>
+                            <!-- Tab navigation -->
+                            <div class="tabs">
+                                <button class="tab active" onclick="switchTab('bracket',this)">📊 Chaveamento</button>
+                                <button class="tab" onclick="switchTab('grupos',this)">⚽ Fase de Grupos</button>
+                                <button class="tab" onclick="switchTab('r32',this)">⚔️ R 32</button>
+                                <button class="tab" onclick="switchTab('oitavas',this)">⚔️ Oitavas</button>
+                                <button class="tab" onclick="switchTab('quartas',this)">⚔️ Quartas</button>
+                                <button class="tab" onclick="switchTab('semis',this)">🏅 Semifinais</button>
+                                <button class="tab" onclick="switchTab('final',this)">🏆 Final</button>
                             </div>
                         </div>
 
-                        <!-- Legend -->
-                        <div class="bk-leg">
-                        <div class="bk-li"><div class="bk-ln g"></div>Trajetória do campeão projetado</div>
-                        <div class="bk-li"><div class="bk-ln gr"></div>Outros jogos</div>
-                        <div class="bk-hint">Passe o mouse ou click sobre um país — para destacar sua trajetória</div>
+                        <!-- ── BRACKET PANEL ── -->
+                        <div class="panel active" id="panel-bracket">
+
+                            <p class="disc">
+                            ⚠️ <b>Projeção do modelo da FGV EMAp.</b> 
+                            
+                            &nbsp; % = Chance de vencer a partida.
+                            </p>
+
+                            <div class="bk-scroll">
+                                <div class="bk-wrap" id="bw">
+                                    <svg id="bsv"></svg>
+                                    <div class="half lh" id="lh"></div>
+                                    <div class="fc"      id="fc"></div>
+                                <div class="half rh" id="rh"></div>
+                                </div>
+                            </div>
+
+                            <!-- Legend -->
+                            <div class="bk-leg">
+                            <div class="bk-li"><div class="bk-ln g"></div>Trajetória do campeão projetado</div>
+                            <div class="bk-li"><div class="bk-ln gr"></div>Outros jogos</div>
+                            <div class="bk-hint">Passe o mouse ou click sobre um país — para destacar sua trajetória</div>
+                            </div>
+
+                            <!-- Path summary cards (rendered by showPath()) -->
+                            <div id="bk-pathPanel">
+                            <div id="bk-pathTitle">TRAJETÓRIA DO CAMPEÃO PROJETADO <span></span></div>
+                            <div id="bk-pathCards"></div>
+                            </div>
+
+                            <!-- Fixed stats panel (rendered by showStats()) -->
+                            <div id="stats-panel">
+                            <div class="sp-empty">Passe o mouse ou click sobre uma seleção</div>
+                            </div>
+
                         </div>
 
-                        <!-- Path summary cards (rendered by showPath()) -->
-                        <div id="bk-pathPanel">
-                        <div id="bk-pathTitle">TRAJETÓRIA DO CAMPEÃO PROJETADO <span></span></div>
-                        <div id="bk-pathCards"></div>
+                        <!-- ── GROUP STAGE PANEL ── -->
+                        <div id="panel-grupos" class="panel">
+                            <div class="g-grid" id="gg"></div>
                         </div>
 
-                        <!-- Fixed stats panel (rendered by showStats()) -->
-                        <div id="stats-panel">
-                        <div class="sp-empty">Passe o mouse ou click sobre uma seleção</div>
-                        </div>
-
+                        <!-- ── R 32 PANEL ── -->
+                        <div id="panel-r32" class="panel"></div>
+                        <!-- ── OITAVAS PANEL ── -->
+                        <div id="panel-oitavas" class="panel"></div>
+                        <!-- ── QUARTAS PANEL ── -->
+                        <div id="panel-quartas" class="panel"></div>
+                        <!-- ── SEMI-FINAIS PANEL ── -->
+                        <div id="panel-semis" class="panel"></div>
+                        <!-- ── FINAL PANEL ── -->
+                        <div id="panel-final" class="panel"></div>
                     </div>
-
-                    <!-- ── GROUP STAGE PANEL ── -->
-                    <div id="panel-grupos" class="panel">
-                        <div class="g-grid" id="gg"></div>
-                    </div>
-
-                    <!-- ── R 32 PANEL ── -->
-                    <div id="panel-r32" class="panel"></div>
-                    <!-- ── OITAVAS PANEL ── -->
-                    <div id="panel-oitavas" class="panel"></div>
-                    <!-- ── QUARTAS PANEL ── -->
-                    <div id="panel-quartas" class="panel"></div>
-                    <!-- ── SEMI-FINAIS PANEL ── -->
-                    <div id="panel-semis" class="panel"></div>
-                    <!-- ── FINAL PANEL ── -->
-                    <div id="panel-final" class="panel"></div>
-
                 </div>
             </div> 
-            <!--Final do conteudo-->
         </div>
+        <!--Final do conteudo-->
         <footer id="footer">
             <div class="container">
                 <div class="logo-rodape column-3"><img src="images/logo-rodape.png" /></div>
@@ -179,7 +178,6 @@
 
         <!-- Floating tooltip (hidden until applyHov triggers showTT) -->
         <div class="tt" id="tt"></div>
-
         <script src="js/main.js"></script>
         <script src="js/chaveamento.js"></script>
         <script src="js/previsoes.js"></script>

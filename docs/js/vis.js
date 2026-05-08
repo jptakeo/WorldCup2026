@@ -181,8 +181,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function awardRank(premio) {
     const value = normalizeText(premio);
     const order = {
-      "bola de ouro": 1,
-      "bola de prata": 2,
+      "bola de ouro": 2,
+      "bola de prata": 1,
       "bola de bronze": 3
     };
     return order[value] || 999;
@@ -811,7 +811,6 @@ document.addEventListener('DOMContentLoaded',()=>{
     MASCOTS.forEach((mascot) => {
       const card = document.createElement('div');
       card.className = 'mascot-card';
-      card.style.width = '90px';
       card.style.textAlign = 'center';
       card.style.cursor = 'pointer';
 
@@ -862,36 +861,34 @@ document.addEventListener('DOMContentLoaded',()=>{
   function showMascotDetail(mascot) {
     const d = document.getElementById('mascot-detail');
     d.innerHTML = '';
-    d.style.display = 'flex';
 
     const img = document.createElement('img');
     img.src = mascot.img;
     img.alt = mascot.name;
-    img.style.width = '120px';
-    img.style.height = '120px';
-    img.style.objectFit = 'contain';
-    img.style.flexShrink = '0';
+    img.className = 'history-detail-media';
     img.onerror = function () {
       this.onerror = null;
       this.src = `images/mascot-${mascot.year}.png`;
     };
 
-    const info = document.createElement('div');
-    info.style.flex = '1';
-    info.innerHTML = `
-      <div style="font-size:20px;font-weight:900;color:#1a5276;">
+    const meta = document.createElement('div');
+    meta.className = 'history-detail-meta';
+    meta.innerHTML = `
+      <div class="history-detail-title">
         ${mascot.year} — ${mascot.name}
       </div>
-      <div style="font-size:12px;color:#c9940a;margin-bottom:10px;">
+      <div class="history-detail-host">
         🏟️ ${mascot.host}
-      </div>
-      <div style="font-size:13px;color:#444;">
-        ${mascot.desc}
       </div>
     `;
 
+    const desc = document.createElement('div');
+    desc.className = 'history-detail-desc';
+    desc.textContent = mascot.desc;
+
     d.appendChild(img);
-    d.appendChild(info);
+    d.appendChild(meta);
+    d.appendChild(desc);
   }
 
   document.addEventListener('DOMContentLoaded', renderMascots);
@@ -939,7 +936,6 @@ document.addEventListener('DOMContentLoaded',()=>{
     BALLS.forEach((ball) => {
       const card = document.createElement('div');
       card.className = 'ball-card';
-      card.style.width = '90px';
       card.style.textAlign = 'center';
       card.style.cursor = 'pointer';
 
@@ -969,12 +965,6 @@ document.addEventListener('DOMContentLoaded',()=>{
         showBallDetail(ball);
       });
 
-      // card.addEventListener('mouseenter', () => {
-      //   document.querySelectorAll('.ball-card').forEach(c => c.classList.remove('ball-selected'));
-      //   card.classList.add('ball-selected');
-      //   showBallDetail(ball);
-      // });
-
       grid.appendChild(card);
     });
 
@@ -991,35 +981,33 @@ document.addEventListener('DOMContentLoaded',()=>{
     }    
   }
 
-  function showBallDetail(ball) {
-    const d = document.getElementById('ball-detail');
-    d.innerHTML = '';
-    d.style.display = 'flex';
+    function showBallDetail(ball) {
+      const d = document.getElementById('ball-detail');
+      d.innerHTML = '';
 
-    const img = document.createElement('img');
-    img.src = ball.img;
-    img.style.width = '120px';
-    img.style.height = '120px';
-    img.style.objectFit = 'contain';
-    img.style.flexShrink = '0'; 
+      const img = document.createElement('img');
+      img.src = ball.img;
+      img.alt = ball.name;
+      img.className = 'history-detail-media';
 
-    const info = document.createElement('div');
-    info.style.flex = '1'; 
+      const meta = document.createElement('div');
+      meta.className = 'history-detail-meta';
+      meta.innerHTML = `
+        <div class="history-detail-title">
+          ${ball.year} — ${ball.name}
+        </div>
+        <div class="history-detail-host">
+          🏟️ ${ball.host}
+        </div>
+      `;
 
-    info.innerHTML = `
-      <div style="font-size:20px;font-weight:900;color:#1a5276;">
-        ${ball.year} — ${ball.name}
-      </div>
-      <div style="font-size:12px;color:#c9940a;margin-bottom:10px;">
-        🏟️ ${ball.host}
-      </div>
-      <div style="font-size:13px;color:#444;">
-        ${ball.desc}
-      </div>
-    `;
+      const desc = document.createElement('div');
+      desc.className = 'history-detail-desc';
+      desc.textContent = ball.desc;
 
-    d.appendChild(img);
-    d.appendChild(info);
+      d.appendChild(img);
+      d.appendChild(meta);
+      d.appendChild(desc);
   }
 
   document.addEventListener('DOMContentLoaded', renderBalls);
@@ -1225,30 +1213,28 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     const img = document.createElement('img');
     img.src = shirt.img;
-    img.style.width = '112px';
-    img.style.height = '120px';
-    img.style.objectFit = 'contain';
-    img.style.flexShrink = '0';
+    img.alt = `Camisa ${shirt.year}`;
+    img.className = 'history-detail-media history-detail-media-shirt';
 
-    const info = document.createElement('div');
-    info.style.flex = '1';
-
-    info.innerHTML = `
-      <div style="font-size:22px;font-weight:900;color:#009c3b;">
+    const meta = document.createElement('div');
+    meta.className = 'history-detail-meta';
+    meta.innerHTML = `
+      <div class="history-detail-title history-detail-title-shirt">
         ${shirt.year}
       </div>
 
-      <div style="font-size:12px;margin:10px 0;color:#666;">
+      <div class="history-detail-host history-detail-host-shirt">
         🇧🇷 Seleção Brasileira
-      </div>
-
-      <div style="font-size:14px;color:#444;">
-        ${shirt.desc}
       </div>
     `;
 
+    const desc = document.createElement('div');
+    desc.className = 'history-detail-desc history-detail-desc-shirt';
+    desc.textContent = shirt.desc;
+
     d.appendChild(img);
-    d.appendChild(info);
+    d.appendChild(meta);
+    d.appendChild(desc);
   }
 
   document.addEventListener('DOMContentLoaded', renderShirts);
