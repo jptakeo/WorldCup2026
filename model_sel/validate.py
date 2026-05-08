@@ -77,26 +77,6 @@ if __name__ == "__main__":
     ciclos = []
 
     print("=" * 50)
-    print("PREPARANDO DADOS DO CICLO 2014")
-    print("=" * 50)
-
-    df_14, times_14, map_14 = preparar_dados_ciclo(
-        'data/raw/results.csv',
-        '2010-06-10',
-        '2014-06-11',
-        aplicar_decaimento=True
-    )
-
-    priors_14 = carregar_priors_ranking(
-        'data/raw/fifa_ranking_2010.csv',
-        times_14
-    )
-
-    ciclos.append(
-        ('2014', df_14, times_14, map_14, priors_14)
-    )
-
-    print("=" * 50)
     print("PREPARANDO DADOS DO CICLO 2018")
     print("=" * 50)
 
