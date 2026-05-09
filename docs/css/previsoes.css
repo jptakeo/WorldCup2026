@@ -307,6 +307,21 @@ font-style: italic;
 padding: 6px 0;
 }
 
+/* MOBILE — 2 cards por linha */
+@media (max-width: 768px) {
+
+  #bk-pathCards {
+    gap: 10px;
+  }
+
+  .pc {
+    flex: 0 0 calc(50% - 5px);
+    max-width: calc(50% - 5px);
+    min-width: unset;
+  }
+
+}
+
 
 /* ════════════════════════════════════════
 BRACKET
