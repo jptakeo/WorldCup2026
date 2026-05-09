@@ -1,128 +1,242 @@
-window.dataLayer = window.dataLayer || [];
-function gtag() {
-  dataLayer.push(arguments);
+
+// <!-- mapa melhor classificação -->
+const countries = [
+  // CAMPEÕES
+  {"id":76,"Selecao":"Brasil","Melhor Campanha":"Campeão","Classificação":1,"Continente":"América do Sul","Ano(s)":"1958, 1962, 1970, 1994, 2002"},
+  {"id":276,"Selecao":"Alemanha","Melhor Campanha":"Campeão","Classificação":1,"Continente":"Europa","Ano(s)":"1954, 1974, 1990, 2014"},
+  {"id":380,"Selecao":"Itália","Melhor Campanha":"Campeão","Classificação":1,"Continente":"Europa","Ano(s)":"1934, 1938, 1982, 2006"},
+  {"id":32,"Selecao":"Argentina","Melhor Campanha":"Campeão","Classificação":1,"Continente":"América do Sul","Ano(s)":"1978, 1986, 2022"},
+  {"id":250,"Selecao":"França","Melhor Campanha":"Campeão","Classificação":1,"Continente":"Europa","Ano(s)":"1998, 2018"},
+  {"id":858,"Selecao":"Uruguai","Melhor Campanha":"Campeão","Classificação":1,"Continente":"América do Sul","Ano(s)":"1930, 1950"},
+  {"id":724,"Selecao":"Espanha","Melhor Campanha":"Campeão","Classificação":1,"Continente":"Europa","Ano(s)":"2010"},
+  {"id":826,"Selecao":"Inglaterra","Melhor Campanha":"Campeão","Classificação":1,"Continente":"Europa","Ano(s)":"1966"},
+
+  // VICE-CAMPEÕES E 3º/4º LUGARES
+  {"id":528,"Selecao":"Holanda","Melhor Campanha":"Vice-campeão","Classificação":2,"Continente":"Europa","Ano(s)":"1974, 1978, 2010"},
+  {"id":191,"Selecao":"Croácia","Melhor Campanha":"Vice-campeão","Classificação":2,"Continente":"Europa","Ano(s)":"2018"},
+  {"id":348,"Selecao":"Hungria","Melhor Campanha":"Vice-campeão","Classificação":2,"Continente":"Europa","Ano(s)":"1938, 1954"},
+  {"id":752,"Selecao":"Suécia","Melhor Campanha":"Vice-campeão","Classificação":2,"Continente":"Europa","Ano(s)":"1958"},
+  {"id":203,"Selecao":"República Tcheca","Melhor Campanha":"Vice-campeão","Classificação":2,"Continente":"Europa","Ano(s)":"1934, 1962 (Tchecoslováquia)"},
+  {"id":616,"Selecao":"Polônia","Melhor Campanha":"Semifinal","Classificação":3,"Continente":"Europa","Ano(s)":"1974, 1982"},
+  {"id":56,"Selecao":"Bélgica","Melhor Campanha":"Semifinal","Classificação":3,"Continente":"Europa","Ano(s)":"2018"},
+  {"id":620,"Selecao":"Portugal","Melhor Campanha":"Semifinal","Classificação":3,"Continente":"Europa","Ano(s)":"1966"},
+  {"id":840,"Selecao":"Estados Unidos","Melhor Campanha":"Semifinal","Classificação":3,"Continente":"América do Norte","Ano(s)":"1930"},
+  {"id":152,"Selecao":"Chile","Melhor Campanha":"Semifinal","Classificação":3,"Continente":"América do Sul","Ano(s)":"1962"},
+  {"id":40,"Selecao":"Áustria","Melhor Campanha":"Semifinal","Classificação":3,"Continente":"Europa","Ano(s)":"1954"},
+  {"id":792,"Selecao":"Turquia","Melhor Campanha":"Semifinal","Classificação":3,"Continente":"Europa","Ano(s)":"2002"},
+  {"id":688,"Selecao":"Sérvia","Melhor Campanha":"Semifinal","Classificação":4,"Continente":"Europa","Ano(s)":"1930, 1962 (Iugoslávia)"},
+  {"id":643,"Selecao":"Rússia","Melhor Campanha":"Semifinal","Classificação":4,"Continente":"Europa","Ano(s)":"1966 (União Soviética)"},
+  {"id":100,"Selecao":"Bulgária","Melhor Campanha":"Semifinal","Classificação":4,"Continente":"Europa","Ano(s)":"1994"},
+  {"id":410,"Selecao":"Coreia do Sul","Melhor Campanha":"Semifinal","Classificação":4,"Continente":"Ásia","Ano(s)":"2002"},
+  {"id":504,"Selecao":"Marrocos","Melhor Campanha":"Semifinal","Classificação":4,"Continente":"África","Ano(s)":"2022"},
+
+  // QUARTAS DE FINAL
+  {"id":484,"Selecao":"México","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"América do Norte","Ano(s)":"1970, 1986"},
+  {"id":756,"Selecao":"Suíça","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"Europa","Ano(s)":"1934, 1938, 1954"},
+  {"id":604,"Selecao":"Peru","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"América do Sul","Ano(s)":"1970, 1978"},
+  {"id":208,"Selecao":"Dinamarca","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"Europa","Ano(s)":"1998"},
+  {"id":120,"Selecao":"Camarões","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"África","Ano(s)":"1990"},
+  {"id":686,"Selecao":"Senegal","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"África","Ano(s)":"2002"},
+  {"id":288,"Selecao":"Gana","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"África","Ano(s)":"2010"},
+  {"id":600,"Selecao":"Paraguai","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"América do Sul","Ano(s)":"2010"},
+  {"id":170,"Selecao":"Colômbia","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"América do Sul","Ano(s)":"2014"},
+  {"id":188,"Selecao":"Costa Rica","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"América Central","Ano(s)":"2014"},
+  {"id":804,"Selecao":"Ucrânia","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"Europa","Ano(s)":"2006"},
+  {"id":300,"Selecao":"Grécia","Melhor Campanha":"Oitavas de Final","Classificação":16,"Continente":"Europa","Ano(s)":"2014"},
+
+  // OITAVAS E FASE DE GRUPOS DE DESTAQUE
+  {"id":392,"Selecao":"Japão","Melhor Campanha":"Oitavas de Final","Classificação":16,"Continente":"Ásia","Ano(s)":"2002, 2010, 2018, 2022"},
+  {"id":566,"Selecao":"Nigéria","Melhor Campanha":"Oitavas de Final","Classificação":16,"Continente":"África","Ano(s)":"1994, 1998, 2014"},
+  {"id":36,"Selecao":"Austrália","Melhor Campanha":"Oitavas de Final","Classificação":16,"Continente":"Oceania","Ano(s)":"2006, 2022"},
+  {"id":12,"Selecao":"Argélia","Melhor Campanha":"Oitavas de Final","Classificação":16,"Continente":"África","Ano(s)":"2014"},
+  {"id":682,"Selecao":"Arábia Saudita","Melhor Campanha":"Oitavas de Final","Classificação":16,"Continente":"Ásia","Ano(s)":"1994"},
+  {"id":218,"Selecao":"Equador","Melhor Campanha":"Oitavas de Final","Classificação":16,"Continente":"América do Sul","Ano(s)":"2006"},
+  {"id":818,"Selecao":"Egito","Melhor Campanha":"Fase de Grupos","Classificação":"-","Continente":"África","Ano(s)":"1934, 1990, 2018"},
+  {"id":710,"Selecao":"África do Sul","Melhor Campanha":"Fase de Grupos","Classificação":"-","Continente":"África","Ano(s)":"1998, 2002, 2010"},
+  {"id":156,"Selecao":"China","Melhor Campanha":"Fase de Grupos","Classificação":"-","Continente":"Ásia","Ano(s)":"2002"},
+  {"id":634,"Selecao":"Catar","Melhor Campanha":"Fase de Grupos","Classificação":"-","Continente":"Ásia","Ano(s)":"2022"},
+  {"id":356,"Selecao":"Índia","Melhor Campanha":"Fase de Grupos","Classificação":"-","Continente":"Ásia","Ano(s)":"1950 (Desistiu)"},
+  {"id":554,"Selecao":"Nova Zelândia","Melhor Campanha":"Fase de Grupos","Classificação":"-","Continente":"Oceania","Ano(s)":"1982, 2010"},
+  {"id":360,"Selecao":"Indonésia","Melhor Campanha":"Fase de Grupos","Classificação":"-","Continente":"Ásia","Ano(s)":"1938 (Índias Orientais Holandesas)"},
+  {"id":364,"Selecao":"Irã","Melhor Campanha":"Fase de Grupos","Classificação":"-","Continente":"Ásia","Ano(s)":"1978, 1998, 2006, 2014, 2018, 2022"},
+];
+
+const spec = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+
+  "width": "container",
+  "height": 400,
+
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+
+  "projection": {
+    "type": "equalEarth"
+  },
+
+  "layer": [
+
+    /* MAPA BASE */
+    {
+      "data": {
+        "url": "https://cdn.jsdelivr.net/npm/vega-datasets@2/data/world-110m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "countries"
+        }
+      },
+
+      "mark": {
+        "type": "geoshape",
+        "fill": "#e5e7eb",
+        "stroke": "#ffffff",
+        "strokeWidth": 0.5
+      }
+    },
+
+    /* PAÍSES PARTICIPANTES */
+    {
+      "data": {
+        "url": "https://cdn.jsdelivr.net/npm/vega-datasets@2/data/world-110m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "countries"
+        }
+      },
+
+      "transform": [
+        {
+          "lookup": "id",
+
+          "from": {
+            "data": {
+              "values": countries
+            },
+
+            "key": "id",
+
+            "fields": [
+              "Selecao",
+              "Melhor Campanha",
+              "Classificação",
+              "Continente",
+              "Ano(s)"
+            ]
+          }
+        },
+
+        {
+          "filter": "datum.Selecao != null"
+        }
+      ],
+
+      "mark": {
+        "type": "geoshape",
+        "stroke": "#ffffff",
+        "strokeWidth": 0.6
+      },
+
+      "encoding": {
+
+        "color": {
+  "field": "Melhor Campanha",
+  "type": "nominal",
+
+  "scale": {
+    "domain": [
+      "Campeão",
+      "Vice-campeão",
+      "Semifinal",
+      "Quartas de Final",
+      "Oitavas de Final",
+      "Fase de Grupos"
+    ],
+
+    // "range": ["#f2d15c", "#c4efc8", "#6acf53", "#295fbd", "#8efaf1", "#db5f5f"]
+
+          "range": [
+            "#facc15", // Amarelo Mel
+            "#4ade80", // Verde Esmeralda Suave 
+            "#fb923c", // Laranja Cenoura 
+            "#a78bfa",  // Roxo Lavanda 
+            "#60a5fa", // Azul Brilhante Suave 
+            // "#f87171", // Vermelho Coral
+            "#94a3b8"// Azul Slate  
+          ]
+  },
+
+ "legend": {
+  "title": "Melhor Campanha",
+  "orient": "bottom-right",
+  "direction": "horizontal",
+  "columns": 3,
+
+  "labelFontSize": 7,
+  "titleFontSize": 9,
+
+  "padding": 6,
+  "offset": 30,
+
+  "symbolType": "square",
+  "symbolSize": 100,
+
+  "fillColor": "#ffffffcc",
+  "strokeColor": "#cccccc",
+  "cornerRadius": 6
 }
-gtag('js', new Date());
-gtag('config', 'UA-119803899-1');
+},
 
+        "tooltip": [
+          {
+            "field": "Selecao",
+            "title": "Seleção"
+          },
 
-(function (vegaEmbed) {
-  // Cole aqui, sem alterar, o mesmo objeto que hoje está dentro do <script> do mapa em vis.html
-  // WE REMOVED TITLE "title": {"text": ["1930-2022"], "subtitle": ["Melhor classifica\u00e7\u00e3o de cada sele\u00e7\u00e3o em", "alguma edi\u00e7\u00e3o da Copa do Mundo de Futebol"]}
-    const spec = {
-    "config": {"view": {"continuousWidth": 400, "continuousHeight": 350, "strokeWidth": 0},
-    "title": {"anchor": "start", "angle": 80, "dx": 5, "dy": -100, "font": "Cinzel",
-    "fontSize": 28, "orient": "bottom", "subtitleFont": "Courier", "subtitleFontSize": 15}},
-    "layer": [{"data": {"sphere": true}, "mark": {"type": "geoshape", "fill": "#ffffff"}},
-    {"data": {"url": "https://cdn.jsdelivr.net/npm/vega-datasets@v1.29.0/data/world-110m.json",
-    "format": {"feature": "countries", "type": "topojson"}}, "mark": {"type": "geoshape", "fill": "#dddddd", "stroke": "#999999", "strokeWidth": 0.1}},
-    {"data": {"url": "https://cdn.jsdelivr.net/npm/vega-datasets@v1.29.0/data/world-110m.json",
-    "format": {"feature": "countries", "type": "topojson"}}, "mark": {"type": "geoshape", "stroke": "#666666", "strokeWidth": 0.1},
-    "encoding": {"color": {"field": "P", "legend": {"columns": 3, "direction": "horizontal",
-    "fillColor": "lightgrey", "labelFont": "Courier", "labelFontSize": 10, "offset": 2, "orient": "bottom-right",
-    "padding": 9, "strokeColor": "black", "symbolStrokeWidth": 1, "title": "Melhor posi\u00e7\u00e3o Histórica",
-    "titleFont": "Courier", "titleFontSize": 15, "titleLimit": 300, "values": ["Campe\u00e3o", "Vice Campe\u00e3o",
-    "Semi-Final", "Quartas de Final", "Oitavas de Final", "Fase de Grupos"]},
-    "scale": {"domain": ["Campe\u00e3o", "Fase de Grupos", "Oitavas de Final", "Semi-Final", "Quartas de Final", "Vice Campe\u00e3o"],
-    "range": ["#f2d15c", "#c4efc8", "#6acf53", "#295fbd", "#8efaf1", "#db5f5f"]},
-    "sort": "ascending", "type": "nominal"}, "tooltip": [{"field": "Selecao", "title": "País", "type": "nominal"},
-    {"field": "Posicao", "type": "quantitative", "title": "Melhor"}]},                              
-    "transform": [{"lookup": "id", "from": {"data": {"name": "data-1b7430fc15a47c4e88d83de8f51031b0"},
-    "key": "id", "fields": ["Posicao", "Selecao", "teste", "P", "Ano"]}}]}], "height": 400,
-    "projection": {"type": "equirectangular"},
-    "width": 800, "$schema": "https://vega.github.io/schema/vega-lite/v4.17.0.json", "datasets": {"data-1b7430fc15a47c4e88d83de8f51031b0":
-    [{"Selecao": "Alemanha", "id": 276, "Posicao": 1, "Continente": "Europa", "Ano": 1934, "P": "Campe\u00e3o", "alpha2": "de", "teste": 0.045454545454545456, "name": "Germany", "alpha3": "deu"},
-    {"Selecao": "Angola", "id": 24, "Posicao": 23, "Continente": "Africa", "Ano": 2006, "P": "Fase de Grupos", "alpha2": "ao", "teste": 0.043478260869565216, "name": "Angola", "alpha3": "ago"},
-    {"Selecao": "Argentina", "id": 32, "Posicao": 1, "Continente": "AmeSul", "Ano": 1930, "P": "Campe\u00e3o", "alpha2": "ar", "teste": 0.05555555555555555, "name": "Argentina", "alpha3": "arg"},
-    {"Selecao": "Arg\u00e9lia", "id": 12, "Posicao": 13, "Continente": "Africa", "Ano": 1982, "P": "Oitavas de Final", "alpha2": "dz", "teste": 0.03571428571428571, "name": "Algeria", "alpha3": "dza"}, {"Selecao": "Ar\u00e1bia Saudita", "id": 682, "Posicao": 12, "Continente": "Asia", "Ano": 1994, "P": "Oitavas de Final", "alpha2": "sa", "teste": 0.03125, "name": "Saudi Arabia", "alpha3": "sau"},
-    {"Selecao": "Austr\u00e1lia", "id": 36, "Posicao": 11, "Continente": "Asia", "Ano": 2022, "P": "Oitavas de Final", "alpha2": "au", "teste": 0.03333333333333333, "name": "Australia", "alpha3": "aus"},
-    {"Selecao": "Bol\u00edvia", "id": 68, "Posicao": 12, "Continente": "AmeSul", "Ano": 1930, "P": "Fase de Grupos", "alpha2": "bo", "teste": 0.047619047619047616, "name": "Bolivia (Plurinational State of)", "alpha3": "bol"}, {"Selecao": "Brasil", "id": 76, "Posicao": 1, "Continente": "AmeSul", "Ano": 1930, "P": "Campe\u00e3o", "alpha2": "br", "teste": 0.07142857142857142, "name": "Brazil", "alpha3": "bra"},
-    {"Selecao": "Bulg\u00e1ria", "id": 100, "Posicao": 4, "Continente": "Europa", "Ano": 1962, "P": "Semi-Final", "alpha2": "bg", "teste": 0.034482758620689655, "name": "Bulgaria", "alpha3": "bgr"}, {"Selecao": "B\u00e9lgica", "id": 56, "Posicao": 3, "Continente": "Europa", "Ano": 1930, "P": "Semi-Final", "alpha2": "be", "teste": 0.05263157894736842, "name": "Belgium", "alpha3": "bel"},
-    {"Selecao": "B\u00f3snia e Herzegovina", "id": 70, "Posicao": 20, "Continente": "Europa", "Ano": 2014, "P": "Fase de Grupos", "alpha2": "ba", "teste": 0.05, "name": "Bosnia and Herzegovina", "alpha3": "bih"},
-    {"Selecao": "Camar\u00f5es", "id": 120, "Posicao": 7, "Continente": "Africa", "Ano": 1982, "P": "Quartas de Final", "alpha2": "cm", "teste": 0.03125, "name": "Cameroon", "alpha3": "cmr"},
-    {"Selecao": "Canad\u00e1", "id": 124, "Posicao": 24, "Continente": "AmeNorte", "Ano": 1986, "P": "Fase de Grupos", "alpha2": "ca", "teste": 0.041666666666666664, "name": "Canada", "alpha3": "can"}, {"Selecao": "Chile", "id": 152, "Posicao": 3, "Continente": "AmeSul", "Ano": 1930, "P": "Semi-Final", "alpha2": "cl", "teste": 0.045454545454545456, "name": "Chile", "alpha3": "chl"},
-    {"Selecao": "China", "id": 156, "Posicao": 31, "Continente": "Asia", "Ano": 2002, "P": "Fase de Grupos", "alpha2": "cn", "teste": 0.03225806451612903, "name": "China", "alpha3": "chn"}, {"Selecao": "Ch\u00e9quia", "id": 203, "Posicao": 2, "Continente": "Europa", "Ano": 1934, "P": "Vice Campe\u00e3o", "alpha2": "cz", "teste": 0.05, "name": "Czechia", "alpha3": "cze"},
-    {"Selecao": "Col\u00f4mbia", "id": 170, "Posicao": 5, "Continente": "AmeSul", "Ano": 1962, "P": "Quartas de Final", "alpha2": "co", "teste": 0.047619047619047616, "name": "Colombia", "alpha3": "col"}, {"Selecao": "Coreia do Norte", "id": 408, "Posicao": 8, "Continente": "Asia", "Ano": 1966, "P": "Quartas de Final", "alpha2": "kp", "teste": 0.03125, "name": "Korea (Democratic People's Republic of)", "alpha3": "prk"},
-    {"Selecao": "Coreia do Sul", "id": 410, "Posicao": 4, "Continente": "Asia", "Ano": 1954, "P": "Semi-Final", "alpha2": "kr", "teste": 0.03333333333333333, "name": "Korea, Republic of", "alpha3": "kor"}, {"Selecao": "Costa Rica", "id": 188, "Posicao": 8, "Continente": "AmeNorte", "Ano": 1990, "P": "Quartas de Final", "alpha2": "cr", "teste": 0.03225806451612903, "name": "Costa Rica", "alpha3": "cri"},
-    {"Selecao": "Costa do Marfim", "id": 384, "Posicao": 17, "Continente": "Africa", "Ano": 2006, "P": "Fase de Grupos", "alpha2": "ci", "teste": 0.047619047619047616, "name": "C\u00f4te d'Ivoire", "alpha3": "civ"},
-    {"Selecao": "Cro\u00e1cia", "id": 191, "Posicao": 2, "Continente": "Europa", "Ano": 1998, "P": "Vice Campe\u00e3o", "alpha2": "hr", "teste": 0.043478260869565216, "name": "Croatia", "alpha3": "hrv"},
-    {"Selecao": "Cuba", "id": 192, "Posicao": 7, "Continente": "AmeNorte", "Ano": 1938, "P": "Quartas de Final", "alpha2": "cu", "teste": 0.14285714285714285, "name": "Cuba", "alpha3": "cub"}, {"Selecao": "Dinamarca", "id": 208, "Posicao": 8, "Continente": "Europa", "Ano": 1986, "P": "Quartas de Final", "alpha2": "dk", "teste": 0.041666666666666664, "name": "Denmark", "alpha3": "dnk"}, {"Selecao": "Egito", "id": 818, "Posicao": 13, "Continente": "Africa", "Ano": 1934, "P": "Oitavas de Final", "alpha2": "eg", "teste": 0.03225806451612903, "name": "Egypt", "alpha3": "egy"},
-    {"Selecao": "El Salvador", "id": 222, "Posicao": 16, "Continente": "AmeNorte", "Ano": 1970, "P": "Fase de Grupos", "alpha2": "sv", "teste": 0.041666666666666664, "name": "El Salvador", "alpha3": "slv"}, {"Selecao": "Emirados \u00c1rabes Unidos", "id": 784, "Posicao": 24, "Continente": "Asia", "Ano": 1990, "P": "Fase de Grupos", "alpha2": "ae", "teste": 0.041666666666666664, "name": "United Arab Emirates", "alpha3": "are"},
-    {"Selecao": "Equador", "id": 218, "Posicao": 12, "Continente": "AmeSul", "Ano": 2002, "P": "Oitavas de Final", "alpha2": "ec", "teste": 0.041666666666666664, "name": "Ecuador", "alpha3": "ecu"}, {"Selecao": "Eslov\u00e1quia", "id": 703, "Posicao": 16, "Continente": "Europa", "Ano": 2010, "P": "Oitavas de Final", "alpha2": "sk", "teste": 0.0625, "name": "Slovakia", "alpha3": "svk"}, {"Selecao": "Eslov\u00eania", "id": 705, "Posicao": 18, "Continente": "Europa", "Ano": 2002, "P": "Fase de Grupos", "alpha2": "si", "teste": 0.03333333333333333, "name": "Slovenia", "alpha3": "svn"},
-    {"Selecao": "Espanha", "id": 724, "Posicao": 1, "Continente": "Europa", "Ano": 1934, "P": "Campe\u00e3o", "alpha2": "es", "teste": 0.043478260869565216, "name": "Spain", "alpha3": "esp"},
-    {"Selecao": "Estados Unidos", "id": 840, "Posicao": 3, "Continente": "AmeNorte", "Ano": 1930, "P": "Semi-Final", "alpha2": "us", "teste": 0.03125, "name": "United States of America", "alpha3": "usa"},
-    {"Selecao": "Fran\u00e7a", "id": 250, "Posicao": 1, "Continente": "Europa", "Ano": 1930, "P": "Campe\u00e3o", "alpha2": "fr", "teste": 0.034482758620689655, "name": "France", "alpha3": "fra"}, {"Selecao": "Gana", "id": 288, "Posicao": 7, "Continente": "Africa", "Ano": 2006, "P": "Quartas de Final", "alpha2": "gh", "teste": 0.04, "name": "Ghana", "alpha3": "gha"}, {"Selecao": "Gr\u00e9cia", "id": 300, "Posicao": 13, "Continente": "Europa", "Ano": 1994, "P": "Oitavas de Final", "alpha2": "gr", "teste": 0.04, "name": "Greece", "alpha3": "grc"},
-    {"Selecao": "Haiti", "id": 332, "Posicao": 15, "Continente": "AmeNorte", "Ano": 1974, "P": "Fase de Grupos", "alpha2": "ht", "teste": 0.06666666666666667, "name": "Haiti", "alpha3": "hti"},
-    {"Selecao": "Holanda", "id": 528, "Posicao": 2, "Continente": "Europa", "Ano": 1934, "P": "Vice Campe\u00e3o", "alpha2": "nl", "teste": 0.07142857142857142, "name": "Netherlands", "alpha3": "nld"},
-    {"Selecao": "Honduras", "id": 340, "Posicao": 18, "Continente": "AmeNorte", "Ano": 1982, "P": "Fase de Grupos", "alpha2": "hn", "teste": 0.03225806451612903, "name": "Honduras", "alpha3": "hnd"}, {"Selecao": "Hungria", "id": 348, "Posicao": 2, "Continente": "Europa", "Ano": 1934, "P": "Vice Campe\u00e3o", "alpha2": "hu", "teste": 0.05555555555555555, "name": "Hungary", "alpha3": "hun"}, {"Selecao": "Indon\u00e9sia", "id": 360, "Posicao": 15, "Continente": "Asia", "Ano": 1938, "P": "Oitavas de Final", "alpha2": "id", "teste": 0.06666666666666667, "name": "Indonesia", "alpha3": "idn"},
-    {"Selecao": "Inglaterra", "id": 826, "Posicao": 1, "Continente": "Europa", "Ano": 1950, "P": "Campe\u00e3o", "alpha2": "gb", "teste": 0.038461538461538464, "name": "United Kingdom of Great Britain and Northern Ireland", "alpha3": "gbr"}, {"Selecao": "Iraque", "id": 368, "Posicao": 23, "Continente": "Asia", "Ano": 1986, "P": "Fase de Grupos", "alpha2": "iq", "teste": 0.043478260869565216, "name": "Iraq", "alpha3": "irq"}, {"Selecao": "Irlanda", "id": 372, "Posicao": 8, "Continente": "Europa", "Ano": 1990, "P": "Quartas de Final", "alpha2": "ie", "teste": 0.0625, "name": "Ireland", "alpha3": "irl"},
-    {"Selecao": "Ir\u00e3", "id": 364, "Posicao": 14, "Continente": "Asia", "Ano": 1978, "P": "Fase de Grupos", "alpha2": "ir", "teste": 0.03571428571428571, "name": "Iran (Islamic Republic of)", "alpha3": "irn"}, {"Selecao": "Isl\u00e2ndia", "id": 352, "Posicao": 28, "Continente": "Europa", "Ano": 2018, "P": "Fase de Grupos", "alpha2": "is", "teste": 0.03571428571428571, "name": "Iceland", "alpha3": "isl"},
-    {"Selecao": "Israel", "id": 376, "Posicao": 12, "Continente": "Europa", "Ano": 1970, "P": "Fase de Grupos", "alpha2": "il", "teste": 0.08333333333333333, "name": "Israel", "alpha3": "isr"},
-    {"Selecao": "It\u00e1lia", "id": 380, "Posicao": 1, "Continente": "Europa", "Ano": 1934, "P": "Campe\u00e3o", "alpha2": "it", "teste": 0.038461538461538464, "name": "Italy", "alpha3": "ita"}, {"Selecao": "Jamaica", "id": 388, "Posicao": 22, "Continente": "AmeNorte", "Ano": 1998, "P": "Fase de Grupos", "alpha2": "jm", "teste": 0.045454545454545456, "name": "Jamaica", "alpha3": "jam"},
-    {"Selecao": "Jap\u00e3o", "id": 392, "Posicao": 9, "Continente": "Asia", "Ano": 1998, "P": "Oitavas de Final", "alpha2": "jp", "teste": 0.03225806451612903, "name": "Japan", "alpha3": "jpn"}, {"Selecao": "Kuwait", "id": 414, "Posicao": 21, "Continente": "Asia", "Ano": 1982, "P": "Fase de Grupos", "alpha2": "kw", "teste": 0.047619047619047616, "name": "Kuwait", "alpha3": "kwt"},
-    {"Selecao": "Marrocos", "id": 504, "Posicao": 4, "Continente": "Africa", "Ano": 2022, "P": "Semi-Final", "alpha2": "ma", "teste": 0.037037037037037035, "name": "Morocco", "alpha3": "mar"}, {"Selecao": "M\u00e9xico", "id": 484, "Posicao": 6, "Continente": "AmeNorte", "Ano": 1930, "P": "Quartas de Final", "alpha2": "mx", "teste": 0.0625, "name": "Mexico", "alpha3": "mex"}, {"Selecao": "Nig\u00e9ria", "id": 566, "Posicao": 9, "Continente": "Africa", "Ano": 1994, "P": "Oitavas de Final", "alpha2": "ng", "teste": 0.037037037037037035, "name": "Nigeria", "alpha3": "nga"},
-    {"Selecao": "Noruega", "id": 578, "Posicao": 12, "Continente": "Europa", "Ano": 1938, "P": "Oitavas de Final", "alpha2": "no", "teste": 0.058823529411764705, "name": "Norway", "alpha3": "nor"},
-    {"Selecao": "Nova Zel\u00e2ndia", "id": 554, "Posicao": 22, "Continente": "Oceania", "Ano": 1982, "P": "Fase de Grupos", "alpha2": "nz", "teste": 0.043478260869565216, "name": "New Zealand", "alpha3": "nzl"}, {"Selecao": "Panam\u00e1", "id": 591, "Posicao": 32, "Continente": "AmeNorte", "Ano": 2018, "P": "Fase de Grupos", "alpha2": "pa", "teste": 0.03125, "name": "Panama", "alpha3": "pan"},
-    {"Selecao": "Paraguai", "id": 600, "Posicao": 8, "Continente": "AmeSul", "Ano": 1930, "P": "Quartas de Final", "alpha2": "py", "teste": 0.05555555555555555, "name": "Paraguay", "alpha3": "pry"}, {"Selecao": "Peru", "id": 604, "Posicao": 7, "Continente": "AmeSul", "Ano": 1930, "P": "Quartas de Final", "alpha2": "pe", "teste": 0.05, "name": "Peru", "alpha3": "per"},
-    {"Selecao": "Pol\u00f3nia", "id": 616, "Posicao": 3, "Continente": "Europa", "Ano": 1938, "P": "Semi-Final", "alpha2": "pl", "teste": 0.04, "name": "Poland", "alpha3": "pol"},
-    {"Selecao": "Portugal", "id": 620, "Posicao": 3, "Continente": "Europa", "Ano": 1966, "P": "Semi-Final", "alpha2": "pt", "teste": 0.047619047619047616, "name": "Portugal", "alpha3": "prt"}, {"Selecao": "Rom\u00eania", "id": 642, "Posicao": 6, "Continente": "Europa", "Ano": 1930, "P": "Quartas de Final", "alpha2": "ro", "teste": 0.08333333333333333, "name": "Romania", "alpha3": "rou"},
-    {"Selecao": "R\u00fassia", "id": 643, "Posicao": 4, "Continente": "Europa", "Ano": 1958, "P": "Semi-Final", "alpha2": "ru", "teste": 0.041666666666666664, "name": "Russian Federation", "alpha3": "rus"},
-    {"Selecao": "Senegal", "id": 686, "Posicao": 7, "Continente": "Africa", "Ano": 2002, "P": "Quartas de Final", "alpha2": "sn", "teste": 0.058823529411764705, "name": "Senegal", "alpha3": "sen"}, {"Selecao": "Servia", "id": 688, "Posicao": 4, "Continente": "Europa", "Ano": 1930, "P": "Semi-Final", "alpha2": "rs", "teste": 0.03125, "name": "Serbia", "alpha3": "srb"}, {"Selecao": "Su\u00e9cia", "id": 752, "Posicao": 2, "Continente": "Europa", "Ano": 1934, "P": "Vice Campe\u00e3o", "alpha2": "se", "teste": 0.047619047619047616, "name": "Sweden", "alpha3": "swe"},
-    {"Selecao": "Su\u00ed\u00e7a", "id": 756, "Posicao": 5, "Continente": "Europa", "Ano": 1934, "P": "Quartas de Final", "alpha2": "ch", "teste": 0.05263157894736842, "name": "Switzerland", "alpha3": "che"}, {"Selecao": "Togo", "id": 768, "Posicao": 30, "Continente": "Africa", "Ano": 2006, "P": "Fase de Grupos", "alpha2": "tg", "teste": 0.03333333333333333, "name": "Togo", "alpha3": "tgo"},
-    {"Selecao": "Trindade e Tobago", "id": 780, "Posicao": 27, "Continente": "AmeNorte", "Ano": 2006, "P": "Fase de Grupos", "alpha2": "tt", "teste": 0.037037037037037035, "name": "Trinidad and Tobago", "alpha3": "tto"},
-    {"Selecao": "Tun\u00edsia", "id": 788, "Posicao": 9, "Continente": "Africa", "Ano": 1978, "P": "Fase de Grupos", "alpha2": "tn", "teste": 0.034482758620689655, "name": "Tunisia", "alpha3": "tun"}, {"Selecao": "Turquia", "id": 792, "Posicao": 3, "Continente": "Europa", "Ano": 1954, "P": "Semi-Final", "alpha2": "tr", "teste": 0.1, "name": "Turkey", "alpha3": "tur"}, {"Selecao": "Ucr\u00e2nia", "id": 804, "Posicao": 8, "Continente": "Europa", "Ano": 2006, "P": "Quartas de Final", "alpha2": "ua", "teste": 0.125, "name": "Ukraine", "alpha3": "ukr"},
-    {"Selecao": "Uruguai", "id": 858, "Posicao": 1, "Continente": "AmeSul", "Ano": 1930, "P": "Campe\u00e3o", "alpha2": "uy", "teste": 0.038461538461538464, "name": "Uruguay", "alpha3": "ury"},
-    {"Selecao": "Zaire", "id": 180, "Posicao": 16, "Continente": "Africa", "Ano": 1974, "P": "Fase de Grupos", "alpha2": "cd", "teste": 0.0625, "name": "Congo, Democratic Republic of the", "alpha3": "cod"},
-    {"Selecao": "\u00c1frica do Sul", "id": 710, "Posicao": 17, "Continente": "Africa", "Ano": 1998, "P": "Fase de Grupos", "alpha2": "za", "teste": 0.041666666666666664, "name": "South Africa", "alpha3": "zaf"},
-    {"Selecao": "\u00c1ustria", "id": 40, "Posicao": 3, "Continente": "Europa", "Ano": 1934, "P": "Semi-Final", "alpha2": "at", "teste": 0.043478260869565216, "name": "Austria", "alpha3": "aut"}]}};
+          {
+            "field": "Melhor Campanha",
+            "title": "Melhor Campanha"
+          },
 
-    const embedOpt = {
-        renderer: "svg",
-        mode: "vega-lite"
-    };
+          {
+            "field": "Classificação",
+            "title": "Classificação"
+          },
 
-    function showError(el, error) {
-        el.innerHTML =
-        '<div class="error" style="color:red;">' +
-        '<p>JavaScript Error: ' + error.message + '</p>' +
-        "<p>This usually means there's a typo in your chart specification. " +
-        "See the javascript console for the full traceback.</p>" +
-        '</div>';
-        throw error;
+          {
+            "field": "Continente",
+            "title": "Continente"
+          },
+
+          {
+            "field": "Ano(s)",
+            "title": "Ano(s)"
+          }
+        ]
+      }
     }
+  ],
 
-    function getResponsiveSpec(el) {
-        const responsiveSpec = JSON.parse(JSON.stringify(spec));
+  "config": {
 
-        const containerWidth = el.getBoundingClientRect().width || 800;
-        const width = Math.min(800, Math.max(280, Math.floor(containerWidth)));
+    "background": null,
 
-        responsiveSpec.width = width;
-        responsiveSpec.height = Math.round(width * 0.5);
+    "view": {
+      "stroke": null
+    },
 
-        return responsiveSpec;
+    "legend": {
+      "labelFont": "Arial",
+      "titleFont": "Arial"
     }
+  }
+};
 
-    let visResizeTimer;
-
-    function renderResponsiveMap() {
-        const el = document.getElementById("vis");
-        if (!el) return;
-
-        vegaEmbed("#vis", getResponsiveSpec(el), embedOpt)
-            .catch(error => showError(el, error));
-    }
-
-    const el = document.getElementById("vis");
-    if (el) {
-        renderResponsiveMap();
-
-        window.addEventListener("resize", () => {
-            clearTimeout(visResizeTimer);
-            visResizeTimer = setTimeout(renderResponsiveMap, 150);
-        });
-    }
-})(vegaEmbed);
+vegaEmbed("#vis", spec, {
+actions:false,
+renderer:"svg"
+});
 
 document.addEventListener("DOMContentLoaded", function () {
   const CSV_PATH = "csv/vis/golden_ball.csv";

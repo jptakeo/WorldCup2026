@@ -229,6 +229,7 @@ const CITIES = {
     R5:'Atlanta',   R6:'Miami',        R7:'Seattle',        R8:'Dallas',
     RR1:'Boston',   RR2:'Los Angeles', RR3:'Houston',       RR4:'Kansas City',
     QR1:'Dallas',   QR2:'San Francisco', SR:'Atlanta',       F:'Nova York / NJ',
+    T:'Miami',
 };
 
 // Human-readable round label for each match ID
@@ -238,7 +239,7 @@ const RND_LBL = {
     RL1:'Oitavas', RL2:'Oitavas', RL3:'Oitavas', RL4:'Oitavas',
     RR1:'Oitavas', RR2:'Oitavas', RR3:'Oitavas', RR4:'Oitavas',
     QL1:'Quartas', QL2:'Quartas', QR1:'Quartas', QR2:'Quartas',
-    SL:'Semifinal', SR:'Semifinal', F:'Final · 19 Jul',
+    SL:'Semifinal', SR:'Semifinal', F:'Final · 19 Jul', T:'3º Lugar · 19 Jul',
 };
 
 // CSS class applied to path cards, controlling the top-stripe color
@@ -248,7 +249,7 @@ const RND_CLS = {
     RL1:'r16', RL2:'r16', RL3:'r16', RL4:'r16',
     RR1:'r16', RR2:'r16', RR3:'r16', RR4:'r16',
     QL1:'qf',  QL2:'qf',  QR1:'qf',  QR2:'qf',
-    SL:'sf',  SR:'sf',  F:'fin',
+    SL:'sf',  SR:'sf',  F:'fin',  T:'tp',
 };
 
 // ════════════════════════════════════════
@@ -919,8 +920,8 @@ function showPath(name) {
     const oppProb  = isA ? m.pb : m.pa;
     const oData    = gt(opp);
     const myData   = gt(name);
-    const rCls     = RND_CLS[m.id] || 'r32';
-    const rLbl     = RND_LBL[m.id] || '—';
+    const rCls     = RND_CLS[m.id] || 'tp';
+    const rLbl     = RND_LBL[m.id] || 'tp';
     const city     = CITIES[m.id]  || '';
 
     const card = document.createElement('div');

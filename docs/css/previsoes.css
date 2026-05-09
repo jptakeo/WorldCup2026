@@ -252,6 +252,14 @@ border-color: rgba(252, 220, 92, 0.982);
 background: linear-gradient(135deg, var(--card2), rgb(255, 248, 233));
 }
 
+/* Card do terceiro lugar */
+.pc.tp::before{background:linear-gradient(90deg,#8b5c1a, #e78805);}
+
+.pc.tp {
+border-color: rgba(139, 92, 26, 0.9);
+background: linear-gradient(135deg, #fff9f4, #fff4e8);
+}   
+
 /* Nome da rodada dentro do card de caminho. */
 .pc-rnd {
 font-size: 10px;
