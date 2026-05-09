@@ -153,7 +153,6 @@ header{
     }
 }
 
-/* mobile */
 
 /* mapa melhor classificação */
 #vis{
@@ -163,19 +162,56 @@ header{
     border-radius:16px;
     padding:5px;
     box-shadow:0 1px 5px rgba(0,0,0,.12);
+
+    position:relative;
+    overflow:hidden;
+    touch-action:manipulation;
 }
 
+/* Tooltip do Vega */
+.vega-tooltip{
+    position:fixed !important;
+    z-index:9999;
+
+    max-width:220px;
+    font-size:12px;
+
+    border-radius:10px !important;
+    padding:10px 12px !important;
+
+    box-shadow:0 4px 18px rgba(0,0,0,.18) !important;
+
+    pointer-events:none;
+}
+
+/* Mobile */
 @media(max-width:940px){
+
     body{
         padding:1px;
+        overflow-x:hidden;
     }
 
     h2{
         font-size:18px;
     }
-    /* #vis{
+
+    #vis{
         min-height:220px;
-    } */
+        padding:2px;
+    }
+
+    /* aumenta área de toque do svg */
+    #vis svg{
+        touch-action:manipulation;
+    }
+
+    /* tooltip menor no celular */
+    .vega-tooltip{
+        max-width:180px;
+        font-size:11px;
+        padding:8px 10px !important;
+    }
 }
 
 

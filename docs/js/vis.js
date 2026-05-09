@@ -90,10 +90,10 @@ const spec = {
 
       "mark": {
         "type": "geoshape",
-        "fill": "#e5e7eb",
         "stroke": "#ffffff",
-        "strokeWidth": 0.5
-      }
+        "strokeWidth": 0.6,
+        "cursor": "pointer"
+      },
     },
 
     /* PAÍSES PARTICIPANTES */
@@ -234,8 +234,21 @@ const spec = {
 };
 
 vegaEmbed("#vis", spec, {
-actions:false,
-renderer:"svg"
+  actions: false,
+  renderer: "svg",
+
+  tooltip: {
+    theme: "custom"
+  }
+}).then(({ view }) => {
+
+  // força atualização em toque mobile
+  const el = document.querySelector("#vis");
+
+  el.addEventListener("touchstart", () => {
+    view.runAsync();
+  }, { passive: true });
+
 });
 
 document.addEventListener("DOMContentLoaded", function () {
