@@ -155,62 +155,204 @@ header{
 
 
 /* mapa melhor classificação */
-#vis{
-    width:100%;
-    max-width:1200px;
-    background:white;
-    border-radius:16px;
-    padding:5px;
-    box-shadow:0 1px 5px rgba(0,0,0,.12);
+/* mapa melhor campanha */
 
-    position:relative;
-    overflow:hidden;
-    touch-action:manipulation;
+#map {
+    width: 100%;
+    height: 420px; /* Altura reduzida para evitar rolagem excessiva */
+    background: #f8f9fa;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,.10);
+    position: relative;
 }
 
-/* Tooltip do Vega */
-.vega-tooltip{
-    position:fixed !important;
-    z-index:9999;
+@media (max-width: 940px) {
+    #map {
+        height: 320px; /* Mais baixo no celular para focar no conteúdo */
+    }
+}
+/* popup */
 
-    max-width:220px;
-    font-size:12px;
+.leaflet-popup-content{
+    margin:12px 14px;
+    line-height:1.5;
+}
 
-    border-radius:10px !important;
-    padding:10px 12px !important;
+.leaflet-popup-content h3{
+    margin:0 0 8px;
+    font-size:16px;
+    color:#111827;
+}
 
-    box-shadow:0 4px 18px rgba(0,0,0,.18) !important;
+.leaflet-popup-content b{
+    color:#111827;
+}
+/* =========================
+   TOOLTIP
+========================= */
+
+.leaflet-tooltip {
+    background: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 6px;
+    box-shadow: 0 3px 14px rgba(0,0,0,.14);
+    color: #111827;
+    
+    /* LARGURA E ALTURA FLEXÍVEIS */
+    width: auto;
+    min-width: 70px;
+    /* max-width: 220px;       Não deixa ficar largo demais */
+    max-height: 250px;      /* Não deixa ficar alto demais */
+    overflow-y: auto;       /* Se o texto for gigante, cria scroll interno */
+    
+    font-size: 11px;
+    line-height: 1.3;
+    pointer-events: none;
+    white-space: normal;    /* Força o texto a quebrar linha */
+    word-wrap: break-word;  /* Garante que palavras longas não vazem */
+}
+
+/* Garante que o conteúdo interno acompanhe a flexibilidade */
+.leaflet-tooltip div {
+    display: block;
+    width: 100%;
+}
+
+
+
+.leaflet-tooltip h3{
+    margin:0 0 2px;
+    font-size:10px;
+    /* font-weight:700; */
+}
+
+.leaflet-tooltip b{
+    font-size:10px;
+}
+
+.leaflet-tooltip:before{
+    display:none;
+}
+
+.leaflet-interactive{
+    outline:none !important;
+}
+
+.leaflet-interactive:focus{
+    outline:none !important;
+}
+
+path:focus{
+    outline:none !important;
+}
+
+svg path{
+    outline:none !important;
+}
+/* =========================
+   LABELS DOS PAÍSES
+========================= */
+
+/* .country-label{
+    background:none;
+    border:none;
+}
+
+.country-label span{
+
+    font-size:8px;
+    font-weight:400;
+
+    color:#7a7a7a;
+
+    white-space:nowrap;
 
     pointer-events:none;
+
+    /* text-shadow:
+        0 0 2px #fff,
+        0 0 4px #fff,
+        0 0 6px #fff; 
+} */ 
+
+/* MOBILE */
+
+/* @media(max-width:940px){
+
+    .country-label span{
+        font-size:8px;
+    }
+} */
+
+
+
+/* Baixa o nível do container de controles (zoom e legenda) */
+.leaflet-top, 
+.leaflet-bottom {
+    z-index: 800 !important;
 }
 
-/* Mobile */
-@media(max-width:940px){
+/* Garante que os panes do mapa (o desenho dos países) também fiquem abaixo */
+.leaflet-pane {
+    z-index: 400 !important;
+}
 
-    body{
-        padding:1px;
-        overflow-x:hidden;
-    }
+/* =========================
+   LEGENDA COMPACTA E SOBREPOSTA
+========================= */
 
-    h2{
-        font-size:18px;
-    }
+.legend {
+    position: absolute; /* Faz a legenda flutuar sobre o mapa */
+    bottom: 5px;       /* Distância do fundo */
+    right: 10px;        /* Distância da direita */
+    z-index: 1000;      /* Garante que fique acima do mapa */
+    
+    background: rgba(255, 255, 255, 0.822); /* Leve transparência */
+    padding: 6px 8px;   /* Reduzido */
+    border-radius: 6px; /* Mais discreto */
+    box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+    
+    font-size: 8.5px;   /* Menor para compactar */
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 4px 8px;       /* Espaço entre itens reduzido */
+    pointer-events: none; /* Evita que a legenda atrapalhe cliques no mapa atrás dela */
+}
 
-    #vis{
-        min-height:220px;
-        padding:2px;
-    }
+.legend-title {
+    grid-column: 1 / -1;
+    font-size: 9px;
+    font-weight: 700;   /* Negrito ajuda na leitura mesmo pequena */
+    margin-bottom: 0;   /* Colado nos itens */
+    color: #111827;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 
-    /* aumenta área de toque do svg */
-    #vis svg{
-        touch-action:manipulation;
-    }
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;           /* Mais perto da cor */
+    white-space: nowrap;
+}
 
-    /* tooltip menor no celular */
-    .vega-tooltip{
-        max-width:180px;
-        font-size:11px;
-        padding:8px 10px !important;
+.legend-color {
+    width: 8px;         /* Reduzido de 10px */
+    height: 8px;        /* Reduzido de 10px */
+    border-radius: 2px;
+}
+
+/* MOBILE */
+@media (max-width: 940px) {
+    .legend {
+        bottom: 5px;    /* Mais perto da borda no mobile */
+        right: 5px;
+        grid-template-columns: repeat(2, auto); /* Quebra em 2 colunas para não ficar larga */
+        font-size: 8px;
+        padding: 4px 6px;
+        gap: 2px 6px;
     }
 }
 
@@ -2501,3 +2643,5 @@ box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         background-color: #0f3c68;
     }
 }
+
+

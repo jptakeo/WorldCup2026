@@ -1,256 +1,720 @@
 
-// <!-- mapa melhor classificação -->
+
+/* =========================
+   DADOS
+========================= */
 const countries = [
-  // CAMPEÕES
-  {"id":76,"Selecao":"Brasil","Melhor Campanha":"Campeão","Classificação":1,"Continente":"América do Sul","Ano(s)":"1958, 1962, 1970, 1994, 2002"},
-  {"id":276,"Selecao":"Alemanha","Melhor Campanha":"Campeão","Classificação":1,"Continente":"Europa","Ano(s)":"1954, 1974, 1990, 2014"},
-  {"id":380,"Selecao":"Itália","Melhor Campanha":"Campeão","Classificação":1,"Continente":"Europa","Ano(s)":"1934, 1938, 1982, 2006"},
-  {"id":32,"Selecao":"Argentina","Melhor Campanha":"Campeão","Classificação":1,"Continente":"América do Sul","Ano(s)":"1978, 1986, 2022"},
-  {"id":250,"Selecao":"França","Melhor Campanha":"Campeão","Classificação":1,"Continente":"Europa","Ano(s)":"1998, 2018"},
-  {"id":858,"Selecao":"Uruguai","Melhor Campanha":"Campeão","Classificação":1,"Continente":"América do Sul","Ano(s)":"1930, 1950"},
-  {"id":724,"Selecao":"Espanha","Melhor Campanha":"Campeão","Classificação":1,"Continente":"Europa","Ano(s)":"2010"},
-  {"id":826,"Selecao":"Inglaterra","Melhor Campanha":"Campeão","Classificação":1,"Continente":"Europa","Ano(s)":"1966"},
 
-  // VICE-CAMPEÕES E 3º/4º LUGARES
-  {"id":528,"Selecao":"Holanda","Melhor Campanha":"Vice-campeão","Classificação":2,"Continente":"Europa","Ano(s)":"1974, 1978, 2010"},
-  {"id":191,"Selecao":"Croácia","Melhor Campanha":"Vice-campeão","Classificação":2,"Continente":"Europa","Ano(s)":"2018"},
-  {"id":348,"Selecao":"Hungria","Melhor Campanha":"Vice-campeão","Classificação":2,"Continente":"Europa","Ano(s)":"1938, 1954"},
-  {"id":752,"Selecao":"Suécia","Melhor Campanha":"Vice-campeão","Classificação":2,"Continente":"Europa","Ano(s)":"1958"},
-  {"id":203,"Selecao":"República Tcheca","Melhor Campanha":"Vice-campeão","Classificação":2,"Continente":"Europa","Ano(s)":"1934, 1962 (Tchecoslováquia)"},
-  {"id":616,"Selecao":"Polônia","Melhor Campanha":"Semifinal","Classificação":3,"Continente":"Europa","Ano(s)":"1974, 1982"},
-  {"id":56,"Selecao":"Bélgica","Melhor Campanha":"Semifinal","Classificação":3,"Continente":"Europa","Ano(s)":"2018"},
-  {"id":620,"Selecao":"Portugal","Melhor Campanha":"Semifinal","Classificação":3,"Continente":"Europa","Ano(s)":"1966"},
-  {"id":840,"Selecao":"Estados Unidos","Melhor Campanha":"Semifinal","Classificação":3,"Continente":"América do Norte","Ano(s)":"1930"},
-  {"id":152,"Selecao":"Chile","Melhor Campanha":"Semifinal","Classificação":3,"Continente":"América do Sul","Ano(s)":"1962"},
-  {"id":40,"Selecao":"Áustria","Melhor Campanha":"Semifinal","Classificação":3,"Continente":"Europa","Ano(s)":"1954"},
-  {"id":792,"Selecao":"Turquia","Melhor Campanha":"Semifinal","Classificação":3,"Continente":"Europa","Ano(s)":"2002"},
-  {"id":688,"Selecao":"Sérvia","Melhor Campanha":"Semifinal","Classificação":4,"Continente":"Europa","Ano(s)":"1930, 1962 (Iugoslávia)"},
-  {"id":643,"Selecao":"Rússia","Melhor Campanha":"Semifinal","Classificação":4,"Continente":"Europa","Ano(s)":"1966 (União Soviética)"},
-  {"id":100,"Selecao":"Bulgária","Melhor Campanha":"Semifinal","Classificação":4,"Continente":"Europa","Ano(s)":"1994"},
-  {"id":410,"Selecao":"Coreia do Sul","Melhor Campanha":"Semifinal","Classificação":4,"Continente":"Ásia","Ano(s)":"2002"},
-  {"id":504,"Selecao":"Marrocos","Melhor Campanha":"Semifinal","Classificação":4,"Continente":"África","Ano(s)":"2022"},
+/* CAMPEÕES */
 
-  // QUARTAS DE FINAL
-  {"id":484,"Selecao":"México","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"América do Norte","Ano(s)":"1970, 1986"},
-  {"id":756,"Selecao":"Suíça","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"Europa","Ano(s)":"1934, 1938, 1954"},
-  {"id":604,"Selecao":"Peru","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"América do Sul","Ano(s)":"1970, 1978"},
-  {"id":208,"Selecao":"Dinamarca","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"Europa","Ano(s)":"1998"},
-  {"id":120,"Selecao":"Camarões","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"África","Ano(s)":"1990"},
-  {"id":686,"Selecao":"Senegal","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"África","Ano(s)":"2002"},
-  {"id":288,"Selecao":"Gana","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"África","Ano(s)":"2010"},
-  {"id":600,"Selecao":"Paraguai","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"América do Sul","Ano(s)":"2010"},
-  {"id":170,"Selecao":"Colômbia","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"América do Sul","Ano(s)":"2014"},
-  {"id":188,"Selecao":"Costa Rica","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"América Central","Ano(s)":"2014"},
-  {"id":804,"Selecao":"Ucrânia","Melhor Campanha":"Quartas de Final","Classificação":8,"Continente":"Europa","Ano(s)":"2006"},
-  {"id":300,"Selecao":"Grécia","Melhor Campanha":"Oitavas de Final","Classificação":16,"Continente":"Europa","Ano(s)":"2014"},
-
-  // OITAVAS E FASE DE GRUPOS DE DESTAQUE
-  {"id":392,"Selecao":"Japão","Melhor Campanha":"Oitavas de Final","Classificação":16,"Continente":"Ásia","Ano(s)":"2002, 2010, 2018, 2022"},
-  {"id":566,"Selecao":"Nigéria","Melhor Campanha":"Oitavas de Final","Classificação":16,"Continente":"África","Ano(s)":"1994, 1998, 2014"},
-  {"id":36,"Selecao":"Austrália","Melhor Campanha":"Oitavas de Final","Classificação":16,"Continente":"Oceania","Ano(s)":"2006, 2022"},
-  {"id":12,"Selecao":"Argélia","Melhor Campanha":"Oitavas de Final","Classificação":16,"Continente":"África","Ano(s)":"2014"},
-  {"id":682,"Selecao":"Arábia Saudita","Melhor Campanha":"Oitavas de Final","Classificação":16,"Continente":"Ásia","Ano(s)":"1994"},
-  {"id":218,"Selecao":"Equador","Melhor Campanha":"Oitavas de Final","Classificação":16,"Continente":"América do Sul","Ano(s)":"2006"},
-  {"id":818,"Selecao":"Egito","Melhor Campanha":"Fase de Grupos","Classificação":"-","Continente":"África","Ano(s)":"1934, 1990, 2018"},
-  {"id":710,"Selecao":"África do Sul","Melhor Campanha":"Fase de Grupos","Classificação":"-","Continente":"África","Ano(s)":"1998, 2002, 2010"},
-  {"id":156,"Selecao":"China","Melhor Campanha":"Fase de Grupos","Classificação":"-","Continente":"Ásia","Ano(s)":"2002"},
-  {"id":634,"Selecao":"Catar","Melhor Campanha":"Fase de Grupos","Classificação":"-","Continente":"Ásia","Ano(s)":"2022"},
-  {"id":356,"Selecao":"Índia","Melhor Campanha":"Fase de Grupos","Classificação":"-","Continente":"Ásia","Ano(s)":"1950 (Desistiu)"},
-  {"id":554,"Selecao":"Nova Zelândia","Melhor Campanha":"Fase de Grupos","Classificação":"-","Continente":"Oceania","Ano(s)":"1982, 2010"},
-  {"id":360,"Selecao":"Indonésia","Melhor Campanha":"Fase de Grupos","Classificação":"-","Continente":"Ásia","Ano(s)":"1938 (Índias Orientais Holandesas)"},
-  {"id":364,"Selecao":"Irã","Melhor Campanha":"Fase de Grupos","Classificação":"-","Continente":"Ásia","Ano(s)":"1978, 1998, 2006, 2014, 2018, 2022"},
-];
-
-const spec = {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
-  "width": "container",
-  "height": 400,
-
-  "autosize": {
-    "type": "fit",
-    "contains": "padding"
-  },
-
-  "projection": {
-    "type": "equalEarth"
-  },
-
-  "layer": [
-
-    /* MAPA BASE */
-    {
-      "data": {
-        "url": "https://cdn.jsdelivr.net/npm/vega-datasets@2/data/world-110m.json",
-        "format": {
-          "type": "topojson",
-          "feature": "countries"
-        }
-      },
-
-      "mark": {
-        "type": "geoshape",
-        "stroke": "#ffffff",
-        "strokeWidth": 0.6,
-        "cursor": "pointer"
-      },
-    },
-
-    /* PAÍSES PARTICIPANTES */
-    {
-      "data": {
-        "url": "https://cdn.jsdelivr.net/npm/vega-datasets@2/data/world-110m.json",
-        "format": {
-          "type": "topojson",
-          "feature": "countries"
-        }
-      },
-
-      "transform": [
-        {
-          "lookup": "id",
-
-          "from": {
-            "data": {
-              "values": countries
-            },
-
-            "key": "id",
-
-            "fields": [
-              "Selecao",
-              "Melhor Campanha",
-              "Classificação",
-              "Continente",
-              "Ano(s)"
-            ]
-          }
-        },
-
-        {
-          "filter": "datum.Selecao != null"
-        }
-      ],
-
-      "mark": {
-        "type": "geoshape",
-        "stroke": "#ffffff",
-        "strokeWidth": 0.6
-      },
-
-      "encoding": {
-
-        "color": {
-  "field": "Melhor Campanha",
-  "type": "nominal",
-
-  "scale": {
-    "domain": [
-      "Campeão",
-      "Vice-campeão",
-      "Semifinal",
-      "Quartas de Final",
-      "Oitavas de Final",
-      "Fase de Grupos"
-    ],
-
-    // "range": ["#f2d15c", "#c4efc8", "#6acf53", "#295fbd", "#8efaf1", "#db5f5f"]
-
-          "range": [
-            "#facc15", // Amarelo Mel
-            "#4ade80", // Verde Esmeralda Suave 
-            "#fb923c", // Laranja Cenoura 
-            "#a78bfa",  // Roxo Lavanda 
-            "#60a5fa", // Azul Brilhante Suave 
-            // "#f87171", // Vermelho Coral
-            "#94a3b8"// Azul Slate  
-          ]
-  },
-
- "legend": {
-  "title": "Melhor Campanha",
-  "orient": "bottom-right",
-  "direction": "horizontal",
-  "columns": 3,
-
-  "labelFontSize": 7,
-  "titleFontSize": 9,
-
-  "padding": 6,
-  "offset": 30,
-
-  "symbolType": "square",
-  "symbolSize": 100,
-
-  "fillColor": "#ffffffcc",
-  "strokeColor": "#cccccc",
-  "cornerRadius": 6
-}
+{
+name:"Brazil",
+Selecao:"Brasil",
+campanha:"Campeão",
+classificacao:1,
+continente:"América do Sul",
+anos:"1958, 1962, 1970, 1994, 2002"
 },
 
-        "tooltip": [
-          {
-            "field": "Selecao",
-            "title": "Seleção"
-          },
+{
+name:"Germany",
+Selecao:"Alemanha",
+campanha:"Campeão",
+classificacao:1,
+continente:"Europa",
+anos:"1954, 1974, 1990, 2014"
+},
 
-          {
-            "field": "Melhor Campanha",
-            "title": "Melhor Campanha"
-          },
+{
+name:"Italy",
+Selecao:"Itália",
+campanha:"Campeão",
+classificacao:1,
+continente:"Europa",
+anos:"1934, 1938, 1982, 2006"
+},
 
-          {
-            "field": "Classificação",
-            "title": "Classificação"
-          },
+{
+name:"Argentina",
+Selecao:"Argentina",
+campanha:"Campeão",
+classificacao:1,
+continente:"América do Sul",
+anos:"1978, 1986, 2022"
+},
 
-          {
-            "field": "Continente",
-            "title": "Continente"
-          },
+{
+name:"France",
+Selecao:"França",
+campanha:"Campeão",
+classificacao:1,
+continente:"Europa",
+anos:"1998, 2018"
+},
 
-          {
-            "field": "Ano(s)",
-            "title": "Ano(s)"
-          }
-        ]
-      }
+{
+name:"Uruguay",
+Selecao:"Uruguai",
+campanha:"Campeão",
+classificacao:1,
+continente:"América do Sul",
+anos:"1930, 1950"
+},
+
+{
+name:"Spain",
+Selecao:"Espanha",
+campanha:"Campeão",
+classificacao:1,
+continente:"Europa",
+anos:"2010"
+},
+
+{
+name:"England",
+Selecao:"Inglaterra",
+campanha:"Campeão",
+classificacao:1,
+continente:"Europa",
+anos:"1966"
+},
+
+/* VICE */
+
+{
+name:"Netherlands",
+Selecao:"Holanda",
+campanha:"Vice-campeão",
+classificacao:2,
+continente:"Europa",
+anos:"1974, 1978, 2010"
+},
+
+{
+name:"Croatia",
+Selecao:"Croácia",
+campanha:"Vice-campeão",
+classificacao:2,
+continente:"Europa",
+anos:"2018"
+},
+
+{
+name:"Hungary",
+Selecao:"Hungria",
+campanha:"Vice-campeão",
+classificacao:2,
+continente:"Europa",
+anos:"1938, 1954"
+},
+
+{
+name:"Sweden",
+Selecao:"Suécia",
+campanha:"Vice-campeão",
+classificacao:2,
+continente:"Europa",
+anos:"1958"
+},
+
+{
+name:"Czech Republic",
+Selecao:"República Tcheca",
+campanha:"Vice-campeão",
+classificacao:2,
+continente:"Europa",
+anos:"1934, 1962 (Tchecoslováquia)"
+},
+
+/* SEMIFINAL */
+
+{
+name:"Poland",
+Selecao:"Polônia",
+campanha:"Semifinal",
+classificacao:3,
+continente:"Europa",
+anos:"1974, 1982"
+},
+
+{
+name:"Belgium",
+Selecao:"Bélgica",
+campanha:"Semifinal",
+classificacao:3,
+continente:"Europa",
+anos:"2018"
+},
+
+{
+name:"Portugal",
+Selecao:"Portugal",
+campanha:"Semifinal",
+classificacao:3,
+continente:"Europa",
+anos:"1966"
+},
+
+{
+name:"United States of America",
+Selecao:"Estados Unidos",
+campanha:"Semifinal",
+classificacao:3,
+continente:"América do Norte",
+anos:"1930"
+},
+
+{
+name:"Chile",
+Selecao:"Chile",
+campanha:"Semifinal",
+classificacao:3,
+continente:"América do Sul",
+anos:"1962"
+},
+
+{
+name:"Austria",
+Selecao:"Áustria",
+campanha:"Semifinal",
+classificacao:3,
+continente:"Europa",
+anos:"1954"
+},
+
+{
+name:"Turkey",
+Selecao:"Turquia",
+campanha:"Semifinal",
+classificacao:3,
+continente:"Europa",
+anos:"2002"
+},
+
+{
+name:"Serbia",
+Selecao:"Sérvia",
+campanha:"Semifinal",
+classificacao:4,
+continente:"Europa",
+anos:"1930, 1962 (Iugoslávia)"
+},
+
+{
+name:"Russia",
+Selecao:"Rússia",
+campanha:"Semifinal",
+classificacao:4,
+continente:"Europa",
+anos:"1966 (União Soviética)"
+},
+
+{
+name:"Bulgaria",
+Selecao:"Bulgária",
+campanha:"Semifinal",
+classificacao:4,
+continente:"Europa",
+anos:"1994"
+},
+
+{
+name:"South Korea",
+Selecao:"Coreia do Sul",
+campanha:"Semifinal",
+classificacao:4,
+continente:"Ásia",
+anos:"2002"
+},
+
+{
+name:"Morocco",
+Selecao:"Marrocos",
+campanha:"Semifinal",
+classificacao:4,
+continente:"África",
+anos:"2022"
+},
+
+/* QUARTAS */
+
+{
+name:"Mexico",
+Selecao:"México",
+campanha:"Quartas de Final",
+classificacao:8,
+continente:"América do Norte",
+anos:"1970, 1986"
+},
+
+{
+name:"Switzerland",
+Selecao:"Suíça",
+campanha:"Quartas de Final",
+classificacao:8,
+continente:"Europa",
+anos:"1934, 1938, 1954"
+},
+
+{
+name:"Peru",
+Selecao:"Peru",
+campanha:"Quartas de Final",
+classificacao:8,
+continente:"América do Sul",
+anos:"1970, 1978"
+},
+
+{
+name:"Denmark",
+Selecao:"Dinamarca",
+campanha:"Quartas de Final",
+classificacao:8,
+continente:"Europa",
+anos:"1998"
+},
+
+{
+name:"Cameroon",
+Selecao:"Camarões",
+campanha:"Quartas de Final",
+classificacao:8,
+continente:"África",
+anos:"1990"
+},
+
+{
+name:"Senegal",
+Selecao:"Senegal",
+campanha:"Quartas de Final",
+classificacao:8,
+continente:"África",
+anos:"2002"
+},
+
+{
+name:"Ghana",
+Selecao:"Gana",
+campanha:"Quartas de Final",
+classificacao:8,
+continente:"África",
+anos:"2010"
+},
+
+{
+name:"Paraguay",
+Selecao:"Paraguai",
+campanha:"Quartas de Final",
+classificacao:8,
+continente:"América do Sul",
+anos:"2010"
+},
+
+{
+name:"Colombia",
+Selecao:"Colômbia",
+campanha:"Quartas de Final",
+classificacao:8,
+continente:"América do Sul",
+anos:"2014"
+},
+
+{
+name:"Costa Rica",
+Selecao:"Costa Rica",
+campanha:"Quartas de Final",
+classificacao:8,
+continente:"América Central",
+anos:"2014"
+},
+
+{
+name:"Ukraine",
+Selecao:"Ucrânia",
+campanha:"Quartas de Final",
+classificacao:8,
+continente:"Europa",
+anos:"2006"
+},
+
+/* OITAVAS */
+
+{
+name:"Greece",
+Selecao:"Grécia",
+campanha:"Oitavas de Final",
+classificacao:16,
+continente:"Europa",
+anos:"2014"
+},
+
+{
+name:"Japan",
+Selecao:"Japão",
+campanha:"Oitavas de Final",
+classificacao:16,
+continente:"Ásia",
+anos:"2002, 2010, 2018, 2022"
+},
+
+{
+name:"Nigeria",
+Selecao:"Nigéria",
+campanha:"Oitavas de Final",
+classificacao:16,
+continente:"África",
+anos:"1994, 1998, 2014"
+},
+
+{
+name:"Australia",
+Selecao:"Austrália",
+campanha:"Oitavas de Final",
+classificacao:16,
+continente:"Oceania",
+anos:"2006, 2022"
+},
+
+{
+name:"Algeria",
+Selecao:"Argélia",
+campanha:"Oitavas de Final",
+classificacao:16,
+continente:"África",
+anos:"2014"
+},
+
+{
+name:"Saudi Arabia",
+Selecao:"Arábia Saudita",
+campanha:"Oitavas de Final",
+classificacao:16,
+continente:"Ásia",
+anos:"1994"
+},
+
+{
+name:"Ecuador",
+Selecao:"Equador",
+campanha:"Oitavas de Final",
+classificacao:16,
+continente:"América do Sul",
+anos:"2006"
+},
+
+/* FASE DE GRUPOS */
+
+{
+name:"Egypt",
+Selecao:"Egito",
+campanha:"Fase de Grupos",
+classificacao:"-",
+continente:"África",
+anos:"1934, 1990, 2018"
+},
+
+{
+name:"South Africa",
+Selecao:"África do Sul",
+campanha:"Fase de Grupos",
+classificacao:"-",
+continente:"África",
+anos:"1998, 2002, 2010"
+},
+
+{
+name:"China",
+Selecao:"China",
+campanha:"Fase de Grupos",
+classificacao:"-",
+continente:"Ásia",
+anos:"2002"
+},
+
+{
+name:"Qatar",
+Selecao:"Catar",
+campanha:"Fase de Grupos",
+classificacao:"-",
+continente:"Ásia",
+anos:"2022"
+},
+
+{
+name:"India",
+Selecao:"Índia",
+campanha:"Fase de Grupos",
+classificacao:"-",
+continente:"Ásia",
+anos:"1950 (Desistiu)"
+},
+
+{
+name:"New Zealand",
+Selecao:"Nova Zelândia",
+campanha:"Fase de Grupos",
+classificacao:"-",
+continente:"Oceania",
+anos:"1982, 2010"
+},
+
+{
+name:"Indonesia",
+Selecao:"Indonésia",
+campanha:"Fase de Grupos",
+classificacao:"-",
+continente:"Ásia",
+anos:"1938 (Índias Orientais Holandesas)"
+},
+
+{
+name:"Iran",
+Selecao:"Irã",
+campanha:"Fase de Grupos",
+classificacao:"-",
+continente:"Ásia",
+anos:"1978, 1998, 2006, 2014, 2018, 2022"
+}
+
+];
+
+
+
+/* =========================
+   CORES
+========================= */
+
+function getColor(campanha){
+
+    switch(campanha){
+
+        case "Campeão":
+            return "#facc15";
+
+        case "Vice-campeão":
+            return "#4ade80";
+
+        case "Semifinal":
+            return "#fb923c";
+
+        case "Quartas de Final":
+            return "#a78bfa";
+
+        case "Oitavas de Final":
+            return "#60a5fa";
+
+        default:
+            return "#94a3b8";
     }
-  ],
+}
 
-  "config": {
+/* =========================
+   MAPA
+========================= */
 
-    "background": null,
+// const map = L.map("map",{
+//     zoomControl:true,
+//     attributionControl:false,
 
-    "view": {
-      "stroke": null
-    },
+//     /* REMOVE repetição */
+//     worldCopyJump:false,
 
-    "legend": {
-      "labelFont": "Arial",
-      "titleFont": "Arial"
+//     /* limita navegação */
+//     maxBounds:[
+//         [-85,-180],
+//         [85,180]
+//     ],
+
+//     maxBoundsViscosity:1.0,
+
+//     /* mobile */
+//     tap:true
+// }).setView([20,0],2);
+
+const map = L.map("map", {
+    zoomControl: true,
+    attributionControl: false,
+    worldCopyJump: false,
+    
+    // CONFIGURAÇÕES PARA VER TUDO:
+    minZoom: 1.3,       // Impede o usuário de diminuir demais
+    maxZoom: 3,
+    maxBounds: [
+        [-85, -180],
+        [85, 180]
+    ],
+    maxBoundsViscosity: 1.0,
+    tap: true
+}).setView([25, 20], 1.2); // Centralizado um pouco mais baixo e com zoom 1.5
+
+
+/* =========================
+   BASE MAP
+========================= */
+
+L.tileLayer(
+    "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
+    {
+        subdomains:"abcd",
+        maxZoom:6,
+        minZoom:2,
+
+        /* impede repetição */
+        noWrap:true
     }
-  }
-};
+).addTo(map);
 
-vegaEmbed("#vis", spec, {
-  actions: false,
-  renderer: "svg",
+/* =========================
+   GEOJSON
+========================= */
 
-  tooltip: {
-    theme: "custom"
-  }
-}).then(({ view }) => {
+fetch("https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json")
+.then(r => r.json())
+.then(world => {
 
-  // força atualização em toque mobile
-  const el = document.querySelector("#vis");
+    L.geoJSON(world,{
 
-  el.addEventListener("touchstart", () => {
-    view.runAsync();
-  }, { passive: true });
+        style: feature => {
+
+            const found = countries.find(
+                c => c.name === feature.properties.name
+            );
+
+            return {
+
+                fillColor: found
+                    ? getColor(found.campanha)
+                    : "#e5e7eb",
+
+                weight:0.7,
+                opacity:1,
+                color:"#ffffff",
+                fillOpacity:1
+            };
+        },
+
+onEachFeature: (feature, layer) => {
+    const found = countries.find(c => c.name === feature.properties.name);
+    if (!found) return;
+
+    const content = `
+        <div class="tp-content">
+            <h3>${found.Selecao}</h3>
+            <b>Melhor campanha:</b> ${found.campanha}<br>
+            <b>Classificação:</b> ${found.classificacao}<br>
+            <b>Continente:</b> ${found.continente}<br>
+            <b>Ano(s):</b> ${found.anos}
+        </div>
+    `;
+
+    layer.bindTooltip(content, {
+        sticky: true,
+        direction: "auto",
+        opacity: 1,
+        offset: [15, 15] 
+    });
+
+    layer.on({
+        mouseover: e => {
+            const l = e.target;
+
+            map.closeTooltip(); 
+
+            l.setStyle({
+                weight: 2,
+                color: "#111827",
+                fillOpacity: .92
+            });
+
+            if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                l.bringToFront();
+            }
+        },
+
+        mouseout: e => {
+            const l = e.target;
+            l.setStyle({
+                weight: .7,
+                color: "#ffffff",
+                fillOpacity: 1
+            });
+            
+        },
+
+        mousedown: () => {
+            // Garante que o tooltip suma ao arrastar o mapa
+            map.closeTooltip();
+        },
+
+        // mousedown: () => {
+        //     layer.closeTooltip();
+        // }
+
+    });
+}
+
+    }).addTo(map);
+    
+    
 
 });
 
+/* =========================
+   LEGENDA
+========================= */
+
+const legend = L.control({
+    position:"bottomright"
+});
+
+legend.onAdd = function(){
+
+    const div = L.DomUtil.create("div","legend");
+
+    div.innerHTML = `
+
+        <div class="legend-title">
+            Melhor campanha
+        </div>
+
+        <div class="legend-item">
+            <span class="legend-color" style="background:#facc15"></span>
+            Campeão
+        </div>
+
+        <div class="legend-item">
+            <span class="legend-color" style="background:#4ade80"></span>
+            Vice-campeão
+        </div>
+
+        <div class="legend-item">
+            <span class="legend-color" style="background:#fb923c"></span>
+            Semifinal
+        </div>
+
+        <div class="legend-item">
+            <span class="legend-color" style="background:#a78bfa"></span>
+            Quartas de Final
+        </div>
+
+        <div class="legend-item">
+            <span class="legend-color" style="background:#60a5fa"></span>
+            Oitavas de Final
+        </div>
+
+        <div class="legend-item">
+            <span class="legend-color" style="background:#94a3b8"></span>
+            Fase de Grupos
+        </div>
+    `;
+
+    return div;
+};
+
+legend.addTo(map);
+
+
+// ----------------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
   const CSV_PATH = "csv/vis/golden_ball.csv";
   const FALLBACK_IMG = "images/placeholder.jpg";

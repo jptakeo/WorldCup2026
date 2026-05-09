@@ -6,6 +6,7 @@
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/styles.css" type="text/css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
         <title>EMAp: Copa do mundo</title>
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119803899-1"></script>
@@ -151,11 +152,10 @@
                             </noscript>
                         </div>
 
-                       <p id="melhor-classificacao" class="secao-visualizacao"><b>Mapa com a melhor classificação de cada país em edições da Copa do Mundo.</b><br>
-                       <!-- <font size="2"><i>(contribuição de Carlos César de Oliveira Fonseca, Cientista de Dados da EMAp)</i></font> <br> -->
-                        <div id="vis">
-                        </div>
+                        <p id="melhor-classificacao" class="secao-visualizacao"><b>Mapa com a melhor campanha de cada país em edições da Copa do Mundo (1930-2022).</b><br>
 
+                            <div id="map"></div>
+                            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
                         <br><br>
 
@@ -369,7 +369,7 @@
                             <li><a href="#chaveamentos-anteriores">Estatísticas e Chaveamento</a></li>
                             <li><a href="#total-de-gols">Total de Gols</a></li>
                             <li><a href="#total-de-partidas">Total de Partidas</a></li>
-			                <li><a href="#melhor-classificacao">Melhor Classificação</a></li>
+			                <li><a href="#melhor-classificacao">Melhor Campanha</a></li>
                             <li><a href="#bola-de-ouro-prata-bronze">Bola de Ouro, Prata e Bronze</a></li>
                             <li><a href="#evolucao-dos-mascotes">Evolução dos Mascotes</a></li>
                             <li><a href="#evolucao-das-bolas">Evolução das Bolas</a></li>
