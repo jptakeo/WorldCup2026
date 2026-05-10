@@ -2424,20 +2424,6 @@ box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         margin: 10px auto;
     }
 
-    /* Banner Adjustments */
-    .banner-cabecalho.inicial {
-        min-height: 180px;
-    }
-    .texto-banner {
-        position: static;
-        transform: none;
-        font-size: 20px;
-        padding: 40px 20px;
-        width: 100%;
-        max-width: 100%;
-        left: auto;
-    }
-
     /* Equipe Grid Stacking */
     .equipe-grid {
         grid-template-columns: 1fr !important;
@@ -2592,6 +2578,76 @@ box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         margin-bottom: 3px;
     }
 }
+
+@media (max-width: 768px) {
+    .banner-cabecalho.inicial {
+        min-height: 140px; /* reduz bastante a altura */
+        padding: 10px 0;   /* evita “esticar” pelo conteúdo */
+    }
+
+    .texto-banner.inicial {
+        font-size: 24px;   /* menor proporcionalmente */
+        line-height: 1.25; /* melhora quebra de linha */
+        padding: 0 15px;
+    }
+
+    .max-780 {
+        max-width: 100%;   /* ocupa melhor a tela */
+        padding: 0 18px;   /* margem lateral confortável */
+    }
+
+    .font-16 {
+        font-size: 15px;   /* levemente menor */
+        line-height: 1.6;  /* melhora leitura */
+    }
+
+    #conteudo p {
+        margin-bottom: 16px; /* separa melhor blocos de texto */
+    }
+}
+
+@media (max-width: 480px) {
+    .banner-cabecalho.inicial {
+        min-height: 120px;
+        padding: 15px 0;
+    }
+
+    .texto-banner.inicial {
+        font-size: 18px;   /* menor proporcionalmente */
+        line-height: 1.25; /* melhora quebra de linha */
+        padding: 0 15px;
+    }
+
+    .max-780 {
+        max-width: 100%;
+        padding: 0 14px; /* um pouco menor que tablet */
+    }
+
+    .font-16 {
+        font-size: 14px;   /* mais compacto */
+        line-height: 1.6;
+    }
+
+    #conteudo p {
+        margin-bottom: 14px;
+    }
+
+    #conteudo ul {
+        padding-left: 18px;
+    }
+
+    #conteudo li {
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+
+    .disclaimer {
+        font-size: 13px;
+        padding: 12px 14px;
+        line-height: 1.5;
+    }
+}
+
 
 @media (max-width: 380px) {
     .ball-award-grid {
