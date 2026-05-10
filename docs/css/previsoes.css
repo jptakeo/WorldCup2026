@@ -668,7 +668,7 @@ PAINEL FASE DE GRUPOS
 }
 
 /* grid de 3 colunas responsivo */
-.g-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.g-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 
 @media (max-width: 900px) { .g-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .g-grid { grid-template-columns: 1fr; } }
@@ -698,6 +698,7 @@ font-weight: 800;
 letter-spacing: 1.5px;
 display: flex;
 justify-content: space-between;
+align-items: center;
 }
 
 /* Texto auxiliar no cabeçalho do card de grupo. */
@@ -769,17 +770,18 @@ position: relative;
 
 /* Texto “Top 2 avançam” sobre o divisor. */
 .g-cut::after {
-content: 'Top 2 Avançam';
-position: absolute;
-top: -7px;
-left: 50%;
-transform: translateX(-50%);
-font-size: 8px;
-background: #fff;
-padding: 0 6px;
-color: #c9a227;
-font-weight: 800;
-letter-spacing: 1px;
+    content: 'Top 2 Avançam';
+    position: absolute;
+    top: -7px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 8px;
+    background: #fff;
+    padding: 0 6px;
+    color: #c9a227;
+    font-weight: 800;
+    letter-spacing: 1px;
+    white-space: nowrap;
 }
 
 /* Ícone de favorito ao lado da seleção líder */
@@ -1447,9 +1449,12 @@ PROBABILIDADES DE PREVISÃO
     position: absolute;
     top: calc(100% + 6px);
     right: 0;
+    left: 0;
     z-index: 20;
     width: 100%;
     min-width: 220px;
+    min-width: unset;   /* remove limite rígido */
+    max-width: 100vw;
     background: #ffffff;
     border: 1px solid #cfd9ea;
     border-radius: 10px;
@@ -1555,7 +1560,7 @@ PROBABILIDADES DE PREVISÃO
         flex: 1 1 40%;
         min-width: 90px;
         padding: 7px 14px;
-        font-size: 12px;
+        font-size: 11px;
         letter-spacing: 0.2px;
         white-space: nowrap;
         text-align: center;
@@ -1587,10 +1592,15 @@ PROBABILIDADES DE PREVISÃO
     }
 }
 
-@media (max-width: 430px) {
+@media (max-width: 480px) {
     .tab {
         padding: 6px 1px;
-        font-size: 6.5px;
+        font-size: 10px;
         letter-spacing: 0;
+    }
+
+    .g-cut::after {
+        padding: 0 4px;     /* reduz largura do fundo */
+        letter-spacing: 0.5px;
     }
 }
