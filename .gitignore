@@ -210,6 +210,3 @@ __marimo__/
 # Other files to ignore
 *.exe
 
-# CSV files
-docs/csv/vis/
-!docs/csv/vis/calendario.csv
