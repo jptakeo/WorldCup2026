@@ -31,6 +31,7 @@ function renderPlaceholder(panelId, stageLabel) {
     panel.innerHTML = makePlaceholder(panelId, stageLabel);
 }
 
+const GROUPS_PROBS = 'csv/previsoes/summary.csv';
 const MATCHES_CSV_URL = 'csv/previsoes/partidas.csv';
 const FLAGS_CSV_URL = 'images/flags/flag.csv';
 const SCORE_STAGES = [
@@ -84,8 +85,7 @@ function parseNumber(value) {
 }
 
 function formatPct(value) {
-    const rounded = Math.round(value * 10) / 10;
-    return Number.isInteger(rounded) ? String(rounded) : String(rounded);
+    return Number(value).toFixed(1);
 }
 
 // Lê um CSV simples, detectando vírgula ou ponto e vírgula e preservando campos entre aspas.
@@ -372,40 +372,69 @@ function applyScoreFilters(panel) {
 (function () {
     let GROUP_STAGE_ROWS = [];
 
-    // Soma as probabilidades dos placares em vitória do Home Team, empate e vitória do Away Team.
-    function getOutcomeProbs(row) {
-        let pHomeWin = 0;
-        let pDraw = 0;
-        let pAwayWin = 0;
+    // Busca um valor em uma linha de CSV aceitando variações de nome de coluna.
+    function compactHeader(value) {
+        return normalizeName(value).replace(/[^a-z0-9]/g, '');
+    }
 
-        SCORES.forEach(({ h, a, key }) => {
-            const v = parseNumber(row[key]);
-            if (v === null) return;
+    function getCSVValue(row, possibleHeaders) {
+        const wanted = new Set(possibleHeaders.map(compactHeader));
 
-            if (h > a) pHomeWin += v;
-            else if (h === a) pDraw += v;
-            else pAwayWin += v;
+        for (const key of Object.keys(row || {})) {
+            if (wanted.has(compactHeader(key))) return row[key];
+        }
+
+        return '';
+    }
+
+    function getSummaryTeam(row) {
+        return getCSVValue(row, [
+            'team',
+            'team_name',
+            'country',
+            'country_pt',
+            'country_name',
+            'name',
+            'selection',
+            'selecao',
+            'seleção',
+            'time',
+            'equipe'
+        ]);
+    }
+
+    function getSummary32(row) {
+        return getCSVValue(row, ['round_of_32']);
+    }
+
+    function getSummaryProbabilityPercent(row) {
+        const value = parseNumber(getSummary32(row));
+        if (value === null) return null;
+
+        // Aceita tanto fração (0.335) quanto percentual (33.5).
+        return value <= 1 ? value * 100 : value;
+    }
+
+    function buildGroup32Map(summaryRows) {
+        const map = new Map();
+
+        summaryRows.forEach(row => {
+            const team = getSummaryTeam(row);
+            const pct = getSummaryProbabilityPercent(row);
+
+            if (!team || pct === null) return;
+            map.set(normalizeName(team), pct);
         });
 
-        // valores em fração
-        return {
-            pHomeWin: pHomeWin / 100,
-            pDraw: pDraw / 100,
-            pAwayWin: pAwayWin / 100
-        };
+        return map;
     }
 
-    // Calcula pontos esperados de cada seleção no jogo: 3 por vitória e 1 por empate.
-    function expectedPointsForMatch(row) {
-        const { pHomeWin, pDraw, pAwayWin } = getOutcomeProbs(row);
-        return {
-            home: (3 * pHomeWin) + (1 * pDraw),
-            away: (3 * pAwayWin) + (1 * pDraw)
-        };
+    function getGroupFirstPlaceProbability(team, group32Map) {
+        return group32Map.get(normalizeName(team)) ?? 0;
     }
 
-    // Cria os cards de cada grupo, calcula o ranking por pontos esperados e monta os filtros.
-    function buildGroupCards(matchRows) {
+    // Cria os cards de cada grupo usando group_first_place do summary.csv e monta os filtros.
+    function buildGroupCards(matchRows, summaryRows) {
         const grid = document.getElementById('gg');
         if (!grid) return;
 
@@ -464,6 +493,8 @@ function applyScoreFilters(panel) {
 
         grid.innerHTML = '';
 
+        const group32Map = buildGroup32Map(summaryRows);
+
         // grupos “A..L” (apenas 1 letra)
         const groups = [...new Set(matchRows.map(r => String(r.group ?? '').trim()))]
             .filter(g => /^[A-L]$/.test(g))
@@ -485,27 +516,11 @@ function applyScoreFilters(panel) {
             // times do grupo
             const teams = [...new Set(rows.flatMap(r => [r.home_team, r.away_team]).filter(Boolean))];
 
-            // pontos esperados por time
-            const pts = {};
-            teams.forEach(t => (pts[t] = 0));
-
-            rows.forEach(r => {
-                const home = r.home_team;
-                const away = r.away_team;
-                const ep = expectedPointsForMatch(r);
-
-                if (home in pts) pts[home] += ep.home;
-                if (away in pts) pts[away] += ep.away;
-            });
-
-            const totalPts = teams.reduce((s, t) => s + pts[t], 0) || 1;
-
-            // normaliza em %
+            // Probabilidade de terminar em 1º no grupo, vinda diretamente do summary.csv.
             const ranking = teams
                 .map(t => ({
                     name: t,
-                    expPts: pts[t],
-                    pct: (pts[t] / totalPts) * 100
+                    pct: getGroupFirstPlaceProbability(t, group32Map)
                 }))
                 .sort((a, b) => b.pct - a.pct);
 
@@ -703,16 +718,20 @@ function applyScoreFilters(panel) {
     // Ponto de entrada da fase de grupos: carrega o CSV e chama a montagem dos cards.
     async function renderGroupStage() {
         try {
-            const rows = await loadCSV(MATCHES_CSV_URL);
-            GROUP_STAGE_ROWS = rows;
-            buildGroupCards(rows);
+            const [matchRows, summaryRows] = await Promise.all([
+                loadCSV(MATCHES_CSV_URL),
+                loadCSV(GROUPS_PROBS)
+            ]);
+
+            GROUP_STAGE_ROWS = matchRows;
+            buildGroupCards(matchRows, summaryRows);
         } catch (e) {
             const grid = document.getElementById('gg');
             if (grid) {
                 grid.innerHTML = `
                     <div class="g-card">
                         <div class="g-head">Fase de grupos<span>erro</span></div>
-                        <div class="g-team"><div class="g-name">Erro ao carregar ${MATCHES_CSV_URL}.</div></div>
+                        <div class="g-team"><div class="g-name">Erro ao carregar ${MATCHES_CSV_URL} ou ${GROUPS_PROBS}.</div></div>
                     </div>
                 `;
             }
@@ -765,7 +784,17 @@ function applyScoreFilters(panel) {
     }
 
     function sumOutcomes(outcomes) {
-        return outcomes.reduce((sum, item) => sum + item.value, 0);
+        return outcomes.reduce((sum, item) => sum + item.value, 0); 
+    }
+
+    function getOutcomeTotalFromColumn(row, columnName, fallbackOutcomes) {
+        const value = parseNumber(row[columnName]);
+
+        if (value === null) {
+            return sumOutcomes(fallbackOutcomes);
+        }
+
+        return value <= 1 ? value * 100 : value;
     }
 
     function getBestScore(...groups) {
@@ -829,9 +858,12 @@ function applyScoreFilters(panel) {
             value: 0
         };
 
-        const homeTotal = sumOutcomes(homeWin);
-        const drawTotal = sumOutcomes(draw);
-        const awayTotal = sumOutcomes(awayWin);
+        //const homeTotal = sumOutcomes(homeWin);
+        //const drawTotal = sumOutcomes(draw);
+        //const awayTotal = sumOutcomes(awayWin);
+        const homeTotal = getOutcomeTotalFromColumn(row, 'home_win', homeWin);
+        const drawTotal = getOutcomeTotalFromColumn(row, 'draw', draw);
+        const awayTotal = getOutcomeTotalFromColumn(row, 'away_win', awayWin);
 
         const homeFlag = getFlag(homeCountry);
         const awayFlag = getFlag(awayCountry);

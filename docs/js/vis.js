@@ -71,6 +71,15 @@ anos:"2010"
 },
 
 {
+name:"Romania",
+Selecao:"Romênia",
+campanha:"Quartas de Final",
+classificacao:6,
+continente:"Europa",
+anos:"1994"
+},
+
+{
 name:"England",
 Selecao:"Inglaterra",
 campanha:"Campeão",
@@ -115,6 +124,15 @@ campanha:"Vice-campeão",
 classificacao:2,
 continente:"Europa",
 anos:"1958"
+},
+
+{
+name:"Norway",
+Selecao:"Noruega",
+campanha:"Fase de Grupos",
+classificacao:15,
+continente:"Europa",
+anos:"1938,1998"
 },
 
 {
@@ -165,12 +183,57 @@ anos:"1930"
 },
 
 {
+name:"Canada",
+Selecao:"Canadá",
+campanha:"Fase de Grupos",
+classificacao:24,
+continente:"América do Norte",
+anos:"1986"
+},
+
+{
+name:"Honduras",
+Selecao:"Honduras",
+campanha:"Fase de Grupos",
+classificacao:18,
+continente:"América Central",
+anos:"1982"
+},
+
+{
+name:"Haiti",
+Selecao:"Haiti",
+campanha:"Fase de Grupos",
+classificacao:15,
+continente:"América Central",
+anos:"1974"
+},
+
+{
+name:"Panama",
+Selecao:"Panamá",
+campanha:"Fase de Grupos",
+classificacao:32,
+continente:"América Central",
+anos:"2018"
+},
+
+{
 name:"Chile",
 Selecao:"Chile",
 campanha:"Semifinal",
 classificacao:3,
 continente:"América do Sul",
 anos:"1962"
+},
+
+{
+name:"Bolivia",
+Selecao:"Bolívia",
+campanha:"Fase de Grupos",
+classificacao:12,
+continente:"América do Sul",
+anos:"1930"
 },
 
 {
@@ -189,6 +252,24 @@ campanha:"Semifinal",
 classificacao:3,
 continente:"Europa",
 anos:"2002"
+},
+
+{
+name:"Greece",
+Selecao:"Grécia",
+campanha:"Oitavas de Final",
+classificacao:13,
+continente:"Europa",
+anos:"2014"
+},
+
+{
+name:"Bosnia and Herzegovina",
+Selecao:"Bósnia e Herzegovina",
+campanha:"Fase de Grupos",
+classificacao:20,
+continente:"Europa",
+anos:"2014"
 },
 
 {
@@ -218,6 +299,7 @@ continente:"Europa",
 anos:"1994"
 },
 
+
 {
 name:"South Korea",
 Selecao:"Coreia do Sul",
@@ -237,6 +319,35 @@ anos:"2022"
 },
 
 /* QUARTAS */
+
+{
+name:"North Korea",
+Selecao:"Coreia do Norte",
+campanha:"Quartas de Final",
+classificacao:8,
+continente:"Ásia",
+anos:"1966"
+},
+
+{
+name:"Ireland",
+Selecao:"Irlanda",
+campanha:"Quartas de Final",
+classificacao:8,
+continente:"Europa",
+anos:"1990"
+},
+
+{
+name:"United Kingdom",
+Selecao:"Inglaterra",
+campanha:"Campeão",
+classificacao:1,
+continente:"Europa",
+anos:"1966"
+},
+
+
 
 {
 name:"Mexico",
@@ -299,6 +410,24 @@ campanha:"Quartas de Final",
 classificacao:8,
 continente:"África",
 anos:"2010"
+},
+
+{
+name:"Togo",
+Selecao:"Togo",
+campanha:"Fase de Grupos",
+classificacao:30,
+continente:"África",
+anos:"2006"
+},
+
+{
+name:"Ivory Coast",
+Selecao:"Costa do Marfim",
+campanha:"Fase de Grupos",
+classificacao:17,
+continente:"África",
+anos:"2006,2010,2014"
 },
 
 {
@@ -411,6 +540,33 @@ campanha:"Fase de Grupos",
 classificacao:"-",
 continente:"África",
 anos:"1934, 1990, 2018"
+},
+
+{
+name:"Tunisia",
+Selecao:"Tunísia",
+campanha:"Fase de Grupos",
+classificacao:"9",
+continente:"África",
+anos:"1978"
+},
+
+{
+name:"Zaïre",
+Selecao:"Zaire",
+campanha:"Fase de Grupos",
+classificacao:"16",
+continente:"África",
+anos:"1974"
+},
+
+{
+name:"Angola",
+Selecao:"Ângola",
+campanha:"Fase de Grupos",
+classificacao:"23",
+continente:"África",
+anos:"2006"
 },
 
 {
