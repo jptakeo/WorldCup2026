@@ -31,7 +31,8 @@ function renderPlaceholder(panelId, stageLabel) {
     panel.innerHTML = makePlaceholder(panelId, stageLabel);
 }
 
-const GROUPS_PROBS = 'https://raw.githubusercontent.com/BrazilianFootball/WorldCup2026/main/data/summary.csv';
+//const GROUPS_PROBS = 'https://raw.githubusercontent.com/BrazilianFootball/WorldCup2026/main/data/summary.csv';
+const GROUPS_PROBS = 'csv/previsoes/summary.csv';
 const MATCHES_CSV_URL = 'csv/previsoes/partidas.csv';
 const FLAGS_CSV_URL = 'images/flags/flag.csv';
 const SCORE_STAGES = [
