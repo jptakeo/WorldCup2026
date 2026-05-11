@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
     # Rebuild the team order used when the 2018 model was trained.
     _, times_18, _ = preparar_dados_ciclo(
-        "data/raw/results.csv", "2014-07-14", "2018-06-13", aplicar_decaimento=True
+        "data/raw/results.csv", "2014-06-11", "2018-06-13", aplicar_decaimento=True
     )
 
     # Select the saved posterior draws to simulate from.

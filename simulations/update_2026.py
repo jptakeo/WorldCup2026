@@ -255,7 +255,7 @@ if __name__ == "__main__":
 
         df_updated.to_csv("data/new_results.csv", index=False)
         df_26, times_26, map_26 = preparar_dados_ciclo(
-            "data/new_results.csv", "2022-12-19", aplicar_decaimento=True
+            "data/new_results.csv", "2022-11-19", aplicar_decaimento=True
         )
 
         priors_26 = carregar_priors_ranking("data/raw/fifa_ranking_2022.csv", times_26)
