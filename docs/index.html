@@ -19,6 +19,26 @@
 
             gtag('config', 'UA-119803899-1');
         </script>
+        <style>
+            #barra-lateral-direita {
+                width: clamp(200px, 24vw, 360px);
+                flex-shrink: 1;
+                align-items: center;
+            }
+
+            #barra-lateral-direita img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                display: block;
+                margin-top: 40%;
+            }
+            @media (max-width: 1150px) {
+            #barra-lateral-direita {
+                display: none;
+            }
+        }
+        </style>
     </head>
 
     <body>
@@ -57,7 +77,7 @@
 
             <!-- Conteudo principal -->
             <div class="container">
-                <div id="conteudo">
+                <div id="conteudo" style="max-width: 780px;">
                     <div class="texto max-780 font-16">
                         <p> A Copa do Mundo traz paixões, memórias e debates. 
                             Além da emoção de cada partida, ela também levanta perguntas que podem ser exploradas com dados,
@@ -65,8 +85,8 @@
                             É um projeto de iniciação científica desenvolvida por alunos da EMAp para investigar
                             o que os números podem revelar sobre os jogos da Copa do Mundo de 2026.</p>
 
-                        <p> Alimentamos uma base de dados com os resultados de confrontos entre 187 seleções da FIFA
-                            nos últimos cinco anos. Os modelos desenvolvidos foram então usados para comparar as seleções e realizar simulações.
+                        <p> Alimentamos uma base de dados com os resultados de 2997 confrontos entre 187 seleções da FIFA
+                            nos últimos quatro anos. Os modelos desenvolvidos foram então usados para comparar as seleções e realizar simulações.
                             Não há pretensão em adivinhar o que vai acontecer na Copa, no entanto é razoável confiar que, na média,
                             o modelo tenha um bom desempenho. Esperamos enriquecer as discussões das rodas de amigos com argumentos baseados
                             em números. </p>
@@ -74,7 +94,7 @@
                         <ul>
                         <li> Quais perguntas os dados conseguem ajudar a responder?</li>
                         <li> Qual é a probabilidade do Brasil ser campeão?</li>
-                        <li> Qual é a probabilidade de cada placar na fase de grupos?</li>
+                        <li> Qual é a probabilidade de cada placar da fase de grupos?</li>
                         </ul>
 
                         <p> Este site foi pensado para qualquer pessoa interessada na Copa que busca explorar perguntas,
@@ -91,6 +111,11 @@
 
                     </div>
                 </div>
+
+                <div id="barra-lateral-direita" style="max-width: 360px;">
+                    <img src="images/soccer.png" alt="Copa do Mundo 2026">
+                </div>
+
             </div>
         </div>
         <!--Final do conteudo-->

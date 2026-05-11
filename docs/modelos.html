@@ -58,22 +58,40 @@
             <div class="container">
                 <div id="conteudo">
                     <div class="texto max-780 font-16">
-                        <p> A partir do histórico de 2997 confrontos entre 187 seleções da FIFA, realizados nos últimos 5 anos, foram gerados parâmetros de defesa e ataque 
-                            para cada seleção, de acordo com os gols marcados ou sofridos. No nosso modelo, nem todos os jogos tem o mesmo peso: 
+                        <p> Prever o resultado de uma partida de futebol é notoriamente difícil. Diferentemente de esportes de alta pontuação,
+                            o futebol é decidido por poucos gols, o que torna o jogo altamente sensível a fatores aleatórios, como desvio de sorte, erro de arbitragem ou um momento de brilhantismo individual.
+                            Para lidar com essa imprevisibilidade, utilizamos um motor estatístico sofisticado baseado nos 
+                            modelos de Dixon-Coles e Poisson, combinados com inferência Bayesiana, para calcular as probabilidades de cada resultado possível. 
                         </p>
-                        <ul>
-                            <li><b>Fase recente:</b> destaca um peso maior aos jogos mais recentes.</li>
-                            <li><b>Importância do jogo:</b> leva em conta a natureza do jogo (um jogo de Copa América vale muito mais que um amistoso, por exemplo).</li>
-                        </ul>
+
                         <p>
-                            Consideramos que o número de gols marcados por uma equipe segue uma distribuição de Poisson, que depende 
-                            tanto do seu parâmetro de ataque, como da força de defesa do adversário. Uma descrição mais técnica da inspiração do modelo
-                            encontra-se no artigo <a href="Previsoes_Copa_2018.pdf" target="_blank">Previsões para os jogos da Copa do Mundo de 2018</a>. 
+                            A qualidade de uma equipe poderá ser representada por duas variáveis principais:
+                            <strong>Força de Ataque</strong> e <strong>Força de Defesa</strong>. A previsão do número de gols surge da relação entre o ataque de uma equipe e a defesa da adversária, além de considerar um efeito médio aplicado às duas seleções.
+                            Trabalhamos com duas famílias de modelos:
+                            <ul>
+                                <li> O modelo de <strong>Poisson</strong> assume que os gols marcados por cada equipe seguem uma distribuição de Poisson. Ele trata os gols do time da casa e do time visitante como eventos independentes, o que simplifica a modelagem.</li>
+                                <li> O modelo de <strong>Dixon-Coles</strong> é uma extensão do modelo de Poisson que introduz uma correção para levar em conta a dependência entre os gols marcados pelas duas equipes, especialmente em placares baixos. Ele reconhece que o número de gols marcados por uma equipe pode influenciar o número de gols marcados pela outra equipe, o que torna as previsões mais precisas.</li>
+                            </ul>
+
+                            Para manter as previsões alinhadas ao momento atual das equipes, aplicamos um <strong>Filtro Temporal com Decaimento Exponencial</strong>.
+                            Consideramos apenas partidas disputadas nos últimos quatro anos, atribuindo maior peso aos jogos mais recentes e reduzindo gradualmente a relevância estatística dos confrontos mais antigos.
                         </p>
-			            <p>Com estas forças podemos simular o confronto entre duas seleções quaisquer.
-                           O modelo é probabilistico, ou seja, cada simulação pode apresentar um placar diferente. No entanto, é claro, 
-                           os placares mais favoráveis aos times fortes são os que aparecem com maior frequência. 
-                           As probabilidades dos placares dos jogos da Copa podem ser visualizados nas seguintes páginas:
+
+                        <p> 
+                            Também incorporamos um <strong>Peso do Torneio</strong>. Partidas competitivas, como eliminatórias da Copa do Mundo e torneios continentais, recebem maior importância matemática do que amistosos,
+                            por refletirem de forma mais fiel o nível real das equipes, seguindo os critérios oficiais da FIFA.
+                        </p>
+                        <p>
+                            As inferências são feitas em um ambiente <strong>Bayesiano</strong>, enquanto as simulações utilizam o método de <strong>Monte Carlo</strong>.
+                            O torneio completo é reproduzido no computador com todas as regras oficiais da Copa do Mundo (incluindo sistema de pontos e critérios de desempate) e simulado 10.000 vezes.
+                            Em jogos eliminatórios empatados, o desempate é tratado como uma probabilidade simples de 50/50.
+                        </p>
+                        <p>
+                            A partir dos resultados agregados dessas simulações, calculamos as <a href="chances.html" target="_blank">chances</a> percentuais de cada seleção alcançar cada fase do torneio. 
+                            Por fim, escolhemos o modelo final com base no desempenho preditivo obtido nas duas últimas edições da Copa do Mundo.
+                        </p>
+
+			            <p> As probabilidades dos placares dos jogos da Copa podem ser visualizados nas seguintes páginas:
 							<ul>
 							  <li> <a href="previsoes.html#grupos" target="_blank">Previsões da fase de grupos</a> (atualizado em 30/04/26)</li>
                               <li> <a href="previsoes.html#r32" target="_blank">Jogos da R32</a> (atualizado em --/--/26)</li>
@@ -82,11 +100,9 @@
                               <li> <a href="previsoes.html#semis" target="_blank">Jogos das semifinais</a> (atualizado em -/-/26).</li>
                               <li> <a href="previsoes.html#final" target="_blank">Jogo da Final</a> (atualizado em -/-/26).</li>
 							</ul>
+
+                            Veja mais detalhes de processamento e modelagem <a href="notes_wc26.pdf" target="_blank">aqui</a>. A formulação foi inspirada no artigo para os <a href="https://www18.fgv.br/emap/copa-2022/Previsoes_Copa_2018.pdf" target="_blank">jogos da Copa do Mundo de 2018</a>.
 						</p>
-                        <p>Além da análise de cada jogo, foram feitas um milhão de simulações de toda a tabela da Copa. O percentual deste um milhão de simulações em que o Brasil terminou
-                            como campeão é o número que apontamos como a probabilidade do Brasil sagrar-se campeão aa Copa. Com os parâmetros obtidos pré-Copa, obteve-se chance de título de 
-                            cerca de 40% para a Seleção Brasileira. Após cada fase, os parâmetros serão atualizados, e toda a tabela será simulada novamente até a final. 
-                        </p>
                     </div>
                 </div>
 
@@ -97,7 +113,7 @@
                         <ul>
                             <li><a href="https://github.com/BrazilianFootball/WorldCup2026" target="_blank">Repositório</a></li>
                             <li><a href="https://www.kaggle.com/datasets/martj42/international-football-results-from-1872-to-2017" target="_blank">Base de Dados</a></li>
-                            <li><a href="https://github.com/BrazilianFootball/WorldCup2026/blob/main/src/model.py" target="_blank">Implementação</a></li>
+                            <li><a href="https://github.com/BrazilianFootball/WorldCup2026/tree/main/stan_models" target="_blank">Implementação</a></li>
                             <li><a href="https://www18.fgv.br/emap/copa-2022/previsoes_finais.html" target="_blank">Previsões da Copa de 2022</a></li>
                         </ul>
                     </div>
