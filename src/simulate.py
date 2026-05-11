@@ -649,6 +649,7 @@ def simular_copa_2026(
     )
     df_csv["team"] = df_csv["team"].replace(TEAM_MAP_EN_TO_PT)
     df_csv.to_csv("data/summary.csv", index=False)
+    df_csv.to_csv("docs/csv/previsoes/summary.csv", index=False)
 
     df_matches = pd.DataFrame(match_stats).round(4)
     df_matches["home_team"] = df_matches["home_team"].replace(TEAM_MAP_EN_TO_PT)

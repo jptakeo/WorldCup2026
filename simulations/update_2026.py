@@ -352,6 +352,7 @@ if __name__ == "__main__":
             df_previous_summary["position"] = df_previous_summary.index + 1
 
             df_previous_summary.to_csv("data/summary.csv", index=False)
+            df_previous_summary.to_csv("docs/csv/previsoes/summary.csv", index=False)
             df_matches.to_csv(f"data/probs_{stage}.csv", index=False)
             df_matches.to_csv(f"docs/csv/previsoes/probs_{stage}.csv", index=False)
 
