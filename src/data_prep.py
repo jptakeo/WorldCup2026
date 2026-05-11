@@ -95,9 +95,11 @@ def preparar_dados_ciclo(
         max_date = df_cycle["date"].max()
         df_cycle["days_ago"] = (max_date - df_cycle["date"]).dt.days
         df_cycle["time_weight"] = np.exp(-decay_alpha * df_cycle["days_ago"])
-        df_cycle["game_weight"] = (df_cycle["tourn_weight"] * df_cycle["time_weight"]) / 10.0
+        df_cycle["game_weight"] = (df_cycle["tourn_weight"] * df_cycle["time_weight"])
     else:
-        df_cycle["game_weight"] = df_cycle["fator_i"] / 10.0
+        df_cycle["game_weight"] = df_cycle["fator_i"]
+    
+    df_cycle['game_weight'] = df_cycle['game_weight'] / 10
 
     # Stan uses 1-based team IDs.
     teams_list = sorted(list(teams_validos))
