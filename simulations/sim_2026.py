@@ -45,7 +45,7 @@ if __name__ == "__main__":
     print(f"Carregando: {caminho_modelo}")
     draws_26 = carregar_draws(caminho_modelo)
 
-    probs_2026 = simular_copa_2026(draws_26, times_26, grupos_2026, n_sim=10_000)
+    probs_2026 = simular_copa_2026(draws_26, times_26, grupos_2026, n_sim=1_000_000)
 
     # Dashboard generator expects probabilities grouped by stage.
     json_output_26 = {

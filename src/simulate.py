@@ -174,7 +174,7 @@ def simular_copa_2022(post_draws, teams_list, grupos, n_sim=100000):
 
 
 def simular_fase_e_restante(
-    post_draws, teams_list, df_partidas, fases_nomes=None, n_sim=10_000
+    post_draws, teams_list, df_partidas, fases_nomes=None, n_sim=100_000
 ):
     """
     Simula uma fase específica e todas as subsequentes até o campeão.
@@ -354,7 +354,7 @@ def simular_copa_2026(
     df_schedule=df_jogos_reais,
     TEAM_MAP_PT_TO_EN=TEAM_MAP_PT_TO_EN,
     TEAM_MAP_EN_TO_PT=TEAM_MAP_EN_TO_PT,
-    n_sim=10_000,
+    n_sim=100_000,
 ):
     atk_draws, dfn_draws, eta_draws = (
         post_draws["attack"],

@@ -36,7 +36,7 @@ def treinar_e_salvar(
 
     # Recreate the model from source so CmdStan can rebuild stale binaries.
     modelo_stan = CmdStanModel(stan_file=stan_file)
-    fit = modelo_stan.sample(data=stan_data, chains=4, iter_sampling=2500, seed=123)
+    fit = modelo_stan.sample(data=stan_data, chains=4, iter_sampling=5000, seed=123)
 
     post_draws = fit.stan_variables()
     caminho_saida = f"data/outputs/models/new_draws_{ciclo_nome}_{modelo_nome}.npz"
