@@ -5,6 +5,7 @@
         <meta charset="UTF-8"/>      
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/styles.css" type="text/css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <title>EMAp: Copa do mundo</title>
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119803899-1"></script>
@@ -17,6 +18,63 @@
 
             gtag('config', 'UA-119803899-1');
         </script>
+        <style>
+            @keyframes fadeInUp {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes flagBounce {
+                0%, 100% { transform: translateY(0) rotate(0deg); }
+                25% { transform: translateY(-3px) rotate(-5deg); }
+                50% { transform: translateY(0) rotate(0deg); }
+                75% { transform: translateY(-3px) rotate(5deg); }
+            }
+
+            .animated-row {
+                animation: fadeInUp 0.6s ease-out forwards;
+                opacity: 0;
+                transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            }
+            .animated-row:hover {
+                transform: scale(1.015);
+                box-shadow: 0 4px 15px rgba(0, 147, 210, 0.25);
+                z-index: 10;
+                position: relative;
+            }
+            .animated-flag {
+                display: inline-block;
+                transition: transform 0.3s;
+                width: 20px;
+                height: 15px;
+                object-fit: cover;
+                border-radius: 2px;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            }
+            .animated-row:hover .animated-flag {
+                animation: flagBounce 0.6s infinite;
+            }
+            .number-cell {
+                transition: all 0.2s ease;
+            }
+            .animated-row:hover .number-cell {
+                transform: scale(1.1);
+                color: #0093d2 !important;
+                font-weight: bold;
+                text-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+            }
+            td.sorted-column {
+                background-color: rgba(255, 215, 0, 0.1) !important;
+                color: #b89205 !important;
+                font-weight: bold;
+            }
+            th.sorted-column {
+                background-color: rgba(255, 255, 255, 0.1) !important;
+                color: #fff494 !important;
+                font-weight: 900 !important;
+                text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+            }
+
+        </style>
     </head>
     <body>
         <!-- Início do cabeçalho-->
@@ -75,14 +133,14 @@
                             <table id="chancesTable" style="width: 100%; border-collapse: collapse; text-align: center; font-size: 14px; font-family: 'gotham-book', sans-serif;">
                                 <thead>
                                     <tr style="background: linear-gradient(135deg, #0f3c68 0%, #0072bc 100%); color: white; font-family: 'gotham-bold'; cursor: pointer;">
-                                        <th onclick="sortTable(0)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Posição"># <span class="sort-icon">↕</span></th>
-                                        <th onclick="sortTable(1)" style="padding: 15px; text-align: left; white-space: nowrap;" title="Ordenar por Seleção">Seleção <span class="sort-icon">↕</span></th>
-                                        <th onclick="sortTable(2)" style="padding: 15px; background-color: rgba(255, 215, 0, 0.2); color: #ffd700; border-bottom: 3px solid #ffd700; white-space: nowrap;" title="Ordenar por Chances de Título">Campeão <span class="sort-icon">↕</span></th>
-                                        <th onclick="sortTable(3)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Chances de Chegar à Final">Final <span class="sort-icon">↕</span></th>
-                                        <th onclick="sortTable(4)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Chances de Chegar à Semifinal">Semi <span class="sort-icon">↕</span></th>
-                                        <th onclick="sortTable(5)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Chances de Chegar às Quartas">Quartas <span class="sort-icon">↕</span></th>
-                                        <th onclick="sortTable(6)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Chances de Chegar às Oitavas">Oitavas <span class="sort-icon">↕</span></th>
-                                        <th onclick="sortTable(7)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Chances de Chegar aos 16-avos">16-avos <span class="sort-icon">↕</span></th>
+                                        <th onclick="sortTable(0)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Posição"># <span class="material-icons sort-icon" style="font-size: 16px; vertical-align: middle;">swap_vert</span></th>
+                                        <th onclick="sortTable(1)" style="padding: 15px; text-align: left; white-space: nowrap;" title="Ordenar por Seleção">Seleção <span class="material-icons sort-icon" style="font-size: 16px; vertical-align: middle;">swap_vert</span></th>
+                                        <th onclick="sortTable(2)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Chances de Título">Campeão <span class="material-icons sort-icon" style="font-size: 16px; vertical-align: middle;">swap_vert</span></th>
+                                        <th onclick="sortTable(3)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Chances de Chegar à Final">Final <span class="material-icons sort-icon" style="font-size: 16px; vertical-align: middle;">swap_vert</span></th>
+                                        <th onclick="sortTable(4)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Chances de Chegar à Semifinal">Semi <span class="material-icons sort-icon" style="font-size: 16px; vertical-align: middle;">swap_vert</span></th>
+                                        <th onclick="sortTable(5)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Chances de Chegar às Quartas">Quartas <span class="material-icons sort-icon" style="font-size: 16px; vertical-align: middle;">swap_vert</span></th>
+                                        <th onclick="sortTable(6)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Chances de Chegar às Oitavas">Oitavas <span class="material-icons sort-icon" style="font-size: 16px; vertical-align: middle;">swap_vert</span></th>
+                                        <th onclick="sortTable(7)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Chances de Chegar aos 16-avos">16-avos <span class="material-icons sort-icon" style="font-size: 16px; vertical-align: middle;">swap_vert</span></th>
                                     </tr>
                                 </thead>
                                 <tbody id="chancesTableBody">
@@ -95,54 +153,6 @@
                     <script>
                         // -- DATA START --
                         const data = [
-                            {"pos": 1, "team": "Espanha", "flag": "🇪🇸", "champ": 15.73, "final": 24.78, "semi": 37.21, "qf": 49.73, "r16": 69.78, "r32": 99.02},
-                            {"pos": 2, "team": "Argentina", "flag": "🇦🇷", "champ": 13.28, "final": 21.35, "semi": 33.0, "qf": 46.77, "r16": 61.88, "r32": 97.09},
-                            {"pos": 3, "team": "Inglaterra", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "champ": 8.35, "final": 15.02, "semi": 25.91, "qf": 42.53, "r16": 63.99, "r32": 97.41},
-                            {"pos": 4, "team": "França", "flag": "🇫🇷", "champ": 6.52, "final": 12.67, "semi": 23.28, "qf": 38.75, "r16": 63.93, "r32": 92.96},
-                            {"pos": 5, "team": "Marrocos", "flag": "🇲🇦", "champ": 6.45, "final": 11.81, "semi": 22.2, "qf": 38.15, "r16": 58.9, "r32": 96.63},
-                            {"pos": 6, "team": "Colômbia", "flag": "🇨🇴", "champ": 5.63, "final": 10.8, "semi": 19.56, "qf": 35.26, "r16": 57.67, "r32": 87.45},
-                            {"pos": 7, "team": "Alemanha", "flag": "🇩🇪", "champ": 5.11, "final": 10.18, "semi": 20.19, "qf": 36.77, "r16": 66.41, "r32": 96.92},
-                            {"pos": 8, "team": "Portugal", "flag": "🇵🇹", "champ": 4.84, "final": 9.7, "semi": 18.31, "qf": 33.02, "r16": 56.04, "r32": 86.11},
-                            {"pos": 9, "team": "Japão", "flag": "🇯🇵", "champ": 4.3, "final": 8.81, "semi": 17.26, "qf": 31.8, "r16": 49.84, "r32": 92.16},
-                            {"pos": 10, "team": "Brasil", "flag": "🇧🇷", "champ": 3.94, "final": 8.14, "semi": 16.95, "qf": 31.9, "r16": 52.19, "r32": 95.36},
-                            {"pos": 11, "team": "Países Baixos", "flag": "🇳🇱", "champ": 3.42, "final": 7.59, "semi": 16.08, "qf": 30.18, "r16": 48.79, "r32": 91.92},
-                            {"pos": 12, "team": "Equador", "flag": "🇪🇨", "champ": 2.89, "final": 6.47, "semi": 13.39, "qf": 27.95, "r16": 53.12, "r32": 90.74},
-                            {"pos": 13, "team": "Uruguai", "flag": "🇺🇾", "champ": 2.68, "final": 6.3, "semi": 12.99, "qf": 24.76, "r16": 43.11, "r32": 89.93},
-                            {"pos": 14, "team": "Noruega", "flag": "🇳🇴", "champ": 2.34, "final": 5.62, "semi": 12.44, "qf": 24.82, "r16": 48.8, "r32": 81.97},
-                            {"pos": 15, "team": "Bélgica", "flag": "🇧🇪", "champ": 1.98, "final": 4.73, "semi": 10.53, "qf": 26.93, "r16": 53.61, "r32": 90.26},
-                            {"pos": 16, "team": "Austrália", "flag": "🇦🇺", "champ": 1.73, "final": 4.48, "semi": 9.56, "qf": 23.12, "r16": 47.9, "r32": 80.93},
-                            {"pos": 17, "team": "Croácia", "flag": "🇭🇷", "champ": 1.54, "final": 3.85, "semi": 9.57, "qf": 19.69, "r16": 41.99, "r32": 87.37},
-                            {"pos": 18, "team": "Suíça", "flag": "🇨🇭", "champ": 1.42, "final": 3.86, "semi": 10.24, "qf": 25.75, "r16": 59.63, "r32": 96.0},
-                            {"pos": 19, "team": "México", "flag": "🇲🇽", "champ": 1.23, "final": 3.23, "semi": 8.57, "qf": 19.54, "r16": 47.35, "r32": 87.24},
-                            {"pos": 20, "team": "Senegal", "flag": "🇸🇳", "champ": 1.13, "final": 2.82, "semi": 7.22, "qf": 17.08, "r16": 37.88, "r32": 71.12},
-                            {"pos": 21, "team": "Áustria", "flag": "🇦🇹", "champ": 0.96, "final": 2.67, "semi": 6.79, "qf": 14.28, "r16": 28.91, "r32": 73.76},
-                            {"pos": 22, "team": "Paraguai", "flag": "🇵🇾", "champ": 0.56, "final": 1.55, "semi": 4.33, "qf": 12.41, "r16": 31.66, "r32": 64.41},
-                            {"pos": 23, "team": "Canadá", "flag": "🇨🇦", "champ": 0.41, "final": 1.36, "semi": 4.37, "qf": 14.36, "r16": 42.74, "r32": 86.17},
-                            {"pos": 24, "team": "EUA", "flag": "🇺🇸", "champ": 0.4, "final": 1.18, "semi": 3.47, "qf": 10.92, "r16": 29.89, "r32": 62.93},
-                            {"pos": 25, "team": "Uzbequistão", "flag": "🇺🇿", "champ": 0.38, "final": 1.08, "semi": 3.01, "qf": 8.03, "r16": 19.71, "r32": 48.06},
-                            {"pos": 26, "team": "Argélia", "flag": "🇩🇿", "champ": 0.37, "final": 1.22, "semi": 3.29, "qf": 8.44, "r16": 19.3, "r32": 58.6},
-                            {"pos": 27, "team": "Turquia", "flag": "🇹🇷", "champ": 0.37, "final": 1.27, "semi": 3.94, "qf": 11.73, "r16": 30.32, "r32": 64.85},
-                            {"pos": 28, "team": "República Democrática do Congo", "flag": "🇨🇩", "champ": 0.26, "final": 0.84, "semi": 2.33, "qf": 6.14, "r16": 16.65, "r32": 43.3},
-                            {"pos": 29, "team": "Escócia", "flag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "champ": 0.26, "final": 0.92, "semi": 3.02, "qf": 9.02, "r16": 23.15, "r32": 69.67},
-                            {"pos": 30, "team": "Coreia do Sul", "flag": "🇰🇷", "champ": 0.25, "final": 0.84, "semi": 2.79, "qf": 9.62, "r16": 31.72, "r32": 73.79},
-                            {"pos": 31, "team": "Egito", "flag": "🇪🇬", "champ": 0.25, "final": 0.91, "semi": 2.61, "qf": 9.05, "r16": 27.94, "r32": 66.27},
-                            {"pos": 32, "team": "Irã", "flag": "🇮🇷", "champ": 0.24, "final": 0.72, "semi": 2.99, "qf": 10.42, "r16": 29.77, "r32": 68.44},
-                            {"pos": 33, "team": "Tunísia", "flag": "🇹🇳", "champ": 0.2, "final": 0.59, "semi": 1.72, "qf": 5.45, "r16": 15.93, "r32": 44.76},
-                            {"pos": 34, "team": "Costa do Marfim", "flag": "🇨🇮", "champ": 0.19, "final": 0.62, "semi": 2.24, "qf": 8.55, "r16": 23.44, "r32": 62.89},
-                            {"pos": 35, "team": "Tchéquia", "flag": "🇨🇿", "champ": 0.07, "final": 0.3, "semi": 1.33, "qf": 5.3, "r16": 21.51, "r32": 58.51},
-                            {"pos": 36, "team": "Jordânia", "flag": "🇯🇴", "champ": 0.06, "final": 0.26, "semi": 0.77, "qf": 3.27, "r16": 9.22, "r32": 34.67},
-                            {"pos": 37, "team": "Iraque", "flag": "🇮🇶", "champ": 0.06, "final": 0.25, "semi": 0.77, "qf": 2.33, "r16": 8.58, "r32": 24.74},
-                            {"pos": 38, "team": "Suécia", "flag": "🇸🇪", "champ": 0.04, "final": 0.23, "semi": 0.9, "qf": 3.38, "r16": 12.01, "r32": 37.69},
-                            {"pos": 39, "team": "África do Sul", "flag": "🇿🇦", "champ": 0.04, "final": 0.19, "semi": 1.06, "qf": 4.34, "r16": 18.24, "r32": 53.93},
-                            {"pos": 40, "team": "Arábia Saudita", "flag": "🇸🇦", "champ": 0.03, "final": 0.17, "semi": 0.61, "qf": 3.14, "r16": 10.11, "r32": 36.92},
-                            {"pos": 41, "team": "Panamá", "flag": "🇵🇦", "champ": 0.03, "final": 0.18, "semi": 0.99, "qf": 3.41, "r16": 11.45, "r32": 46.3},
-                            {"pos": 42, "team": "Nova Zelândia", "flag": "🇳🇿", "champ": 0.03, "final": 0.22, "semi": 0.99, "qf": 4.24, "r16": 16.17, "r32": 45.97},
-                            {"pos": 43, "team": "Cabo Verde", "flag": "🇨🇻", "champ": 0.02, "final": 0.05, "semi": 0.32, "qf": 1.74, "r16": 6.05, "r32": 25.76},
-                            {"pos": 44, "team": "Bósnia e Herzegovina", "flag": "🇧🇦", "champ": 0.01, "final": 0.14, "semi": 0.45, "qf": 2.61, "r16": 13.86, "r32": 48.13},
-                            {"pos": 45, "team": "Haiti", "flag": "🇭🇹", "champ": 0.0, "final": 0.0, "semi": 0.01, "qf": 0.21, "r16": 1.28, "r32": 9.93},
-                            {"pos": 46, "team": "Catar", "flag": "🇶🇦", "champ": 0.0, "final": 0.0, "semi": 0.11, "qf": 1.24, "r16": 8.62, "r32": 35.27},
-                            {"pos": 47, "team": "Curaçao", "flag": "🇨🇼", "champ": 0.0, "final": 0.01, "semi": 0.06, "qf": 0.52, "r16": 2.87, "r32": 15.45},
-                            {"pos": 48, "team": "Gana", "flag": "🇬🇭", "champ": 0.0, "final": 0.02, "semi": 0.27, "qf": 1.35, "r16": 6.09, "r32": 30.24}
                         ];
                         // -- DATA END --
 
@@ -164,23 +174,28 @@
                                 const hoverBg = isBrasil ? 'rgba(0, 155, 58, 0.25)' : '#f4f8fa';
 
                                 const tr = document.createElement('tr');
+                                tr.className = 'animated-row';
+                                tr.style.animationDelay = `${index * 0.03}s`;
                                 tr.style.borderBottom = isBrasil ? '2px solid #009b3a' : '1px solid #eee';
                                 tr.style.backgroundColor = defaultBg;
-                                tr.style.transition = 'background-color 0.2s';
                                 tr.onmouseover = () => tr.style.backgroundColor = hoverBg;
                                 tr.onmouseout = () => tr.style.backgroundColor = defaultBg;
                                 
+                                const getCellClass = (colIdx) => {
+                                    return currentSortCol === colIdx ? 'number-cell sorted-column' : 'number-cell';
+                                };
+
                                 tr.innerHTML = `
                                     <td style="padding: 12px; color: #666;">${item.pos}</td>
                                     <td style="padding: 12px; text-align: left; font-weight: bold; font-family: 'gotham-bold';">
-                                        <span style="font-size: 18px; margin-right: 8px;">${item.flag}</span> ${item.team}
+                                        <img src="${item.flag}" class="animated-flag" style="margin-right: 8px; vertical-align: middle;"> ${item.team}
                                     </td>
-                                    <td style="padding: 12px; font-weight: bold; background-color: rgba(255, 215, 0, 0.1); color: #d4aa18;">${formatPercent(item.champ)}</td>
-                                    <td style="padding: 12px; color: #444;">${formatPercent(item.final)}</td>
-                                    <td style="padding: 12px; color: #444;">${formatPercent(item.semi)}</td>
-                                    <td style="padding: 12px; color: #444;">${formatPercent(item.qf)}</td>
-                                    <td style="padding: 12px; color: #444;">${formatPercent(item.r16)}</td>
-                                    <td style="padding: 12px; color: #444;">${formatPercent(item.r32)}</td>
+                                    <td class="${getCellClass(2)}" style="padding: 12px; font-weight: bold;">${formatPercent(item.champ)}</td>
+                                    <td class="${getCellClass(3)}" style="padding: 12px; color: #444;">${formatPercent(item.final)}</td>
+                                    <td class="${getCellClass(4)}" style="padding: 12px; color: #444;">${formatPercent(item.semi)}</td>
+                                    <td class="${getCellClass(5)}" style="padding: 12px; color: #444;">${formatPercent(item.qf)}</td>
+                                    <td class="${getCellClass(6)}" style="padding: 12px; color: #444;">${formatPercent(item.r16)}</td>
+                                    <td class="${getCellClass(7)}" style="padding: 12px; color: #444;">${formatPercent(item.r32)}</td>
                                 `;
                                 tbody.appendChild(tr);
                             });
@@ -202,8 +217,11 @@
                                 let valA = a[key];
                                 let valB = b[key];
                                 if (typeof valA === 'string') {
-                                    return currentSortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                                    let cmp = currentSortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                                    if (cmp === 0 && key !== 'r32') return currentSortAsc ? a.r32 - b.r32 : b.r32 - a.r32;
+                                    return cmp;
                                 } else {
+                                    if (valA === valB && key !== 'r32') return currentSortAsc ? a.r32 - b.r32 : b.r32 - a.r32;
                                     return currentSortAsc ? valA - valB : valB - valA;
                                 }
                             });
@@ -221,11 +239,15 @@
                                 if (!iconSpan) return;
                                 
                                 if (index === currentSortCol) {
-                                    iconSpan.textContent = currentSortAsc ? '↑' : '↓';
+                                    iconSpan.textContent = currentSortAsc ? 'arrow_upward' : 'arrow_downward';
                                     iconSpan.style.opacity = '1';
+                                    th.classList.add('sorted-column');
+                                    th.style.borderBottom = '3px solid #ffd700';
                                 } else {
-                                    iconSpan.textContent = '↕';
+                                    iconSpan.textContent = 'swap_vert';
                                     iconSpan.style.opacity = '0.5';
+                                    th.classList.remove('sorted-column');
+                                    th.style.borderBottom = '';
                                 }
                             });
                         }
@@ -236,10 +258,11 @@
                             renderTable(filtered);
                         });
 
-                        // Initial Sort (by pos asc)
-                        currentSortCol = 0;
-                        currentSortAsc = true;
+                        // Initial Sort (by Campeão desc)
+                        currentSortCol = 2;
+                        currentSortAsc = false;
                         
+                        data.sort((a, b) => b.champ - a.champ);
                         renderTable(data);
                         updateHeaders();
                     </script>                    
