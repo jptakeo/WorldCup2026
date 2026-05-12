@@ -840,11 +840,20 @@ def simular_copa_2026(
                 rho_exp = rho.reshape(-1, 1) if usa_dixon_coles else None
 
                 ga, gb = simular_jogos(la, lb, rho_exp, n_sim)
+                # prob_t1 = np.mean(ga > gb) * 100
+                # prob_t2 = np.mean(gb > ga) * 100
                 prob_t1 = np.mean(ga > gb) * 100
+                prob_draw = np.mean(ga == gb) * 100
                 prob_t2 = np.mean(gb > ga) * 100
 
-                winner = t1 if prob_t1 >= prob_t2 else t2
-                loser = t2 if prob_t1 >= prob_t2 else t1
+                # NEW: Total chance to advance = Win in 90 mins + (Draw in 90 mins * 50% chance in ET/Pens)
+                prob_adv_t1 = prob_t1 + (prob_draw * 0.5)
+                prob_adv_t2 = 100 - prob_adv_t1
+
+                # winner = t1 if prob_t1 >= prob_t2 else t2
+                # loser = t2 if prob_t1 >= prob_t2 else t1
+                winner = t1 if prob_adv_t1 >= prob_adv_t2 else t2
+                loser = t2 if winner == t1 else t1
 
             next_matches_teams.append(winner)
             next_matches_losers.append(loser)
@@ -858,9 +867,9 @@ def simular_copa_2026(
                     "order": order_map[match_id],
                     "id": match_id,
                     "home_team": t1,
-                    "prob_home": prob_t1,
+                    "prob_home": prob_adv_t1,
                     "away_team": t2,
-                    "prob_away": prob_t2,
+                    "prob_away": prob_adv_t2,
                     "winner": winner_side,
                 }
             )
