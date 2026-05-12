@@ -303,8 +303,24 @@ def build_stage_dataframe(
     return df
 
 
+def get_flags():
+    flags = {}
+    try:
+        with open('docs/images/flags/flag.csv', 'r', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            header = next(reader)
+            col_pt = header.index([h for h in header if 'country_pt' in h][0])
+            col_svg = header.index([h for h in header if 'svg_github' in h][0])
+            for row in reader:
+                flags[row[col_pt].strip()] = row[col_svg].strip()
+    except Exception as e:
+        print("Could not load flags", e)
+    return flags
+
+FLAGS = get_flags()
+
 def get_flag(team_name):
-    return FLAG_MAPPING.get(team_name, "🏳️")
+    return FLAGS.get(team_name, "🏳️")
 
 
 def update_html_from_summary(
