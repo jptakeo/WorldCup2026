@@ -723,12 +723,11 @@ L.tileLayer(
 /* =========================
    GEOJSON
 ========================= */
-
 fetch("https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json")
 .then(r => r.json())
 .then(world => {
 
-    L.geoJSON(world,{
+    const geojson = L.geoJSON(world, {
 
         style: feature => {
 
@@ -737,81 +736,83 @@ fetch("https://raw.githubusercontent.com/johan/world.geo.json/master/countries.g
             );
 
             return {
-
                 fillColor: found
                     ? getColor(found.campanha)
                     : "#e5e7eb",
 
-                weight:0.7,
-                opacity:1,
-                color:"#ffffff",
-                fillOpacity:1
+                weight: 0.7,
+                opacity: 1,
+                color: "#ffffff",
+                fillOpacity: 1
             };
         },
 
-onEachFeature: (feature, layer) => {
-    const found = countries.find(c => c.name === feature.properties.name);
-    if (!found) return;
+        onEachFeature: (feature, layer) => {
 
-    const content = `
-        <div class="tp-content">
-            <h3>${found.Selecao}</h3>
-            <b>Melhor campanha:</b> ${found.campanha}<br>
-            <b>Classificação:</b> ${found.classificacao}<br>
-            <b>Continente:</b> ${found.continente}<br>
-            <b>Ano(s):</b> ${found.anos}
-        </div>
-    `;
+            const found = countries.find(
+                c => c.name === feature.properties.name
+            );
 
-    layer.bindTooltip(content, {
-        sticky: true,
-        direction: "auto",
-        opacity: 1,
-        offset: [15, 15] 
-    });
+            if (!found) return;
 
-    layer.on({
-        mouseover: e => {
-            const l = e.target;
+            const content = `
+                <div class="tp-content">
+                    <h3>${found.Selecao}</h3>
 
-            map.closeTooltip(); 
+                    <b>Melhor campanha:</b> ${found.campanha}<br>
+                    <b>Classificação:</b> ${found.classificacao}<br>
+                    <b>Continente:</b> ${found.continente}<br>
+                    <b>Ano(s):</b> ${found.anos}
+                </div>
+            `;
 
-            l.setStyle({
-                weight: 2,
-                color: "#111827",
-                fillOpacity: .92
-            });
+layer.bindTooltip(content, {
+    sticky: false,
+    direction: "auto",
+    opacity: 1,
+    offset: [15, 15]
+});
 
-            if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-                l.bringToFront();
-            }
-        },
+layer.on({
 
-        mouseout: e => {
-            const l = e.target;
-            l.setStyle({
-                weight: .7,
-                color: "#ffffff",
-                fillOpacity: 1
-            });
-            
-        },
+    mouseover: e => {
 
-        mousedown: () => {
-            // Garante que o tooltip suma ao arrastar o mapa
-            map.closeTooltip();
-        },
+        const l = e.target;
 
-        // mousedown: () => {
-        //     layer.closeTooltip();
-        // }
+        l.setStyle({
+            weight: 2,
+            color: "#111827",
+            fillOpacity: 0.92
+        });
 
-    });
-}
+        l.openTooltip();
+    },
+
+    mouseout: e => {
+
+        const l = e.target;
+
+        geojson.resetStyle(l);
+
+        l.closeTooltip();
+    }
+});
+        }
 
     }).addTo(map);
-    
-    
+  
+map.on("dragstart zoomstart", () => {
+
+    geojson.eachLayer(layer => {
+
+        geojson.resetStyle(layer);
+
+        if (layer.closeTooltip) {
+            layer.closeTooltip();
+        }
+    });
+
+});
 
 });
 
