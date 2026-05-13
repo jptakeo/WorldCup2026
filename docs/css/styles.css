@@ -919,13 +919,39 @@ color: red;
 }
 
 .membro-foto a {
-    grid-row: 4;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 10px;
     font-size: 12px;
-    line-height: 1;
-    word-break: break-word;
+    color: #5c84c9;
+    text-decoration: none;
+
+    flex-wrap: wrap;
 }
 
+/* Ícone de email */
+.membro-foto a img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+
+/* Mobile */
+@media (max-width: 768px) {
+    .membro-foto a {
+        font-size: 12px;
+        gap: 5px;
+    }
+
+    .membro-foto a img {
+        width: 18px;
+        height: 18px;
+    }
+}
 
 /* ══════════════════════════════════════
     ESTATÍSTICAS e CHAVEAMENTO 
