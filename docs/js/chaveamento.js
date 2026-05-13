@@ -275,7 +275,7 @@ let MF = null;
 let MT = null;
 
 // Projected champion
-const CHAMP = 'Argentina';
+const CHAMP = 'Espanha';
 
 // Flat list of all matches — used for path lookups
 let ALL = [];
