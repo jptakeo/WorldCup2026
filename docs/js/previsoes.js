@@ -473,7 +473,9 @@ function applyScoreFilters(panel) {
                     <div class="date-dropdown-menu group-dropdown-menu"></div>
                 </div>
             </div>
-
+            <p class="disc groups-prob-note">
+                <span class="groups-prob-note-text"> % = Chance de cada seleção passar da fase de grupos.</span>
+            </p>
             <div class="no-results groups-no-results">Nenhum grupo encontrado com os filtros selecionados.</div>
             `;
 
@@ -690,6 +692,13 @@ function applyScoreFilters(panel) {
 
         const filterbar = panel.querySelector('.groups-filterbar');
         if (filterbar) filterbar.classList.toggle('has-date', mode === 'matches');
+
+        const probNoteText = panel.querySelector('.groups-prob-note-text');
+        if (probNoteText) {
+            probNoteText.textContent = mode === 'matches'
+                ? '% = Chance estimada de cada resultado.'
+                : '% = Chance de cada seleção passar da fase de grupos.';
+        }
 
         // se saiu de "matches", limpa seleção de datas
         if (mode !== 'matches') {
