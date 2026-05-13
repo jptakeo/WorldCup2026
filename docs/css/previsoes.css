@@ -358,7 +358,6 @@ min-width: 980px;
 }
 
 @media (max-width: 768px) {
-@media (max-width: 768px) {
     #panel-bracket {
         overflow-x: hidden;
     }
@@ -396,7 +395,7 @@ min-width: 980px;
         background: #97a6b8;
     }
 }
-}
+
 
 /* Linhas SVG que conectam os cards do chaveamento */
 #bsv {
@@ -1002,7 +1001,7 @@ PROBABILIDADES DE PREVISÃO
 #panel-final  {
     background: var(--panel-bg);
     padding: 20px;
-    min-height: 520px;
+    min-height: 200px;
 }
 
 /* Grade dos cards de placar. */
@@ -1303,7 +1302,7 @@ PROBABILIDADES DE PREVISÃO
 @media (max-width: 1180px) {
     .scorecards-grid,
     .scorecards-grid.scorecards-grid-two {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
@@ -1511,9 +1510,6 @@ PROBABILIDADES DE PREVISÃO
 
 
 @media (max-width: 920px) {
-    .scorecards-grid, .scorecards-grid.scorecards-grid-two{
-        grid-template-columns: 1fr;
-    }
 
     .filterbar {
         /*flex-direction: column;
@@ -1566,6 +1562,10 @@ PROBABILIDADES DE PREVISÃO
         text-align: center;
     }
 
+    .scorecards-grid, .scorecards-grid.scorecards-grid-two{
+        grid-template-columns: 1fr;
+    }
+
     .filterbar.groups-filterbar,
     .filterbar.groups-filterbar.has-date {
     grid-template-columns: 1fr 140px;
@@ -1603,4 +1603,22 @@ PROBABILIDADES DE PREVISÃO
         padding: 0 4px;     /* reduz largura do fundo */
         letter-spacing: 0.5px;
     }
+
+    .placeholder-box {
+    max-width: 560px;
+    margin: 50px auto;
+    }
+
+    /* Título dentro do placeholder. */
+    .placeholder-title {
+        font-size: 18px;
+    }
+    /* Ícone central do placeholder. */
+    .placeholder-icon-wrap {
+        font-size: 24.5px;
+    }
+
+    .placeholder-text {
+    font-size: 12px;
+}
 }

@@ -1,6 +1,6 @@
 // Mapeia cada painel de mata-mata para o texto exibido quando ainda não há confronto definido.
 const PLACEHOLDERS = {
-    'panel-r32': 'das <b>Eliminatórias</b>',
+    'panel-r32': 'da <b>16-avos</b>',
     'panel-oitavas': 'das <b>Oitavas de Final</b>',
     'panel-quartas': 'das <b>Quartas de Final</b>',
     'panel-semis': 'da <b>Semifinal</b>',
