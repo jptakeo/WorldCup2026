@@ -578,11 +578,11 @@ function applyScoreFilters(panel) {
 
                 card.appendChild(row);
 
-                if (position === 2) {
-                    const cut = document.createElement('div');
-                    cut.className = 'g-cut';
-                    card.appendChild(cut);
-                }
+                // if (position === 2) {
+                //     const cut = document.createElement('div');
+                //     cut.className = 'g-cut';
+                //     card.appendChild(cut);
+                // }
             });
 
             grid.appendChild(card);

@@ -1446,7 +1446,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       year: 2022,
       name: "La'eeb",
       img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjO-lnxkfDRwIpw6dsmmuU2zkJcQN8Xfr-hO17IRPDH2KZzJ4SBhXMIvfAvAKcpbW3_Aff3maGAqkuOSFfxvTCFZosmXB09hSNUldtX9bgHV7qhrcxAsRoNA8cAaxpEAcWRxFdNOSjYdbvQc8eRA7x-sXrhakvOAA0jZdPpfWjvTZ17CCWHN_pmP397_A/s300/laeb.png",
-      desc: "Personagem abstrato inspirado no gutra, o tradicional lenço branco do Catar, com olhos e boca expressivos. Flutua no ar e viaja entre mundos paralelos. O nome significa 'jogador super habilidoso' em árabe. Argentina tetracampeã.",
+      desc: "Personagem abstrato inspirado no gutra, o tradicional lenço branco do Catar, com olhos e boca expressivos. Flutua no ar e viaja entre mundos paralelos. O nome significa 'jogador super habilidoso' em árabe. Argentina tricampeã.",
       host: "Catar"
     },
     {
@@ -1652,7 +1652,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     { year: 2026, name: "Trionda Pro", img:"images/wc-ball-trionda-2026.png", panels: "orbita",desc: "Bola oficial da Copa do Mundo da FIFA 2026. O seu nome e design são inspirados na famosa 'ola' das arquibancadas e na união dos três países-sede: Estados Unidos, México e Canadá. Primeiro Mundial com 48 seleções.", host: "EUA/CAN/MEX" },
     { year: 2022, name: "Al Rihla", img:"https://digitalhub.fifa.com/transform/ce00eb6b-cee2-49df-aeaa-10d4a2e41316/FIFA-World-Cup-Qatar-2022-official-match-ball-Al-Rihla?&io=transform:fill,width:1024&quality=75", panels: "alrihla", desc: "20 painéis de diferentes formatos. Mais rápida da história em voo. Inspirada em barcos e arquitetura do Catar. Argentina tricampeã.", host: "Catar" },
     { year: 2018, name: "Telstar 18",img:"https://digitalhub.fifa.com/transform/07487a6b-1bd8-4850-8c99-239c8de73c65/2018-FIFA-World-Cup-Russia-official-match-ball-Telstar-18?&io=transform:fill,width:1024&quality=75",  panels: "telstar18", desc: "Homenagem ao Telstar original de 1970 com design de pixels digitais em P&B. Primeira bola com chip NFC. França bicampeã.", host: "Rússia" },
-    { year: 2014, name: "Brazuca", img:"https://digitalhub.fifa.com/transform/f3c744d4-b4c0-403d-a461-6fc9fba7f494/2014-FIFA-World-Cup-Brazil-official-match-ball-Brazuca?&io=transform:fill,width:1024&quality=75",   panels: "brazuca", desc: "6 painéis em forma de hélice, a bola mais testada da história (600 pessoas, 3 anos de testes). Cores do Brasil. Alemanha e campeã.", host: "Brasil" },
+    { year: 2014, name: "Brazuca", img:"https://digitalhub.fifa.com/transform/f3c744d4-b4c0-403d-a461-6fc9fba7f494/2014-FIFA-World-Cup-Brazil-official-match-ball-Brazuca?&io=transform:fill,width:1024&quality=75",   panels: "brazuca", desc: "6 painéis em forma de hélice, a bola mais testada da história (600 pessoas, 3 anos de testes). Cores do Brasil. Alemanha tetracampeã.", host: "Brasil" },
     { year: 2010, name: "Jabulani", img:"https://digitalhub.fifa.com/transform/d75d71cf-892a-4547-86d4-143a31fdc3bf/2010-FIFA-World-Cup-South-Africa-official-match-ball-Jabulani?&io=transform:fill,width:1024&quality=75",  panels: "jabulani", desc: "8 painéis em forma de propelina, termocolados. Muito criticada por trajetória instável ('efeito borboleta'). VUVUZELA, WAKA WAKA e o PRIMEIRO TÍTULO ESPANHOL.", host: "África do Sul" },
     { year: 2006, name: "Teamgeist", img:"https://digitalhub.fifa.com/transform/44bb6dab-2512-479c-a5c0-8fe78bc1ff2e/2006-FIFA-World-Cup-Germany-official-match-ball-Teamgeist?&io=transform:fill,width:1024&quality=75",  panels: "teamgeist", desc: "Apenas 14 painéis termocolados (sem costura), inspirado no movimento de hélice. Mais esférica da história até então. Itália campeã, Zidane dá uma cabeçada.", host: "Alemanha" },
     { year: 2002, name: "Fevernova", img:"https://digitalhub.fifa.com/transform/a557b04b-09ac-447f-91de-238828bd4435/2002-FIFA-World-Cup-Japan-South-Korea-official-match-ball-Fevernova?&io=transform:fill,width:1024&quality=75", panels: "fevernova", desc: "Design em ondas laranja, vermelhas e douradas inspirado em motivos asiáticos. Criticada pelos goleiros por trajetória imprevisível. Brasil pentacampeão.", host: "Coreia/Japão" },
@@ -1771,7 +1771,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     {
       year: 1930, era: '1930-1950', 
       img:"images\\shirts\\wc-shirt-1930.png",
-      desc: 'Camisa branca com gola em V. O Brasil usava branco antes do amarelo se tornar padrão, após o trauma de 1950.', kit: 'away'
+      desc: 'Foi o uniforme usado na primeira Copa do Mundo, realizada no Uruguai. Em relação ao modelo anterior, houve uma mudança na gola da camisa e no escudo da CBD (Confederação Brasileira de Desportos), que permaneceu sem mudanças significativas até 1967.', kit: 'home'
     },
     {
       year: 1934, era: '1930-1950', 
@@ -1783,31 +1783,31 @@ document.addEventListener('DOMContentLoaded',()=>{
     {
       year: 1938, era: '1930-1950',
       img:"images\\shirts\\wc-shirt-1938.png",
-      desc: 'Camisa branca com detalhes verdes. Copa da França — Brasil ficou em 3º lugar, com Leônidas artilheiro.', kit: 'away'
+      desc: 'A seleção brasileira inovou na gola de sua já tradicional camisa branca, os cadarços das copas anteriores deram lugar a um modelo em "V". Copa da França — Brasil ficou em 3º lugar, com Leônidas artilheiro.', kit: 'home'
     },
     {
       year: 1950, era: '1930-1950',
       img:"images\\shirts\\wc-shirt-1950.png",
-      desc: 'Camisa branca — o Brasil perdeu a final (Maracanazo) com essa camisa. Foi o trauma que levou à adoção do amarelo.', kit: 'away'
+      desc: 'Para a primeira Copa do Mundo em casa, a Seleção mudou mais uma vez a gola da camisa, usando o modelo "polo". A seleção perdeu a final para o Uruguai no Maracanã, no episódio conhecido como Maracanazo. O trauma da derrota levou à adoção definitiva da camisa amarela.', kit: 'home'
     },
     {
       year: 1954, era: '1954-1965', 
       img:"images\\shirts\\wc-shirt-1954.png",
-      desc: 'Primeira vez com amarelo! A nova camisa, desenhada pelo artista Aldyr Garcia Schlee, surge após o trauma de 1950.', kit: 'home'
+      desc: 'Primeira vez com a amarelinha! A camisa canarinho da Seleção foi ideia do jornalista e desenhista Aldyr Schlee, que venceu um concurso promovido em 1953 pelo jornal carioca “Correio da Manhã". Sua estreia foi nas eliminatórias da Copa daquele ano e marcou o início de um vitorioso legado.', kit: 'home'
     },
     {
       year: 1958, era: '1954-1965', img:"images\\shirts\\wc-shirt-1958.png",
-      desc: 'Com a camisa amarela, Pelé com 17 anos marca seu primeiro gol na Copa. Brasil Campeão na Suécia.', kit: 'home'
+      desc: 'Com a camisa amarela, Pelé com 17 anos marca seu primeiro gol na Copa. Brasil Campeão na Suécia. A Seleção usou a amarelinha na maior parte da campanha do primeiro título, mas a taça foi conquistada de azul. No improviso: como a Suécia também atuava de amarelo, o chefe da delegação, Paulo Machado de Carvalho, comprou camisas azuis na véspera da final e motivou os atletas dizendo que era a cor do manto de Nossa Senhora Aparecida.', kit: 'home'
     },
     {
       year: 1962, era: '1954-1965', 
       img:"images\\shirts\\wc-shirt-1962.png",
-      desc: 'Brasil Bicampeão no Chile. Garrincha assume o protagonismo após lesão de Pelé na fase de grupos.', kit: 'home'
+      desc: 'Brasil bicampeão no Chile. Foi a terceira Copa do Mundo com o mesmo modelo da camisa canarinho, que parecia dar sorte. Após a lesão de Pelé ainda na fase de grupos, Garrincha assumiu o protagonismo da equipe, e o capitão Mauro ergueu a taça usando a amarelinha.', kit: 'home'
     },
     {
       year: 1966, era: '1954-1965', 
       img:"images\\shirts\\wc-shirt-1966.png",
-      desc: 'Eliminação precoce na fase de grupos pela primeira vez. Pelé sofre muitas faltas e jura não jogar mais Copas.', kit: 'home'
+      desc: 'Na Copa do Mundo daquele ano, na Inglaterra, o primeiro modelo da camisa amarela foi usada pela última vez. Eliminação precoce na fase de grupos pela primeira vez. Pelé sofre muitas faltas e jura não jogar mais Copas.', kit: 'home'
     },
     {
       year: 1970, era: '1970-1982', 
@@ -1817,60 +1817,60 @@ document.addEventListener('DOMContentLoaded',()=>{
     {
       year: 1974, era: '1970-1982', 
       img:"images\\shirts\\wc-shirt-1974.png",
-      desc: 'Geração pós-1970, 4º lugar. Rivelino e Zico presentes. Camisa com gola V ajustada.', kit: 'home'
+      desc: 'Geração pós-1970, 4º lugar. Rivelino e Zico presentes.', kit: 'home'
     },
     {
       year: 1978, era: '1970-1982', img:"images\\shirts\\wc-shirt-1978.png",
-      desc: 'Brasil fica em 3º lugar, invicto no torneio. Zico, Rivellino, Roberto Dinamite. Controverso 3x0 sobre Polônia.', kit: 'home'
+      desc: 'Pela primeira vez, a CBD (Confederação Brasileira de Desporto) assinou com uma fornecedora de material esportivo e exibiu as três listras da Adidas na manga. Brasil fica em 3º lugar, "invicto" no torneio. Zico, Rivellino, Roberto Dinamite.', kit: 'home'
     },
     {
       year: 1982, era: '1970-1982', img:"images\\shirts\\wc-shirt-1982.png",
-      desc: 'A camisa mais amada da história do Brasil! Listras verdes nas mangas. Seleção de Zico, Sócrates, Falcão — eliminada pela Itália de Rossi.', kit: 'home'
+      desc: 'A principal mudança é o novo escudo da CBF, que ganhou o desenho da Taça Jules Rimet após concurso na Escola de Belas Artes, no Rio. Para burlar regra da Fifa, o ramo de café foi incluído dentro do símbolo. A inscrição "Brasil" passou a ser adotada abaixo do escudo. Seleção de Zico, Sócrates, Falcão — eliminada pela Itália de Rossi.', kit: 'home'
     },
     {
       year: 1986, era: '1986-1994', 
       img:"images\\shirts\\wc-shirt-1986.png",
-      desc: 'Listras verdes finas nas mangas. Eliminados pela França nos pênaltis. Zico perde o pênalti. Sócrates também.', kit: 'home'
+      desc: 'A gola polo voltou a ser usada na camisa. Pela primeira vez a marca do fornecedor do material apareceu na parte frontal. Eliminados pela França nos pênaltis. Zico perde o pênalti. Sócrates também.', kit: 'home'
     },
     {
       year: 1990, era: '1986-1994',   img:"images\\shirts\\wc-shirt-1990.png",
-      desc: 'Camisa com listras verdes nas mangas. Eliminados pela Argentina de Maradona no jogo que ficou famoso pelo gol de Caniggia.', kit: 'home'
+      desc: 'A seleção brasileira manteve a gola polo da edição anterior, mas mudou o corte "V", deixando o modelo mais fechado na altura do pescoço. Foi a última Copa com o novo símbolo da CBF. Eliminados pela Argentina de Maradona no jogo que ficou famoso pelo gol de Caniggia.', kit: 'home'
     },
     {
       year: 1994, era: '1986-1994',   img:"images\\shirts\\wc-shirt-1994.png",
-      desc: 'Tetracampeão! Romário e Bebeto. Baggio perde o pênalti. Copa dos EUA. Camisa com detalhes verdes nas mangas e ombros.', kit: 'home'
+      desc: 'Tetracampeão! Para a Copa da conquista do tetra, a camisa ganhou símbolos da CBF em grandes marcas d\'água que remetiam ao tricampeonato mundial.  Romário e Bebeto. Baggio perde o pênalti. Copa dos EUA.', kit: 'home'
     },
     {
       year: 1998, era: '1998-2006',   img:"images\\shirts\\wc-shirt-1998.png",
-      desc: 'Camisa com detalhe azul. Vice-campeão — Brasil perde a final para a França. Ronaldo joga doente — o episódio do desmaio.', kit: 'home'
+      desc: 'Em 1997, a Nike entrou no lugar da Umbro. Para a Copa do Mundo na França, em 1998, a empresa fez uma camisa simples, com uma listra grossa na manga acompanhada de duas mais finas. Quatro estrelas foram colocadas acima do escudo. Vice-campeão — Brasil perde a final para a França. Ronaldo joga doente — o episódio do desmaio.', kit: 'home'
     },
     {
       year: 2002, era: '1998-2006',   img:"images\\shirts\\wc-shirt-2002.png",
-      desc: 'PENTACAMPEÃO! Ronaldo ressurge, marca 8 gols. Ronaldinho, Rivaldo. Camisa sem gola, com detalhe verde.', kit: 'home'
+      desc: 'PENTACAMPEÃO! Ronaldo ressurge, marca 8 gols. Ronaldinho, Rivaldo. Camisa sem gola, com detalhes em verde.', kit: 'home'
     },
     {
       year: 2006, era: '1998-2006', img:"images\\shirts\\wc-shirt-2006.png",
-      desc: 'Eliminados pela França nas quartas. Ronaldo iguala o recorde de Gerd Müller. Camisa mais simples, sem detalhes.', kit: 'home'
+      desc: 'Camisa mais simples, sem detalhes. Uma pequena abertura na parte frontal da gola é o único detalhe deste modelo da camisa. Eliminados pela França nas quartas. Ronaldo iguala o recorde de Gerd Müller.', kit: 'home'
     },
     {
       year: 2010, era: '2010-2018', img:"images\\shirts\\wc-shirt-2010.png",
-      desc: 'Eliminados pela Holanda nas quartas. Robinho, Kaká. Camisa com ombros verdes e faixa central.', kit: 'home'
+      desc: 'Camisa amarela minimalista com gola redonda verde e uma linha fina verde nos ombros. Eliminados pela Holanda nas quartas. Robinho, Kaká. Camisa com ombros verdes e faixa central.', kit: 'home'
     },
     {
       year: 2014, era: '2010-2018', img:"images\\shirts\\wc-shirt-2014.png",
-      desc: 'Eliminação dolorosa: 7x1 para a Alemanha. Neymar se machuca nas quartas. 4º lugar em casa', kit: 'home'
+      desc: 'A amarelinha da Copa em casa ganhou gola em formato "V" e manteve a simplicidade. Porém, a inscrição "Brasil" abaixo do escudo foi retirada. Neymar se machuca nas quartas. 4º lugar em casa', kit: 'home'
     },
     {
       year: 2018, era: '2010-2018', img:"images\\shirts\\wc-shirt-2018.png",
-      desc: 'Eliminados pela Bélgica nas quartas. Neymar lidera a equipe. Camisa com detalhes azuis e verde nas laterais.', kit: 'home'
+      desc: 'Camisa amarela em tom vibrante (\'Samba Gold\') com ranhuras sutis nas mangas e gola com detalhe em azul na nuca. Eliminados pela Bélgica nas quartas. Neymar, Philippe Coutinho.', kit: 'home'
     },
     {
       year: 2022, era: '2022-2026', img:"images\\shirts\\wc-shirt-2022.png",
-      desc: 'Eliminados pela Croácia nas quartas (pênaltis). Neymar marca gol olímpico. Copa do Catar. Camisa com trama especial amarela e verde.', kit: 'home'
+      desc: 'Camisa amarela clara com estampa de \'onça-pintada\' em marca d\'água e gola verde com botão azul. Eliminados pela Croácia nas quartas (pênaltis). Neymar marca gol olímpico. Copa do Catar. ', kit: 'home'
     },
     {
       year: 2026, era: '2022-2026', img:"images\\shirts\\wc-shirt-2026.png",
-      desc: 'Copa do Mundo nos EUA, México e Canadá. Primeira Copa com 48 seleções. A busca pelo hexacampeonato.', kit: 'home'
+      desc: 'Camisa com visual moderno e detalhes em verde nas mangas e na gola, combinando tradição e elementos contemporâneos. Copa do Mundo nos EUA, México e Canadá. Primeira Copa com 48 seleções. A busca pelo hexacampeonato.', kit: 'home'
     },
   ];
 
