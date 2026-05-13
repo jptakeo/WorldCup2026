@@ -1622,3 +1622,77 @@ PROBABILIDADES DE PREVISÃO
     font-size: 12px;
 }
 }
+
+@media (max-width: 450px) {
+
+    #panel-grupos,
+    #panel-r32,
+    #panel-oitavas,
+    #panel-quartas,
+    #panel-semis,
+    #panel-final {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+        .score-card {
+        padding: 12px 8px 10px;
+    }
+
+    .score-card-top {
+        grid-template-columns: 44px 1fr 44px;
+        column-gap: 6px;
+    }
+
+    .score-flag {
+        width: 40px;
+        height: 28px;
+    }
+
+    .score-main-result {
+        font-size: 26px;
+    }
+
+    .score-columns {
+        gap: 5px;
+    }
+
+    .score-outcome-card {
+        min-width: 0;
+        padding: 7px 5px 6px;
+    }
+
+    .score-outcome-title {
+        font-size: 9px;
+        line-height: 1.05;
+        min-height: 24px;
+        word-break: normal;
+        overflow-wrap: anywhere;
+    }
+
+    .score-row {
+        grid-template-columns: 20px minmax(18px, 1fr) 24px;
+        column-gap: 3px;
+    }
+
+    .score-label {
+        font-size: 7px;
+    }
+
+    .score-value {
+        font-size: 6.5px;
+    }
+
+    .score-total {
+        padding: 0 5px;
+        font-size: 7px;
+    }
+
+    .score-total.tall,
+    .score-total.tallest {
+        height: auto;
+        min-height: 18px;
+        padding-top: 3px;
+        padding-bottom: 3px;
+    }
+}
