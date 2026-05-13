@@ -442,7 +442,7 @@ def simular_copa_2026(
                 "date": match_date,
                 "home_win": np.mean(g1_g > g2_g) * 100,
                 "draw": np.mean(g1_g == g2_g) * 100,
-                "away_win": np.mean(g1_g < g2_g) * 100,
+                "away_win": 100 - (np.mean(g1_g > g2_g) * 100 + np.mean(g1_g == g2_g) * 100)
             }
             for i in range(5):
                 for j in range(5):
