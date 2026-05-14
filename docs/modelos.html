@@ -66,7 +66,7 @@
 
                         <p>
                             A qualidade de uma equipe poderá ser representada por duas variáveis principais:
-                            <strong>Força de Ataque</strong> e <strong>Força de Defesa</strong>. A previsão do número de gols surge da relação entre o ataque de uma equipe e a defesa da adversária, além de considerar um efeito médio aplicado às duas seleções.
+                            <strong>Força de Ataque</strong> e <strong>Força de Defesa</strong>. A previsão do número de gols surge da relação entre o ataque de uma equipe e a defesa do adversário, além de considerar um efeito médio aplicado às duas seleções.
                             Trabalhamos com duas famílias de modelos:
                             <ul>
                                 <li> O modelo de <strong>Poisson</strong> assume que os gols marcados por cada equipe seguem uma distribuição de Poisson. Ele trata os gols do time da casa e do time visitante como eventos independentes, o que simplifica a modelagem.</li>
@@ -83,13 +83,12 @@
                         </p>
                         <p>
                             As inferências são feitas em um ambiente <strong>Bayesiano</strong>, enquanto as simulações utilizam o método de <strong>Monte Carlo</strong>.
-                            O torneio completo é reproduzido no computador com todas as regras oficiais da Copa do Mundo (incluindo sistema de pontos e critérios de desempate) e simulado 10.000 vezes.
+                            O torneio completo é reproduzido no computador com todas as regras oficiais da Copa do Mundo (incluindo sistema de pontos e critérios de desempate) e simulado 100.000 vezes.
                             Em jogos eliminatórios empatados, o desempate é tratado como uma probabilidade simples de 50/50.
                         </p>
                         <p> Também foi realizada uma etapa de <strong>seleção e validação de modelos</strong> com base no desempenho obtido nas duas últimas edições da Copa do Mundo.
                             A partir dessa análise comparativa, o modelo de Poisson foi escolhido como base para a produção dos resultados finais, por apresentar o melhor desempenho preditivo agregado.
                             A partir dessas simulações, calculamos as <strong>chances</strong> percentuais de cada seleção alcançar cada fase do torneio. 
-                            Por fim, escolhemos o modelo final com base no desempenho preditivo obtido nas duas últimas edições da Copa do Mundo.
                         </p>
 
 			            <p> As probabilidades dos placares dos jogos da Copa podem ser visualizados nas seguintes páginas:
