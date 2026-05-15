@@ -680,7 +680,7 @@ const map = L.map("map", {
   maxBounds: [[-85, -180], [85, 180]],
   maxBoundsViscosity: 1.0,
   tap: true
-}).setView([20, 10], 1.8);
+}).setView([25, 20], 1.2);
 
 
 /* =========================
