@@ -1,871 +1,832 @@
-
-
 /* =========================
-   DADOS
+   DADOS — Copa do Mundo FIFA
+   Atualizado até 2022 (80 seleções)
+   Fonte: FIFA / Wikipédia
 ========================= */
 const countries = [
 
-/* CAMPEÕES */
+/* ── CAMPEÕES ── */
 
 {
-name:"Brazil",
-Selecao:"Brasil",
-campanha:"Campeão",
-classificacao:1,
-continente:"América do Sul",
-anos:"1958, 1962, 1970, 1994, 2002"
+  name: "Brazil",
+  Selecao: "Brasil",
+  campanha: "Campeão",
+  aparicoes: 22,
+  continente: "América do Sul",
+  anos: "1958, 1962, 1970, 1994, 2002"
 },
-
 {
-name:"Germany",
-Selecao:"Alemanha",
-campanha:"Campeão",
-classificacao:1,
-continente:"Europa",
-anos:"1954, 1974, 1990, 2014"
+  name: "Germany",
+  Selecao: "Alemanha",
+  campanha: "Campeão",
+  aparicoes: 20,
+  continente: "Europa",
+  anos: "1954, 1974, 1990, 2014"
 },
-
 {
-name:"Italy",
-Selecao:"Itália",
-campanha:"Campeão",
-classificacao:1,
-continente:"Europa",
-anos:"1934, 1938, 1982, 2006"
+  name: "Italy",
+  Selecao: "Itália",
+  campanha: "Campeão",
+  aparicoes: 18,
+  continente: "Europa",
+  anos: "1934, 1938, 1982, 2006"
 },
-
 {
-name:"Argentina",
-Selecao:"Argentina",
-campanha:"Campeão",
-classificacao:1,
-continente:"América do Sul",
-anos:"1978, 1986, 2022"
+  name: "Argentina",
+  Selecao: "Argentina",
+  campanha: "Campeão",
+  aparicoes: 18,
+  continente: "América do Sul",
+  anos: "1978, 1986, 2022"
 },
-
 {
-name:"France",
-Selecao:"França",
-campanha:"Campeão",
-classificacao:1,
-continente:"Europa",
-anos:"1998, 2018"
+  name: "France",
+  Selecao: "França",
+  campanha: "Campeão",
+  aparicoes: 16,
+  continente: "Europa",
+  anos: "1998, 2018"
 },
-
 {
-name:"Uruguay",
-Selecao:"Uruguai",
-campanha:"Campeão",
-classificacao:1,
-continente:"América do Sul",
-anos:"1930, 1950"
+  /* GeoJSON representa Reino Unido inteiro; exibe dados da Inglaterra */
+  name: "United Kingdom",
+  Selecao: "Inglaterra",
+  campanha: "Campeão",
+  aparicoes: 16,
+  continente: "Europa",
+  anos: "1966"
 },
-
 {
-name:"Spain",
-Selecao:"Espanha",
-campanha:"Campeão",
-classificacao:1,
-continente:"Europa",
-anos:"2010"
+  name: "Spain",
+  Selecao: "Espanha",
+  campanha: "Campeão",
+  aparicoes: 16,
+  continente: "Europa",
+  anos: "2010"
 },
-
 {
-name:"Romania",
-Selecao:"Romênia",
-campanha:"Quartas de Final",
-classificacao:6,
-continente:"Europa",
-anos:"1994"
+  name: "Uruguay",
+  Selecao: "Uruguai",
+  campanha: "Campeão",
+  aparicoes: 14,
+  continente: "América do Sul",
+  anos: "1930, 1950"
 },
+
+/* ── VICE-CAMPEÕES ── */
 
+{
+  name: "Netherlands",
+  Selecao: "Holanda",
+  campanha: "Vice-campeão",
+  aparicoes: 11,
+  continente: "Europa",
+  anos: "1974, 1978, 2010"
+},
+{
+  name: "Czech Republic",
+  Selecao: "Rep. Tcheca / Tchecoslováquia",
+  campanha: "Vice-campeão",
+  aparicoes: 9,
+  continente: "Europa",
+  anos: "1934, 1962 (Tchecoslováquia)"
+},
+{
+  name: "Hungary",
+  Selecao: "Hungria",
+  campanha: "Vice-campeão",
+  aparicoes: 9,
+  continente: "Europa",
+  anos: "1938, 1954"
+},
+{
+  name: "Sweden",
+  Selecao: "Suécia",
+  campanha: "Vice-campeão",
+  aparicoes: 12,
+  continente: "Europa",
+  anos: "1958"
+},
 {
-name:"England",
-Selecao:"Inglaterra",
-campanha:"Campeão",
-classificacao:1,
-continente:"Europa",
-anos:"1966"
+  name: "Croatia",
+  Selecao: "Croácia",
+  campanha: "Vice-campeão",
+  aparicoes: 6,
+  continente: "Europa",
+  anos: "2018 (vice), 2022 (3°)"
 },
 
-/* VICE */
+/* ── SEMIFINAL / 3° e 4° LUGAR ── */
 
 {
-name:"Netherlands",
-Selecao:"Holanda",
-campanha:"Vice-campeão",
-classificacao:2,
-continente:"Europa",
-anos:"1974, 1978, 2010"
+  name: "Belgium",
+  Selecao: "Bélgica",
+  campanha: "Semifinal",
+  aparicoes: 14,
+  continente: "Europa",
+  anos: "2018 (3°)"
 },
-
 {
-name:"Croatia",
-Selecao:"Croácia",
-campanha:"Vice-campeão",
-classificacao:2,
-continente:"Europa",
-anos:"2018"
+  name: "Poland",
+  Selecao: "Polônia",
+  campanha: "Semifinal",
+  aparicoes: 9,
+  continente: "Europa",
+  anos: "1974, 1982 (3°)"
 },
-
 {
-name:"Hungary",
-Selecao:"Hungria",
-campanha:"Vice-campeão",
-classificacao:2,
-continente:"Europa",
-anos:"1938, 1954"
+  name: "Portugal",
+  Selecao: "Portugal",
+  campanha: "Semifinal",
+  aparicoes: 8,
+  continente: "Europa",
+  anos: "1966 (3°)"
 },
-
 {
-name:"Sweden",
-Selecao:"Suécia",
-campanha:"Vice-campeão",
-classificacao:2,
-continente:"Europa",
-anos:"1958"
+  name: "United States of America",
+  Selecao: "Estados Unidos",
+  campanha: "Semifinal",
+  aparicoes: 11,
+  continente: "América do Norte",
+  anos: "1930 (3°)"
 },
-
 {
-name:"Norway",
-Selecao:"Noruega",
-campanha:"Fase de Grupos",
-classificacao:15,
-continente:"Europa",
-anos:"1938,1998"
+  name: "Chile",
+  Selecao: "Chile",
+  campanha: "Semifinal",
+  aparicoes: 9,
+  continente: "América do Sul",
+  anos: "1962 (3°)"
 },
-
 {
-name:"Czech Republic",
-Selecao:"República Tcheca",
-campanha:"Vice-campeão",
-classificacao:2,
-continente:"Europa",
-anos:"1934, 1962 (Tchecoslováquia)"
+  name: "Austria",
+  Selecao: "Áustria",
+  campanha: "Semifinal",
+  aparicoes: 7,
+  continente: "Europa",
+  anos: "1954 (3°)"
 },
-
-/* SEMIFINAL */
-
 {
-name:"Poland",
-Selecao:"Polônia",
-campanha:"Semifinal",
-classificacao:3,
-continente:"Europa",
-anos:"1974, 1982"
+  name: "Turkey",
+  Selecao: "Turquia",
+  campanha: "Semifinal",
+  aparicoes: 2,
+  continente: "Europa / Ásia",
+  anos: "2002 (3°)"
 },
-
 {
-name:"Belgium",
-Selecao:"Bélgica",
-campanha:"Semifinal",
-classificacao:3,
-continente:"Europa",
-anos:"2018"
+  /* FIFA considera Sérvia sucessora da Iugoslávia */
+  name: "Serbia",
+  Selecao: "Sérvia / Iugoslávia",
+  campanha: "Semifinal",
+  aparicoes: 13,
+  continente: "Europa",
+  anos: "1930, 1962 (Iugoslávia, 4°)"
 },
-
 {
-name:"Portugal",
-Selecao:"Portugal",
-campanha:"Semifinal",
-classificacao:3,
-continente:"Europa",
-anos:"1966"
+  /* FIFA considera Rússia sucessora da URSS */
+  name: "Russia",
+  Selecao: "Rússia / URSS",
+  campanha: "Semifinal",
+  aparicoes: 11,
+  continente: "Europa",
+  anos: "1966 (URSS, 4°)"
 },
-
 {
-name:"United States of America",
-Selecao:"Estados Unidos",
-campanha:"Semifinal",
-classificacao:3,
-continente:"América do Norte",
-anos:"1930"
+  name: "Bulgaria",
+  Selecao: "Bulgária",
+  campanha: "Semifinal",
+  aparicoes: 7,
+  continente: "Europa",
+  anos: "1994 (4°)"
 },
-
 {
-name:"Canada",
-Selecao:"Canadá",
-campanha:"Fase de Grupos",
-classificacao:24,
-continente:"América do Norte",
-anos:"1986"
+  name: "South Korea",
+  Selecao: "Coreia do Sul",
+  campanha: "Semifinal",
+  aparicoes: 11,
+  continente: "Ásia",
+  anos: "2002 (4°)"
 },
-
 {
-name:"Honduras",
-Selecao:"Honduras",
-campanha:"Fase de Grupos",
-classificacao:18,
-continente:"América Central",
-anos:"1982"
+  name: "Morocco",
+  Selecao: "Marrocos",
+  campanha: "Semifinal",
+  aparicoes: 6,
+  continente: "África",
+  anos: "2022 (4°)"
 },
 
+/* ── QUARTAS DE FINAL ── */
+
 {
-name:"Haiti",
-Selecao:"Haiti",
-campanha:"Fase de Grupos",
-classificacao:15,
-continente:"América Central",
-anos:"1974"
+  name: "Mexico",
+  Selecao: "México",
+  campanha: "Quartas de Final",
+  aparicoes: 17,
+  continente: "América do Norte",
+  anos: "1970, 1986"
 },
-
 {
-name:"Panama",
-Selecao:"Panamá",
-campanha:"Fase de Grupos",
-classificacao:32,
-continente:"América Central",
-anos:"2018"
+  name: "Romania",
+  Selecao: "Romênia",
+  campanha: "Quartas de Final",
+  aparicoes: 8,
+  continente: "Europa",
+  anos: "1994"
 },
-
 {
-name:"Chile",
-Selecao:"Chile",
-campanha:"Semifinal",
-classificacao:3,
-continente:"América do Sul",
-anos:"1962"
+  name: "Cameroon",
+  Selecao: "Camarões",
+  campanha: "Quartas de Final",
+  aparicoes: 8,
+  continente: "África",
+  anos: "1990"
 },
-
 {
-name:"Bolivia",
-Selecao:"Bolívia",
-campanha:"Fase de Grupos",
-classificacao:12,
-continente:"América do Sul",
-anos:"1930"
+  name: "Switzerland",
+  Selecao: "Suíça",
+  campanha: "Quartas de Final",
+  aparicoes: 12,
+  continente: "Europa",
+  anos: "1934, 1938, 1954"
 },
-
 {
-name:"Austria",
-Selecao:"Áustria",
-campanha:"Semifinal",
-classificacao:3,
-continente:"Europa",
-anos:"1954"
+  name: "Ireland",
+  Selecao: "Irlanda",
+  campanha: "Quartas de Final",
+  aparicoes: 3,
+  continente: "Europa",
+  anos: "1990"
 },
-
 {
-name:"Turkey",
-Selecao:"Turquia",
-campanha:"Semifinal",
-classificacao:3,
-continente:"Europa",
-anos:"2002"
+  name: "North Korea",
+  Selecao: "Coreia do Norte",
+  campanha: "Quartas de Final",
+  aparicoes: 2,
+  continente: "Ásia",
+  anos: "1966"
 },
-
 {
-name:"Greece",
-Selecao:"Grécia",
-campanha:"Oitavas de Final",
-classificacao:13,
-continente:"Europa",
-anos:"2014"
+  name: "Denmark",
+  Selecao: "Dinamarca",
+  campanha: "Quartas de Final",
+  aparicoes: 6,
+  continente: "Europa",
+  anos: "1998"
 },
-
 {
-name:"Bosnia and Herzegovina",
-Selecao:"Bósnia e Herzegovina",
-campanha:"Fase de Grupos",
-classificacao:20,
-continente:"Europa",
-anos:"2014"
+  name: "Ghana",
+  Selecao: "Gana",
+  campanha: "Quartas de Final",
+  aparicoes: 4,
+  continente: "África",
+  anos: "2010"
 },
-
 {
-name:"Serbia",
-Selecao:"Sérvia",
-campanha:"Semifinal",
-classificacao:4,
-continente:"Europa",
-anos:"1930, 1962 (Iugoslávia)"
+  name: "Senegal",
+  Selecao: "Senegal",
+  campanha: "Quartas de Final",
+  aparicoes: 3,
+  continente: "África",
+  anos: "2002"
 },
-
 {
-name:"Russia",
-Selecao:"Rússia",
-campanha:"Semifinal",
-classificacao:4,
-continente:"Europa",
-anos:"1966 (União Soviética)"
+  name: "Colombia",
+  Selecao: "Colômbia",
+  campanha: "Quartas de Final",
+  aparicoes: 6,
+  continente: "América do Sul",
+  anos: "2014"
 },
-
 {
-name:"Bulgaria",
-Selecao:"Bulgária",
-campanha:"Semifinal",
-classificacao:4,
-continente:"Europa",
-anos:"1994"
+  name: "Costa Rica",
+  Selecao: "Costa Rica",
+  campanha: "Quartas de Final",
+  aparicoes: 5,
+  continente: "América Central",
+  anos: "2014"
 },
-
-
 {
-name:"South Korea",
-Selecao:"Coreia do Sul",
-campanha:"Semifinal",
-classificacao:4,
-continente:"Ásia",
-anos:"2002"
+  name: "Peru",
+  Selecao: "Peru",
+  campanha: "Quartas de Final",
+  aparicoes: 5,
+  continente: "América do Sul",
+  anos: "1970, 1978"
 },
-
+{
+  name: "Ukraine",
+  Selecao: "Ucrânia",
+  campanha: "Quartas de Final",
+  aparicoes: 1,
+  continente: "Europa",
+  anos: "2006"
+},
 {
-name:"Morocco",
-Selecao:"Marrocos",
-campanha:"Semifinal",
-classificacao:4,
-continente:"África",
-anos:"2022"
+  name: "Paraguay",
+  Selecao: "Paraguai",
+  campanha: "Quartas de Final",
+  aparicoes: 8,
+  continente: "América do Sul",
+  anos: "2010"
 },
+{
+  name: "Cuba",
+  Selecao: "Cuba",
+  campanha: "Quartas de Final",
+  aparicoes: 1,
+  continente: "América Central / Caribe",
+  anos: "1938"
+},
 
-/* QUARTAS */
+/* ── OITAVAS DE FINAL ── */
 
 {
-name:"North Korea",
-Selecao:"Coreia do Norte",
-campanha:"Quartas de Final",
-classificacao:8,
-continente:"Ásia",
-anos:"1966"
+  name: "Japan",
+  Selecao: "Japão",
+  campanha: "Oitavas de Final",
+  aparicoes: 7,
+  continente: "Ásia",
+  anos: "2002, 2010, 2018, 2022"
 },
-
 {
-name:"Ireland",
-Selecao:"Irlanda",
-campanha:"Quartas de Final",
-classificacao:8,
-continente:"Europa",
-anos:"1990"
+  name: "Nigeria",
+  Selecao: "Nigéria",
+  campanha: "Oitavas de Final",
+  aparicoes: 6,
+  continente: "África",
+  anos: "1994, 1998, 2014"
 },
-
 {
-name:"United Kingdom",
-Selecao:"Inglaterra",
-campanha:"Campeão",
-classificacao:1,
-continente:"Europa",
-anos:"1966"
+  name: "Australia",
+  Selecao: "Austrália",
+  campanha: "Oitavas de Final",
+  aparicoes: 6,
+  continente: "Oceania",
+  anos: "2006, 2022"
 },
-
-
-
 {
-name:"Mexico",
-Selecao:"México",
-campanha:"Quartas de Final",
-classificacao:8,
-continente:"América do Norte",
-anos:"1970, 1986"
+  name: "Algeria",
+  Selecao: "Argélia",
+  campanha: "Oitavas de Final",
+  aparicoes: 4,
+  continente: "África",
+  anos: "2014"
 },
-
 {
-name:"Switzerland",
-Selecao:"Suíça",
-campanha:"Quartas de Final",
-classificacao:8,
-continente:"Europa",
-anos:"1934, 1938, 1954"
+  name: "Saudi Arabia",
+  Selecao: "Arábia Saudita",
+  campanha: "Oitavas de Final",
+  aparicoes: 6,
+  continente: "Ásia",
+  anos: "1994"
 },
-
 {
-name:"Peru",
-Selecao:"Peru",
-campanha:"Quartas de Final",
-classificacao:8,
-continente:"América do Sul",
-anos:"1970, 1978"
+  name: "Ecuador",
+  Selecao: "Equador",
+  campanha: "Oitavas de Final",
+  aparicoes: 4,
+  continente: "América do Sul",
+  anos: "2006"
 },
-
 {
-name:"Denmark",
-Selecao:"Dinamarca",
-campanha:"Quartas de Final",
-classificacao:8,
-continente:"Europa",
-anos:"1998"
+  /* R16 em 1938 (formato eliminatório) e 1998 */
+  name: "Norway",
+  Selecao: "Noruega",
+  campanha: "Oitavas de Final",
+  aparicoes: 3,
+  continente: "Europa",
+  anos: "1938, 1998"
 },
-
 {
-name:"Cameroon",
-Selecao:"Camarões",
-campanha:"Quartas de Final",
-classificacao:8,
-continente:"África",
-anos:"1990"
+  name: "Greece",
+  Selecao: "Grécia",
+  campanha: "Oitavas de Final",
+  aparicoes: 3,
+  continente: "Europa",
+  anos: "2014"
 },
-
 {
-name:"Senegal",
-Selecao:"Senegal",
-campanha:"Quartas de Final",
-classificacao:8,
-continente:"África",
-anos:"2002"
+  name: "Slovakia",
+  Selecao: "Eslováquia",
+  campanha: "Oitavas de Final",
+  aparicoes: 1,
+  continente: "Europa",
+  anos: "2010"
 },
+
+/* ── FASE DE GRUPOS ── */
 
 {
-name:"Ghana",
-Selecao:"Gana",
-campanha:"Quartas de Final",
-classificacao:8,
-continente:"África",
-anos:"2010"
+  /* Escócia: 8 aparições, nunca passou da fase de grupos.
+     Não exibida separadamente pois o GeoJSON agrupa no Reino Unido. */
+  name: "Scotland",
+  Selecao: "Escócia",
+  campanha: "Fase de Grupos",
+  aparicoes: 8,
+  continente: "Europa",
+  anos: "1954, 1958, 1974, 1978, 1982, 1986, 1990, 1998"
 },
-
 {
-name:"Togo",
-Selecao:"Togo",
-campanha:"Fase de Grupos",
-classificacao:30,
-continente:"África",
-anos:"2006"
+  name: "Bolivia",
+  Selecao: "Bolívia",
+  campanha: "Fase de Grupos",
+  aparicoes: 3,
+  continente: "América do Sul",
+  anos: "1930, 1950, 1994"
 },
-
 {
-name:"Ivory Coast",
-Selecao:"Costa do Marfim",
-campanha:"Fase de Grupos",
-classificacao:17,
-continente:"África",
-anos:"2006,2010,2014"
+  name: "Bosnia and Herzegovina",
+  Selecao: "Bósnia e Herzegovina",
+  campanha: "Fase de Grupos",
+  aparicoes: 1,
+  continente: "Europa",
+  anos: "2014"
 },
-
 {
-name:"Paraguay",
-Selecao:"Paraguai",
-campanha:"Quartas de Final",
-classificacao:8,
-continente:"América do Sul",
-anos:"2010"
+  name: "Canada",
+  Selecao: "Canadá",
+  campanha: "Fase de Grupos",
+  aparicoes: 2,
+  continente: "América do Norte",
+  anos: "1986, 2022"
 },
-
 {
-name:"Colombia",
-Selecao:"Colômbia",
-campanha:"Quartas de Final",
-classificacao:8,
-continente:"América do Sul",
-anos:"2014"
+  name: "China",
+  Selecao: "China",
+  campanha: "Fase de Grupos",
+  aparicoes: 1,
+  continente: "Ásia",
+  anos: "2002"
 },
-
 {
-name:"Costa Rica",
-Selecao:"Costa Rica",
-campanha:"Quartas de Final",
-classificacao:8,
-continente:"América Central",
-anos:"2014"
+  /* Competiu como Zaire em 1974; atualmente República Democrática do Congo */
+  name: "Democratic Republic of the Congo",
+  Selecao: "Zaire / R.D. Congo",
+  campanha: "Fase de Grupos",
+  aparicoes: 1,
+  continente: "África",
+  anos: "1974 (Zaire)"
 },
-
 {
-name:"Ukraine",
-Selecao:"Ucrânia",
-campanha:"Quartas de Final",
-classificacao:8,
-continente:"Europa",
-anos:"2006"
+  name: "Egypt",
+  Selecao: "Egito",
+  campanha: "Fase de Grupos",
+  aparicoes: 3,
+  continente: "África",
+  anos: "1934, 1990, 2018"
 },
-
-/* OITAVAS */
-
 {
-name:"Greece",
-Selecao:"Grécia",
-campanha:"Oitavas de Final",
-classificacao:16,
-continente:"Europa",
-anos:"2014"
+  name: "El Salvador",
+  Selecao: "El Salvador",
+  campanha: "Fase de Grupos",
+  aparicoes: 2,
+  continente: "América Central",
+  anos: "1970, 1982"
 },
-
 {
-name:"Japan",
-Selecao:"Japão",
-campanha:"Oitavas de Final",
-classificacao:16,
-continente:"Ásia",
-anos:"2002, 2010, 2018, 2022"
+  name: "Haiti",
+  Selecao: "Haiti",
+  campanha: "Fase de Grupos",
+  aparicoes: 1,
+  continente: "América Central / Caribe",
+  anos: "1974"
 },
-
 {
-name:"Nigeria",
-Selecao:"Nigéria",
-campanha:"Oitavas de Final",
-classificacao:16,
-continente:"África",
-anos:"1994, 1998, 2014"
+  name: "Honduras",
+  Selecao: "Honduras",
+  campanha: "Fase de Grupos",
+  aparicoes: 3,
+  continente: "América Central",
+  anos: "1982, 2010, 2014"
 },
-
 {
-name:"Australia",
-Selecao:"Austrália",
-campanha:"Oitavas de Final",
-classificacao:16,
-continente:"Oceania",
-anos:"2006, 2022"
+  name: "Iceland",
+  Selecao: "Islândia",
+  campanha: "Fase de Grupos",
+  aparicoes: 1,
+  continente: "Europa",
+  anos: "2018"
 },
-
 {
-name:"Algeria",
-Selecao:"Argélia",
-campanha:"Oitavas de Final",
-classificacao:16,
-continente:"África",
-anos:"2014"
+  /* Classificou-se mas desistiu antes de jogar */
+  name: "India",
+  Selecao: "Índia",
+  campanha: "Fase de Grupos",
+  aparicoes: 1,
+  continente: "Ásia",
+  anos: "1950 (desistiu)"
 },
-
 {
-name:"Saudi Arabia",
-Selecao:"Arábia Saudita",
-campanha:"Oitavas de Final",
-classificacao:16,
-continente:"Ásia",
-anos:"1994"
+  /* Competiu como Índias Orientais Holandesas em 1938 */
+  name: "Indonesia",
+  Selecao: "Indonésia",
+  campanha: "Fase de Grupos",
+  aparicoes: 1,
+  continente: "Ásia",
+  anos: "1938 (Índias Orientais Holandesas)"
 },
-
 {
-name:"Ecuador",
-Selecao:"Equador",
-campanha:"Oitavas de Final",
-classificacao:16,
-continente:"América do Sul",
-anos:"2006"
+  name: "Iran",
+  Selecao: "Irã",
+  campanha: "Fase de Grupos",
+  aparicoes: 6,
+  continente: "Ásia",
+  anos: "1978, 1998, 2006, 2014, 2018, 2022"
 },
-
-/* FASE DE GRUPOS */
-
 {
-name:"Egypt",
-Selecao:"Egito",
-campanha:"Fase de Grupos",
-classificacao:"-",
-continente:"África",
-anos:"1934, 1990, 2018"
+  name: "Iraq",
+  Selecao: "Iraque",
+  campanha: "Fase de Grupos",
+  aparicoes: 1,
+  continente: "Ásia",
+  anos: "1986"
 },
-
 {
-name:"Tunisia",
-Selecao:"Tunísia",
-campanha:"Fase de Grupos",
-classificacao:"9",
-continente:"África",
-anos:"1978"
+  name: "Israel",
+  Selecao: "Israel",
+  campanha: "Fase de Grupos",
+  aparicoes: 1,
+  continente: "Ásia",
+  anos: "1970"
 },
-
 {
-name:"Zaïre",
-Selecao:"Zaire",
-campanha:"Fase de Grupos",
-classificacao:"16",
-continente:"África",
-anos:"1974"
+  name: "Ivory Coast",
+  Selecao: "Costa do Marfim",
+  campanha: "Fase de Grupos",
+  aparicoes: 3,
+  continente: "África",
+  anos: "2006, 2010, 2014"
 },
-
 {
-name:"Angola",
-Selecao:"Ângola",
-campanha:"Fase de Grupos",
-classificacao:"23",
-continente:"África",
-anos:"2006"
+  name: "Jamaica",
+  Selecao: "Jamaica",
+  campanha: "Fase de Grupos",
+  aparicoes: 1,
+  continente: "América Central / Caribe",
+  anos: "1998"
 },
-
 {
-name:"South Africa",
-Selecao:"África do Sul",
-campanha:"Fase de Grupos",
-classificacao:"-",
-continente:"África",
-anos:"1998, 2002, 2010"
+  name: "Kuwait",
+  Selecao: "Kuwait",
+  campanha: "Fase de Grupos",
+  aparicoes: 1,
+  continente: "Ásia",
+  anos: "1982"
 },
-
 {
-name:"China",
-Selecao:"China",
-campanha:"Fase de Grupos",
-classificacao:"-",
-continente:"Ásia",
-anos:"2002"
+  name: "New Zealand",
+  Selecao: "Nova Zelândia",
+  campanha: "Fase de Grupos",
+  aparicoes: 2,
+  continente: "Oceania",
+  anos: "1982, 2010"
 },
-
 {
-name:"Qatar",
-Selecao:"Catar",
-campanha:"Fase de Grupos",
-classificacao:"-",
-continente:"Ásia",
-anos:"2022"
+  name: "Panama",
+  Selecao: "Panamá",
+  campanha: "Fase de Grupos",
+  aparicoes: 1,
+  continente: "América Central",
+  anos: "2018"
 },
-
 {
-name:"India",
-Selecao:"Índia",
-campanha:"Fase de Grupos",
-classificacao:"-",
-continente:"Ásia",
-anos:"1950 (Desistiu)"
+  name: "Qatar",
+  Selecao: "Catar",
+  campanha: "Fase de Grupos",
+  aparicoes: 1,
+  continente: "Ásia",
+  anos: "2022"
 },
-
 {
-name:"New Zealand",
-Selecao:"Nova Zelândia",
-campanha:"Fase de Grupos",
-classificacao:"-",
-continente:"Oceania",
-anos:"1982, 2010"
+  name: "Slovenia",
+  Selecao: "Eslovênia",
+  campanha: "Fase de Grupos",
+  aparicoes: 2,
+  continente: "Europa",
+  anos: "2002, 2010"
 },
-
 {
-name:"Indonesia",
-Selecao:"Indonésia",
-campanha:"Fase de Grupos",
-classificacao:"-",
-continente:"Ásia",
-anos:"1938 (Índias Orientais Holandesas)"
+  name: "South Africa",
+  Selecao: "África do Sul",
+  campanha: "Fase de Grupos",
+  aparicoes: 3,
+  continente: "África",
+  anos: "1998, 2002, 2010"
 },
-
+{
+  name: "Togo",
+  Selecao: "Togo",
+  campanha: "Fase de Grupos",
+  aparicoes: 1,
+  continente: "África",
+  anos: "2006"
+},
+{
+  name: "Trinidad and Tobago",
+  Selecao: "Trinidad e Tobago",
+  campanha: "Fase de Grupos",
+  aparicoes: 1,
+  continente: "América do Sul / Caribe",
+  anos: "2006"
+},
+{
+  name: "Tunisia",
+  Selecao: "Tunísia",
+  campanha: "Fase de Grupos",
+  aparicoes: 6,
+  continente: "África",
+  anos: "1978, 1998, 2002, 2006, 2018, 2022"
+},
 {
-name:"Iran",
-Selecao:"Irã",
-campanha:"Fase de Grupos",
-classificacao:"-",
-continente:"Ásia",
-anos:"1978, 1998, 2006, 2014, 2018, 2022"
+  name: "Angola",
+  Selecao: "Angola",
+  campanha: "Fase de Grupos",
+  aparicoes: 1,
+  continente: "África",
+  anos: "2006"
 }
 
 ];
-
 
 
 /* =========================
    CORES
 ========================= */
 
-function getColor(campanha){
-
-    switch(campanha){
-
-        case "Campeão":
-            return "#facc15";
-
-        case "Vice-campeão":
-            return "#4ade80";
-
-        case "Semifinal":
-            return "#fb923c";
-
-        case "Quartas de Final":
-            return "#a78bfa";
-
-        case "Oitavas de Final":
-            return "#60a5fa";
-
-        default:
-            return "#94a3b8";
-    }
+function getColor(campanha) {
+  switch (campanha) {
+    case "Campeão":         return "#ffc45e";   /* âmbar dourado    */
+    case "Vice-campeão":    return "#22c55e";   /* verde esmeralda  */
+    case "Semifinal":       return "#f97316";   /* laranja          */
+    case "Quartas de Final":return "#a855f7";   /* violeta          */
+    case "Oitavas de Final":return "#3b82f6";   /* azul             */
+    default:                return "#7f92aa";   /* cinza (grupos)   */
+  }
 }
+
 
 /* =========================
    MAPA
 ========================= */
 
-// const map = L.map("map",{
-//     zoomControl:true,
-//     attributionControl:false,
-
-//     /* REMOVE repetição */
-//     worldCopyJump:false,
-
-//     /* limita navegação */
-//     maxBounds:[
-//         [-85,-180],
-//         [85,180]
-//     ],
-
-//     maxBoundsViscosity:1.0,
-
-//     /* mobile */
-//     tap:true
-// }).setView([20,0],2);
-
 const map = L.map("map", {
-    zoomControl: true,
-    attributionControl: false,
-    worldCopyJump: false,
-    
-    // CONFIGURAÇÕES PARA VER TUDO:
-    minZoom: 1.3,       // Impede o usuário de diminuir demais
-    maxZoom: 3,
-    maxBounds: [
-        [-85, -180],
-        [85, 180]
-    ],
-    maxBoundsViscosity: 1.0,
-    tap: true
-}).setView([25, 20], 1.2); // Centralizado um pouco mais baixo e com zoom 1.5
+  zoomControl: true,
+  attributionControl: false,
+  worldCopyJump: false,
+  minZoom: 1.3,
+  maxZoom: 5,
+  maxBounds: [[-85, -180], [85, 180]],
+  maxBoundsViscosity: 1.0,
+  tap: true
+}).setView([20, 10], 1.8);
 
 
 /* =========================
-   BASE MAP
+   TILE LAYER (sem rótulos)
 ========================= */
 
 L.tileLayer(
-    "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
-    {
-        subdomains:"abcd",
-        maxZoom:6,
-        minZoom:2,
-
-        /* impede repetição */
-        noWrap:true
-    }
+  "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
+  {
+    subdomains: "abcd",
+    maxZoom: 6,
+    minZoom: 1,
+    noWrap: true
+  }
 ).addTo(map);
+
 
 /* =========================
    GEOJSON
 ========================= */
+
 fetch("https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json")
-.then(r => r.json())
-.then(world => {
+  .then(r => r.json())
+  .then(world => {
 
     const geojson = L.geoJSON(world, {
 
-        style: feature => {
+      style: feature => {
+        const found = countries.find(c => c.name === feature.properties.name);
+        return {
+          fillColor:   found ? getColor(found.campanha) : "#e2e8f0",
+          weight:      0.6,
+          opacity:     1,
+          color:       "#ffffff",
+          fillOpacity: found ? 0.92 : 0.7
+        };
+      },
 
-            const found = countries.find(
-                c => c.name === feature.properties.name
-            );
+      onEachFeature: (feature, layer) => {
+        const found = countries.find(c => c.name === feature.properties.name);
+        if (!found) return;
 
-            return {
-                fillColor: found
-                    ? getColor(found.campanha)
-                    : "#e5e7eb",
+        const badgeColor = getColor(found.campanha);
 
-                weight: 0.7,
-                opacity: 1,
-                color: "#ffffff",
-                fillOpacity: 1
-            };
-        },
+        const isYellow = badgeColor === '#eca90d';
 
-        onEachFeature: (feature, layer) => {
+        const content = `
+          <div style="font-family:'Segoe UI',sans-serif;font-size:11px;line-height:1.3;background:${badgeColor}15;padding:8px;border-radius:6px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid ${badgeColor}22;">
+              <span style="font-weight:700;color:${isYellow ? '#78350f' : '#0f172a'}">${found.Selecao}</span>
+              <span style="background:${badgeColor};color:#fff;padding:1px 6px;border-radius:10px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;">${found.campanha}</span>
+            </div>
+            <table style="width:100%;border-collapse:collapse;font-size:10px;">
+              <tr><td style="color:${isYellow ? '#92400e' : '#475569'}"> Ano(s) </td><td style="font-weight:600;text-align:right;color:#0f172a">${found.anos}</td></tr>
+              <tr><td style="color:${isYellow ? '#92400e' : '#475569'}"> Participou </td><td style="font-weight:700;text-align:right;color:#0f172a">${found.aparicoes}×</td></tr>
+              <tr><td style="color:${isYellow ? '#92400e' : '#475569'}"> Continente </td><td style="font-weight:600;text-align:right;color:#0f172a">${found.continente}</td></tr>
+            </table>
+          </div>
+        `;
 
-            const found = countries.find(
-                c => c.name === feature.properties.name
-            );
 
-            if (!found) return;
-
-            const content = `
-                <div class="tp-content">
-                    <h3>${found.Selecao}</h3>
-
-                    <b>Melhor campanha:</b> ${found.campanha}<br>
-                    <b>Classificação:</b> ${found.classificacao}<br>
-                    <b>Continente:</b> ${found.continente}<br>
-                    <b>Ano(s):</b> ${found.anos}
-                </div>
-            `;
-
-layer.bindTooltip(content, {
-    sticky: false,
-    direction: "auto",
-    opacity: 1,
-    offset: [15, 15]
-});
-
-layer.on({
-
-    mouseover: e => {
-
-        const l = e.target;
-
-        l.setStyle({
-            weight: 2,
-            color: "#111827",
-            fillOpacity: 0.92
+        layer.bindTooltip(content, {
+          sticky: false,
+          direction: "auto",
+          opacity: 1,
+          offset: [12, 0],
+          className: "leaflet-tooltip-custom"
         });
 
-        l.openTooltip();
-    },
-
-    mouseout: e => {
-
-        const l = e.target;
-
-        geojson.resetStyle(l);
-
-        l.closeTooltip();
-    }
-});
-        }
+        layer.on({
+          mouseover: e => {
+            const l = e.target;
+            l.setStyle({
+              weight: 2.5,
+              color: "#1e293b",
+              fillOpacity: 1
+            });
+            l.openTooltip();
+            if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+              l.bringToFront();
+            }
+          },
+          mouseout: e => {
+            const l = e.target;
+            geojson.resetStyle(l);
+            l.closeTooltip();
+          }
+        });
+      }
 
     }).addTo(map);
-  
-map.on("dragstart zoomstart", () => {
 
-    geojson.eachLayer(layer => {
-
+    /* Fecha tooltip e reseta estilo durante navegação */
+    map.on("dragstart zoomstart", () => {
+      geojson.eachLayer(layer => {
         geojson.resetStyle(layer);
-
-        if (layer.closeTooltip) {
-            layer.closeTooltip();
-        }
+        if (layer.closeTooltip) layer.closeTooltip();
+      });
     });
 
-});
+  });
 
-});
 
 /* =========================
    LEGENDA
 ========================= */
 
-const legend = L.control({
-    position:"bottomright"
-});
+const legend = L.control({ position: "bottomright" });
 
-legend.onAdd = function(){
+legend.onAdd = function () {
+  const div = L.DomUtil.create("div", "legend");
 
-    const div = L.DomUtil.create("div","legend");
+  div.innerHTML = `
+    <div class="legend-title">Melhor campanha</div>
 
-    div.innerHTML = `
+    <div class="legend-item">
+      <span class="legend-color" style="background:#f59e0b"></span>
+      Campeão
+    </div>
+    <div class="legend-item">
+      <span class="legend-color" style="background:#22c55e"></span>
+      Vice-campeão
+    </div>
+    <div class="legend-item">
+      <span class="legend-color" style="background:#f97316"></span>
+      Semifinal (3° / 4°)
+    </div>
+    <div class="legend-item">
+      <span class="legend-color" style="background:#a855f7"></span>
+      Quartas de Final
+    </div>
+    <div class="legend-item">
+      <span class="legend-color" style="background:#3b82f6"></span>
+      Oitavas de Final
+    </div>
+    <div class="legend-item">
+      <span class="legend-color" style="background:#94a3b8"></span>
+      Fase de Grupos
+    </div>
+    <div class="legend-item">
+      <span class="legend-color" style="background:#e2e8f0; border:1px solid #cbd5e1"></span>
+      Nunca participou
+    </div>
+  `;
 
-        <div class="legend-title">
-            Melhor campanha
-        </div>
-
-        <div class="legend-item">
-            <span class="legend-color" style="background:#facc15"></span>
-            Campeão
-        </div>
-
-        <div class="legend-item">
-            <span class="legend-color" style="background:#4ade80"></span>
-            Vice-campeão
-        </div>
-
-        <div class="legend-item">
-            <span class="legend-color" style="background:#fb923c"></span>
-            Semifinal
-        </div>
-
-        <div class="legend-item">
-            <span class="legend-color" style="background:#a78bfa"></span>
-            Quartas de Final
-        </div>
-
-        <div class="legend-item">
-            <span class="legend-color" style="background:#60a5fa"></span>
-            Oitavas de Final
-        </div>
-
-        <div class="legend-item">
-            <span class="legend-color" style="background:#94a3b8"></span>
-            Fase de Grupos
-        </div>
-    `;
-
-    return div;
+  return div;
 };
 
 legend.addTo(map);
