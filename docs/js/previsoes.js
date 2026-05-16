@@ -462,8 +462,8 @@ function applyScoreFilters(panel) {
                 </div>
 
                 <div class="groups-mode">
-                    <button type="button" class="groups-mode-btn active" data-mode="games">Grupos</button>
-                    <button type="button" class="groups-mode-btn" data-mode="matches">Partidas</button>
+                    <button type="button" class="groups-mode-btn" data-mode="games">Grupos</button>
+                    <button type="button" class="groups-mode-btn active" data-mode="matches">Partidas</button>
                 </div>
 
                 <div class="date-dropdown group-dropdown">
@@ -483,16 +483,15 @@ function applyScoreFilters(panel) {
             else panel.insertAdjacentHTML('afterbegin', filterHTML);
         }
 
-        // container para "Partidas" (scorecards) — cria uma vez
         if (!panel.querySelector('#groups-scorecards')) {
         grid.insertAdjacentHTML(
             'afterend',
-            `<div id="groups-scorecards" class="scorecards-grid" style="display:none"></div>`
+            `<div id="groups-scorecards" style="display:none"></div>`
         );
         }
 
         // modo default
-        if (!panel.dataset.groupsMode) panel.dataset.groupsMode = 'games';
+        if (!panel.dataset.groupsMode) panel.dataset.groupsMode = 'matches';
 
         grid.innerHTML = '';
 
@@ -602,7 +601,7 @@ function applyScoreFilters(panel) {
             });
         }, 100);
 
-        setGroupsMode(panel.dataset.groupsMode || 'games');
+        setGroupsMode(panel.dataset.groupsMode || 'matches');
     }
 
     // Preenche o dropdown com as letras dos grupos disponíveis no CSV.
@@ -677,7 +676,20 @@ function applyScoreFilters(panel) {
         }
 
         const getFlag = await window.ScoreCards.getFlagGetterOnce();
-        container.innerHTML = stageRows.map(r => window.ScoreCards.renderScoreCardHTML(r, getFlag)).join('');
+        container.innerHTML = `
+            <div class="section-title">Figurinhas</div>
+            <div class="stickers-carousel">
+                <button class="scroll-btn left" onclick="this.nextElementSibling.scrollBy({left: -300, behavior: 'smooth'})">❮</button>
+                <div class="stickers-grid">
+                    ${stageRows.map(r => window.ScoreCards.renderStickerCard(r, getFlag)).join('')}
+                </div>
+                <button class="scroll-btn right" onclick="this.previousElementSibling.scrollBy({left: 300, behavior: 'smooth'})">❯</button>
+            </div>
+            <div class="section-title">Gráficos Detalhados</div>
+            <div class="scorecards-grid">
+                ${stageRows.map(r => window.ScoreCards.renderScoreCardHTML(r, getFlag)).join('')}
+            </div>
+        `;
         /* aplica a regra do .score-total.tall também na Fase de Grupos */
         window.ScoreCards.adjustScoreTotalHeights?.(container);
         container.dataset.ready = '1';
@@ -865,6 +877,8 @@ function applyScoreFilters(panel) {
 
         const best = getBestScore(homeWin, draw, awayWin) || {
             label: '0x0',
+            homeGoals: 0,
+            awayGoals: 0,
             value: 0
         };
 
@@ -954,6 +968,135 @@ function applyScoreFilters(panel) {
         `;
     }
 
+    function renderStickerCard(row, getFlag) {
+        const homeCountry = getHomeCountry(row);
+        const awayCountry = getAwayCountry(row);
+        const { homeWin, draw, awayWin } = getOutcomeGroups(row);
+        const best = getBestScore(homeWin, draw, awayWin) || { label: '0x0', homeGoals: 0, awayGoals: 0, value: 0 };
+        const homeTotal = getOutcomeTotalFromColumn(row, 'home_win', homeWin);
+        const drawTotal = getOutcomeTotalFromColumn(row, 'draw', draw);
+        const awayTotal = getOutcomeTotalFromColumn(row, 'away_win', awayWin);
+        const homeFlag = getFlag(homeCountry);
+        const awayFlag = getFlag(awayCountry);
+        const matchDate = row.date || '';
+        let matchGroup = getMatchGroup(row);
+        if (matchGroup && matchGroup.length === 1) {
+            matchGroup = 'Grupo ' + matchGroup;
+        }
+        const searchText = normalizeName(`${homeCountry} ${awayCountry}`);
+        
+        const randomRot = (Math.random() * 10 - 5).toFixed(1); // -5 to +5 degrees
+        const randomY = (Math.random() * 16 - 8).toFixed(1);   // -8 to +8 px
+
+        return `
+            <div class="match-card sticker-wrapper"
+                style="--rand-rot: ${randomRot}deg; --rand-y: ${randomY}px;"
+                data-home="${escapeHTML(homeCountry)}"
+                data-away="${escapeHTML(awayCountry)}"
+                data-search="${escapeHTML(searchText)}"
+                data-date="${escapeHTML(matchDate)}"
+                data-group="${escapeHTML(getMatchGroup(row))}">
+                ${renderSticker(row, best, homeFlag, awayFlag, homeTotal, drawTotal, awayTotal, homeCountry, awayCountry, matchDate, matchGroup)}
+            </div>
+        `;
+    }
+
+    function renderSticker(row, best, homeFlag, awayFlag, homeTotal, drawTotal, awayTotal, homeCountry, awayCountry, matchDate, matchGroup) {
+        let gridHtml = '';
+        let maxProb = 0;
+        
+        for (let a = 4; a >= 0; a--) {
+            for (let h = 4; h >= 0; h--) {
+                const key = `${NUMBER_WORDS[h]}_${NUMBER_WORDS[a]}`;
+                const val = parseNumber(row[key]) || 0;
+                if (val > maxProb) maxProb = val;
+            }
+        }
+        maxProb = Math.max(maxProb, 1);
+        
+        for (let h = 4; h >= 0; h--) {
+            for (let a = 0; a <= 4; a++) {
+                const key = `${NUMBER_WORDS[h]}_${NUMBER_WORDS[a]}`;
+                const prob = parseNumber(row[key]) || 0;
+                const alpha = Math.min(1, (prob / maxProb) * 0.7 + 0.1);
+                const isBest = (h === best.homeGoals && a === best.awayGoals);
+                const bg = isBest ? 'rgba(255, 255, 255, 0.95)' : (prob === 0 ? 'rgba(255, 255, 255, 0.04)' : `rgba(255, 255, 255, ${alpha})`);
+                const probText = prob < 0.1 ? (prob > 0 ? '&lt;0.1%' : '0%') : `${formatPct(prob)}%`;
+                
+                gridHtml += `
+                    <div class="heatmap-cell ${isBest ? 'best' : ''}" style="background: ${bg}">
+                        <div class="prob">${probText}</div>
+                        <div class="score">${h}x${a}</div>
+                    </div>
+                `;
+            }
+        }
+
+        const maxGoals = Math.max(best.homeGoals, best.awayGoals);
+        let borderClass = '';
+        if (maxGoals === 2) {
+            borderClass = 'border-orange';
+        } else if (maxGoals >= 3) {
+            borderClass = 'border-purple';
+        }
+
+        return `
+        <div class="sticker-container ${borderClass}">
+            <div class="sticker-bg-blur">
+                <div class="blur-flag" style="background-image: url('${homeFlag}')"></div>
+                <div class="blur-flag" style="background-image: url('${awayFlag}')"></div>
+            </div>
+            
+            <div class="sticker-glass">
+                <div class="sticker-top-info">
+                    <span class="info-group">${escapeHTML(matchGroup)}</span>
+                    ${matchDate ? `<span class="info-dot">•</span><span class="info-date">${escapeHTML(matchDate)}</span>` : ''}
+                </div>
+                
+                <div class="sticker-header">
+                    <div class="team">
+                        <div class="sticker-flag">
+                            ${renderFlag(homeCountry, homeFlag)}
+                        </div>
+                        <div class="team-name">${escapeHTML(homeCountry)}</div>
+                    </div>
+                    
+                    <div class="score-center">
+                        <div class="most-likely">${escapeHTML(best.label.replace('x', ' - '))}</div>
+                        <div class="most-likely-prob">${formatPct(best.value)}%</div>
+                    </div>
+                    
+                    <div class="team">
+                        <div class="sticker-flag">
+                            ${renderFlag(awayCountry, awayFlag)}
+                        </div>
+                        <div class="team-name">${escapeHTML(awayCountry)}</div>
+                    </div>
+                </div>
+                
+                <div class="heatmap-wrapper">
+                    <div class="heatmap-grid">
+                        ${gridHtml}
+                    </div>
+                </div>
+                
+                <div class="sticker-footer">
+                    <div class="footer-bar-container">
+                        <div class="f-bar home" style="width: ${homeTotal}%"></div>
+                        <div class="f-bar draw" style="width: ${drawTotal}%"></div>
+                        <div class="f-bar away" style="width: ${awayTotal}%"></div>
+                    </div>
+                    <div class="footer-stats-row">
+                        <div class="f-stat home">${formatPct(homeTotal)}%</div>
+                        <div class="f-stat draw">${formatPct(drawTotal)}%</div>
+                        <div class="f-stat away">${formatPct(awayTotal)}%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+    }
+
     let __flagRowsPromise = null;
     let __flagGetterPromise = null;
     function getFlagRowsOnce() {
@@ -977,6 +1120,7 @@ function applyScoreFilters(panel) {
 
     window.ScoreCards = window.ScoreCards || {};
     window.ScoreCards.renderScoreCardHTML = renderScoreCard;
+    window.ScoreCards.renderStickerCard = renderStickerCard;
     window.ScoreCards.getFlagRowsOnce = getFlagRowsOnce;
     window.ScoreCards.getFlagGetterOnce = getFlagGetterOnce;
     window.ScoreCards.adjustScoreTotalHeights = adjustScoreTotalHeights;
@@ -1012,7 +1156,7 @@ function applyScoreFilters(panel) {
         panel.innerHTML = `
             ${filtersHTML}
 
-            <div class="${stage.gridClass || 'scorecards-grid'}"></div>
+            <div class="stage-content-wrapper"></div>
 
             <div class="no-results">
                 Nenhum confronto encontrado com os filtros selecionados.
@@ -1079,12 +1223,24 @@ function applyScoreFilters(panel) {
 
         renderScorePanelShell(panel, stage);
 
-        const container = panel.querySelector('.scorecards-grid');
-        const cards = stageRows
-            .map(row => renderScoreCard(row, getFlag))
-            .join('');
+        const container = panel.querySelector('.stage-content-wrapper');
+        const stickersCards = stageRows.map(row => window.ScoreCards.renderStickerCard(row, getFlag)).join('');
+        const scorecards = stageRows.map(row => window.ScoreCards.renderScoreCardHTML(row, getFlag)).join('');
 
-        container.innerHTML = cards || `
+        container.innerHTML = stickersCards || scorecards ? `
+            <div class="section-title">Figurinhas</div>
+            <div class="stickers-carousel">
+                <button class="scroll-btn left" onclick="this.nextElementSibling.scrollBy({left: -300, behavior: 'smooth'})">❮</button>
+                <div class="stickers-grid">
+                    ${stickersCards}
+                </div>
+                <button class="scroll-btn right" onclick="this.previousElementSibling.scrollBy({left: 300, behavior: 'smooth'})">❯</button>
+            </div>
+            <div class="section-title">Gráficos Detalhados</div>
+            <div class="${stage.gridClass || 'scorecards-grid'}">
+                ${scorecards}
+            </div>
+        ` : `
             <div class="score-empty">
                 Nenhum confronto encontrado para esta fase.
             </div>

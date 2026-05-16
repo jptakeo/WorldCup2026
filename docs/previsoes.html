@@ -98,8 +98,8 @@
 
                             <!-- Tab navigation -->
                             <div class="tabs">
-                                <button class="tab active" onclick="switchTab('bracket',this)">📊 Chaveamento</button>
-                                <button class="tab" onclick="switchTab('grupos',this)">⚽ Fase de Grupos</button>
+                                <button class="tab active" onclick="switchTab('grupos',this)">⚽ Fase de Grupos</button>
+                                <button class="tab" onclick="switchTab('bracket',this)">📊 Chaveamento</button>
                                 <button class="tab" onclick="switchTab('r32',this)">⚔️ R 32</button>
                                 <button class="tab" onclick="switchTab('oitavas',this)">⚔️ Oitavas</button>
                                 <button class="tab" onclick="switchTab('quartas',this)">⚔️ Quartas</button>
@@ -109,7 +109,7 @@
                         </div>
 
                         <!-- ── BRACKET PANEL ── -->
-                        <div class="panel active" id="panel-bracket">
+                        <div class="panel" id="panel-bracket">
 
                             <p class="disc">
                             % = Chance de vencer a partida. &nbsp; ⚠️ <strong>Reforçamos que os resultados representam probabilidades estimadas pelo modelo, não previsões definitivas.</strong>
@@ -145,7 +145,7 @@
                         </div>
 
                         <!-- ── GROUP STAGE PANEL ── -->
-                        <div id="panel-grupos" class="panel">
+                        <div id="panel-grupos" class="panel active">
                             <div class="g-grid" id="gg"></div>
                         </div>
 
