@@ -868,9 +868,9 @@ document.addEventListener("DOMContentLoaded", function () {
   function getAwardImage(premio) {
     const value = normalizeText(premio);
 
-    if (value === "bola de ouro" || value === "golden ball") return "images/bola_de_ouro.png";
-    if (value === "bola de prata" || value === "silver ball") return "images/bola_de_prata.png";
-    if (value === "bola de bronze" || value === "bronze ball") return "images/bola_de_bronze.png";
+    if (value === "bola de ouro" || value === "golden ball") return "images/bola_de_ouro1.png";
+    if (value === "bola de prata" || value === "silver ball") return "images/bola_de_prata1.png";
+    if (value === "bola de bronze" || value === "bronze ball") return "images/bola_de_bronze1.png";
 
     return "";
   }
@@ -1478,7 +1478,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       year: 1982,
       name: "Naranjito",
       img: "images/mascotes/wc-mct-1982.png",
-      desc: "Laranja antropomórfica usando o uniforme da Espanha — fruto abundante e símbolo do país. Primeiro mascote não humano da Copa. Estrelou até um desenho animado de 26 episódios. Rompeu com a tradição de figuras humanas. Itália tricampeã.",
+      desc: "Laranja antropomórfica usando o uniforme da Espanha — fruto abundante e símbolo do país. Estrelou até um desenho animado de 26 episódios. Itália tricampeã.",
       host: "Espanha"
     },
     {
@@ -1628,7 +1628,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     { year: 1970, name: "Telstar", img:"https://digitalhub.fifa.com/transform/247cbf49-feea-4219-a382-2f7a9e61c1e1/1970-FIFA-World-Cup-Mexico-official-match-ball-Telstar?&io=transform:fill,width:1024&quality=75", panels: "telstar", desc: "Ícone absoluto: a primeira bola branca com 32 painéis pretos e brancos (12 pentágonos pretos + 20 hexágonos brancos). Adidas estreia na Copa. Pelé ergue a taça.", host: "México" },
     { year: 1966, name: "Challenge 4-Star", img:"https://digitalhub.fifa.com/transform/0e323528-f3e2-4888-8ea0-9aebba14d08a/1966-FIFA-World-Cup-official-match-ball-Challenge-4-Star?&io=transform:fill,width:1024&quality=75",panels: "classic", desc: "Única bola vermelha-alaranjada da história da Copa. Copa da Inglaterra, onde o país-sede venceu o único título.", host: "Inglaterra" },
     { year: 1962, name: "Crack", img:"https://digitalhub.fifa.com/transform/9cc7554d-17bd-47f5-8cc3-aac62a4b1c80/1962-FIFA-World-Cup-Chile-official-match-ball-Crack?&io=transform:fill,width:1024&quality=75",panels: "classic", desc: "Bola amarela-dourada, produzida no Chile. A Copa foi marcada pela falta de Pelé lesionado, e pelo Brasil bicampeão.", host: "Chile" },
-    { year: 1958, name: "Top Star", img:"https://digitalhub.fifa.com/transform/208d1c9d-5934-4e30-95ce-ea8ad962d05c/1958-FIFA-World-Cup-Sweden-official-match-ball-Top-Star?&io=transform:fill,width:1024&quality=75", panels: "classic", desc: "Bola dourada amarela, muito mais consistente em forma. Copa da Suécia, onde Pelé brilhou com 17 anos.", host: "Suécia" },
+    { year: 1958, name: "Top Star", img:"https://digitalhub.fifa.com/transform/208d1c9d-5934-4e30-95ce-ea8ad962d05c/1958-FIFA-World-Cup-Sweden-official-match-ball-Top-Star?&io=transform:fill,width:1024&quality=75", panels: "classic", desc: "Modelo de 24 tiras com formato muito mais consistente, produzido em amarelo, marrom e branco. A versão branca — com cera contra a umidade — foi a mais usada e esteve na grande final. A Copa onde Fontaine fez 13 gols e Pelé brilhou aos 17 anos no primeiro título do Brasil.", host: "Suécia" },
     { year: 1954, name: "Swiss WC", img:"images/wc-ball-swiss_world_champion-1954.png",panels: "classic", desc: "Bola dourada brilhante, a mais redonda até então. Introduziu painéis hexagonais mais regulares, usada na Copa da Suíça.", host: "Suíça" },
     { year: 1950, name: "Super Duplo T", img:"https://digitalhub.fifa.com/transform/9bfc026e-7c07-434c-80e3-f4602369b726/1950-FIFA-World-Cup-Brazil-match-ball-Duplo-T?&io=transform:fill,width:1024&quality=75",panels: "leather", desc: "Bola usada na Copa do Mundo no Brasil, com painéis de couro mais claros. Famosa pelo 'Maracanazo' - derrota do Brasil para o Uruguai.", host: "Brasil" },
     { year: 1938, name: "Allen", img:"https://digitalhub.fifa.com/transform/23ca6174-13b7-4fc2-8178-bd5d268a6f14/1938-FIFA-World-Cup-Italy-Allen-official-match-ball?&io=transform:fill,width:1024&quality=75",  panels: "leather", desc: "Primeira bola a ter uma câmara de ar de borracha. Painéis de couro dourado escuro, usada na Copa da França.", host: "França" },
