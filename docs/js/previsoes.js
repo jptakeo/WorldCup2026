@@ -681,7 +681,7 @@ function applyScoreFilters(panel) {
             <div class="stickers-carousel">
                 <button class="scroll-btn left" onclick="this.nextElementSibling.scrollBy({left: -300, behavior: 'smooth'})">❮</button>
                 <div class="stickers-grid">
-                    ${stageRows.map(r => window.ScoreCards.renderStickerCard(r, getFlag)).join('')}
+                    ${stageRows.map((r, i) => window.ScoreCards.renderStickerCard(r, getFlag, i)).join('')}
                 </div>
                 <button class="scroll-btn right" onclick="this.previousElementSibling.scrollBy({left: 300, behavior: 'smooth'})">❯</button>
             </div>
@@ -968,7 +968,7 @@ function applyScoreFilters(panel) {
         `;
     }
 
-    function renderStickerCard(row, getFlag) {
+    function renderStickerCard(row, getFlag, index = 0) {
         const homeCountry = getHomeCountry(row);
         const awayCountry = getAwayCountry(row);
         const { homeWin, draw, awayWin } = getOutcomeGroups(row);
@@ -990,7 +990,8 @@ function applyScoreFilters(panel) {
 
         return `
             <div class="match-card sticker-wrapper"
-                style="--rand-rot: ${randomRot}deg; --rand-y: ${randomY}px;"
+                onclick="if(window.openStickerModal) window.openStickerModal(this, '${escapeHTML(homeCountry)}', '${escapeHTML(awayCountry)}')"
+                style="--rand-rot: ${randomRot}deg; --rand-y: ${randomY}px; cursor: pointer;"
                 data-home="${escapeHTML(homeCountry)}"
                 data-away="${escapeHTML(awayCountry)}"
                 data-search="${escapeHTML(searchText)}"
@@ -1224,7 +1225,7 @@ function applyScoreFilters(panel) {
         renderScorePanelShell(panel, stage);
 
         const container = panel.querySelector('.stage-content-wrapper');
-        const stickersCards = stageRows.map(row => window.ScoreCards.renderStickerCard(row, getFlag)).join('');
+        const stickersCards = stageRows.map((row, i) => window.ScoreCards.renderStickerCard(row, getFlag, i)).join('');
         const scorecards = stageRows.map(row => window.ScoreCards.renderScoreCardHTML(row, getFlag)).join('');
 
         container.innerHTML = stickersCards || scorecards ? `
@@ -1259,6 +1260,8 @@ function applyScoreFilters(panel) {
                 loadCSV(MATCHES_CSV_URL),
                 getFlagGetterOnce()
             ]);
+            
+            window.ScoreCards.matchesData = matchRows;
 
             SCORE_STAGES.forEach(stage => {
                 renderScoreStage(stage, matchRows, getFlag);
@@ -1283,7 +1286,99 @@ function applyScoreFilters(panel) {
     }
 
     document.addEventListener('DOMContentLoaded', renderScoreStagePanels);
+    
+    // Check for sticker deep link after everything is initialized
+    window.addEventListener('load', () => {
+        setTimeout(async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const stickerParam = urlParams.get('sticker');
+            if (stickerParam) {
+                const [home, away] = stickerParam.split('-');
+                if (home && away && window.openStickerFromData) {
+                    window.openStickerFromData(home, away);
+                }
+            }
+        }, 1000);
+    });
 })();
+
+// Global Modal Functions for Stickers
+window.openStickerModal = function(element, home, away) {
+    let modal = document.getElementById('sticker-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'sticker-modal';
+        modal.className = 'sticker-modal';
+        modal.innerHTML = `
+            <div class="sticker-modal-overlay" onclick="closeStickerModal()"></div>
+            <div class="sticker-modal-content">
+                <div id="sticker-modal-card-container"></div>
+                <div class="sticker-modal-actions">
+                    <button class="sticker-modal-btn" onclick="copyStickerLink('${home}', '${away}')">🔗 Compartilhar</button>
+                    <button class="sticker-modal-btn" onclick="closeStickerModal()">✖ Fechar</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    } else {
+        const shareBtn = modal.querySelector('.sticker-modal-btn');
+        shareBtn.setAttribute('onclick', `copyStickerLink('${home}', '${away}')`);
+    }
+
+    const container = modal.querySelector('#sticker-modal-card-container');
+    container.innerHTML = '';
+    
+    if (element) {
+        const sticker = element.querySelector('.sticker-container').cloneNode(true);
+        // Reset transformations on the clone so it displays perfectly in the modal
+        sticker.style.transform = 'none';
+        container.appendChild(sticker);
+    }
+
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+};
+
+window.openStickerFromData = async function(home, away) {
+    if (!window.ScoreCards || !window.ScoreCards.matchesData) return;
+    const row = window.ScoreCards.matchesData.find(r => r.home_team === home && r.away_team === away);
+    if (!row) return;
+
+    const getFlag = await window.ScoreCards.getFlagGetterOnce();
+    const temp = document.createElement('div');
+    temp.innerHTML = window.ScoreCards.renderStickerCard(row, getFlag);
+    const card = temp.firstElementChild;
+    window.openStickerModal(card, home, away);
+};
+
+window.closeStickerModal = function() {
+    const modal = document.getElementById('sticker-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        setTimeout(() => modal.style.display = 'none', 300);
+    }
+};
+
+window.copyStickerLink = function(home, away) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('sticker', `${home}-${away}`);
+    navigator.clipboard.writeText(url.toString()).then(() => {
+        showToast('O link foi copiado para a área de transferência!');
+    });
+};
+
+function showToast(msg) {
+    let toast = document.getElementById('sticker-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'sticker-toast';
+        toast.className = 'toast-message';
+        document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+}
 
 function abrirTabPelaURL() {
     const tabName = window.location.hash.replace('#', '').trim();
