@@ -10,26 +10,33 @@ data {
 }
 
 parameters {
-  vector[T] attack_raw;
-  vector[T] defense_raw;
+  vector[T] attack_raw_std; 
+  vector[T] defense_raw_std;
   real eta;
   real<lower=-0.5, upper=0.5> rho;
   real<lower=0.01> sigma_att;
   real<lower=0.01> sigma_def;
   real beta_prior;
+  real alpha_prior;
 }
 
 transformed parameters {
+  vector[T] attack_raw;
+  vector[T] defense_raw;
+  attack_raw = (prior_strength * beta_prior) + (attack_raw_std * sigma_att);
+  defense_raw = (prior_strength * alpha_prior) + defense_raw_std * sigma_def;
   vector[T] attack = attack_raw - mean(attack_raw);
   vector[T] defense = defense_raw - mean(defense_raw);
 }
 
 model {
-  attack_raw ~ normal(prior_strength * beta_prior, sigma_att);
-  defense_raw ~ normal(0, sigma_def);
-  rho ~ normal(0, 0.1);
+  attack_raw_std ~ normal(0, 1);
+  defense_raw_std ~ normal(0, 1);
+
   eta ~ normal(0, 1);
   beta_prior ~ normal(0, 1);
+  alpha_prior ~ normal(0, 1);
+  rho ~ normal(0, 0.1);
   sigma_att ~ cauchy(0, 2.5);
   sigma_def ~ cauchy(0, 2.5);
 

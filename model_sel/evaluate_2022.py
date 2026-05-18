@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
     # Rebuild the training team order so draw columns line up with teams.
     _, times_22, _ = preparar_dados_ciclo(
-        "data/raw/results.csv", "2018-07-15", "2022-11-20", aplicar_decaimento=True
+        "data/raw/results.csv", "2018-06-13", "2022-11-20", aplicar_decaimento=True
     )
 
     # Evaluate every saved model for this validation cycle.
