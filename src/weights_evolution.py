@@ -52,3 +52,10 @@ path_time = os.path.join(output_dir, 'weekly_time_weight.png')
 plt.savefig(path_time, dpi=150)
 plt.close()
 print(f"Saved: {path_time}")
+
+# hist weights
+plt.hist(df_cycle['game_weight'])
+path_time = os.path.join(output_dir, 'hist_total_weight.png')
+plt.savefig(path_time, dpi=150)
+plt.close()
+print(f"Saved: {path_time}")
