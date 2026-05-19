@@ -13,6 +13,17 @@ Stan draws, tournament simulators, dashboards, and site exports.
 | `sim_2022.py` | Historical 2022 simulation from saved Stan draws. |
 | `sim_2018.py` | Historical 2018 simulation from saved Stan draws. |
 
+## Shared Naming
+
+The simulation scripts use English helper names imported from `src/` and
+`model_sel/`:
+
+- `prepare_cycle_data()` and `load_ranking_priors()` from `src.data_prep`;
+- `simulate_world_cup_2022()`, `simulate_world_cup_2026()`, and
+  `simulate_stage_and_remaining()` from `src.simulate`;
+- local `load_draws()` helpers for `.npz` posterior files;
+- `train_and_save()` from `model_sel.validate` for Stan sampling jobs.
+
 ## Typical 2026 Flow
 
 ```bash
@@ -39,6 +50,8 @@ python -m simulations.update_2026
 ## Maintenance Notes
 
 - Keep tournament group dictionaries explicit in the script that uses them.
+- Keep Python variables and helper names in English. Public labels and generated
+  website paths may remain Portuguese.
 - Avoid changing output filenames unless the static website is updated at the
   same time.
 - Use `sim_2018.py` and `sim_2022.py` as historical validation helpers; the main

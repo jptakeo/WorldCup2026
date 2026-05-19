@@ -70,6 +70,7 @@ There are two modeling tracks in the repo:
 | `src/evaluation.py` | Computes Brier scores for fitted posterior draws against known World Cup match results. |
 | `src/dashboard.py` | Generates D3-based standalone HTML dashboards from simulation JSON outputs. |
 | `src/export_probs.py` | Exports match score probability matrices, stage summaries, and updates the website probability table in `docs/chances.html`. |
+| `src/forces.py` | Generates a posterior team-strength distribution plot from saved Stan draws. |
 
 ## Frequentist Model Track
 
@@ -91,6 +92,12 @@ The Stan workflow uses model files in `stan_models/`, prepares weighted match
 data with `src/data_prep.py`, runs CmdStan through `cmdstanpy`, saves posterior
 draws to `data/outputs/models/`, and then simulates tournaments from those
 draws with `src/simulate.py`.
+
+The Stan-oriented Python API uses English names. The main helpers are
+`prepare_cycle_data()`, `load_ranking_priors()`, `simulate_matches()`,
+`simulate_world_cup_2022()`, `simulate_world_cup_2026()`,
+`simulate_stage_and_remaining()`, `calculate_model_brier()`, `load_draws()`,
+and `train_and_save()`.
 
 The model names encode two choices:
 
@@ -200,10 +207,9 @@ uv run python -m model_sel.evaluate_2018
 uv run python -m model_sel.evaluate_2022
 ```
 
-Some legacy scripts currently refer to older module names and may need small
-import-path adjustments before being run in a fresh environment. In particular,
-`src/freq_model/simulate.py` is a CLI-style wrapper around the frequency model
-modules, but its imports may need to be updated to `src.freq_model.*` before use.
+The active Stan scripts and shared modules use standardized English variable
+and function names. Portuguese filenames and website-facing paths such as
+`docs/csv/previsoes/` are kept as part of the public static-site contract.
 
 ## Website
 

@@ -45,6 +45,10 @@ The Python scripts read posterior variables such as:
 Saved posterior draws are written to `data/outputs/models/*.npz` by
 `model_sel/validate.py` and `simulations/train_2026.py`.
 
+The Python side standardizes helper and variable names in English. Keep Stan
+data-block variable names aligned with the dictionaries built in
+`model_sel.validate.train_and_save()` and `simulations.update_2026.train_and_save()`.
+
 ## Generated Binaries
 
 Compiled Stan executables may appear in this folder. They are platform-specific

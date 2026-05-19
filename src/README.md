@@ -16,6 +16,18 @@ the static website.
 | `evaluation.py` | Computes Brier-score summaries for saved posterior draws against known match results. |
 | `dashboard.py` | Generates standalone D3 HTML dashboards from simulation JSON files. |
 | `export_probs.py` | Exports current-phase score probability matrices, builds public stage summaries, and updates `docs/chances.html`. |
+| `forces.py` | Plots posterior team-strength distributions from saved Stan draws. |
+
+## Public Helper Names
+
+The reusable Stan-path helpers use standardized English names:
+
+| Module | Main Helpers |
+| --- | --- |
+| `data_prep.py` | `filter_low_volume_teams()`, `get_importance_factor()`, `prepare_cycle_data()`, `load_ranking_priors()` |
+| `simulate.py` | `simulate_matches()`, `simulate_world_cup_2022()`, `simulate_world_cup_2026()`, `simulate_stage_and_remaining()` |
+| `evaluation.py` | `calculate_model_brier()` |
+| `dashboard.py` | `generate_dashboard()` |
 
 ## `freq_model/`
 
@@ -44,5 +56,8 @@ Dixon-Coles attack/defense model and simulates the full 48-team 2026 tournament.
 - Keep generated CSV/JSON/HTML outputs out of source modules.
 - Preserve the English team names used by models and use the mappings in
   `constants.py` for Portuguese display names.
+- Use English for Python identifiers. Portuguese labels, output filenames, and
+  website-facing paths should remain unchanged unless the static site is updated
+  at the same time.
 - When adding a new tournament phase, update the constants, simulator, export
   code, and website CSV expectations together.

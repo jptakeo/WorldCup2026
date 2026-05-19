@@ -11,6 +11,19 @@ on completed World Cup cycles.
 | `evaluate_2018.py` | Loads saved 2018 draws, evaluates them against `data/raw/jogos_2018.csv`, writes a Brier-score CSV, and saves a comparison plot. |
 | `evaluate_2022.py` | Loads saved 2022 draws, evaluates them against the 2022 answer key, writes a Brier-score CSV, and saves a comparison plot. |
 
+## Shared Naming
+
+The model-selection scripts use standardized English identifiers:
+
+- `train_and_save()` in `validate.py` runs one Stan model/cycle pair and writes
+  posterior draws;
+- `load_draws()` in the evaluation scripts loads compressed `.npz` posterior
+  files;
+- `calculate_model_brier()` from `src.evaluation` computes Brier-score
+  summaries;
+- `prepare_cycle_data()` and `load_ranking_priors()` from `src.data_prep`
+  provide training data and ranking priors.
+
 ## Expected Inputs
 
 - `data/raw/results.csv`
@@ -33,3 +46,7 @@ on completed World Cup cycles.
 These scripts run CmdStan sampling and can be slow. They are script entry points,
 not import-only library modules. Keep model names aligned with the files in
 `stan_models/` and with the naming convention documented there.
+
+Python identifiers should stay in English. The historical answer-key filenames
+`jogos_2018.csv` and `jogos_2022.csv`, and generated plot names such as
+`comparacao_brier_*.png`, are retained as data/output contracts.
