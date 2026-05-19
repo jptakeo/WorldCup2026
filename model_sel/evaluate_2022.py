@@ -4,13 +4,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from src.data_prep import preparar_dados_ciclo
-from src.evaluation import calcular_brier_modelo
+from src.data_prep import prepare_cycle_data
+from src.evaluation import calculate_model_brier
 
 
-def carregar_draws(caminho):
+def load_draws(path):
     """Carrega os draws gerados pelo Stan e salvos no treino."""
-    loaded = np.load(caminho)
+    loaded = np.load(path)
     return {key: loaded[key] for key in loaded.files}
 
 
@@ -20,78 +20,78 @@ if __name__ == "__main__":
     print("=" * 45)
 
     # Rebuild the training team order so draw columns line up with teams.
-    _, times_22, _ = preparar_dados_ciclo(
-        "data/raw/results.csv", "2018-06-13", "2022-11-20", aplicar_decaimento=True
+    _, teams_22, _ = prepare_cycle_data(
+        "data/raw/results.csv", "2018-06-13", "2022-11-20", apply_decay=True
     )
 
     # Evaluate every saved model for this validation cycle.
-    pasta_modelos = "data/outputs/models/"
-    if not os.path.exists(pasta_modelos):
+    models_dir = "data/outputs/models/"
+    if not os.path.exists(models_dir):
         print(
             "Pasta de modelos não encontrada. Certifique-se de rodar train.py primeiro."
         )
         exit()
 
-    arquivos_npz = [
+    npz_files = [
         f
-        for f in os.listdir(pasta_modelos)
+        for f in os.listdir(models_dir)
         if f.startswith("draws_2022_") and f.endswith(".npz")
     ]
 
-    if not arquivos_npz:
+    if not npz_files:
         print("Nenhum modelo de 2022 treinado encontrado em data/outputs/models/.")
         exit()
 
-    resultados = []
+    results = []
 
-    for arquivo in arquivos_npz:
-        nome_modelo = arquivo.replace("draws_2022_", "").replace(".npz", "")
-        print(f"Avaliando: {nome_modelo} ...")
+    for file_name in npz_files:
+        model_name = file_name.replace("draws_2022_", "").replace(".npz", "")
+        print(f"Avaliando: {model_name} ...")
 
-        caminho_completo = os.path.join(pasta_modelos, arquivo)
-        draws = carregar_draws(caminho_completo)
+        full_path = os.path.join(models_dir, file_name)
+        draws = load_draws(full_path)
 
-        metricas = calcular_brier_modelo(draws, times_22)
+        metrics = calculate_model_brier(draws, teams_22)
 
-        resultados.append(
+        results.append(
             {
-                "Modelo": nome_modelo.replace("_", " ").title(),
-                "Brier Mediana": metricas["Brier Mediana"],
-                "IC Inferior": metricas["IC 2.5%"],
-                "IC Superior": metricas["IC 97.5%"],
-                "IC 95%": f"[{metricas['IC 2.5%']:.4f}  -  {metricas['IC 97.5%']:.4f}]",
+                "Modelo": model_name.replace("_", " ").title(),
+                "Brier Mediana": metrics["Brier Mediana"],
+                "IC Inferior": metrics["IC 2.5%"],
+                "IC Superior": metrics["IC 97.5%"],
+                "IC 95%": f"[{metrics['IC 2.5%']:.4f}  -  {metrics['IC 97.5%']:.4f}]",
             }
         )
 
     # Lower Brier scores indicate better calibrated three-outcome predictions.
-    df_resultados = (
-        pd.DataFrame(resultados).sort_values("Brier Mediana").reset_index(drop=True)
+    results_df = (
+        pd.DataFrame(results).sort_values("Brier Mediana").reset_index(drop=True)
     )
 
     print("\n--- RANKING FINAL DE PRECISÃO ---")
-    print(df_resultados.to_string())
+    print(results_df.to_string())
 
     print("\nGerando gráfico de sobreposição...")
     plt.figure(figsize=(10, 6))
     plt.style.use("ggplot")
 
     # Reverse the order so the best model appears at the top of the plot.
-    df_plot = df_resultados.sort_values("Brier Mediana", ascending=False).reset_index(
+    df_plot = results_df.sort_values("Brier Mediana", ascending=False).reset_index(
         drop=True
     )
 
     for i in range(len(df_plot)):
-        mediana = df_plot.loc[i, "Brier Mediana"]
-        inf = df_plot.loc[i, "IC Inferior"]
-        sup = df_plot.loc[i, "IC Superior"]
+        median = df_plot.loc[i, "Brier Mediana"]
+        lower = df_plot.loc[i, "IC Inferior"]
+        upper = df_plot.loc[i, "IC Superior"]
 
-        plt.plot([inf, sup], [i, i], color="#3498db", linewidth=5, alpha=0.8)
-        plt.plot(mediana, i, "ko", markersize=8)
+        plt.plot([lower, upper], [i, i], color="#3498db", linewidth=5, alpha=0.8)
+        plt.plot(median, i, "ko", markersize=8)
 
     # Reference line for the best median score.
-    melhor_mediana = df_plot["Brier Mediana"].min()
+    best_median = df_plot["Brier Mediana"].min()
     plt.axvline(
-        melhor_mediana,
+        best_median,
         color="red",
         linestyle="--",
         alpha=0.6,
@@ -104,10 +104,10 @@ if __name__ == "__main__":
     plt.legend()
     plt.tight_layout()
 
-    caminho_grafico = "data/outputs/results/comparacao_brier_2022.png"
-    plt.savefig(caminho_grafico, dpi=300)
-    print(f"Gráfico salvo com sucesso em: {caminho_grafico}")
+    plot_path = "data/outputs/results/comparacao_brier_2022.png"
+    plt.savefig(plot_path, dpi=300)
+    print(f"Gráfico salvo com sucesso em: {plot_path}")
 
-    caminho_csv = "data/outputs/results/brier_score_2022.csv"
-    df_resultados.to_csv(caminho_csv, index=False)
-    print(f"\nResultados salvos em: {caminho_csv}")
+    csv_output_path = "data/outputs/results/brier_score_2022.csv"
+    results_df.to_csv(csv_output_path, index=False)
+    print(f"\nResultados salvos em: {csv_output_path}")

@@ -3,8 +3,8 @@ import pandas as pd
 from scipy.stats import poisson
 
 
-def calcular_brier_modelo(
-    draws, teams_list, caminho_gabarito="data/raw/jogos_2022.csv"
+def calculate_model_brier(
+    draws, teams_list, answer_key_path="data/raw/jogos_2022.csv"
 ):
     """Evaluate posterior draws with a three-outcome Brier score."""
     t_map = {name: i for i, name in enumerate(teams_list)}
@@ -13,25 +13,25 @@ def calcular_brier_modelo(
     dfn_draws = draws["defense"]
     eta_draws = draws["eta"]
 
-    usa_dixon_coles = "rho" in draws
-    if usa_dixon_coles:
+    uses_dixon_coles = "rho" in draws
+    if uses_dixon_coles:
         rho_draws = draws["rho"]
 
     n_samples = len(eta_draws)
-    df_gabarito = pd.read_csv(caminho_gabarito)
+    answer_key_df = pd.read_csv(answer_key_path)
 
     brier_per_sample = np.zeros(n_samples)
     matches_count = 0
 
     # Masks collapse the score matrix into home win, draw, and away win.
-    max_gols = 10
-    mask_win = np.tril(np.ones((max_gols + 1, max_gols + 1)), k=-1)
-    mask_draw = np.eye(max_gols + 1)
-    mask_loss = np.triu(np.ones((max_gols + 1, max_gols + 1)), k=1)
+    max_goals = 10
+    mask_win = np.tril(np.ones((max_goals + 1, max_goals + 1)), k=-1)
+    mask_draw = np.eye(max_goals + 1)
+    mask_loss = np.triu(np.ones((max_goals + 1, max_goals + 1)), k=1)
 
-    gols = np.arange(max_gols + 1)
+    goals = np.arange(max_goals + 1)
 
-    for row in df_gabarito.itertuples():
+    for row in answer_key_df.itertuples():
         t1, t2 = row.home_team, row.away_team
         g1_real, g2_real = row.home_score, row.away_score
 
@@ -46,13 +46,13 @@ def calcular_brier_modelo(
         mu2 = np.exp(atk_draws[:, idx2] - dfn_draws[:, idx1] + eta_draws)
 
         # Broadcast Poisson PMFs into one score matrix per posterior draw.
-        p1 = poisson.pmf(gols[None, :, None], mu1[:, None, None])
-        p2 = poisson.pmf(gols[None, None, :], mu2[:, None, None])
+        p1 = poisson.pmf(goals[None, :, None], mu1[:, None, None])
+        p2 = poisson.pmf(goals[None, None, :], mu2[:, None, None])
 
         p_matrix = p1 * p2
 
         # Dixon-Coles adjustment only affects the 0-0, 1-0, 0-1, and 1-1 cells.
-        if usa_dixon_coles:
+        if uses_dixon_coles:
             rho = rho_draws[:, None, None]
             mu1_exp = mu1[:, None, None]
             mu2_exp = mu2[:, None, None]
@@ -82,10 +82,10 @@ def calcular_brier_modelo(
         else:
             y_real = [0, 0, 1]
 
-        erro_quadratico = (
+        squared_error = (
             (p_w - y_real[0]) ** 2 + (p_d - y_real[1]) ** 2 + (p_l - y_real[2]) ** 2
         )
-        brier_per_sample += erro_quadratico
+        brier_per_sample += squared_error
 
     if matches_count > 0:
         brier_per_sample /= matches_count

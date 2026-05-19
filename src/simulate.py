@@ -6,10 +6,10 @@ from src.constants import TEAM_MAP_EN_TO_PT, TEAM_MAP_PT_TO_EN
 # Precomputed factorials for score probabilities from 0 to 10 goals.
 FACTORIALS = np.array([1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800])
 
-df_jogos_reais = pd.read_csv("data/world_cup_results.csv")
+current_results_df = pd.read_csv("data/world_cup_results.csv")
 
 
-def simular_jogos(mu1, mu2, rho_draws=None, n_sim=100000, max_gols=10):
+def simulate_matches(mu1, mu2, rho_draws=None, n_sim=100000, max_goals=10):
     if rho_draws is None:
         # Independent Poisson path when no Dixon-Coles rho is available.
         return np.random.poisson(mu1), np.random.poisson(mu2)
@@ -18,8 +18,8 @@ def simular_jogos(mu1, mu2, rho_draws=None, n_sim=100000, max_gols=10):
         mu1, mu2, rho_draws = mu1[:, None], mu2[:, None], rho_draws[:, None]
 
     rho = rho_draws
-    n_jogos = mu1.shape[1]
-    gols = np.arange(max_gols + 1)
+    n_matches = mu1.shape[1]
+    goals = np.arange(max_goals + 1)
 
     # Vectorized Poisson PMF; avoids scipy overhead in the simulation loop.
     mu1_exp = mu1[:, :, None, None]
@@ -27,12 +27,12 @@ def simular_jogos(mu1, mu2, rho_draws=None, n_sim=100000, max_gols=10):
 
     p1 = (
         np.exp(-mu1_exp)
-        * (mu1_exp ** gols[None, None, :, None])
+        * (mu1_exp ** goals[None, None, :, None])
         / FACTORIALS[None, None, :, None]
     )
     p2 = (
         np.exp(-mu2_exp)
-        * (mu2_exp ** gols[None, None, None, :])
+        * (mu2_exp ** goals[None, None, None, :])
         / FACTORIALS[None, None, None, :]
     )
 
@@ -48,37 +48,37 @@ def simular_jogos(mu1, mu2, rho_draws=None, n_sim=100000, max_gols=10):
     p_matrix = np.clip(p_matrix, a_min=0, a_max=None)
 
     # Sample one scoreline from each flattened cumulative distribution.
-    p_flat = p_matrix.reshape(n_sim, n_jogos, -1)
+    p_flat = p_matrix.reshape(n_sim, n_matches, -1)
     p_flat /= p_flat.sum(axis=2, keepdims=True)
 
     cum_p = np.cumsum(p_flat, axis=2)
-    rand_vals = np.random.rand(n_sim, n_jogos, 1)
+    rand_vals = np.random.rand(n_sim, n_matches, 1)
 
-    idx_placar = np.argmax(cum_p > rand_vals, axis=2)
+    score_idx = np.argmax(cum_p > rand_vals, axis=2)
 
-    g1 = idx_placar // (max_gols + 1)
-    g2 = idx_placar % (max_gols + 1)
+    g1 = score_idx // (max_goals + 1)
+    g2 = score_idx % (max_goals + 1)
 
     return g1, g2
 
 
-def simular_copa_2022(post_draws, teams_list, grupos, n_sim=100000):
+def simulate_world_cup_2022(post_draws, teams_list, groups, n_sim=100000):
     atk_draws, dfn_draws, eta_draws = (
         post_draws["attack"],
         post_draws["defense"],
         post_draws["eta"],
     )
-    usa_dixon_coles = "rho" in post_draws
-    rho_draws = post_draws["rho"] if usa_dixon_coles else None
+    uses_dixon_coles = "rho" in post_draws
+    rho_draws = post_draws["rho"] if uses_dixon_coles else None
 
     n_samples, n_teams = len(eta_draws), len(teams_list)
     t_idx = {name: i for i, name in enumerate(teams_list)}
-    g_indices = np.array([[t_idx[t] for t in ts] for ts in grupos.values()])
+    g_indices = np.array([[t_idx[t] for t in ts] for ts in groups.values()])
 
-    idx_samples = np.random.choice(n_samples, n_sim)
-    atk, dfn = atk_draws[idx_samples], dfn_draws[idx_samples]
-    et = eta_draws[idx_samples].reshape(-1, 1)
-    rho = rho_draws[idx_samples] if usa_dixon_coles else None
+    sample_idx = np.random.choice(n_samples, n_sim)
+    atk, dfn = atk_draws[sample_idx], dfn_draws[sample_idx]
+    et = eta_draws[sample_idx].reshape(-1, 1)
+    rho = rho_draws[sample_idx] if uses_dixon_coles else None
 
     # Stage counters for the 32-team historical tournament format.
     stats = {
@@ -105,9 +105,9 @@ def simular_copa_2022(post_draws, teams_list, grupos, n_sim=100000):
         l1 = np.exp(atk[:, i1] - dfn[:, i2] + et)
         l2 = np.exp(atk[:, i2] - dfn[:, i1] + et)
 
-        rho_exp = np.repeat(rho[:, None], 8, axis=1) if usa_dixon_coles else None
+        rho_exp = np.repeat(rho[:, None], 8, axis=1) if uses_dixon_coles else None
 
-        g1, g2 = simular_jogos(l1, l2, rho_exp, n_sim)
+        g1, g2 = simulate_matches(l1, l2, rho_exp, n_sim)
 
         pts[:, :, p1] += (g1 > g2) * 3 + (g1 == g2)
         pts[:, :, p2] += (g2 > g1) * 3 + (g1 == g2)
@@ -124,15 +124,15 @@ def simular_copa_2022(post_draws, teams_list, grupos, n_sim=100000):
     c1 = np.array([g_indices[g, ranks[:, g, 0]] for g in range(8)]).T
     c2 = np.array([g_indices[g, ranks[:, g, 1]] for g in range(8)]).T
 
-    def contar_fase(array_fase, nome_fase):
-        unique, counts = np.unique(array_fase, return_counts=True)
-        stats[nome_fase][unique] += counts
+    def count_stage(stage_array, stage_name):
+        unique, counts = np.unique(stage_array, return_counts=True)
+        stats[stage_name][unique] += counts
 
-    contar_fase(c1, "avancou_grupos")
-    contar_fase(c2, "avancou_grupos")
+    count_stage(c1, "avancou_grupos")
+    count_stage(c2, "avancou_grupos")
 
     # Knockout helper: ties go to penalties with a 50/50 split.
-    def rodada(ta, tb):
+    def play_round(ta, tb):
         n_matches = ta.shape[1]
         la = np.exp(
             atk[np.arange(n_sim)[:, None], ta] - dfn[np.arange(n_sim)[:, None], tb] + et
@@ -142,65 +142,65 @@ def simular_copa_2022(post_draws, teams_list, grupos, n_sim=100000):
         )
 
         rho_exp = (
-            np.repeat(rho[:, None], n_matches, axis=1) if usa_dixon_coles else None
+            np.repeat(rho[:, None], n_matches, axis=1) if uses_dixon_coles else None
         )
-        ga, gb = simular_jogos(la, lb, rho_exp, n_sim)
+        ga, gb = simulate_matches(la, lb, rho_exp, n_sim)
 
-        vence_a = (ga > gb) | ((ga == gb) & (np.random.rand(n_sim, n_matches) < 0.5))
-        return np.where(vence_a, ta, tb)
+        team_a_wins = (ga > gb) | ((ga == gb) & (np.random.rand(n_sim, n_matches) < 0.5))
+        return np.where(team_a_wins, ta, tb)
 
     # Round-of-16 bracket ordering for the 2018/2022 format.
-    idx_1o_lugar = [0, 2, 4, 6, 1, 3, 5, 7]  # 1A, 1C, 1E, 1G, 1B, 1D, 1F, 1H
-    idx_2o_lugar = [1, 3, 5, 7, 0, 2, 4, 6]  # 2B, 2D, 2F, 2H, 2A, 2C, 2E, 2G
+    first_place_idx = [0, 2, 4, 6, 1, 3, 5, 7]  # 1A, 1C, 1E, 1G, 1B, 1D, 1F, 1H
+    second_place_idx = [1, 3, 5, 7, 0, 2, 4, 6]  # 2B, 2D, 2F, 2H, 2A, 2C, 2E, 2G
 
-    oitavas_a = c1[:, idx_1o_lugar]
-    oitavas_b = c2[:, idx_2o_lugar]
+    round16_side_a = c1[:, first_place_idx]
+    round16_side_b = c2[:, second_place_idx]
 
-    quartas = rodada(oitavas_a, oitavas_b)
-    contar_fase(quartas, "quarter_finalists")
+    quarterfinalists = play_round(round16_side_a, round16_side_b)
+    count_stage(quarterfinalists, "quarter_finalists")
 
     # Winners are paired by adjacent bracket slots in each following round.
-    semis = rodada(quartas[:, 0::2], quartas[:, 1::2])
-    contar_fase(semis, "semi_finalists")
+    semifinalists = play_round(quarterfinalists[:, 0::2], quarterfinalists[:, 1::2])
+    count_stage(semifinalists, "semi_finalists")
 
-    finalistas = rodada(semis[:, 0::2], semis[:, 1::2])
-    contar_fase(finalistas, "finalists")
+    finalists = play_round(semifinalists[:, 0::2], semifinalists[:, 1::2])
+    count_stage(finalists, "finalists")
 
-    campeao = rodada(finalistas[:, [0]], finalistas[:, [1]])
-    contar_fase(campeao, "champion")
+    champion = play_round(finalists[:, [0]], finalists[:, [1]])
+    count_stage(champion, "champion")
 
-    probs = {fase: stats[fase] / n_sim for fase in stats.keys()}
+    probs = {stage: stats[stage] / n_sim for stage in stats.keys()}
     return probs
 
 
-def simular_fase_e_restante(
-    post_draws, teams_list, df_partidas, fases_nomes=None, n_sim=100_000
+def simulate_stage_and_remaining(
+    post_draws, teams_list, matches_df, stage_names=None, n_sim=100_000
 ):
     """
     Simula uma fase específica e todas as subsequentes até o campeão.
-    O df_partidas deve estar ordenado em formato de chaveamento (0 enfrenta 1, 2 enfrenta 3...).
+    O matches_df deve estar ordenado em formato de chaveamento (0 enfrenta 1, 2 enfrenta 3...).
     """
     atk_draws, dfn_draws, eta_draws = (
         post_draws["attack"],
         post_draws["defense"],
         post_draws["eta"],
     )
-    usa_dixon_coles = "rho" in post_draws
-    rho_draws = post_draws["rho"] if usa_dixon_coles else None
+    uses_dixon_coles = "rho" in post_draws
+    rho_draws = post_draws["rho"] if uses_dixon_coles else None
 
     n_samples, n_teams_total = len(eta_draws), len(teams_list)
     t_to_idx = {name: i for i, name in enumerate(teams_list)}
 
-    idx_samples = np.random.choice(n_samples, n_sim)
-    atk, dfn = atk_draws[idx_samples], dfn_draws[idx_samples]
-    et = eta_draws[idx_samples].reshape(-1, 1)
-    rho = rho_draws[idx_samples] if usa_dixon_coles else None
+    sample_idx = np.random.choice(n_samples, n_sim)
+    atk, dfn = atk_draws[sample_idx], dfn_draws[sample_idx]
+    et = eta_draws[sample_idx].reshape(-1, 1)
+    rho = rho_draws[sample_idx] if uses_dixon_coles else None
 
-    num_matches = len(df_partidas)
+    num_matches = len(matches_df)
 
     # Infer the phase labels from the size of the first knockout round.
-    if fases_nomes is None:
-        mapeamento_fases = {
+    if stage_names is None:
+        stage_mapping = {
             16: [
                 "round_of_32",
                 "round_of_16",
@@ -220,40 +220,40 @@ def simular_fase_e_restante(
             2: ["semi_finalists", "finalists", "champion"],
             1: ["finalists", "champion"],
         }
-    fases_nomes = mapeamento_fases.get(
+    stage_names = stage_mapping.get(
         num_matches,
         ["fase_atual"]
         + [f"avanco_{i}" for i in range(1, int(np.log2(num_matches)) + 2)],
     )
 
-    stats = {f: np.zeros(n_teams_total) for f in fases_nomes}
+    stats = {f: np.zeros(n_teams_total) for f in stage_names}
     match_stats = []
     num_to_word = {0: "zero", 1: "one", 2: "two", 3: "three", 4: "four"}
 
     # Competitor matrix tracks the surviving team ID in each bracket slot.
-    competidores = np.zeros((n_sim, num_matches * 2), dtype=int)
+    competitors = np.zeros((n_sim, num_matches * 2), dtype=int)
 
-    times_envolvidos = []
+    involved_teams = []
     for m in range(num_matches):
-        row = df_partidas.iloc[m]
+        row = matches_df.iloc[m]
         t1, t2 = row["home_team"], row["away_team"]
-        times_envolvidos.extend([t1, t2])
+        involved_teams.extend([t1, t2])
         i1, i2 = t_to_idx[t1], t_to_idx[t2]
 
-        competidores[:, m * 2] = i1
-        competidores[:, m * 2 + 1] = i2
+        competitors[:, m * 2] = i1
+        competitors[:, m * 2 + 1] = i2
 
         # Teams in the provided fixture list are guaranteed to be in the initial phase.
-        stats[fases_nomes[0]][i1] = n_sim
-        stats[fases_nomes[0]][i2] = n_sim
+        stats[stage_names[0]][i1] = n_sim
+        stats[stage_names[0]][i2] = n_sim
 
-    fase_idx = 1
+    stage_idx = 1
     is_first_round = True
 
     # Simulate each round in cascade until one champion remains.
-    while competidores.shape[1] > 1:
-        n = competidores.shape[1] // 2
-        a, b = competidores[:, 0::2], competidores[:, 1::2]
+    while competitors.shape[1] > 1:
+        n = competitors.shape[1] // 2
+        a, b = competitors[:, 0::2], competitors[:, 1::2]
 
         la = np.exp(
             atk[np.arange(n_sim)[:, None], a] - dfn[np.arange(n_sim)[:, None], b] + et
@@ -261,21 +261,21 @@ def simular_fase_e_restante(
         lb = np.exp(
             atk[np.arange(n_sim)[:, None], b] - dfn[np.arange(n_sim)[:, None], a] + et
         )
-        rho_exp = np.repeat(rho[:, None], n, axis=1) if usa_dixon_coles else None
+        rho_exp = np.repeat(rho[:, None], n, axis=1) if uses_dixon_coles else None
 
-        ga, gb = simular_jogos(la, lb, rho_exp, n_sim)
+        ga, gb = simulate_matches(la, lb, rho_exp, n_sim)
 
-        vence_a = (ga > gb) | ((ga == gb) & (np.random.rand(n_sim, n) < 0.5))
+        team_a_wins = (ga > gb) | ((ga == gb) & (np.random.rand(n_sim, n) < 0.5))
 
-        # Export match-level probabilities only for the phase supplied by df_partidas.
+        # Export match-level probabilities only for the phase supplied by matches_df.
         if is_first_round:
             for m in range(num_matches):
                 g1, g2 = ga[:, m], gb[:, m]
 
                 match_info = {
-                    "home_team": df_partidas.iloc[m]["home_team"],
-                    "away_team": df_partidas.iloc[m]["away_team"],
-                    "date": df_partidas.iloc[m].get("date", "Data não encontrada"),
+                    "home_team": matches_df.iloc[m]["home_team"],
+                    "away_team": matches_df.iloc[m]["away_team"],
+                    "date": matches_df.iloc[m].get("date", "Data não encontrada"),
                     "home_win": np.mean(g1 > g2) * 100,
                     "draw": np.mean(g1 == g2) * 100,
                     "away_win": np.mean(g1 < g2) * 100,
@@ -289,27 +289,27 @@ def simular_fase_e_restante(
                 match_stats.append(match_info)
             is_first_round = False
 
-        competidores = np.where(vence_a, a, b)
+        competitors = np.where(team_a_wins, a, b)
 
         # Count teams that reached the next phase.
-        if fase_idx < len(fases_nomes):
-            unique, counts = np.unique(competidores, return_counts=True)
-            stats[fases_nomes[fase_idx]][unique] += counts
+        if stage_idx < len(stage_names):
+            unique, counts = np.unique(competitors, return_counts=True)
+            stats[stage_names[stage_idx]][unique] += counts
 
-        fase_idx += 1
+        stage_idx += 1
 
     # Build stage and match exports expected by downstream scripts.
-    probs = {fase: stats[fase] / n_sim for fase in fases_nomes}
+    probs = {stage: stats[stage] / n_sim for stage in stage_names}
 
     df_summary = pd.DataFrame(stats)
     df_summary = (df_summary / n_sim * 100).round(2)
     df_summary.insert(0, "team", teams_list)
 
     # Keep only teams involved in the input phase.
-    df_summary = df_summary[df_summary["team"].isin(times_envolvidos)]
+    df_summary = df_summary[df_summary["team"].isin(involved_teams)]
 
     # Rank by the deepest computed phase, usually champion probability.
-    sort_col = fases_nomes[-1]
+    sort_col = stage_names[-1]
     df_summary = df_summary.sort_values(by=sort_col, ascending=False).reset_index(
         drop=True
     )
@@ -347,11 +347,11 @@ def simular_fase_e_restante(
     return probs, df_csv, df_matches
 
 
-def simular_copa_2026(
+def simulate_world_cup_2026(
     post_draws,
     teams_list,
-    grupos,
-    df_schedule=df_jogos_reais,
+    groups,
+    df_schedule=current_results_df,
     TEAM_MAP_PT_TO_EN=TEAM_MAP_PT_TO_EN,
     TEAM_MAP_EN_TO_PT=TEAM_MAP_EN_TO_PT,
     n_sim=100_000,
@@ -361,21 +361,21 @@ def simular_copa_2026(
         post_draws["defense"],
         post_draws["eta"],
     )
-    usa_dixon_coles = "rho" in post_draws
-    rho_draws = post_draws["rho"] if usa_dixon_coles else None
+    uses_dixon_coles = "rho" in post_draws
+    rho_draws = post_draws["rho"] if uses_dixon_coles else None
 
     n_samples, n_teams = len(eta_draws), len(teams_list)
 
     # Map model team names to integer IDs for vectorized indexing.
     t_to_idx = {name: i for i, name in enumerate(teams_list)}
-    g_indices = np.array([[t_to_idx[t] for t in ts] for ts in grupos.values()])
+    g_indices = np.array([[t_to_idx[t] for t in ts] for ts in groups.values()])
 
-    idx_samples = np.random.choice(n_samples, n_sim)
-    atk, dfn = atk_draws[idx_samples], dfn_draws[idx_samples]
-    et = eta_draws[idx_samples].reshape(-1, 1)
-    rho = rho_draws[idx_samples] if usa_dixon_coles else None
+    sample_idx = np.random.choice(n_samples, n_sim)
+    atk, dfn = atk_draws[sample_idx], dfn_draws[sample_idx]
+    et = eta_draws[sample_idx].reshape(-1, 1)
+    rho = rho_draws[sample_idx] if uses_dixon_coles else None
 
-    fases_originais = [
+    original_stages = [
         "avancou_grupos",
         "round_of_32",
         "round_of_16",
@@ -384,13 +384,13 @@ def simular_copa_2026(
         "finalists",
         "champion",
     ]
-    todas_fases = fases_originais + [
+    all_stages = original_stages + [
         "group_first_place",
         "group_second_place",
         "group_third_place",
     ]
 
-    stats = {f: np.zeros(n_teams) for f in todas_fases}
+    stats = {f: np.zeros(n_teams) for f in all_stages}
 
     # Attach model IDs to the public schedule so exported match dates stay aligned.
     name_to_idx = {name: idx for name, idx in t_to_idx.items()}
@@ -423,9 +423,9 @@ def simular_copa_2026(
         i1, i2 = g_indices[:, p1], g_indices[:, p2]
         l1 = np.exp(atk[:, i1] - dfn[:, i2] + et)
         l2 = np.exp(atk[:, i2] - dfn[:, i1] + et)
-        rho_exp = np.repeat(rho[:, None], 12, axis=1) if usa_dixon_coles else None
+        rho_exp = np.repeat(rho[:, None], 12, axis=1) if uses_dixon_coles else None
 
-        g1, g2 = simular_jogos(l1, l2, rho_exp, n_sim)
+        g1, g2 = simulate_matches(l1, l2, rho_exp, n_sim)
 
         for g in range(12):
             t1_idx, t2_idx = g_indices[g, p1], g_indices[g, p2]
@@ -436,7 +436,7 @@ def simular_copa_2026(
             g1_g, g2_g = g1[:, g], g2[:, g]
 
             match_info = {
-                "group": list(grupos.keys())[g],
+                "group": list(groups.keys())[g],
                 "home_team": team1,
                 "away_team": team2,
                 "date": match_date,
@@ -461,28 +461,28 @@ def simular_copa_2026(
     sort_val = pts * 1000000 + sg * 1000 + gp
     ranks = np.argsort(-sort_val, axis=2)
 
-    def contar_fase(array_fase, nome_fase):
-        unique, counts = np.unique(array_fase, return_counts=True)
-        stats[nome_fase][unique] += counts
+    def count_stage(stage_array, stage_name):
+        unique, counts = np.unique(stage_array, return_counts=True)
+        stats[stage_name][unique] += counts
 
     # Extract group placements with vectorized ranking arrays.
     firsts = np.zeros((n_sim, 12), dtype=int)
     seconds = np.zeros((n_sim, 12), dtype=int)
     all_thirds = np.zeros((n_sim, 12), dtype=int)
-    terceiros_val = np.zeros((n_sim, 12))
+    third_place_scores = np.zeros((n_sim, 12))
 
     for g in range(12):
         firsts[:, g] = g_indices[g, ranks[:, g, 0]]
         seconds[:, g] = g_indices[g, ranks[:, g, 1]]
         all_thirds[:, g] = g_indices[g, ranks[:, g, 2]]
-        terceiros_val[:, g] = sort_val[np.arange(n_sim), g, ranks[:, g, 2]]
+        third_place_scores[:, g] = sort_val[np.arange(n_sim), g, ranks[:, g, 2]]
 
-        contar_fase(firsts[:, g], "group_first_place")
-        contar_fase(seconds[:, g], "group_second_place")
-        contar_fase(all_thirds[:, g], "group_third_place")
+        count_stage(firsts[:, g], "group_first_place")
+        count_stage(seconds[:, g], "group_second_place")
+        count_stage(all_thirds[:, g], "group_third_place")
 
     # Select the eight best third-place teams in each simulation.
-    best_3rd_group_idx = np.argsort(-terceiros_val, axis=1)[:, :8]
+    best_3rd_group_idx = np.argsort(-third_place_scores, axis=1)[:, :8]
     sorted_thirds = np.sort(best_3rd_group_idx, axis=1)
 
     # Allowed third-place assignments by winning-group slot (A=0, ..., L=11).
@@ -579,47 +579,47 @@ def simular_copa_2026(
         all_thirds[row_idx, allocated_thirds[:, 7]],
     )  # 1K vs 3...
 
-    contar_fase(r32, "avancou_grupos")
-    contar_fase(r32, "round_of_32")
+    count_stage(r32, "avancou_grupos")
+    count_stage(r32, "round_of_32")
 
     # Knockout rounds for the 2026 bracket.
-    def rodada(competidores):
-        n = competidores.shape[1] // 2
-        a, b = competidores[:, 0::2], competidores[:, 1::2]
+    def play_round(competitors):
+        n = competitors.shape[1] // 2
+        a, b = competitors[:, 0::2], competitors[:, 1::2]
         la = np.exp(
             atk[np.arange(n_sim)[:, None], a] - dfn[np.arange(n_sim)[:, None], b] + et
         )
         lb = np.exp(
             atk[np.arange(n_sim)[:, None], b] - dfn[np.arange(n_sim)[:, None], a] + et
         )
-        rho_exp = np.repeat(rho[:, None], n, axis=1) if usa_dixon_coles else None
+        rho_exp = np.repeat(rho[:, None], n, axis=1) if uses_dixon_coles else None
 
-        ga, gb = simular_jogos(la, lb, rho_exp, n_sim)
-        vence_a = (ga > gb) | ((ga == gb) & (np.random.rand(n_sim, n) < 0.5))
-        return np.where(vence_a, a, b)
+        ga, gb = simulate_matches(la, lb, rho_exp, n_sim)
+        team_a_wins = (ga > gb) | ((ga == gb) & (np.random.rand(n_sim, n) < 0.5))
+        return np.where(team_a_wins, a, b)
 
-    r16 = rodada(r32)
-    contar_fase(r16, "round_of_16")
+    r16 = play_round(r32)
+    count_stage(r16, "round_of_16")
 
-    qf = rodada(r16)
-    contar_fase(qf, "quarter_finalists")
+    qf = play_round(r16)
+    count_stage(qf, "quarter_finalists")
 
-    sf = rodada(qf)
-    contar_fase(sf, "semi_finalists")
+    sf = play_round(qf)
+    count_stage(sf, "semi_finalists")
 
-    fin = rodada(sf)
-    contar_fase(fin, "finalists")
+    fin = play_round(sf)
+    count_stage(fin, "finalists")
 
-    champ = rodada(fin)
-    contar_fase(champ, "champion")
+    champ = play_round(fin)
+    count_stage(champ, "champion")
 
     # Export stage summary and group-match probability tables.
     df_summary = pd.DataFrame(stats)
     df_summary = (df_summary / n_sim * 100).round(2)
     df_summary.insert(0, "team", teams_list)
 
-    times_nos_grupos = [time for lista_times in grupos.values() for time in lista_times]
-    df_summary = df_summary[df_summary["team"].isin(times_nos_grupos)]
+    teams_in_groups = [time for team_group_list in groups.values() for time in team_group_list]
+    df_summary = df_summary[df_summary["team"].isin(teams_in_groups)]
     df_summary = df_summary.sort_values(by="champion", ascending=False).reset_index(
         drop=True
     )
@@ -663,7 +663,7 @@ def simular_copa_2026(
     group_runners_up = {}
     third_places = []
 
-    for g_idx, (g_name, g_teams) in enumerate(grupos.items()):
+    for g_idx, (g_name, g_teams) in enumerate(groups.items()):
         g_df = df_summary[df_summary["team"].isin(g_teams)].copy()
 
         first = g_df.sort_values(by="group_first_place", ascending=False).iloc[0][
@@ -779,7 +779,7 @@ def simular_copa_2026(
         "T": 32,
     }
 
-    fases_finais = [
+    final_rounds = [
         (
             "R32",
             0,
@@ -810,9 +810,9 @@ def simular_copa_2026(
         ("Final", 4, [], ["F"]),
     ]
 
-    chaveamento_dados = []
+    bracket_data = []
 
-    for i, (round_label, round_index, matches, ids) in enumerate(fases_finais):
+    for i, (round_label, round_index, matches, ids) in enumerate(final_rounds):
         next_matches_teams = []
         next_matches_losers = []
 
@@ -837,9 +837,9 @@ def simular_copa_2026(
                 idx1, idx2 = t_to_idx[t1], t_to_idx[t2]
                 la = np.exp(atk[:, idx1] - dfn[:, idx2] + et[:, 0]).reshape(-1, 1)
                 lb = np.exp(atk[:, idx2] - dfn[:, idx1] + et[:, 0]).reshape(-1, 1)
-                rho_exp = rho.reshape(-1, 1) if usa_dixon_coles else None
+                rho_exp = rho.reshape(-1, 1) if uses_dixon_coles else None
 
-                ga, gb = simular_jogos(la, lb, rho_exp, n_sim)
+                ga, gb = simulate_matches(la, lb, rho_exp, n_sim)
                 # prob_t1 = np.mean(ga > gb) * 100
                 # prob_t2 = np.mean(gb > ga) * 100
                 prob_t1 = np.mean(ga > gb) * 100
@@ -859,7 +859,7 @@ def simular_copa_2026(
             next_matches_losers.append(loser)
             winner_side = "home" if prob_t1 >= prob_t2 else "away"
 
-            chaveamento_dados.append(
+            bracket_data.append(
                 {
                     "side": side,
                     "round_index": round_index,
@@ -875,21 +875,21 @@ def simular_copa_2026(
             )
 
         if round_label == "Semifinal":
-            fases_finais[i + 1][2].append(
+            final_rounds[i + 1][2].append(
                 (next_matches_losers[0], next_matches_losers[1])
             )
-            fases_finais[i + 2][2].append(
+            final_rounds[i + 2][2].append(
                 (next_matches_teams[0], next_matches_teams[1])
             )
         elif round_label not in ["Semifinal", "3º Lugar", "Final"]:
-            fases_finais[i + 1][2].extend(
+            final_rounds[i + 1][2].extend(
                 list(zip(next_matches_teams[0::2], next_matches_teams[1::2]))
             )
 
-    df_chaveamento = (
-        pd.DataFrame(chaveamento_dados).sort_values(by="order").reset_index(drop=True)
+    bracket_df = (
+        pd.DataFrame(bracket_data).sort_values(by="order").reset_index(drop=True)
     )
-    df_chaveamento = df_chaveamento[
+    bracket_df = bracket_df[
         [
             "side",
             "round_index",
@@ -904,12 +904,12 @@ def simular_copa_2026(
         ]
     ]
 
-    df_chaveamento["prob_home"] = df_chaveamento["prob_home"].round(2)
-    df_chaveamento["prob_away"] = df_chaveamento["prob_away"].round(2)
-    df_chaveamento["home_team"] = df_chaveamento["home_team"].replace(TEAM_MAP_EN_TO_PT)
-    df_chaveamento["away_team"] = df_chaveamento["away_team"].replace(TEAM_MAP_EN_TO_PT)
-    df_chaveamento.to_csv("docs/csv/previsoes/chaveamento_probs.csv", index=False)
-    df_chaveamento.to_csv("data/chaveamento_probs.csv", index=False)
+    bracket_df["prob_home"] = bracket_df["prob_home"].round(2)
+    bracket_df["prob_away"] = bracket_df["prob_away"].round(2)
+    bracket_df["home_team"] = bracket_df["home_team"].replace(TEAM_MAP_EN_TO_PT)
+    bracket_df["away_team"] = bracket_df["away_team"].replace(TEAM_MAP_EN_TO_PT)
+    bracket_df.to_csv("docs/csv/previsoes/chaveamento_probs.csv", index=False)
+    bracket_df.to_csv("data/chaveamento_probs.csv", index=False)
 
-    probs = {fase: stats[fase] / n_sim for fase in fases_originais}
+    probs = {stage: stats[stage] / n_sim for stage in original_stages}
     return probs

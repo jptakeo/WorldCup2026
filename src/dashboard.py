@@ -171,7 +171,7 @@ ISO_FLAGS = {
 
 
 def generate_dashboard(
-    json_file, output_file, fases_nome, participantes, chunk_size, title, nome_modelo
+    json_file, output_file, stage_labels, participants, chunk_size, title, model_name
 ):
     """
     Gera o dashboard HTML genérico para qualquer configuração de Copa,
@@ -184,13 +184,13 @@ def generate_dashboard(
         data = json.load(f)
 
     root = {"name": title, "children": []}
-    fases_exibir = list(fases_nome.keys())
+    stages_to_show = list(stage_labels.keys())
 
-    for key in fases_exibir:
-        node = {"name": fases_nome.get(key, key), "children": []}
+    for key in stages_to_show:
+        node = {"name": stage_labels.get(key, key), "children": []}
 
         # Show only tournament participants, ordered by probability.
-        team_probs = [x for x in data.get(key, []) if x["team"] in participantes]
+        team_probs = [x for x in data.get(key, []) if x["team"] in participants]
         team_probs = sorted(team_probs, key=lambda x: x["probability"], reverse=True)
 
         # Split large rankings into readable expandable groups.
@@ -199,16 +199,16 @@ def generate_dashboard(
             if not chunk or chunk[0]["probability"] == 0:
                 continue
 
-            aba = {"name": f"Top {i+len(chunk)}", "children": []}
+            tab = {"name": f"Top {i+len(chunk)}", "children": []}
             for item in chunk:
                 flag = ISO_FLAGS.get(item["team"], "")
-                aba["children"].append(
+                tab["children"].append(
                     {
                         "name": f"{item['team']}: {item['probability']*100:.2f}%",
                         "icon": f"https://flagcdn.com/w40/{flag}.png" if flag else "",
                     }
                 )
-            node["children"].append(aba)
+            node["children"].append(tab)
 
         root["children"].append(node)
 
@@ -217,7 +217,7 @@ def generate_dashboard(
     html_final = HTML_TEMPLATE
     html_final = html_final.replace("__JSON_DATA__", json.dumps(root))
     html_final = html_final.replace("{{TITULO_COPA}}", title)
-    html_final = html_final.replace("{{NOME_MODELO}}", nome_modelo)
+    html_final = html_final.replace("{{NOME_MODELO}}", model_name)
 
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(html_final)

@@ -4,13 +4,13 @@ import os
 import numpy as np
 
 from src.dashboard import generate_dashboard
-from src.data_prep import preparar_dados_ciclo
-from src.simulate import simular_copa_2022
+from src.data_prep import prepare_cycle_data
+from src.simulate import simulate_world_cup_2022
 
 
-def carregar_draws(caminho):
+def load_draws(path):
     """Carrega os draws gerados pelo Stan e salvos no treino."""
-    loaded = np.load(caminho)
+    loaded = np.load(path)
     return {key: loaded[key] for key in loaded.files}
 
 
@@ -19,7 +19,7 @@ if __name__ == "__main__":
     os.makedirs("data/outputs/dashboards", exist_ok=True)
 
     # Official 2018 World Cup groups.
-    grupos_2018 = {
+    groups_2018 = {
         "A": ["Russia", "Saudi Arabia", "Egypt", "Uruguay"],
         "B": ["Portugal", "Spain", "Morocco", "Iran"],
         "C": ["France", "Australia", "Peru", "Denmark"],
@@ -33,35 +33,35 @@ if __name__ == "__main__":
     print("\n--- SIMULANDO 2018 ---")
 
     # Rebuild the team order used when the 2018 model was trained.
-    _, times_18, _ = preparar_dados_ciclo(
-        "data/raw/results.csv", "2014-06-11", "2018-06-13", aplicar_decaimento=True
+    _, teams_18, _ = prepare_cycle_data(
+        "data/raw/results.csv", "2014-06-11", "2018-06-13", apply_decay=True
     )
 
     # Select the saved posterior draws to simulate from.
-    nome_modelo = "draws_2018_n_poisson_ranking.npz"
-    caminho_modelo = f"data/outputs/models/{nome_modelo}"
-    print(f"Carregando: {caminho_modelo}")
-    draws_18 = carregar_draws(caminho_modelo)
+    model_name = "draws_2018_n_poisson_ranking.npz"
+    model_path = f"data/outputs/models/{model_name}"
+    print(f"Carregando: {model_path}")
+    draws_18 = load_draws(model_path)
 
     # The 2018 and 2022 tournaments share the same 32-team bracket format.
-    probs_2018 = simular_copa_2022(draws_18, times_18, grupos_2018, n_sim=100000)
+    probs_2018 = simulate_world_cup_2022(draws_18, teams_18, groups_2018, n_sim=100000)
 
     # Dashboard generator expects probabilities grouped by stage.
     json_output_18 = {
-        fase: [
-            {"team": times_18[i], "probability": probs_2018[fase][i]}
-            for i in range(len(times_18))
+        stage: [
+            {"team": teams_18[i], "probability": probs_2018[stage][i]}
+            for i in range(len(teams_18))
         ]
-        for fase in probs_2018.keys()
+        for stage in probs_2018.keys()
     }
 
     with open("data/outputs/results/sim_results_2018.json", "w") as f:
         json.dump(json_output_18, f)
 
-    participantes_18 = set(team for teams in grupos_2018.values() for team in teams)
+    participants_18 = set(team for teams in groups_2018.values() for team in teams)
 
     # Dashboard labels use public-facing stage names.
-    fases_18 = {
+    stage_labels_18 = {
         "avancou_grupos": "Oitavas de Final",
         "quarter_finalists": "Quartas de Final",
         "semi_finalists": "Semifinais",
@@ -72,11 +72,11 @@ if __name__ == "__main__":
     generate_dashboard(
         "data/outputs/results/sim_results_2018.json",
         "data/outputs/dashboards/dashboard_2018.html",
-        fases_18,
-        participantes_18,
+        stage_labels_18,
+        participants_18,
         8,
         "Copa do Mundo 2018",
-        nome_modelo,
+        model_name,
     )
 
     print("Sucesso! Dashboard gerado em data/outputs/dashboards/dashboard_2018.html")

@@ -4,48 +4,48 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 import numpy as np
 from cmdstanpy import CmdStanModel
 
-from src.data_prep import carregar_priors_ranking, preparar_dados_ciclo
+from src.data_prep import load_ranking_priors, prepare_cycle_data
 
 
-def treinar_e_salvar(
-    ciclo_nome, modelo_nome, stan_file, exe_file, df, times, map_times, priors
+def train_and_save(
+    cycle_name, model_name, stan_file, exe_file, df, teams, team_map, ranking_priors
 ):
     """
     Run one Stan model for one cycle and save its posterior draws.
 
     Prepared data is passed in so parallel jobs do not repeat preprocessing.
     """
-    print(f"\n[{ciclo_nome}] Treinando: {modelo_nome} ...")
+    print(f"\n[{cycle_name}] Treinando: {model_name} ...")
 
     # Keep this schema aligned with the data block in every Stan model.
     stan_data = {
         "N": len(df),
-        "T": len(times),
-        "team_i": df["home_team"].map(map_times).values,
-        "team_j": df["away_team"].map(map_times).values,
+        "T": len(teams),
+        "team_i": df["home_team"].map(team_map).values,
+        "team_j": df["away_team"].map(team_map).values,
         "y_i": df["home_score"].values.astype(int),
         "y_j": df["away_score"].values.astype(int),
         "game_weight": df["game_weight"].values,
-        "prior_strength": priors
+        "prior_strength": ranking_priors
     }
 
-    modelo_stan = CmdStanModel(stan_file=stan_file, exe_file=exe_file)
+    stan_model = CmdStanModel(stan_file=stan_file, exe_file=exe_file)
 
     # Recreate the model from source so CmdStan can rebuild stale binaries.
-    modelo_stan = CmdStanModel(stan_file=stan_file)
-    fit = modelo_stan.sample(data=stan_data, chains=4, iter_sampling=5000, seed=123)
+    stan_model = CmdStanModel(stan_file=stan_file)
+    fit = stan_model.sample(data=stan_data, chains=4, iter_sampling=5000, seed=123)
 
     post_draws = fit.stan_variables()
-    caminho_saida = f"data/outputs/models/draws_{ciclo_nome}_{modelo_nome}.npz"
-    os.makedirs(os.path.dirname(caminho_saida), exist_ok=True)
+    output_path = f"data/outputs/models/draws_{cycle_name}_{model_name}.npz"
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
-    np.savez_compressed(caminho_saida, **post_draws)
-    print(f"Salvo em: {caminho_saida}")
+    np.savez_compressed(output_path, **post_draws)
+    print(f"Salvo em: {output_path}")
 
 
 if __name__ == "__main__":
     # Friendly model names map directly to Stan files and output filenames.
-    modelos_stan = {
+    stan_model_files = {
         "n_poisson_noranking": "stan_models/n_poisson_noranking.stan",
         "st_dc_ranking": "stan_models/st_dc_ranking.stan",
         "st_dc_noranking": "stan_models/st_dc_noranking.stan",
@@ -62,59 +62,59 @@ if __name__ == "__main__":
 
     compiled_models = {}
 
-    for nome_mod, stan_file in modelos_stan.items():
-        print(f"Compilando {nome_mod} ...")
+    for model_key, stan_file in stan_model_files.items():
+        print(f"Compilando {model_key} ...")
 
-        modelo = CmdStanModel(stan_file=stan_file)
+        model = CmdStanModel(stan_file=stan_file)
 
-        compiled_models[nome_mod] = {
+        compiled_models[model_key] = {
             "stan_file": stan_file,
-            "exe_file": modelo.exe_file,
+            "exe_file": model.exe_file,
         }
 
     print("\nTodos os modelos compilados!")
 
-    ciclos = []
+    cycles = []
 
     print("=" * 50)
     print("PREPARANDO DADOS DO CICLO 2018")
     print("=" * 50)
 
-    df_18, times_18, map_18 = preparar_dados_ciclo(
-        "data/raw/results.csv", "2014-06-11", "2018-06-13", aplicar_decaimento=True
+    df_18, teams_18, team_map_18 = prepare_cycle_data(
+        "data/raw/results.csv", "2014-06-11", "2018-06-13", apply_decay=True
     )
 
-    priors_18 = carregar_priors_ranking("data/raw/fifa_ranking_2014.csv", times_18)
+    ranking_priors_18 = load_ranking_priors("data/raw/fifa_ranking_2014.csv", teams_18)
 
-    ciclos.append(("2018", df_18, times_18, map_18, priors_18))
+    cycles.append(("2018", df_18, teams_18, team_map_18, ranking_priors_18))
 
     print("=" * 50)
     print("PREPARANDO DADOS DO CICLO 2022")
     print("=" * 50)
 
-    df_22, times_22, map_22 = preparar_dados_ciclo(
-        "data/raw/results.csv", "2018-06-13", "2022-11-20", aplicar_decaimento=True
+    df_22, teams_22, team_map_22 = prepare_cycle_data(
+        "data/raw/results.csv", "2018-06-13", "2022-11-20", apply_decay=True
     )
 
-    priors_22 = carregar_priors_ranking("data/raw/fifa_ranking_2018.csv", times_22)
+    ranking_priors_22 = load_ranking_priors("data/raw/fifa_ranking_2018.csv", teams_22)
 
-    ciclos.append(("2022", df_22, times_22, map_22, priors_22))
+    cycles.append(("2022", df_22, teams_22, team_map_22, ranking_priors_22))
 
     # One parallel job per cycle/model pair.
     jobs = []
 
-    for ciclo_nome, df, times, map_times, priors in ciclos:
-        for nome_mod in modelos_stan.keys():
+    for cycle_name, df, teams, team_map, ranking_priors in cycles:
+        for model_key in stan_model_files.keys():
             jobs.append(
                 (
-                    ciclo_nome,
-                    nome_mod,
-                    compiled_models[nome_mod]["stan_file"],
-                    compiled_models[nome_mod]["exe_file"],
+                    cycle_name,
+                    model_key,
+                    compiled_models[model_key]["stan_file"],
+                    compiled_models[model_key]["exe_file"],
                     df,
-                    times,
-                    map_times,
-                    priors,
+                    teams,
+                    team_map,
+                    ranking_priors,
                 )
             )
 
@@ -126,7 +126,7 @@ if __name__ == "__main__":
     MAX_WORKERS = 3
 
     with ProcessPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = [executor.submit(treinar_e_salvar, *job) for job in jobs]
+        futures = [executor.submit(train_and_save, *job) for job in jobs]
 
         for future in as_completed(futures):
             future.result()

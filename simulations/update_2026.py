@@ -5,45 +5,45 @@ import numpy as np
 import pandas as pd
 from cmdstanpy import CmdStanModel
 
-from simulations.sim_2026 import carregar_draws
+from simulations.sim_2026 import load_draws
 from src.constants import TEAM_MAP_PT_TO_EN
-from src.data_prep import carregar_priors_ranking, preparar_dados_ciclo
+from src.data_prep import load_ranking_priors, prepare_cycle_data
 from src.export_probs import update_html_from_summary
-from src.simulate import simular_fase_e_restante
+from src.simulate import simulate_stage_and_remaining
 
 
-def treinar_e_salvar(
-    ciclo_nome, modelo_nome, stan_file, exe_file, df, times, map_times, priors
+def train_and_save(
+    cycle_name, model_name, stan_file, exe_file, df, teams, team_map, ranking_priors
 ):
     """
     Run an updated 2026 Stan model and save posterior draws for live updates.
     """
-    print(f"\n[{ciclo_nome}] Treinando: {modelo_nome} ...")
+    print(f"\n[{cycle_name}] Treinando: {model_name} ...")
 
     # Keep this schema aligned with the data block in the Stan model.
     stan_data = {
         "N": len(df),
-        "T": len(times),
-        "team_i": df["home_team"].map(map_times).values,
-        "team_j": df["away_team"].map(map_times).values,
+        "T": len(teams),
+        "team_i": df["home_team"].map(team_map).values,
+        "team_j": df["away_team"].map(team_map).values,
         "y_i": df["home_score"].values.astype(int),
         "y_j": df["away_score"].values.astype(int),
         "game_weight": df["game_weight"].values,
-        "prior_strength": priors,
+        "prior_strength": ranking_priors,
     }
 
-    modelo_stan = CmdStanModel(stan_file=stan_file, exe_file=exe_file)
+    stan_model = CmdStanModel(stan_file=stan_file, exe_file=exe_file)
 
     # Recreate the model from source so CmdStan can rebuild stale binaries.
-    modelo_stan = CmdStanModel(stan_file=stan_file)
-    fit = modelo_stan.sample(data=stan_data, chains=4, iter_sampling=5000, seed=123)
+    stan_model = CmdStanModel(stan_file=stan_file)
+    fit = stan_model.sample(data=stan_data, chains=4, iter_sampling=5000, seed=123)
 
     post_draws = fit.stan_variables()
-    caminho_saida = f"data/outputs/models/new_draws_{ciclo_nome}_{modelo_nome}.npz"
-    os.makedirs(os.path.dirname(caminho_saida), exist_ok=True)
+    output_path = f"data/outputs/models/new_draws_{cycle_name}_{model_name}.npz"
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
-    np.savez_compressed(caminho_saida, **post_draws)
-    print(f"Salvo em: {caminho_saida}")
+    np.savez_compressed(output_path, **post_draws)
+    print(f"Salvo em: {output_path}")
 
 
 if __name__ == "__main__":
@@ -71,7 +71,7 @@ if __name__ == "__main__":
             == 0
         ):
             stage = "final"
-            colunas_para_substituir = ["champion"]
+            columns_to_replace = ["champion"]
             matches_to_pred = actual_results.loc[
                 actual_results["stage"].isin(["final"])
             ]
@@ -109,7 +109,7 @@ if __name__ == "__main__":
             == 0
         ):
             stage = "semi_final"
-            colunas_para_substituir = ["final", "champion"]
+            columns_to_replace = ["final", "champion"]
             matches_to_pred = actual_results.loc[
                 actual_results["stage"].isin(["semi_final"])
             ]
@@ -147,7 +147,7 @@ if __name__ == "__main__":
             == 0
         ):
             stage = "quarter_final"
-            colunas_para_substituir = ["semifinals", "final", "champion"]
+            columns_to_replace = ["semifinals", "final", "champion"]
             matches_to_pred = actual_results.loc[
                 actual_results["stage"].isin(["quarter_final"])
             ]
@@ -183,7 +183,7 @@ if __name__ == "__main__":
             == 0
         ):
             stage = "round_of_16"
-            colunas_para_substituir = [
+            columns_to_replace = [
                 "quarterfinals",
                 "semifinals",
                 "final",
@@ -224,7 +224,7 @@ if __name__ == "__main__":
             == 0
         ):
             stage = "round_of_32"
-            colunas_para_substituir = [
+            columns_to_replace = [
                 "round_of_16",
                 "quarterfinals",
                 "semifinals",
@@ -254,31 +254,31 @@ if __name__ == "__main__":
             df_updated = pd.concat([old_results, df_to_concat], ignore_index=True)
 
         df_updated.to_csv("data/new_results.csv", index=False)
-        df_26, times_26, map_26 = preparar_dados_ciclo(
-            "data/new_results.csv", "2022-11-19", aplicar_decaimento=True
+        df_26, teams_26, team_map_26 = prepare_cycle_data(
+            "data/new_results.csv", "2022-11-19", apply_decay=True
         )
 
-        priors_26 = carregar_priors_ranking("data/raw/fifa_ranking_2022.csv", times_26)
+        ranking_priors_26 = load_ranking_priors("data/raw/fifa_ranking_2022.csv", teams_26)
 
         print("\n=== COMPILANDO MODELO ===\n")
         stan_file = "stan_models/n_poisson_ranking.stan"
-        modelo = CmdStanModel(stan_file=stan_file)
+        model = CmdStanModel(stan_file=stan_file)
 
         print("\n=== RETREINANDO MODELO ===\n")
-        treinar_e_salvar(
+        train_and_save(
             "2026",
             "n_poisson_ranking",
             stan_file,
-            modelo.exe_file,
+            model.exe_file,
             df_26,
-            times_26,
-            map_26,
-            priors_26,
+            teams_26,
+            team_map_26,
+            ranking_priors_26,
         )
 
-        nome_modelo = "new_draws_2026_n_poisson_ranking.npz"
-        caminho_modelo = f"data/outputs/models/{nome_modelo}"
-        draws_26 = carregar_draws(caminho_modelo)
+        model_name = "new_draws_2026_n_poisson_ranking.npz"
+        model_path = f"data/outputs/models/{model_name}"
+        draws_26 = load_draws(model_path)
         matches_to_pred["home_team"] = matches_to_pred["home_team"].map(
             TEAM_MAP_PT_TO_EN
         )
@@ -297,11 +297,11 @@ if __name__ == "__main__":
                 TEAM_MAP_PT_TO_EN
             )
             pred_third_place.reset_index(drop=True, inplace=True)
-            probs, df_summary, df_matches = simular_fase_e_restante(
-                draws_26, times_26, matches_to_pred
+            probs, df_summary, df_matches = simulate_stage_and_remaining(
+                draws_26, teams_26, matches_to_pred
             )
-            probs_third_place, _, df_matches_third_place = simular_fase_e_restante(
-                draws_26, times_26, pred_third_place
+            probs_third_place, _, df_matches_third_place = simulate_stage_and_remaining(
+                draws_26, teams_26, pred_third_place
             )
             df_previous_summary = pd.read_csv("data/summary.csv")
             # Align by team before replacing only the newly simulated columns.
@@ -311,7 +311,7 @@ if __name__ == "__main__":
                 df_previous_summary.index.isin(df_summary.index)
             ]
 
-            df_previous_summary.update(df_summary[colunas_para_substituir])
+            df_previous_summary.update(df_summary[columns_to_replace])
 
             # Re-rank the public table after updating champion probability.
             df_previous_summary = df_previous_summary.sort_values(
@@ -330,8 +330,8 @@ if __name__ == "__main__":
                 "docs/csv/previsoes/probs_third_place.csv", index=False
             )
         else:
-            probs, df_summary, df_matches = simular_fase_e_restante(
-                draws_26, times_26, matches_to_pred
+            probs, df_summary, df_matches = simulate_stage_and_remaining(
+                draws_26, teams_26, matches_to_pred
             )
             df_previous_summary = pd.read_csv("data/summary.csv")
             # Align by team before replacing only the newly simulated columns.
@@ -341,7 +341,7 @@ if __name__ == "__main__":
                 df_previous_summary.index.isin(df_summary.index)
             ]
 
-            df_previous_summary.update(df_summary[colunas_para_substituir])
+            df_previous_summary.update(df_summary[columns_to_replace])
 
             # Re-rank the public table after updating champion probability.
             df_previous_summary = df_previous_summary.sort_values(

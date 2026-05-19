@@ -17,7 +17,6 @@ from src.constants import (
     DATA_DIR,
     DEFAULT_MIN_DATE,
     DEFAULT_SEED,
-    FLAG_MAPPING,
     MAX_GOALS,
     PHASE_LABELS,
     QUARTERFINAL_PAIRS,

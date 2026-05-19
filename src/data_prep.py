@@ -4,29 +4,29 @@ import numpy as np
 import pandas as pd
 
 
-def remover_selecoes_sem_volume(
-    df, min_jogos=20, col_home="home_team", col_away="away_team"
+def filter_low_volume_teams(
+    df, min_matches=20, col_home="home_team", col_away="away_team"
 ):
     """Keep only matches where both teams have enough historical volume."""
-    jogos_casa = df[col_home].value_counts()
-    jogos_fora = df[col_away].value_counts()
+    home_matches = df[col_home].value_counts()
+    away_matches = df[col_away].value_counts()
 
     # Combine home and away appearances; fill missing sides for one-sided histories.
-    total_jogos = jogos_casa.add(jogos_fora, fill_value=0)
-    selecoes_validas = total_jogos[total_jogos > min_jogos].index
+    total_matches = home_matches.add(away_matches, fill_value=0)
+    valid_teams = total_matches[total_matches > min_matches].index
 
-    df_limpo = df[
-        df[col_home].isin(selecoes_validas) & df[col_away].isin(selecoes_validas)
+    clean_df = df[
+        df[col_home].isin(valid_teams) & df[col_away].isin(valid_teams)
     ].copy()
 
     # Keep Stan team IDs deterministic across runs.
-    lista_selecoes = sorted(list(selecoes_validas))
+    team_list = sorted(list(valid_teams))
 
-    return df_limpo, lista_selecoes
+    return clean_df, team_list
 
 
-def obter_fator_i(row):
-    """Calcula a importância da partida com base no torneio."""
+def get_importance_factor(row):
+    """Calculate match importance from the tournament name."""
     t = str(row["tournament"]).lower()
     if "fifa world cup" in t and "qualification" not in t:
         return 60
@@ -51,30 +51,31 @@ def obter_fator_i(row):
     return 20
 
 
-def preparar_dados_ciclo(
-    caminho_csv,
-    data_inicio,
-    data_fim=None,
-    min_jogos=20,
-    aplicar_decaimento=True,
+def prepare_cycle_data(
+    csv_path,
+    start_date,
+    end_date=None,
+    min_matches=20,
+    apply_decay=True,
     decay_alpha=0.001,
 ):
     """
-    Filtra os jogos para um ciclo específico, aplica pesos e mapeia os times.
-    Serve tanto para o ciclo de 2026 quanto para o de 2022.
-    """
-    if not os.path.exists(caminho_csv):
-        raise FileNotFoundError(f"Arquivo {caminho_csv} não encontrado.")
+    Filter matches for a specific cycle, apply weights, and map teams.
 
-    df = pd.read_csv(caminho_csv)
-    df, _ = remover_selecoes_sem_volume(df)
+    This supports the 2026 cycle and historical validation cycles.
+    """
+    if not os.path.exists(csv_path):
+        raise FileNotFoundError(f"Arquivo {csv_path} não encontrado.")
+
+    df = pd.read_csv(csv_path)
+    df, _ = filter_low_volume_teams(df)
     df["date"] = pd.to_datetime(df["date"])
 
     # Limit training matches to the requested World Cup cycle.
-    filtro = df["date"] >= data_inicio
-    if data_fim:
-        filtro &= df["date"] < data_fim
-    df_cycle = df[filtro].copy()
+    date_filter = df["date"] >= start_date
+    if end_date:
+        date_filter &= df["date"] < end_date
+    df_cycle = df[date_filter].copy()
 
     # Re-check minimum volume after the cycle filter.
     counts = (
@@ -82,27 +83,27 @@ def preparar_dados_ciclo(
         .value_counts()
         .add(df_cycle["away_team"].value_counts(), fill_value=0)
     )
-    teams_validos = counts[counts >= min_jogos].index
+    valid_cycle_teams = counts[counts >= min_matches].index
     df_cycle = df_cycle[
-        df_cycle["home_team"].isin(teams_validos)
-        & df_cycle["away_team"].isin(teams_validos)
+        df_cycle["home_team"].isin(valid_cycle_teams)
+        & df_cycle["away_team"].isin(valid_cycle_teams)
     ].copy()
 
-    df_cycle["tourn_weight"] = df_cycle.apply(obter_fator_i, axis=1)
+    df_cycle["tourn_weight"] = df_cycle.apply(get_importance_factor, axis=1)
 
     # Weight recent and high-importance matches more heavily.
-    if aplicar_decaimento:
+    if apply_decay:
         max_date = df_cycle["date"].max()
         df_cycle["days_ago"] = (max_date - df_cycle["date"]).dt.days
         df_cycle["time_weight"] = np.exp(-decay_alpha * df_cycle["days_ago"])
         df_cycle["game_weight"] = (df_cycle["tourn_weight"] * df_cycle["time_weight"])
     else:
-        df_cycle["game_weight"] = df_cycle["fator_i"]
+        df_cycle["game_weight"] = df_cycle["tourn_weight"]
     
     df_cycle['game_weight'] = df_cycle['game_weight'] / 10
 
     # Stan uses 1-based team IDs.
-    teams_list = sorted(list(teams_validos))
+    teams_list = sorted(list(valid_cycle_teams))
     team_map = {name: i + 1 for i, name in enumerate(teams_list)}
 
     print(
@@ -112,13 +113,12 @@ def preparar_dados_ciclo(
     return df_cycle, teams_list, team_map
 
 
-def carregar_priors_ranking(caminho_ranking, teams_list):
+def load_ranking_priors(ranking_path, teams_list):
     """
-    Lê o CSV de ranking da FIFA, normaliza os pontos (z-score)
-    e retorna o vetor ordenado de acordo com o teams_list.
+    Read the FIFA ranking CSV and return normalized strengths ordered by teams_list.
     """
     try:
-        df_ranking = pd.read_csv(caminho_ranking, sep=None, engine="python")
+        df_ranking = pd.read_csv(ranking_path, sep=None, engine="python")
     except Exception as e:
         print(f"Erro ao ler o arquivo de ranking: {e}")
         return np.zeros(len(teams_list))
@@ -156,5 +156,5 @@ def carregar_priors_ranking(caminho_ranking, teams_list):
         normalized_val = (float(str(pts).replace(",", ".")) - mean_pts) / std_pts
         team_prior_strength.append(normalized_val)
 
-    print(f"Sucesso! Posições do ranking {caminho_ranking} carregadas e normalizadas.")
+    print(f"Sucesso! Posições do ranking {ranking_path} carregadas e normalizadas.")
     return np.array(team_prior_strength)
