@@ -6,7 +6,7 @@ from src.data_prep import prepare_cycle_data
 
 _, teams_26, _ = prepare_cycle_data(
     'data/raw/results.csv',
-    '2022-11-20',
+    '2022-11-19',
     apply_decay=True
 )
 npz_path = 'data/outputs/models/draws_2026_n_poisson_ranking.npz'
@@ -43,7 +43,7 @@ sns.violinplot(
 
 plt.title('Distribuição da Força (Strength) - Top 20 Seleções',
           fontsize=16, fontweight='bold')
-plt.xlabel('Força Total (Atk - Def)', fontsize=12)
+plt.xlabel('Força Total (Atk + Def)', fontsize=12)
 plt.ylabel('Seleção', fontsize=12)
 plt.grid(axis='x', linestyle='--', alpha=0.5)
 
