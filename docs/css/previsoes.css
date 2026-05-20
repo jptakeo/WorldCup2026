@@ -1702,7 +1702,7 @@ STICKERS (FIGURINHAS) E SEÇÕES
 ════════════════════════════════════════ */
 
 .section-title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 800;
     color: var(--text-blue);
     margin: 30px 0 15px;
@@ -1822,7 +1822,7 @@ STICKERS (FIGURINHAS) E SEÇÕES
     border-radius: 20px;
     margin: 0;
     color: white;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    /*box-shadow: 0 10px 30px rgba(0,0,0,0.4);*/
     position: relative;
     width: 260px;
     height: 380px;
@@ -1833,12 +1833,18 @@ STICKERS (FIGURINHAS) E SEÇÕES
 
 .sticker-container.border-orange {
     border-color: #ff9f0a; /* Clash Royale Rare - Orange */
-    box-shadow: 0 0 10px rgba(255, 159, 10, 0.3), inset 0 0 5px rgba(255, 159, 10, 0.1), 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow:
+        0 0 15px rgba(255, 159, 10, 0.5),
+        inset 0 0 7.5px rgba(255, 159, 10, 0.28),
+        0 6px 13.5px rgba(0,0,0,0.35);
 }
 
 .sticker-container.border-purple {
     border-color: #bf5af2; /* Clash Royale Epic - Purple */
-    box-shadow: 0 0 25px rgba(191, 90, 242, 0.7), inset 0 0 15px rgba(191, 90, 242, 0.4), 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow:
+        0 0 20px rgba(191, 90, 242, 0.5),
+        inset 0 0 10px rgba(191, 90, 242, 0.28),
+        0 6px 18px rgba(0,0,0,0.35);
 }
 
 .sticker-bg-blur {
@@ -2030,7 +2036,7 @@ STICKERS (FIGURINHAS) E SEÇÕES
 
 .footer-bar-container {
     display: flex;
-    height: 6px;
+    height: 4px;
     width: 100%;
     border-radius: 3px;
     overflow: hidden;
@@ -2054,7 +2060,7 @@ STICKERS (FIGURINHAS) E SEÇÕES
 }
 
 .f-stat {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 800;
 }
 
@@ -2154,4 +2160,4 @@ STICKER MODAL / EXPANDED VIEW
 .toast-message.show {
     opacity: 1;
     bottom: 40px;
-}}
+}

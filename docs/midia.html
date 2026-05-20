@@ -1,0 +1,253 @@
+<!ATUALIZADO EM: 18/05/2026>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="icon" href="images/favicon.png">
+        <meta charset="UTF-8"/>      
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/styles.css" type="text/css">
+        <link rel="stylesheet" href="css/midia.css" type="text/css">
+        <title>EMAp: Copa do mundo</title>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119803899-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+
+            gtag('config', 'UA-119803899-1');
+        </script>
+    </head>
+
+    <body>
+        <!-- Início do cabeçalho-->
+        <div class="page">   
+            <header>
+                <div class="container-header">
+                    <div class="logo">
+                        <img src="images/logo.png" />
+                    </div>
+
+                    <div class="menu-toggle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <nav class="menu">
+                        <ul>
+                            <li> <a href="index.html">Início</a></li>
+                            <li><a href="modelos.html">Modelos</a></li>
+                            <li><a href="previsoes.html">Previsões</a></li>
+                            <li><a href="chances.html">Chances</a></li>
+                            <li><a href="vis.html">Retrospectiva</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-link">
+                                    Outros
+                                </a>
+                                <ul class="submenu">
+                                    <li><a href="equipe.html">Equipe</a></li>
+                                    <li class="active"><a href="midia.html">Na Mídia</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+            <!--Final do cabeçalho-->
+
+            <!-- Banner das páginas -->
+            <div class="banner-cabecalho">
+                <div class="texto-banner">Na Mídia</div>
+            </div>
+            <!--Fim do banner das páginas-->
+
+            <!-- Conteudo principal -->
+            <main class="midia-container">
+                <section class="midia-filtros">
+                    <div class="campo-busca">
+                        <label for="busca">BUSCAR POR</label>
+
+                        <div class="input-busca">
+                            <span>🔎</span>
+                            <input 
+                                type="text" 
+                                id="busca" 
+                                placeholder="Título da mídia ou data"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="campo-ordenar">
+                        <label for="ordenar">ORDENAR POR</label>
+
+                        <select id="ordenar">
+                            <option value="antiga">Data mais antiga</option>
+                            <option value="recente">Data mais recente</option>
+                            <option value="az">Título A-Z</option>
+                            <option value="za">Título Z-A</option>
+                        </select>
+                    </div>
+                </section>
+
+                <section class="midia-grid" id="midiaGrid">
+
+                    <article class="midia-card" data-title="title1" data-date="2026-03-17">
+                        <a href="https://link-da-materia-1.com" target="_blank">
+                            <img src="images/placeholder.jpg" alt="title1">
+                        </a>
+
+                        <p class="midia-data">17/03/2026</p>
+
+                        <h2>
+                            <a href="https://link-da-materia-1.com" target="_blank">
+                                Título 1
+                            </a>
+                        </h2>
+
+                        <p class="midia-veiculo">O Globo</p>
+                    </article>
+
+                    <article class="midia-card" data-title="title2" data-date="2024-09-18">
+                        <a href="https://google.com" target="_blank">
+                            <img src="images/placeholder.jpg" alt="title2">
+                        </a>
+
+                        <p class="midia-data">18/09/2024</p>
+
+                        <h2>
+                            <a href="https://google.com" target="_blank">
+                                Título 2
+                            </a>
+                        </h2>
+
+                        <p class="midia-veiculo">Escola de Economia de São Paulo - FGV EESP</p>
+                    </article>
+
+                    <article class="midia-card" data-title="title3" data-date="2024-08-20">
+                        <a href="https://link-da-materia-3.com" target="_blank">
+                            <img src="images/placeholder.jpg" alt="title3">
+                        </a>
+
+                        <p class="midia-data">20/08/2024</p>
+
+                        <h2>
+                            <a href="https://link-da-materia-3.com" target="_blank">
+                                Título 3
+                            </a>
+                        </h2>
+
+                        <p class="midia-veiculo">FGV</p>
+                    </article>
+
+                    <article class="midia-card" data-title="title4" data-date="2025-05-12">
+                        <a href="https://link-da-materia-4.com" target="_blank">
+                            <img src="images/placeholder.jpg" alt="title4">
+                        </a>
+
+                        <p class="midia-data">12/05/2025</p>
+
+                        <h2>
+                            <a href="https://link-da-materia-4.com" target="_blank">
+                                Título 4
+                            </a>
+                        </h2>
+
+                        <p class="midia-veiculo">Comunitas</p>
+                    </article>
+
+                    <article class="midia-card" data-title="title5" data-date="2026-03-16">
+                        <a href="https://link-da-materia-5.com" target="_blank">
+                            <img src="images/placeholder.jpg" alt="title5">
+                        </a>
+
+                        <p class="midia-data">16/03/2026</p>
+
+                        <h2>
+                            <a href="https://link-da-materia-5.com" target="_blank">
+                                Título 5
+                            </a>
+                        </h2>
+
+                        <p class="midia-veiculo">Valor Econômico</p>
+                    </article>
+
+                    <article class="midia-card" data-title="title6" data-date="2024-07-10">
+                        <a href="https://google.com" target="_blank">
+                            <img src="images/placeholder.jpg" alt="title6">
+                        </a>
+
+                        <p class="midia-data">10/07/2024</p>
+
+                        <h2>
+                            <a href="https://googlr.com" target="_blank">
+                                Título 6
+                            </a>
+                        </h2>
+
+                        <p class="midia-veiculo">Estadão</p>
+                    </article>
+
+                </section>
+            </main>
+        </div>
+        <!--Final do conteudo-->
+        <footer id="footer">
+            <div class="container">
+                <div class="logo-rodape column-3"><img src="images/logo-rodape.png" /></div>
+                <div class="txt-middle column-3">Praia de Botafogo, 190 - Rio de Janeiro - RJ, <br>
+                    CEP: 22250-900. Tel:+55 21 3799-5917<br>
+                    emap@fgv.br</div>
+                <div class="txt-right column-3">© FGV 2026</div>
+            </div>
+        </footer>
+        <script src="js/main.js"></script>
+        <script>
+            const busca = document.getElementById("busca");
+            const ordenar = document.getElementById("ordenar");
+            const grid = document.getElementById("midiaGrid");
+
+            function atualizarMidias() {
+                const termo = busca.value.toLowerCase().trim();
+                const cards = Array.from(grid.querySelectorAll(".midia-card"));
+
+                cards.forEach(card => {
+                    const titulo = card.dataset.title.toLowerCase();
+                    const dataBR = card.querySelector(".midia-data").textContent.toLowerCase();
+                    const veiculo = card.querySelector(".midia-veiculo").textContent.toLowerCase();
+
+                    const corresponde =
+                        titulo.includes(termo) ||
+                        dataBR.includes(termo) ||
+                        veiculo.includes(termo);
+
+                    card.style.display = corresponde ? "block" : "none";
+                });
+
+                const cardsOrdenados = cards.sort((a, b) => {
+                    const tituloA = a.dataset.title.toLowerCase();
+                    const tituloB = b.dataset.title.toLowerCase();
+                    const dataA = new Date(a.dataset.date);
+                    const dataB = new Date(b.dataset.date);
+
+                    if (ordenar.value === "recente") return dataB - dataA;
+                    if (ordenar.value === "antiga") return dataA - dataB;
+                    if (ordenar.value === "az") return tituloA.localeCompare(tituloB);
+                    if (ordenar.value === "za") return tituloB.localeCompare(tituloA);
+
+                    return 0;
+                });
+
+                cardsOrdenados.forEach(card => grid.appendChild(card));
+            }
+
+            busca.addEventListener("input", atualizarMidias);
+            ordenar.addEventListener("change", atualizarMidias);
+
+            atualizarMidias();
+        </script>
+    </body>
+</html>
