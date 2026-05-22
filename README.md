@@ -57,7 +57,6 @@ There are two modeling tracks in the repo:
 | `src/` | Main Python source code for data access, modeling, simulation, export, evaluation, and dashboards. |
 | `src/freq_model/` | Faster frequency-model implementation: data classes, Dixon-Coles likelihood, utilities, and tournament simulator. |
 | `stan_models/` | Stan model definitions and compiled model binaries. |
-| `2022Cup/` | Historical 2022 World Cup project material, including simulation scripts, old site files, generated figures, flags, confrontation images, templates, and data. |
 
 ## Main Source Modules
 
