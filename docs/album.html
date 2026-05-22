@@ -1,0 +1,484 @@
+<!ATUALIZADO EM: 22/05/2026>
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <link rel="icon" href="images/favicon.png">
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/styles.css" type="text/css">
+        <link rel="stylesheet" href="css/album.css" type="text/css">
+        <title>EMAp: Simulador de Álbum</title>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119803899-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+            gtag('config', 'UA-119803899-1');
+        </script>
+    </head>
+    <body>
+        <!-- Início do cabeçalho-->
+        <div class="page">
+            <header>
+                <div class="container-header">
+                    <div class="logo">
+                        <img src="images/logo.png" alt="FGV EMAp" />
+                    </div>
+
+                    <div class="menu-toggle" aria-label="Abrir menu" role="button" tabindex="0">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <nav class="menu">
+                        <ul>
+                            <li><a href="index.html">Início</a></li>
+                            <li><a href="modelos.html">Modelos</a></li>
+                            <li><a href="previsoes.html">Previsões</a></li>
+                            <li><a href="chances.html">Chances</a></li>
+                            <li><a href="vis.html">Retrospectiva</a></li>
+                            <li><a href="equipe.html">Equipe</a></li>
+                            <!--<li><a href="midia.html">Na Mídia</a></li>-->
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+            <!--Final do cabeçalho-->
+
+            <!-- Banner das páginas -->
+            <div class="banner-cabecalho">
+                <div class="texto-banner">Simulador de Álbum</div>
+            </div>
+            <!--Fim do banner das páginas-->
+
+            <!-- Conteúdo principal -->
+            <div class="container">
+                <div id="conteudo" style="width: 100%; max-width: 1200px; margin: 0 auto;">
+                    <section id="album-simulador" class="album-simulador">
+                        <div class="album-hero">
+                            <h1>Quanto custa completar o álbum da copa 2026 <u>em grupo</u>?</h1>
+                            <p>
+                                Nesta simulação, você e seus amigos compram figurinhas e trocam as repetidas em ordem circular.<br>
+                                Cada rodada sorteia novas figurinhas, repassa duplicatas para quem ainda precisa delas e continua até que
+                                <strong>todos os participantes completem seus álbuns</strong>. O resultado usa o método de <strong>Monte Carlo</strong>:
+                                repetimos o experimento muitas vezes e resumimos a média, a mediana e a variação esperada.
+                            </p>
+                        </div>
+
+                        <button class="wc-accordion-toggle" type="button" aria-expanded="false" aria-controls="album-how-it-works">
+                            <span class="arrow">▶</span>
+                            Como funciona a compra em grupo?
+                        </button>
+
+                        <div id="album-how-it-works" class="wc-accordion-content">
+                            <div class="wc-accordion-inner">
+                                <p>Neste modelo, simulamos um grupo cooperando para reduzir desperdício de figurinhas repetidas:</p>
+                                <ol>
+                                    <li>Cada participante compra uma figurinha por vez, em rodízio.</li>
+                                    <li>Se a pessoa já tem a figurinha, ela passa a repetida para o próximo participante do círculo.</li>
+                                    <li>A figurinha continua circulando até encontrar alguém que ainda não a tenha; se todos já tiverem, ela é descartada.</li>
+                                    <li><strong>Importante:</strong> quem completa o álbum primeiro continua comprando para ajudar o grupo até que o último álbum seja fechado.</li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="album-controls" aria-label="Configurações da simulação">
+                            <div class="album-field">
+                                <label for="album-stickers">Figurinhas no álbum</label>
+                                <div class="album-stepper">
+                                    <input id="album-stickers" type="number" inputmode="numeric" min="10" max="2000" step="1" value="980">
+                                    <button type="button" data-step-target="album-stickers" data-step="-10" aria-label="Diminuir figurinhas">−</button>
+                                    <button type="button" data-step-target="album-stickers" data-step="10" aria-label="Aumentar figurinhas">+</button>
+                                </div>
+                                <input id="album-stickers-range" type="range" min="10" max="2000" step="10" value="980" aria-label="Figurinhas no álbum">
+                            </div>
+
+                            <div class="album-field">
+                                <label for="album-people">Pessoas no grupo <small>(inclui você)</small></label>
+                                <div class="album-stepper">
+                                    <input id="album-people" type="number" inputmode="numeric" min="1" max="30" step="1" value="3">
+                                    <button type="button" data-step-target="album-people" data-step="-1" aria-label="Diminuir pessoas">−</button>
+                                    <button type="button" data-step-target="album-people" data-step="1" aria-label="Aumentar pessoas">+</button>
+                                </div>
+                                <input id="album-people-range" type="range" min="1" max="30" step="1" value="3" aria-label="Pessoas no grupo">
+                            </div>
+
+                            <div class="album-field">
+                                <label for="album-simulations">Simulações</label>
+                                <div class="album-stepper">
+                                    <input id="album-simulations" type="number" inputmode="numeric" min="100" max="10000" step="100" value="1000">
+                                    <button type="button" data-step-target="album-simulations" data-step="-100" aria-label="Diminuir simulações">−</button>
+                                    <button type="button" data-step-target="album-simulations" data-step="100" aria-label="Aumentar simulações">+</button>
+                                </div>
+                                <input id="album-simulations-range" type="range" min="100" max="10000" step="100" value="1000" aria-label="Número de simulações">
+                            </div>
+
+                            <div class="album-actions">
+                                <button id="album-run" class="album-run" type="button">Rodar simulação</button>
+                                <button id="album-reset" class="album-reset" type="button">Limpar</button>
+                            </div>
+
+                            <p class="album-hint">
+                                Para cada simulação, o algoritmo cria álbuns vazios, sorteia figurinhas com probabilidade uniforme e registra quantas compras foram necessárias até todos completarem.
+                            </p>
+                        </div>
+
+                        <div id="album-progress" class="album-progress" hidden>
+                            <div class="album-progress-top">
+                                <span>Simulando...</span>
+                                <strong id="album-progress-label">0%</strong>
+                            </div>
+                            <div class="album-progress-bar" aria-hidden="true">
+                                <span id="album-progress-fill"></span>
+                            </div>
+                        </div>
+
+                        <div id="album-results" class="album-results" hidden>
+                            <div class="album-results-head">
+                                <div>
+                                    <h2>Resumo das simulações</h2>
+                                </div>
+                                <p id="album-result-text"></p>
+                            </div>
+
+                            <div id="album-summary" class="wc-summary" aria-label="Resumo numérico da simulação"></div>
+
+                            <div class="album-result-grid">
+                                <div class="album-chart-card">
+                                    <h3>Distribuição do total de figurinhas compradas</h3>
+                                    <canvas id="album-histogram" height="220"></canvas>
+                                    <p class="album-notes">O gráfico mostra a concentração dos resultados: quanto mais alta a barra, mais simulações terminaram naquele intervalo.</p>
+                                </div>
+
+                                <div class="album-table-card">
+                                    <h3>Detalhes</h3>
+                                    <table class="album-table">
+                                        <tbody id="album-detail-body"></tbody>
+                                    </table>
+                                    <p class="album-notes">A referência “sozinho” usa a estimativa clássica do problema do colecionador de cupons para uma pessoa sem trocas.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <!--Final do conteúdo-->
+
+        <footer id="footer">
+            <div class="container">
+                <div class="logo-rodape column-3"><img src="images/logo-rodape.png" alt="FGV" /></div>
+                <div class="txt-middle column-3">Praia de Botafogo, 190 - Rio de Janeiro - RJ, <br>
+                    CEP: 22250-900. Tel:+55 21 3799-5917<br>
+                    emap@fgv.br</div>
+                <div class="txt-right column-3">© FGV 2026</div>
+            </div>
+        </footer>
+
+        <script src="js/main.js"></script>
+        <script>
+            (function () {
+                'use strict';
+
+                const $ = (selector) => document.querySelector(selector);
+                const formatter = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 });
+                const decimalFormatter = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 });
+
+                const inputs = {
+                    stickers: $('#album-stickers'),
+                    stickersRange: $('#album-stickers-range'),
+                    people: $('#album-people'),
+                    peopleRange: $('#album-people-range'),
+                    simulations: $('#album-simulations'),
+                    simulationsRange: $('#album-simulations-range')
+                };
+
+                const runButton = $('#album-run');
+                const resetButton = $('#album-reset');
+                const progress = $('#album-progress');
+                const progressFill = $('#album-progress-fill');
+                const progressLabel = $('#album-progress-label');
+                const resultsPanel = $('#album-results');
+                const resultText = $('#album-result-text');
+                const summary = $('#album-summary');
+                const detailBody = $('#album-detail-body');
+                const canvas = $('#album-histogram');
+
+                const defaults = {
+                    stickers: 980,
+                    people: 3,
+                    simulations: 1000
+                };
+
+                function clamp(value, min, max) {
+                    return Math.min(Math.max(value, min), max);
+                }
+
+                function readInt(input) {
+                    const value = Number.parseInt(input.value, 10);
+                    const min = Number.parseInt(input.min, 10);
+                    const max = Number.parseInt(input.max, 10);
+                    return clamp(Number.isFinite(value) ? value : min, min, max);
+                }
+
+                function syncPair(numberInput, rangeInput) {
+                    const value = readInt(numberInput);
+                    numberInput.value = value;
+                    rangeInput.value = value;
+                }
+
+                function bindPair(numberInput, rangeInput) {
+                    numberInput.addEventListener('input', () => syncPair(numberInput, rangeInput));
+                    numberInput.addEventListener('change', () => syncPair(numberInput, rangeInput));
+                    rangeInput.addEventListener('input', () => {
+                        numberInput.value = rangeInput.value;
+                    });
+                }
+
+                bindPair(inputs.stickers, inputs.stickersRange);
+                bindPair(inputs.people, inputs.peopleRange);
+                bindPair(inputs.simulations, inputs.simulationsRange);
+
+                document.querySelectorAll('[data-step-target]').forEach((button) => {
+                    button.addEventListener('click', () => {
+                        const target = document.getElementById(button.dataset.stepTarget);
+                        const range = document.getElementById(`${button.dataset.stepTarget}-range`);
+                        const step = Number.parseInt(button.dataset.step, 10) || 1;
+                        target.value = readInt(target) + step;
+                        syncPair(target, range);
+                    });
+                });
+
+                document.querySelectorAll('.wc-accordion-toggle').forEach((toggle) => {
+                    toggle.addEventListener('click', () => {
+                        const content = document.getElementById(toggle.getAttribute('aria-controls')) || toggle.nextElementSibling;
+                        const isOpen = toggle.classList.toggle('active');
+                        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                        content.style.maxHeight = isOpen ? `${content.scrollHeight}px` : null;
+                    });
+                });
+
+                resetButton.addEventListener('click', () => {
+                    inputs.stickers.value = defaults.stickers;
+                    inputs.people.value = defaults.people;
+                    inputs.simulations.value = defaults.simulations;
+                    syncPair(inputs.stickers, inputs.stickersRange);
+                    syncPair(inputs.people, inputs.peopleRange);
+                    syncPair(inputs.simulations, inputs.simulationsRange);
+                    resultsPanel.hidden = true;
+                    progress.hidden = true;
+                });
+
+                function simulateOneAlbumRun(albumSize, peopleCount, marker, albums) {
+                    const missing = new Int32Array(peopleCount);
+                    missing.fill(albumSize);
+
+                    let completed = 0;
+                    let purchases = 0;
+
+                    while (completed < peopleCount) {
+                        for (let buyer = 0; buyer < peopleCount && completed < peopleCount; buyer += 1) {
+                            const sticker = Math.floor(Math.random() * albumSize);
+                            purchases += 1;
+
+                            let receiver = buyer;
+                            for (let passed = 0; passed < peopleCount; passed += 1) {
+                                if (albums[receiver][sticker] !== marker) {
+                                    albums[receiver][sticker] = marker;
+                                    missing[receiver] -= 1;
+
+                                    if (missing[receiver] === 0) {
+                                        completed += 1;
+                                    }
+                                    break;
+                                }
+                                receiver = (receiver + 1) % peopleCount;
+                            }
+                        }
+                    }
+
+                    return purchases;
+                }
+
+                function percentile(sorted, p) {
+                    if (!sorted.length) return 0;
+                    const position = (sorted.length - 1) * p;
+                    const base = Math.floor(position);
+                    const rest = position - base;
+                    const next = sorted[base + 1];
+                    return next === undefined ? sorted[base] : sorted[base] + rest * (next - sorted[base]);
+                }
+
+                function harmonic(n) {
+                    let total = 0;
+                    for (let i = 1; i <= n; i += 1) {
+                        total += 1 / i;
+                    }
+                    return total;
+                }
+
+                function buildStat(value, label, extraClass) {
+                    return `
+                        <div class="wc-stat ${extraClass || ''}">
+                            <strong>${value}</strong>
+                            <span>${label}</span>
+                        </div>
+                    `;
+                }
+
+                function setProgress(done, total) {
+                    const percentage = total === 0 ? 0 : Math.round((done / total) * 100);
+                    progressFill.style.width = `${percentage}%`;
+                    progressLabel.textContent = `${percentage}%`;
+                }
+
+                function summarize(results, albumSize, peopleCount, simulations) {
+                    const sorted = results.slice().sort((a, b) => a - b);
+                    const sum = sorted.reduce((acc, value) => acc + value, 0);
+                    const average = sum / sorted.length;
+                    const averagePerPerson = average / peopleCount;
+                    const median = percentile(sorted, 0.5);
+                    const p05 = percentile(sorted, 0.05);
+                    const p25 = percentile(sorted, 0.25);
+                    const p75 = percentile(sorted, 0.75);
+                    const p90 = percentile(sorted, 0.90);
+                    const p95 = percentile(sorted, 0.95);
+                    const min = sorted[0];
+                    const max = sorted[sorted.length - 1];
+                    const singleExpected = albumSize * harmonic(albumSize);
+                    const economy = (1 - (averagePerPerson / singleExpected)) * 100;
+
+                    resultText.innerHTML = `Com ${formatter.format(simulations)} simulações, um grupo de ${peopleCount} pessoa${peopleCount > 1 ? 's' : ''} precisou, em média, de <strong>${formatter.format(average)}</strong> figurinhas compradas no total.`;
+
+                    summary.innerHTML = [
+                        buildStat(formatter.format(average), 'média do grupo'),
+                        buildStat(formatter.format(averagePerPerson), 'média por pessoa'),
+                        buildStat(formatter.format(median), 'mediana do grupo'),
+                        buildStat(formatter.format(p90), '90% terminam até'),
+                        buildStat(`${decimalFormatter.format(economy)}%`, 'economia vs. sozinho', economy >= 0 ? 'is-good' : 'is-bad')
+                    ].join('');
+
+                    detailBody.innerHTML = `
+                        <tr><th>Figurinhas no álbum</th><td>${formatter.format(albumSize)}</td></tr>
+                        <tr><th>Pessoas no grupo</th><td>${formatter.format(peopleCount)}</td></tr>
+                        <tr><th>Simulações Monte Carlo</th><td>${formatter.format(simulations)}</td></tr>
+                        <tr><th>Mínimo observado</th><td>${formatter.format(min)}</td></tr>
+                        <tr><th>Percentil 5%</th><td>${formatter.format(p05)}</td></tr>
+                        <tr><th>Percentil 25%</th><td>${formatter.format(p25)}</td></tr>
+                        <tr><th>Percentil 75%</th><td>${formatter.format(p75)}</td></tr>
+                        <tr><th>Percentil 95%</th><td>${formatter.format(p95)}</td></tr>
+                        <tr><th>Máximo observado</th><td>${formatter.format(max)}</td></tr>
+                        <tr><th>Referência sozinho</th><td>${formatter.format(singleExpected)} figurinhas por pessoa</td></tr>
+                    `;
+
+                    drawHistogram(sorted);
+                    resultsPanel.hidden = false;
+                    resultsPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+
+                function drawHistogram(values) {
+                    if (!values.length || !canvas) return;
+
+                    const containerWidth = canvas.parentElement.clientWidth || 720;
+                    const cssWidth = Math.max(320, containerWidth - 28);
+                    const cssHeight = 220;
+                    const dpr = window.devicePixelRatio || 1;
+                    canvas.style.width = `${cssWidth}px`;
+                    canvas.style.height = `${cssHeight}px`;
+                    canvas.width = Math.floor(cssWidth * dpr);
+                    canvas.height = Math.floor(cssHeight * dpr);
+
+                    const ctx = canvas.getContext('2d');
+                    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                    ctx.clearRect(0, 0, cssWidth, cssHeight);
+
+                    const bins = Math.min(24, Math.max(8, Math.round(Math.sqrt(values.length))));
+                    const min = values[0];
+                    const max = values[values.length - 1];
+                    const span = Math.max(1, max - min);
+                    const counts = new Array(bins).fill(0);
+
+                    values.forEach((value) => {
+                        const index = Math.min(bins - 1, Math.floor(((value - min) / span) * bins));
+                        counts[index] += 1;
+                    });
+
+                    const padding = { top: 16, right: 16, bottom: 34, left: 44 };
+                    const chartWidth = cssWidth - padding.left - padding.right;
+                    const chartHeight = cssHeight - padding.top - padding.bottom;
+                    const maxCount = Math.max(...counts);
+                    const barGap = 4;
+                    const barWidth = chartWidth / bins;
+
+                    ctx.font = '12px Arial, sans-serif';
+                    ctx.fillStyle = '#667085';
+                    ctx.strokeStyle = '#d7dee8';
+                    ctx.lineWidth = 1;
+
+                    ctx.beginPath();
+                    ctx.moveTo(padding.left, padding.top);
+                    ctx.lineTo(padding.left, padding.top + chartHeight);
+                    ctx.lineTo(padding.left + chartWidth, padding.top + chartHeight);
+                    ctx.stroke();
+
+                    counts.forEach((count, index) => {
+                        const height = maxCount === 0 ? 0 : (count / maxCount) * chartHeight;
+                        const x = padding.left + index * barWidth + barGap / 2;
+                        const y = padding.top + chartHeight - height;
+                        ctx.fillStyle = '#213d7a';
+                        ctx.fillRect(x, y, Math.max(1, barWidth - barGap), height);
+                    });
+
+                    ctx.fillStyle = '#667085';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(formatter.format(min), padding.left, cssHeight - 10);
+                    ctx.textAlign = 'right';
+                    ctx.fillText(formatter.format(max), padding.left + chartWidth, cssHeight - 10);
+                    ctx.textAlign = 'left';
+                    ctx.fillText(formatter.format(maxCount), 4, padding.top + 8);
+                    ctx.fillText('0', 4, padding.top + chartHeight);
+                }
+
+                async function runSimulation() {
+                    const albumSize = readInt(inputs.stickers);
+                    const peopleCount = readInt(inputs.people);
+                    const simulations = readInt(inputs.simulations);
+
+                    syncPair(inputs.stickers, inputs.stickersRange);
+                    syncPair(inputs.people, inputs.peopleRange);
+                    syncPair(inputs.simulations, inputs.simulationsRange);
+
+                    runButton.disabled = true;
+                    resetButton.disabled = true;
+                    resultsPanel.hidden = true;
+                    progress.hidden = false;
+                    setProgress(0, simulations);
+
+                    const albums = Array.from({ length: peopleCount }, () => new Uint32Array(albumSize));
+                    const results = [];
+                    const batchSize = Math.max(1, Math.floor(simulations / 60));
+
+                    for (let i = 0; i < simulations; i += 1) {
+                        results.push(simulateOneAlbumRun(albumSize, peopleCount, i + 1, albums));
+
+                        if ((i + 1) % batchSize === 0 || i + 1 === simulations) {
+                            setProgress(i + 1, simulations);
+                            await new Promise((resolve) => window.requestAnimationFrame(resolve));
+                        }
+                    }
+
+                    summarize(results, albumSize, peopleCount, simulations);
+                    progress.hidden = true;
+                    runButton.disabled = false;
+                    resetButton.disabled = false;
+                }
+
+                runButton.addEventListener('click', runSimulation);
+            }());
+        </script>
+    </body>
+</html>
