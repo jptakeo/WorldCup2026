@@ -48,14 +48,15 @@ const countries = [
   anos: "1998, 2018"
 },
 {
-  /* GeoJSON representa Reino Unido inteiro; exibe dados da Inglaterra */
-  name: "United Kingdom",
+  name: "England",
   Selecao: "Inglaterra",
   campanha: "Campeão",
   aparicoes: 16,
   continente: "Europa",
   anos: "1966"
 },
+
+
 {
   name: "Spain",
   Selecao: "Espanha",
@@ -218,7 +219,21 @@ const countries = [
 },
 
 /* ── QUARTAS DE FINAL ── */
-
+// UK
+{ name: "Wales",
+  Selecao: "País de Gales",
+  campanha: "Quartas de Final",
+  aparicoes: 2,
+  continente: "Europa",
+  anos: "1958, 2022" 
+},
+{ name: "Northern Ireland",
+  Selecao: "Irlanda do Norte",
+  campanha: "Quartas de Final",
+  aparicoes: 3,
+  continente: "Europa",
+  anos: "1958, 1982, 1986"
+},
 {
   name: "Mexico",
   Selecao: "México",
@@ -419,8 +434,6 @@ const countries = [
 /* ── FASE DE GRUPOS ── */
 
 {
-  /* Escócia: 8 aparições, nunca passou da fase de grupos.
-     Não exibida separadamente pois o GeoJSON agrupa no Reino Unido. */
   name: "Scotland",
   Selecao: "Escócia",
   campanha: "Fase de Grupos",
@@ -650,7 +663,6 @@ const countries = [
 
 ];
 
-
 /* =========================
    CORES
 ========================= */
@@ -699,17 +711,17 @@ L.tileLayer(
 
 
 /* =========================
-   GEOJSON
+ (Natural Earth Map Units — UK já dividido) 
 ========================= */
 
-fetch("https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json")
+fetch("https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_map_units.geojson")
   .then(r => r.json())
   .then(world => {
 
     const geojson = L.geoJSON(world, {
 
       style: feature => {
-        const found = countries.find(c => c.name === feature.properties.name);
+        const found = countries.find(c => c.name === feature.properties.GEOUNIT);
         return {
           fillColor:   found ? getColor(found.campanha) : "#e2e8f0",
           weight:      0.6,
@@ -720,7 +732,7 @@ fetch("https://raw.githubusercontent.com/johan/world.geo.json/master/countries.g
       },
 
       onEachFeature: (feature, layer) => {
-        const found = countries.find(c => c.name === feature.properties.name);
+        const found = countries.find(c => c.name === feature.properties.GEOUNIT);
         if (!found) return;
 
         const badgeColor = getColor(found.campanha);
