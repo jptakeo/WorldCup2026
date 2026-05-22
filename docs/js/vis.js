@@ -225,14 +225,14 @@ const countries = [
   campanha: "Quartas de Final",
   aparicoes: 2,
   continente: "Europa",
-  anos: "1958, 2022" 
+  anos: "1958" 
 },
 { name: "Northern Ireland",
   Selecao: "Irlanda do Norte",
   campanha: "Quartas de Final",
   aparicoes: 3,
   continente: "Europa",
-  anos: "1958, 1982, 1986"
+  anos: "1958"
 },
 {
   name: "Mexico",
