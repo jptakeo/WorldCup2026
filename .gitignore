@@ -210,3 +210,4 @@ __marimo__/
 # Other files to ignore
 *.exe
 
+data/outputs/models
