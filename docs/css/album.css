@@ -80,6 +80,7 @@ body {
 }
 
 .album-hero p {
+    font-family: 'gotham-book';
     position: relative;
     z-index: 1;
 }
@@ -119,17 +120,30 @@ body {
     background: #fff;
     border: none;
     border-radius: 16px;
-    line-height: 1;
+    font-family: 'gotham-book';
+    font-size: 14px;
+    line-height: 1.25;
     padding: 18px 22px;
 }
 
-.wc-accordion-inner ol {
+.wc-accordion-inner p,
+.wc-accordion-inner ol,
+.wc-accordion-inner li {
+    font-family: 'gotham-book';
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.wc-accordion-inner p {
     margin: 0;
-    padding-left: 22px;
+}
+
+.wc-accordion-inner p + p {
+    margin-top: 10px;
 }
 
 .wc-accordion-inner li + li {
-    margin-top: 6px;
+    margin-top: 8px;
 }
 
 .album-controls {
@@ -478,7 +492,7 @@ body {
     border-radius: 18px;
     margin-top: 14px;
     overflow: hidden;
-    padding: 16px 18px;
+    padding: 14px 16px;
 }
 
 .album-decision-card h3 {
@@ -560,6 +574,82 @@ body {
     }
 }
 
+/* Ajuste visual dos sliders de configuração */
+.album-field input[type="range"] {
+    width: 50%;
+
+    --range-progress: 0%;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(90deg,
+        var(--wc-blue) 0%,
+        var(--wc-blue) var(--range-progress),
+        #d6d9de var(--range-progress),
+        #d6d9de 100%);
+    border-radius: 999px;
+    cursor: pointer;
+    height: 8px;
+    outline: none;
+}
+
+.album-field input[type="range"]::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    background: transparent;
+    border-radius: 999px;
+    height: 8px;
+}
+
+.album-field input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background: #ffffff;
+    border: 3px solid var(--wc-blue);
+    border-radius: 50%;
+    height: 18px;
+    margin-top: -5px;
+    transition: transform .15s ease, box-shadow .15s ease;
+    width: 18px;
+}
+
+.album-field input[type="range"]:hover::-webkit-slider-thumb,
+.album-field input[type="range"]:focus::-webkit-slider-thumb {
+    transform: scale(1.08);
+}
+
+.album-field input[type="range"]::-moz-range-track {
+    background: #d6d9de;
+    border: 0;
+    border-radius: 999px;
+    height: 8px;
+}
+
+.album-field input[type="range"]::-moz-range-progress {
+    background: var(--wc-blue);
+    border-radius: 999px;
+    height: 8px;
+}
+
+.album-field input[type="range"]::-moz-range-thumb {
+    background: #ffffff;
+    border: 3px solid var(--wc-blue);
+    border-radius: 50%;
+    height: 14px;
+    transition: transform .15s ease, box-shadow .15s ease;
+    width: 14px;
+}
+
+.album-field input[type="range"]:hover::-moz-range-thumb,
+.album-field input[type="range"]:focus::-moz-range-thumb {
+    transform: scale(1.08);
+}
+
+
+@media (max-width: 768px) {
+    .album-hero p {
+        font-size: 15px;
+    }
+}
+
 @media (max-width: 720px) {
 
     .album-decision-card {
@@ -567,7 +657,48 @@ body {
     }
 
     .album-decision-table {
-        min-width: 640px;
+        min-width: 520px;
+        table-layout: fixed;
+    }
+
+    .album-decision-table thead th {
+        color: var(--wc-dark-blue);
+        font-size: 14px;
+        text-align: right;
+        letter-spacing: 0em;
+        text-transform: none;
+    }
+
+    .album-decision-table th:first-child,
+    .album-decision-table td:first-child {
+        width: 42%;
+    }
+
+    .album-decision-table th:not(:first-child),
+    .album-decision-table td:not(:first-child) {
+        width: 19.33%;
+        text-align: right;
+    }
+
+    
+    .album-decision-table th,
+    .album-decision-table td {
+        padding: 7px 0;
+    }
+
+    .album-decision-table th {
+        color: var(--wc-muted);
+        font-size: 10px;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+    }
+
+    .album-decision-table td {
+        font-size: 13px;
+    }
+
+    .album-decision-wrap {
+        overflow-x: visible;
     }
 
     .album-hero {
@@ -579,8 +710,17 @@ body {
         font-size: 18px;
     }
 
-    .album-hero p {
+
+    .wc-accordion-toggle {
         font-size: 15px;
+        width: 100%;
+        justify-content: flex-start;
+        text-align: left;
+    }
+
+    .wc-accordion-toggle .accordion-label {
+        flex: 1;
+        text-align: left;
     }
 
     .album-controls {
@@ -697,6 +837,30 @@ body {
     #album-chart-next:hover {
         transform: translateY(-50%) scale(1.08);
     }
+
+    .album-field input[type="range"] {
+    width: 70%;
+    }
+}
+
+@media (max-width: 480px) {
+    .album-hero p {
+        font-size: 14px;
+    }
+
+    .wc-accordion-inner p, li {
+        font-size: 13px !important;
+    }
+
+    .album-hero h1 {
+        font-size: 17px;
+    }
+}
+
+@media (max-width: 380px) {
+    .wc-accordion-inner p, li {
+        font-size: 12px !important;
+    }
 }
 
 @media (max-width: 420px) {
@@ -711,6 +875,14 @@ body {
 
     .album-stepper {
         grid-template-columns: 1fr 38px 38px;
+    }
+
+    .album-field input[type="range"] {
+    width: 70%;
+    }
+
+    .wc-accordion-toggle {
+        font-size: 14px;
     }
 }
 
@@ -785,8 +957,83 @@ body {
     }
 }
 
-/* Ajuste visual dos sliders de configuração */
-.album-field input[type="range"] {
+/* Cartas extras / cromos raros */
+.album-rarity-section {
+    margin-top: 44px;
+}
+
+.album-rarity-hero {
+    margin-bottom: 16px;
+}
+
+.rare-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: minmax(0, 1fr) minmax(400px, 1fr);
+    margin-bottom: 34px;
+}
+
+.rare-card {
+    background: #fff;
+    border: 1px solid var(--wc-line);
+    border-radius: 18px;
+    padding: 18px;
+    overflow: hidden;
+}
+
+.rare-card h2,
+.rare-pack-result-summary h3 {
+    color: var(--wc-blue-dark);
+    font-family: 'gotham-bold';
+    font-size: 16px;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.rare-card p,
+.rare-card small,
+.rare-pack-result-summary p,
+.rare-pack-result-summary li {
+    color: var(--wc-muted);
+    font-family: 'gotham-book';
+}
+
+.rare-card-head {
+    align-items: flex-start;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.rare-card-head p,
+.rare-pack-copy p {
+    font-size: 13px;
+    line-height: 1.45;
+    margin: 8px 0 0;
+}
+
+.rare-pack-label {
+    background: #eef4fb;
+    border: 1px solid #d9e5f2;
+    border-radius: 999px;
+    color: var(--wc-blue);
+    flex: 0 0 auto;
+    font-family: 'gotham-bold';
+    font-size: 13px;
+    padding: 8px 12px;
+    white-space: nowrap;
+}
+
+.rare-slider-row {
+    align-items: center;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 1fr 110px;
+    margin: 16px 0 18px;
+}
+
+.rare-range {
     --range-progress: 0%;
     -webkit-appearance: none;
     appearance: none;
@@ -799,55 +1046,277 @@ body {
     cursor: pointer;
     height: 8px;
     outline: none;
+    width: 100%;
 }
 
-.album-field input[type="range"]::-webkit-slider-runnable-track {
+.rare-range::-webkit-slider-runnable-track {
     -webkit-appearance: none;
     background: transparent;
     border-radius: 999px;
     height: 8px;
 }
 
-.album-field input[type="range"]::-webkit-slider-thumb {
+.rare-range::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    background: #ffffff;
+    background: #fff;
     border: 3px solid var(--wc-blue);
     border-radius: 50%;
     height: 18px;
     margin-top: -5px;
-    transition: transform .15s ease, box-shadow .15s ease;
     width: 18px;
 }
 
-.album-field input[type="range"]:hover::-webkit-slider-thumb,
-.album-field input[type="range"]:focus::-webkit-slider-thumb {
-    transform: scale(1.08);
-}
-
-.album-field input[type="range"]::-moz-range-track {
+.rare-range::-moz-range-track {
     background: #d6d9de;
     border: 0;
     border-radius: 999px;
     height: 8px;
 }
 
-.album-field input[type="range"]::-moz-range-progress {
+.rare-range::-moz-range-progress {
     background: var(--wc-blue);
     border-radius: 999px;
     height: 8px;
 }
 
-.album-field input[type="range"]::-moz-range-thumb {
-    background: #ffffff;
+.rare-range::-moz-range-thumb {
+    background: #fff;
     border: 3px solid var(--wc-blue);
     border-radius: 50%;
     height: 14px;
-    transition: transform .15s ease, box-shadow .15s ease;
     width: 14px;
 }
 
-.album-field input[type="range"]:hover::-moz-range-thumb,
-.album-field input[type="range"]:focus::-moz-range-thumb {
-    transform: scale(1.08);
+.rare-number,
+.rare-open-panel input {
+    background: #fbfdff;
+    border: 1px solid #cfd7e3;
+    border-radius: 12px;
+    color: var(--wc-blue-dark);
+    font-family: 'gotham-book';
+    font-size: 14px;
+    height: 30px;
+    padding: 0 12px;
+    width: 100%;
+}
+
+.rare-bars {
+    display: grid;
+    gap: 13px;
+}
+
+.rare-bar-meta {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.rare-bar-meta span {
+    color: var(--wc-blue-dark);
+    font-family: 'gotham-bold';
+    font-size: 14px;
+}
+
+.rare-bar-meta strong {
+    color: var(--wc-blue-dark);
+    font-family: 'gotham-bold';
+    font-size: 14px;
+}
+
+.rare-bar-track {
+    background: #eef2f7;
+    border-radius: 999px;
+    height: 8px;
+    overflow: hidden;
+}
+
+.rare-bar-track span {
+    border-radius: inherit;
+    display: block;
+    height: 100%;
+    min-width: 2px;
+    transition: width .25s ease;
+}
+
+.rare-bar-row small {
+    display: block;
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+.rare-purple .rare-bar-track span { background: linear-gradient(90deg, #6d4cc4, #9a7cf0); }
+.rare-bronze .rare-bar-track span { background: linear-gradient(90deg, #b66a2b, #dc9555); }
+.rare-silver .rare-bar-track span { background: linear-gradient(90deg, #9ca3af, #d1d5db); }
+.rare-gold .rare-bar-track span { background: linear-gradient(90deg, #d4a017, #f3d36b); }
+
+.rare-pack-layout {
+    align-items: center;
+    display: grid;
+    gap: 18px;
+    grid-template-columns: minmax(150px, .85fr) minmax(0, 1fr);
+    margin-top: 16px;
+}
+
+.rare-pack-visual {
+    background: none;
+    border: none;
+    border-radius: 18px;
+    position: relative;
+    text-align: center;
+}
+
+.rare-pack-visual img {
+    border-radius: 12px;
+    display: block;
+    margin: 0 auto;
+    max-height: 260px;
+    object-fit: contain;
+    width: 100%;
+}
+
+.rare-pack-result-overlay {
+    background: rgba(9, 35, 61, .9);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 12px;
+    bottom: 18px;
+    color: #fff;
+    left: 18px;
+    padding: 10px 12px;
+    position: absolute;
+    right: 18px;
+    text-align: left;
+}
+
+.rare-pack-result-overlay strong,
+.rare-pack-result-overlay span {
+    display: block;
+    font-family: 'gotham-book';
+}
+
+.rare-pack-result-overlay strong {
+    font-family: 'gotham-bold';
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+.rare-pack-result-overlay span {
+    font-size: 12px;
+    margin-top: 4px;
+    opacity: .9;
+}
+
+.rare-open-panel {
+    display: grid;
+    gap: 10px;
+}
+
+.rare-open-panel label {
+    color: var(--wc-muted);
+    font-family: 'gotham-bold';
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.rare-open-panel button {
+    background: var(--wc-green);
+    border: 0;
+    border-radius: 12px;
+    color: #fff;
+    cursor: pointer;
+    font-family: 'gotham-bold';
+    font-size: 14px;
+    height: 42px;
+    padding: 0 14px;
+    transition: transform .15s ease, background .15s ease;
+}
+
+.rare-open-panel button:hover {
+    background: #35764f;
+    transform: translateY(-1px);
+}
+
+.rare-pack-result-summary {
+    background: #fbfdff;
+    border: 1px solid #e6ebf2;
+    border-radius: 14px;
+    padding: 12px;
+}
+
+.rare-pack-result-summary p {
+    font-size: 13px;
+    line-height: 1.4;
+    margin: 6px 0 0;
+}
+
+.rare-pack-result-summary ul {
+    display: grid;
+    gap: 7px;
+    list-style: none;
+    margin: 10px 0 0;
+    padding: 0;
+}
+
+.rare-pack-result-summary li {
+    align-items: center;
+    border-bottom: 1px solid #e6ebf2;
+    display: flex;
+    font-size: 13px;
+    justify-content: space-between;
+    padding-bottom: 7px;
+}
+
+.rare-pack-result-summary li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.rare-pack-result-summary li strong {
+    color: var(--wc-blue-dark);
+    font-family: 'gotham-bold';
+}
+
+.rare-result-purple span { color: #6d4cc4; font-family: 'gotham-bold'; }
+.rare-result-bronze span { color: #a76025; font-family: 'gotham-bold'; }
+.rare-result-silver span { color: #6b7280; font-family: 'gotham-bold'; }
+.rare-result-gold span { color: #bd8b00; font-family: 'gotham-bold'; }
+
+@media (max-width: 900px) {
+    .rare-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    .album-rarity-section {
+        margin-top: 34px;
+    }
+
+    .rare-card {
+        padding: 14px;
+    }
+
+    .rare-card-head {
+        display: block;
+    }
+
+    .rare-pack-label {
+        display: inline-block;
+        margin-top: 12px;
+    }
+
+    .rare-slider-row,
+    .rare-pack-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .rare-pack-visual img {
+        max-height: 220px;
+    }
+}
+
+#rare-pack-label,
+#rare-pack-result-overlay {
+    display: none !important;
 }

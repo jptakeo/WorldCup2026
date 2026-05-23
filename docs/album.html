@@ -60,28 +60,46 @@
                 <div id="conteudo" style="width: 100%; max-width: 1200px; margin: 0 auto;">
                     <section id="album-simulador" class="album-simulador">
                         <div class="album-hero">
-                            <h1>Quanto custa completar o álbum da copa 2026 <u>em grupo</u>?</h1>
+                            <h1>Quanto custa completar o álbum da copa 2026 em grupo?</h1>
                             <p>
                                 Nesta simulação, você e seus amigos compram figurinhas e trocam as repetidas em ordem circular.<br>
                                 Cada rodada sorteia novas figurinhas, repassa duplicatas para quem ainda precisa delas e continua até que
-                                <strong>todos os participantes completem seus álbuns</strong>. O resultado usa o método de <strong>Monte Carlo</strong>:
+                                <u>todos os participantes completem seus álbuns</u>. O resultado usa o método de <em>Monte Carlo</em>:
                                 repetimos o experimento muitas vezes e resumimos a média e a variação esperada.
                             </p>
                         </div>
 
                         <button class="wc-accordion-toggle" type="button" aria-expanded="false" aria-controls="album-how-it-works">
                             <span class="arrow">▶</span>
-                            Como funciona a compra em grupo?
+                            <span class="accordion-label">Como funciona?</span>
                         </button>
 
                         <div id="album-how-it-works" class="wc-accordion-content">
                             <div class="wc-accordion-inner">
                                 <ol>
                                     <li>Cada participante compra um pacotinho (7 figurinhas) por vez, em rodízio.</li>
-                                    <li>Se a pessoa já tem a figurinha, ela passa a repetida para o próximo participante do círculo.</li>
+                                    <li>Se a pessoa já tem uma figurinha, ela passa a repetida para o próximo participante do círculo.</li>
                                     <li>A figurinha continua circulando até encontrar alguém que ainda não a tenha; se todos já tiverem, ela é descartada.</li>
                                     <li><strong>Importante:</strong> quem completa o álbum primeiro continua comprando para ajudar o grupo até que o último álbum seja fechado.</li>
                                 </ol>
+                            </div>
+                        </div>
+
+                        <button class="wc-accordion-toggle" type="button" aria-expanded="false" aria-controls="album-alone">
+                            <span class="arrow">▶</span>
+                            <span class="accordion-label">Quanto custa completar o álbum sozinho?</span>
+                        </button>
+
+                        <div id="album-alone" class="wc-accordion-content">
+                            <div class="wc-accordion-inner">
+                                <p>
+                                    Para uma pessoa tentando completar o álbum sozinha, usamos a fórmula clássica do
+                                    <strong>problema do colecionador de cupons</strong>:
+                                    <strong>E[T] = n · H<sub>n</sub></strong>, em que <strong>n = 980</strong> é o número de figurinhas
+                                    diferentes no álbum. 
+                                    Com 980 figurinhas, o valor esperado é de aproximadamente
+                                    <u>7.316 figurinhas compradas</u> (R$ 7.316).
+                                </p>
                             </div>
                         </div>
 
@@ -149,22 +167,22 @@
                             <div class="album-result-grid">
                                 <div class="album-chart-card">
                                     <div class="album-chart-carousel" aria-label="Gráficos da simulação">
-                                        <button id="album-chart-prev" class="scroll-btn left" type="button" aria-label="Gráfico anterior">&lt;</button>
+                                        <button id="album-chart-prev" class="scroll-btn left" type="button" aria-label="Gráfico anterior">❮</button>
                                         <div class="album-chart-viewport">
                                             <div class="album-chart-slide is-active" data-chart-slide>
                                                 <h3 style="margin-left: 6px;">Distribuição de quantas figurinhas você terá comprado ao fim da jornada do grupo</h3>
                                                 <canvas id="album-histogram-group-person" height="220"></canvas>
                                             </div>
                                             <div class="album-chart-slide" data-chart-slide>
-                                                <h3>Distribuição de quantas figurinhas você terá comprado quando completar seu álbum</h3>
+                                                <h3 style="margin-left: 6px;">Distribuição de quantas figurinhas você terá comprado quando completar seu álbum</h3>
                                                 <canvas id="album-histogram-own-completion" height="220"></canvas>
                                             </div>
                                             <div class="album-chart-slide" data-chart-slide>
-                                                <h3>Distribuição do total de figurinhas compradas pelo grupo</h3>
+                                                <h3 style="margin-left: 6px;">Distribuição do total de figurinhas compradas pelo grupo</h3>
                                                 <canvas id="album-histogram-total" height="220"></canvas>
                                             </div>
                                         </div>
-                                        <button id="album-chart-next" class="scroll-btn right" type="button" aria-label="Próximo gráfico">&gt;</button>
+                                        <button id="album-chart-next" class="scroll-btn right" type="button" aria-label="Próximo gráfico">❯</button>
                                     </div>
                                     <p class="album-notes">O gráfico mostra a concentração dos resultados: quanto mais alta a barra, mais simulações terminaram naquele intervalo.</p>
                                 </div>
@@ -181,6 +199,61 @@
                             <div id="album-decision" class="album-decision-card" aria-label="Tabela de decisão da simulação"></div>
                         </div>
                     </section>
+
+                    <section id="album-raras" class="album-simulador album-rarity-section">
+                        <div class="album-hero album-rarity-hero">
+                            <h1>Chance de obter cartas extras (cromos raros)</h1>
+                            <p>
+                                Essas figurinhas não contam para completar o álbum oficial, mas são itens especiais de colecionador.
+                                As chances abaixo usam as proporções médias divulgadas para cada raridade.
+                            </p>
+                        </div>
+
+                        <div class="rare-grid" aria-label="Chance de obter cartas extras">
+                            <div class="rare-card rare-probability-card">
+                                <div class="rare-card-head">
+                                    <div>
+                                        <h2>Chance por quantidade de pacotinhos</h2>
+                                        <p>Escolha quantos pacotinhos você pretende comprar e veja a chance de tirar pelo menos uma carta de cada raridade.</p>
+                                    </div>
+                                    <strong id="rare-pack-label" class="rare-pack-label">500 pacotinhos</strong>
+                                </div>
+
+                                <div class="rare-slider-row">
+                                    <input id="rare-pack-count" class="rare-range" type="range" min="1" max="5000" step="1" value="500" aria-label="Pacotinhos para calcular chance de cartas extras">
+                                    <input id="rare-pack-count-number" class="rare-number" type="number" inputmode="numeric" min="1" max="5000" step="1" value="500" aria-label="Número de pacotinhos">
+                                </div>
+
+                                <div id="rare-bars" class="rare-bars" aria-live="polite"></div>
+                            </div>
+
+                            <div class="rare-card rare-pack-card">
+                                <div class="rare-pack-copy">
+                                    <h2>Simulador de abertura</h2>
+                                    <p>Simule uma quantidade de pacotinhos e veja as cartas extras encontradas.</p>
+                                </div>
+
+                                <div class="rare-pack-layout">
+                                    <div class="rare-pack-visual" aria-live="polite">
+                                        <img src="images/pacotinho.png" alt="Pacotinho Panini Copa 2026">
+                                        <div id="rare-pack-result-overlay" class="rare-pack-result-overlay">
+                                            <strong>Abra pacotinhos</strong>
+                                            <span>As estatísticas aparecem aqui.</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="rare-open-panel">
+                                        <label for="rare-open-count">Pacotinhos para abrir</label>
+                                        <input id="rare-open-count" type="number" inputmode="numeric" min="1" max="10000" step="1" value="100">
+                                        <button id="rare-open-button" type="button">Abrir pacotinhos</button>
+                                        <div id="rare-pack-result-summary" class="rare-pack-result-summary" aria-live="polite">
+                                            <p>Você ainda não abriu nenhum pacotinho nesta simulação.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>  
                 </div>
             </div>
         </div>
@@ -207,6 +280,12 @@
                 const moneyFormatter = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 const STICKERS_PER_PACK = 7;
                 const PACK_PRICE_BRL = 7;
+                const RARE_CARDS = [
+                    { key: 'purple', name: 'Roxa', plural: 'Roxas', every: 190 },
+                    { key: 'bronze', name: 'Bronze', plural: 'Bronze', every: 317 },
+                    { key: 'silver', name: 'Prata', plural: 'Prata', every: 900 },
+                    { key: 'gold', name: 'Dourada', plural: 'Douradas', every: 1900 }
+                ];
 
                 const inputs = {
                     stickers: $('#album-stickers'),
@@ -232,6 +311,15 @@
                 const chartNextButton = $('#album-chart-next');
                 let activeChartIndex = 0;
                 let chartData = [];
+
+                const rarePackRange = $('#rare-pack-count');
+                const rarePackNumber = $('#rare-pack-count-number');
+                const rarePackLabel = $('#rare-pack-label');
+                const rareBars = $('#rare-bars');
+                const rareOpenInput = $('#rare-open-count');
+                const rareOpenButton = $('#rare-open-button');
+                const rarePackOverlay = $('#rare-pack-result-overlay');
+                const rarePackSummary = $('#rare-pack-result-summary');
 
                 const defaults = {
                     stickers: 980,
@@ -473,6 +561,103 @@
                     }
                 });
 
+                function formatRarePercent(value) {
+                    return `${decimalFormatter.format(value * 100)}%`;
+                }
+
+                function chanceAtLeastOne(packCount, every) {
+                    return 1 - Math.pow(1 - (1 / every), packCount);
+                }
+
+                function readRarePackCount(input) {
+                    const min = Number.parseInt(input.min, 10) || 1;
+                    const max = Number.parseInt(input.max, 10) || 10000;
+                    const value = Number.parseInt(input.value, 10);
+                    return clamp(Number.isFinite(value) ? value : min, min, max);
+                }
+
+                function updateRareRangeProgress() {
+                    if (!rarePackRange) return;
+                    const min = Number.parseInt(rarePackRange.min, 10) || 1;
+                    const max = Number.parseInt(rarePackRange.max, 10) || 5000;
+                    const value = readRarePackCount(rarePackRange);
+                    const progressValue = max === min ? 0 : ((value - min) / (max - min)) * 100;
+                    rarePackRange.style.setProperty('--range-progress', `${progressValue}%`);
+                }
+
+                function updateRareChances(source) {
+                    if (!rarePackRange || !rarePackNumber || !rareBars || !rarePackLabel) return;
+
+                    const packCount = readRarePackCount(source || rarePackRange);
+                    rarePackRange.value = packCount;
+                    rarePackNumber.value = packCount;
+                    rarePackLabel.textContent = `${formatter.format(packCount)} pacotinhos`;
+                    updateRareRangeProgress();
+
+                    rareBars.innerHTML = RARE_CARDS.map((card) => {
+                        const chance = chanceAtLeastOne(packCount, card.every);
+                        return `
+                            <div class="rare-bar-row rare-${card.key}">
+                                <div class="rare-bar-meta">
+                                    <span>${card.name}</span>
+                                    <strong>${formatRarePercent(chance)}</strong>
+                                </div>
+                                <div class="rare-bar-track" aria-hidden="true">
+                                    <span style="width: ${Math.min(chance * 100, 100)}%"></span>
+                                </div>
+                                <small>1 a cada ${formatter.format(card.every)} pacotinhos</small>
+                            </div>
+                        `;
+                    }).join('');
+                }
+
+                function simulateRareOpenings() {
+                    if (!rareOpenInput || !rarePackOverlay || !rarePackSummary) return;
+
+                    const packCount = readRarePackCount(rareOpenInput);
+                    rareOpenInput.value = packCount;
+                    const counts = RARE_CARDS.reduce((acc, card) => {
+                        acc[card.key] = 0;
+                        return acc;
+                    }, {});
+
+                    for (let i = 0; i < packCount; i += 1) {
+                        RARE_CARDS.forEach((card) => {
+                            if (Math.random() < (1 / card.every)) {
+                                counts[card.key] += 1;
+                            }
+                        });
+                    }
+
+                    const totalSpecial = RARE_CARDS.reduce((acc, card) => acc + counts[card.key], 0);
+                    rarePackOverlay.classList.add('is-open');
+                    rarePackOverlay.innerHTML = `
+                        <strong>Você abriu ${formatter.format(packCount)} pacotinhos</strong>
+                        <span>Total de cromos raros: ${formatter.format(totalSpecial)}</span>
+                    `;
+                    //<p>Você abriu <strong>${formatter.format(packCount)}</strong> pacotinhos:</p>
+                    rarePackSummary.innerHTML = `
+                        <h3>Resultados</h3>
+                        <ul>
+                            ${RARE_CARDS.map((card) => `<li class="rare-result-${card.key}"><span>${card.plural}</span><strong>${formatter.format(counts[card.key])}</strong></li>`).join('')}
+                        </ul>
+                    `;
+                }
+
+                function initRareCardsSection() {
+                    if (!rarePackRange || !rarePackNumber || !rareBars) return;
+
+                    rarePackRange.addEventListener('input', () => updateRareChances(rarePackRange));
+                    rarePackNumber.addEventListener('input', () => updateRareChances(rarePackNumber));
+                    rarePackNumber.addEventListener('change', () => updateRareChances(rarePackNumber));
+
+                    if (rareOpenButton) {
+                        rareOpenButton.addEventListener('click', simulateRareOpenings);
+                    }
+
+                    updateRareChances(rarePackRange);
+                }
+
                 function setProgress(done, total) {
                     const percentage = total === 0 ? 0 : Math.round((done / total) * 100);
                     progressFill.style.width = `${percentage}%`;
@@ -557,19 +742,19 @@
                             canvas: $('#album-histogram-group-person'),
                             values: sortedGroupCompletion,
                             mean: averagePerPerson,
-                            legend: `Média: ${formatter.format(averagePerPerson)} (${formatPackages(averagePerPerson)} Pacotinhos)  →  R$ ${formatStickerCost(averagePerPerson)}`
+                            legend: `Média: ${formatter.format(averagePerPerson)} (≈ ${formatPackages(averagePerPerson)} Pacotinhos)  →  R$ ${formatStickerCost(averagePerPerson)}`
                         },
                         {
                             canvas: $('#album-histogram-own-completion'),
                             values: sortedOwnCompletion,
                             mean: ownCompletionAverage,
-                            legend: `Média: ${formatter.format(ownCompletionAverage)} (${formatPackages(ownCompletionAverage)} Pacotinhos)  →  R$ ${formatStickerCost(ownCompletionAverage)}`
+                            legend: `Média: ${formatter.format(ownCompletionAverage)} (≈ ${formatPackages(ownCompletionAverage)} Pacotinhos)  →  R$ ${formatStickerCost(ownCompletionAverage)}`
                         },
                         {
                             canvas: $('#album-histogram-total'),
                             values: sorted,
                             mean: average,
-                            legend: `Média: ${formatter.format(average)} (${formatPackages(average)} Pacotinhos)  →  R$ ${formatStickerCost(average)}`
+                            legend: `Média: ${formatter.format(average)} (≈ ${formatPackages(average)} Pacotinhos)  →  R$ ${formatStickerCost(average)}`
                         }
                     ];
 
@@ -801,6 +986,7 @@
                     resetButton.disabled = false;
                 }
 
+                initRareCardsSection();
                 runButton.addEventListener('click', runSimulation);
             }());
         </script>
