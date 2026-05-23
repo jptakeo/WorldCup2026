@@ -65,7 +65,7 @@
                                 Nesta simulação, você e seus amigos compram figurinhas e trocam as repetidas em ordem circular.<br>
                                 Cada rodada sorteia novas figurinhas, repassa duplicatas para quem ainda precisa delas e continua até que
                                 <strong>todos os participantes completem seus álbuns</strong>. O resultado usa o método de <strong>Monte Carlo</strong>:
-                                repetimos o experimento muitas vezes e resumimos a média, a mediana e a variação esperada.
+                                repetimos o experimento muitas vezes e resumimos a média e a variação esperada.
                             </p>
                         </div>
 
@@ -76,9 +76,8 @@
 
                         <div id="album-how-it-works" class="wc-accordion-content">
                             <div class="wc-accordion-inner">
-                                <p>Neste modelo, simulamos um grupo cooperando para reduzir desperdício de figurinhas repetidas:</p>
                                 <ol>
-                                    <li>Cada participante compra uma figurinha por vez, em rodízio.</li>
+                                    <li>Cada participante compra um pacotinho (7 figurinhas) por vez, em rodízio.</li>
                                     <li>Se a pessoa já tem a figurinha, ela passa a repetida para o próximo participante do círculo.</li>
                                     <li>A figurinha continua circulando até encontrar alguém que ainda não a tenha; se todos já tiverem, ela é descartada.</li>
                                     <li><strong>Importante:</strong> quem completa o álbum primeiro continua comprando para ajudar o grupo até que o último álbum seja fechado.</li>
@@ -90,11 +89,11 @@
                             <div class="album-field">
                                 <label for="album-stickers">Figurinhas no álbum</label>
                                 <div class="album-stepper">
-                                    <input id="album-stickers" type="number" inputmode="numeric" min="10" max="2000" step="1" value="980">
+                                    <input id="album-stickers" type="number" inputmode="numeric" min="10" max="980" step="1" value="980">
                                     <button type="button" data-step-target="album-stickers" data-step="-10" aria-label="Diminuir figurinhas">−</button>
                                     <button type="button" data-step-target="album-stickers" data-step="10" aria-label="Aumentar figurinhas">+</button>
                                 </div>
-                                <input id="album-stickers-range" type="range" min="10" max="2000" step="10" value="980" aria-label="Figurinhas no álbum">
+                                <input id="album-stickers-range" type="range" min="10" max="980" step="10" value="980" aria-label="Figurinhas no álbum">
                             </div>
 
                             <div class="album-field">
@@ -138,30 +137,48 @@
                         </div>
 
                         <div id="album-results" class="album-results" hidden>
-                            <div class="album-results-head">
+                            <!--<div class="album-results-head">
                                 <div>
-                                    <h2>Resumo das simulações</h2>
+                                    <h2>Resultados das Simulações</h2>
                                 </div>
                                 <p id="album-result-text"></p>
-                            </div>
+                            </div>-->
 
-                            <div id="album-summary" class="wc-summary" aria-label="Resumo numérico da simulação"></div>
+                            <div id="album-summary" class="album-insights" aria-label="Resumo numérico da simulação"></div>
 
                             <div class="album-result-grid">
                                 <div class="album-chart-card">
-                                    <h3>Distribuição do total de figurinhas compradas</h3>
-                                    <canvas id="album-histogram" height="220"></canvas>
+                                    <div class="album-chart-carousel" aria-label="Gráficos da simulação">
+                                        <button id="album-chart-prev" class="scroll-btn left" type="button" aria-label="Gráfico anterior">&lt;</button>
+                                        <div class="album-chart-viewport">
+                                            <div class="album-chart-slide is-active" data-chart-slide>
+                                                <h3 style="margin-left: 6px;">Distribuição de quantas figurinhas você terá comprado ao fim da jornada do grupo</h3>
+                                                <canvas id="album-histogram-group-person" height="220"></canvas>
+                                            </div>
+                                            <div class="album-chart-slide" data-chart-slide>
+                                                <h3>Distribuição de quantas figurinhas você terá comprado quando completar seu álbum</h3>
+                                                <canvas id="album-histogram-own-completion" height="220"></canvas>
+                                            </div>
+                                            <div class="album-chart-slide" data-chart-slide>
+                                                <h3>Distribuição do total de figurinhas compradas pelo grupo</h3>
+                                                <canvas id="album-histogram-total" height="220"></canvas>
+                                            </div>
+                                        </div>
+                                        <button id="album-chart-next" class="scroll-btn right" type="button" aria-label="Próximo gráfico">&gt;</button>
+                                    </div>
                                     <p class="album-notes">O gráfico mostra a concentração dos resultados: quanto mais alta a barra, mais simulações terminaram naquele intervalo.</p>
                                 </div>
 
                                 <div class="album-table-card">
-                                    <h3>Detalhes</h3>
+                                    <h3>Detalhes das Simulações</h3>
                                     <table class="album-table">
                                         <tbody id="album-detail-body"></tbody>
                                     </table>
-                                    <p class="album-notes">A referência “sozinho” usa a estimativa clássica do problema do colecionador de cupons para uma pessoa sem trocas.</p>
+                                    <!--<p class="album-notes">A referência “sozinho” usa a estimativa clássica do problema do colecionador de cupons para uma pessoa sem trocas.</p>-->
                                 </div>
                             </div>
+
+                            <div id="album-decision" class="album-decision-card" aria-label="Tabela de decisão da simulação"></div>
                         </div>
                     </section>
                 </div>
@@ -187,6 +204,9 @@
                 const $ = (selector) => document.querySelector(selector);
                 const formatter = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 });
                 const decimalFormatter = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 });
+                const moneyFormatter = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                const STICKERS_PER_PACK = 7;
+                const PACK_PRICE_BRL = 7;
 
                 const inputs = {
                     stickers: $('#album-stickers'),
@@ -206,7 +226,12 @@
                 const resultText = $('#album-result-text');
                 const summary = $('#album-summary');
                 const detailBody = $('#album-detail-body');
-                const canvas = $('#album-histogram');
+                const decisionBody = $('#album-decision');
+                const chartSlides = Array.from(document.querySelectorAll('[data-chart-slide]'));
+                const chartPrevButton = $('#album-chart-prev');
+                const chartNextButton = $('#album-chart-next');
+                let activeChartIndex = 0;
+                let chartData = [];
 
                 const defaults = {
                     stickers: 980,
@@ -225,10 +250,19 @@
                     return clamp(Number.isFinite(value) ? value : min, min, max);
                 }
 
+                function updateRangeProgress(rangeInput) {
+                    const min = Number.parseInt(rangeInput.min, 10) || 0;
+                    const max = Number.parseInt(rangeInput.max, 10) || 100;
+                    const value = Number.parseInt(rangeInput.value, 10) || min;
+                    const progress = max === min ? 0 : ((value - min) / (max - min)) * 100;
+                    rangeInput.style.setProperty('--range-progress', `${progress}%`);
+                }
+
                 function syncPair(numberInput, rangeInput) {
                     const value = readInt(numberInput);
                     numberInput.value = value;
                     rangeInput.value = value;
+                    updateRangeProgress(rangeInput);
                 }
 
                 function bindPair(numberInput, rangeInput) {
@@ -236,7 +270,9 @@
                     numberInput.addEventListener('change', () => syncPair(numberInput, rangeInput));
                     rangeInput.addEventListener('input', () => {
                         numberInput.value = rangeInput.value;
+                        updateRangeProgress(rangeInput);
                     });
+                    updateRangeProgress(rangeInput);
                 }
 
                 bindPair(inputs.stickers, inputs.stickersRange);
@@ -277,31 +313,43 @@
                     const missing = new Int32Array(peopleCount);
                     missing.fill(albumSize);
 
+                    const purchasesByPerson = new Int32Array(peopleCount);
+                    const purchasesUntilOwnCompletion = new Int32Array(peopleCount);
+
                     let completed = 0;
                     let purchases = 0;
 
                     while (completed < peopleCount) {
                         for (let buyer = 0; buyer < peopleCount && completed < peopleCount; buyer += 1) {
-                            const sticker = Math.floor(Math.random() * albumSize);
-                            purchases += 1;
+                            purchases += STICKERS_PER_PACK;
+                            purchasesByPerson[buyer] += STICKERS_PER_PACK;
 
-                            let receiver = buyer;
-                            for (let passed = 0; passed < peopleCount; passed += 1) {
-                                if (albums[receiver][sticker] !== marker) {
-                                    albums[receiver][sticker] = marker;
-                                    missing[receiver] -= 1;
+                            for (let packSticker = 0; packSticker < STICKERS_PER_PACK; packSticker += 1) {
+                                const sticker = Math.floor(Math.random() * albumSize);
 
-                                    if (missing[receiver] === 0) {
-                                        completed += 1;
+                                let receiver = buyer;
+                                for (let passed = 0; passed < peopleCount; passed += 1) {
+                                    if (albums[receiver][sticker] !== marker) {
+                                        albums[receiver][sticker] = marker;
+                                        missing[receiver] -= 1;
+
+                                        if (missing[receiver] === 0) {
+                                            purchasesUntilOwnCompletion[receiver] = purchasesByPerson[receiver];
+                                            completed += 1;
+                                        }
+                                        break;
                                     }
-                                    break;
+                                    receiver = (receiver + 1) % peopleCount;
                                 }
-                                receiver = (receiver + 1) % peopleCount;
                             }
                         }
                     }
 
-                    return purchases;
+                    return {
+                        totalPurchases: purchases,
+                        purchasesByPerson: Array.from(purchasesByPerson),
+                        purchasesUntilOwnCompletion: Array.from(purchasesUntilOwnCompletion)
+                    };
                 }
 
                 function percentile(sorted, p) {
@@ -321,14 +369,109 @@
                     return total;
                 }
 
-                function buildStat(value, label, extraClass) {
-                    return `
-                        <div class="wc-stat ${extraClass || ''}">
-                            <strong>${value}</strong>
-                            <span>${label}</span>
-                        </div>
-                    `;
+                function formatPackages(stickers) {
+                    return formatter.format(Math.ceil(stickers / STICKERS_PER_PACK));
                 }
+
+                function formatStickerCost(stickers) {
+                    return `${moneyFormatter.format(Math.round(stickers))}`;
+                }
+
+                function numericPrice(stickers) {
+                    return Math.round(stickers);
+                }
+
+                function averageValue(values) {
+                    if (!values.length) return 0;
+                    return values.reduce((acc, value) => acc + value, 0) / values.length;
+                }
+
+                function poissonLessThan(x, limit) {
+                    let term = 1;
+                    let sum = 1;
+
+                    for (let i = 1; i < limit; i += 1) {
+                        term *= x / i;
+                        sum += term;
+                    }
+
+                    return Math.exp(-x) * sum;
+                }
+
+                function integrateExpected(integrand, upperLimit) {
+                    const step = 0.02;
+                    let area = 0;
+                    let previous = integrand(0);
+
+                    for (let x = step; x <= upperLimit; x += step) {
+                        const current = integrand(x);
+                        area += ((previous + current) * step) / 2;
+                        previous = current;
+                    }
+
+                    return area;
+                }
+
+                function expectedGroupTotalPurchases(albumSize, peopleCount) {
+                    if (peopleCount === 1) return albumSize * harmonic(albumSize);
+
+                    const upperLimit = Math.max(30, Math.log(albumSize) + peopleCount + 12 * Math.sqrt(peopleCount));
+                    const integral = integrateExpected((x) => {
+                        const probabilityStickerComplete = 1 - poissonLessThan(x, peopleCount);
+                        return 1 - Math.pow(probabilityStickerComplete, albumSize);
+                    }, upperLimit);
+
+                    return albumSize * integral;
+                }
+
+                function expectedOwnCompletionPurchases(albumSize, peopleCount) {
+                    if (peopleCount === 1) return albumSize * harmonic(albumSize);
+
+                    const upperLimit = Math.max(30, Math.log(albumSize) + peopleCount + 12 * Math.sqrt(peopleCount));
+                    const integral = integrateExpected((x) => {
+                        let probabilityStickerOwned = 0;
+
+                        for (let copies = 1; copies <= peopleCount; copies += 1) {
+                            probabilityStickerOwned += 1 - poissonLessThan(x, copies);
+                        }
+
+                        probabilityStickerOwned /= peopleCount;
+                        return 1 - Math.pow(probabilityStickerOwned, albumSize);
+                    }, upperLimit);
+
+                    return (albumSize * integral) / peopleCount;
+                }
+
+                function drawActiveChart() {
+                    const currentChart = chartData[activeChartIndex];
+                    if (!currentChart) return;
+                    drawHistogram(currentChart.values, currentChart.canvas, currentChart.mean, currentChart.legend);
+                }
+
+                function setActiveChart(index) {
+                    if (!chartSlides.length) return;
+                    activeChartIndex = (index + chartSlides.length) % chartSlides.length;
+
+                    chartSlides.forEach((slide, slideIndex) => {
+                        slide.classList.toggle('is-active', slideIndex === activeChartIndex);
+                    });
+
+                    drawActiveChart();
+                }
+
+                if (chartPrevButton) {
+                    chartPrevButton.addEventListener('click', () => setActiveChart(activeChartIndex - 1));
+                }
+
+                if (chartNextButton) {
+                    chartNextButton.addEventListener('click', () => setActiveChart(activeChartIndex + 1));
+                }
+
+                window.addEventListener('resize', () => {
+                    if (!resultsPanel.hidden) {
+                        drawActiveChart();
+                    }
+                });
 
                 function setProgress(done, total) {
                     const percentage = total === 0 ? 0 : Math.round((done / total) * 100);
@@ -336,57 +479,130 @@
                     progressLabel.textContent = `${percentage}%`;
                 }
 
-                function summarize(results, albumSize, peopleCount, simulations) {
+                function summarize(results, ownCompletionResults, groupCompletionResults, albumSize, peopleCount, simulations) {
                     const sorted = results.slice().sort((a, b) => a - b);
+                    const sortedOwnCompletion = ownCompletionResults.slice().sort((a, b) => a - b);
+                    const sortedGroupCompletion = groupCompletionResults.slice().sort((a, b) => a - b);
                     const sum = sorted.reduce((acc, value) => acc + value, 0);
                     const average = sum / sorted.length;
                     const averagePerPerson = average / peopleCount;
-                    const median = percentile(sorted, 0.5);
+                    const ownCompletionAverage = ownCompletionResults.reduce((acc, value) => acc + value, 0) / ownCompletionResults.length;
+                    
                     const p05 = percentile(sorted, 0.05);
                     const p25 = percentile(sorted, 0.25);
                     const p75 = percentile(sorted, 0.75);
-                    const p90 = percentile(sorted, 0.90);
                     const p95 = percentile(sorted, 0.95);
                     const min = sorted[0];
                     const max = sorted[sorted.length - 1];
                     const singleExpected = albumSize * harmonic(albumSize);
+                    const expectedGroupPerPerson = expectedGroupTotalPurchases(albumSize, peopleCount) / peopleCount;
+                    const expectedOwnCompletion = expectedOwnCompletionPurchases(albumSize, peopleCount);
                     const economy = (1 - (averagePerPerson / singleExpected)) * 100;
+                    //const resultText = $('#album-result-text');
 
-                    resultText.innerHTML = `Com ${formatter.format(simulations)} simulações, um grupo de ${peopleCount} pessoa${peopleCount > 1 ? 's' : ''} precisou, em média, de <strong>${formatter.format(average)}</strong> figurinhas compradas no total.`;
-
-                    summary.innerHTML = [
-                        buildStat(formatter.format(average), 'média do grupo'),
-                        buildStat(formatter.format(averagePerPerson), 'média por pessoa'),
-                        buildStat(formatter.format(median), 'mediana do grupo'),
-                        buildStat(formatter.format(p90), '90% terminam até'),
-                        buildStat(`${decimalFormatter.format(economy)}%`, 'economia vs. sozinho', economy >= 0 ? 'is-good' : 'is-bad')
-                    ].join('');
-
+                    //  <tr><th>Figurinhas no álbum</th><td>${formatter.format(albumSize)}</td></tr>
+                    //  <tr><th>Pessoas no grupo</th><td>${formatter.format(peopleCount)}</td></tr>
+                    //  <tr><th>Simulações Monte Carlo</th><td>${formatter.format(simulations)}</td></tr>
                     detailBody.innerHTML = `
-                        <tr><th>Figurinhas no álbum</th><td>${formatter.format(albumSize)}</td></tr>
-                        <tr><th>Pessoas no grupo</th><td>${formatter.format(peopleCount)}</td></tr>
-                        <tr><th>Simulações Monte Carlo</th><td>${formatter.format(simulations)}</td></tr>
                         <tr><th>Mínimo observado</th><td>${formatter.format(min)}</td></tr>
                         <tr><th>Percentil 5%</th><td>${formatter.format(p05)}</td></tr>
                         <tr><th>Percentil 25%</th><td>${formatter.format(p25)}</td></tr>
                         <tr><th>Percentil 75%</th><td>${formatter.format(p75)}</td></tr>
                         <tr><th>Percentil 95%</th><td>${formatter.format(p95)}</td></tr>
                         <tr><th>Máximo observado</th><td>${formatter.format(max)}</td></tr>
-                        <tr><th>Referência sozinho</th><td>${formatter.format(singleExpected)} figurinhas por pessoa</td></tr>
                     `;
+                    // <tr><th>Referência sozinho</th><td>${formatter.format(singleExpected)} figurinhas</td></tr>
 
-                    drawHistogram(sorted);
+                    const expectedEconomyStickers = singleExpected - expectedGroupPerPerson;
+                    const expectedEconomyPercent = (expectedEconomyStickers / singleExpected) * 100;
+
+                    if (decisionBody) {
+                        decisionBody.innerHTML = `
+                            <table class="album-decision-table">
+                                <thead>
+                                    <tr>
+                                        <th>Indicador</th>
+                                        <th>Pacotinhos</th>
+                                        <th>Figurinhas</th>
+                                        <th>Preço</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>Valor esperado teórico até o grupo completar o álbum</th>
+                                        <td>${formatPackages(expectedGroupPerPerson)}</td>
+                                        <td>${formatter.format(expectedGroupPerPerson)}</td>
+                                        <td>R$ ${formatStickerCost(expectedGroupPerPerson)}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Valor esperado teórico até você completar o álbum</th>
+                                        <td>${formatPackages(expectedOwnCompletion)}</td>
+                                        <td>${formatter.format(expectedOwnCompletion)}</td>
+                                        <td>R$ ${formatStickerCost(expectedOwnCompletion)}</td>
+                                    </tr>
+                                    <tr class="album-decision-economy">
+                                        <th>Economia esperada vs. sozinho (${decimalFormatter.format(expectedEconomyPercent)}%)</th>
+                                        <td>${formatPackages(expectedEconomyStickers)}</td>
+                                        <td>${formatter.format(expectedEconomyStickers)}</td>
+                                        <td>R$ ${formatStickerCost(expectedEconomyStickers)}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p class="album-notes">Todos os resultados em reais consideram o preço da Panini no Brasil: cada pacotinho tem 7 figurinhas e custa R$ 7, então cada figurinha equivale a R$ 1.</p>
+                        `;
+                    }
+
+                    chartData = [
+                        {
+                            canvas: $('#album-histogram-group-person'),
+                            values: sortedGroupCompletion,
+                            mean: averagePerPerson,
+                            legend: `Média: ${formatter.format(averagePerPerson)} (${formatPackages(averagePerPerson)} Pacotinhos)  →  R$ ${formatStickerCost(averagePerPerson)}`
+                        },
+                        {
+                            canvas: $('#album-histogram-own-completion'),
+                            values: sortedOwnCompletion,
+                            mean: ownCompletionAverage,
+                            legend: `Média: ${formatter.format(ownCompletionAverage)} (${formatPackages(ownCompletionAverage)} Pacotinhos)  →  R$ ${formatStickerCost(ownCompletionAverage)}`
+                        },
+                        {
+                            canvas: $('#album-histogram-total'),
+                            values: sorted,
+                            mean: average,
+                            legend: `Média: ${formatter.format(average)} (${formatPackages(average)} Pacotinhos)  →  R$ ${formatStickerCost(average)}`
+                        }
+                    ];
+
                     resultsPanel.hidden = false;
+                    setActiveChart(0);
                     resultsPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
 
-                function drawHistogram(values) {
+                function drawRoundedRect(ctx, x, y, width, height, radius) {
+                    const r = Math.min(radius, width / 2, height / 2);
+                    ctx.beginPath();
+                    ctx.moveTo(x + r, y);
+                    ctx.lineTo(x + width - r, y);
+                    ctx.quadraticCurveTo(x + width, y, x + width, y + r);
+                    ctx.lineTo(x + width, y + height - r);
+                    ctx.quadraticCurveTo(x + width, y + height, x + width - r, y + height);
+                    ctx.lineTo(x + r, y + height);
+                    ctx.quadraticCurveTo(x, y + height, x, y + height - r);
+                    ctx.lineTo(x, y + r);
+                    ctx.quadraticCurveTo(x, y, x + r, y);
+                    ctx.closePath();
+                }
+
+                function drawHistogram(values, targetCanvas, meanValue, legendText) {
+                    const canvas = targetCanvas;
                     if (!values.length || !canvas) return;
 
-                    const containerWidth = canvas.parentElement.clientWidth || 720;
-                    const cssWidth = Math.max(320, containerWidth - 28);
-                    const cssHeight = 220;
+                    const isMobile = window.matchMedia('(max-width: 720px)').matches;
+                    const containerWidth = canvas.parentElement.clientWidth || (isMobile ? 360 : 720);
+                    const cssWidth = Math.max(isMobile ? 240 : 320, containerWidth - (isMobile ? 4 : 28));
+                    const cssHeight = isMobile ? 270 : 220;
                     const dpr = window.devicePixelRatio || 1;
+
                     canvas.style.width = `${cssWidth}px`;
                     canvas.style.height = `${cssHeight}px`;
                     canvas.width = Math.floor(cssWidth * dpr);
@@ -396,29 +612,54 @@
                     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
                     ctx.clearRect(0, 0, cssWidth, cssHeight);
 
-                    const bins = Math.min(24, Math.max(8, Math.round(Math.sqrt(values.length))));
+                    const bins = isMobile
+                        ? Math.min(18, Math.max(10, Math.round(Math.sqrt(values.length))))
+                        : Math.min(24, Math.max(8, Math.round(Math.sqrt(values.length))));
+
                     const min = values[0];
                     const max = values[values.length - 1];
                     const span = Math.max(1, max - min);
                     const counts = new Array(bins).fill(0);
+                    const mean = Number.isFinite(meanValue) ? meanValue : averageValue(values);
 
                     values.forEach((value) => {
                         const index = Math.min(bins - 1, Math.floor(((value - min) / span) * bins));
                         counts[index] += 1;
                     });
 
-                    const padding = { top: 16, right: 16, bottom: 34, left: 44 };
+                    const padding = isMobile
+                        ? { top: 46, right: 10, bottom: 42, left: 38 }
+                        : { top: 30, right: 16, bottom: 36, left: 44 };
+
                     const chartWidth = cssWidth - padding.left - padding.right;
                     const chartHeight = cssHeight - padding.top - padding.bottom;
                     const maxCount = Math.max(...counts);
-                    const barGap = 4;
+                    const barGap = isMobile ? 3 : 4;
                     const barWidth = chartWidth / bins;
 
-                    ctx.font = '12px Arial, sans-serif';
+                    ctx.font = `${isMobile ? 11 : 12}px Arial, sans-serif`;
                     ctx.fillStyle = '#667085';
                     ctx.strokeStyle = '#d7dee8';
                     ctx.lineWidth = 1;
 
+                    const yTickCount = isMobile ? 4 : 5;
+
+                    for (let i = 0; i <= yTickCount; i += 1) {
+                        const tickValue = Math.round((maxCount / yTickCount) * i);
+                        const y = padding.top + chartHeight - (chartHeight * i / yTickCount);
+
+                        ctx.strokeStyle = i === 0 ? '#d7dee8' : '#edf1f5';
+                        ctx.beginPath();
+                        ctx.moveTo(padding.left, y);
+                        ctx.lineTo(padding.left + chartWidth, y);
+                        ctx.stroke();
+
+                        ctx.fillStyle = '#667085';
+                        ctx.textAlign = 'right';
+                        ctx.fillText(formatter.format(tickValue), padding.left - 8, y + 4);
+                    }
+
+                    ctx.strokeStyle = '#d7dee8';
                     ctx.beginPath();
                     ctx.moveTo(padding.left, padding.top);
                     ctx.lineTo(padding.left, padding.top + chartHeight);
@@ -429,18 +670,97 @@
                         const height = maxCount === 0 ? 0 : (count / maxCount) * chartHeight;
                         const x = padding.left + index * barWidth + barGap / 2;
                         const y = padding.top + chartHeight - height;
+
                         ctx.fillStyle = '#213d7a';
                         ctx.fillRect(x, y, Math.max(1, barWidth - barGap), height);
                     });
 
+                    const meanX = padding.left + clamp((mean - min) / span, 0, 1) * chartWidth;
+
+                    ctx.save();
+                    ctx.strokeStyle = '#ef4444';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([6, 4]);
+                    ctx.beginPath();
+                    ctx.moveTo(meanX, padding.top);
+                    ctx.lineTo(meanX, padding.top + chartHeight);
+                    ctx.stroke();
+                    ctx.restore();
+
+                    if (legendText) {
+                        ctx.save();
+
+                        let legendLines = [legendText];
+
+                        if (isMobile && legendText.includes('→')) {
+                            const parts = legendText.split('→');
+                            legendLines = [
+                                parts[0].trim(),
+                                `→ ${parts.slice(1).join('→').trim()}`
+                            ];
+                        }
+
+                        let legendFontSize = isMobile ? 10 : 12;
+                        ctx.font = `${legendFontSize}px Arial, sans-serif`;
+
+                        const maxLegendTextWidth = chartWidth - 52;
+
+                        while (
+                            legendFontSize > 8 &&
+                            Math.max(...legendLines.map((line) => ctx.measureText(line).width)) > maxLegendTextWidth
+                        ) {
+                            legendFontSize -= 1;
+                            ctx.font = `${legendFontSize}px Arial, sans-serif`;
+                        }
+
+                        const maxLineWidth = Math.max(...legendLines.map((line) => ctx.measureText(line).width));
+                        const legendWidth = Math.min(chartWidth, maxLineWidth + 48);
+                        const legendHeight = isMobile ? 40 : 26;
+                        const legendX = padding.left + chartWidth - legendWidth;
+                        const legendY = 4;
+
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.94)';
+                        ctx.strokeStyle = '#d7dee8';
+                        ctx.lineWidth = 1;
+
+                        drawRoundedRect(ctx, legendX, legendY, legendWidth, legendHeight, 6);
+                        ctx.fill();
+                        ctx.stroke();
+
+                        ctx.strokeStyle = '#ef4444';
+                        ctx.lineWidth = 2;
+                        ctx.setLineDash([6, 4]);
+                        ctx.beginPath();
+                        ctx.moveTo(legendX + 10, legendY + 13);
+                        ctx.lineTo(legendX + 30, legendY + 13);
+                        ctx.stroke();
+
+                        ctx.setLineDash([]);
+                        ctx.fillStyle = '#1b2838';
+                        ctx.textAlign = 'left';
+
+                        if (isMobile && legendLines.length > 1) {
+                            ctx.fillText(legendLines[0], legendX + 38, legendY + 15);
+                            ctx.fillText(legendLines[1], legendX + 38, legendY + 31);
+                        } else {
+                            ctx.fillText(legendLines[0], legendX + 38, legendY + 17);
+                        }
+
+                        ctx.restore();
+                    }
+
+                    const xTickCount = isMobile ? 4 : 5;
+
                     ctx.fillStyle = '#667085';
-                    ctx.textAlign = 'left';
-                    ctx.fillText(formatter.format(min), padding.left, cssHeight - 10);
-                    ctx.textAlign = 'right';
-                    ctx.fillText(formatter.format(max), padding.left + chartWidth, cssHeight - 10);
-                    ctx.textAlign = 'left';
-                    ctx.fillText(formatter.format(maxCount), 4, padding.top + 8);
-                    ctx.fillText('0', 4, padding.top + chartHeight);
+                    ctx.font = `${isMobile ? 10 : 12}px Arial, sans-serif`;
+
+                    for (let i = 0; i <= xTickCount; i += 1) {
+                        const value = min + (span * i / xTickCount);
+                        const x = padding.left + chartWidth * i / xTickCount;
+
+                        ctx.textAlign = i === 0 ? 'left' : i === xTickCount ? 'right' : 'center';
+                        ctx.fillText(formatter.format(value), x, cssHeight - 12);
+                    }
                 }
 
                 async function runSimulation() {
@@ -460,18 +780,22 @@
 
                     const albums = Array.from({ length: peopleCount }, () => new Uint32Array(albumSize));
                     const results = [];
+                    const ownCompletionResults = [];
+                    const groupCompletionResults = [];
                     const batchSize = Math.max(1, Math.floor(simulations / 60));
 
                     for (let i = 0; i < simulations; i += 1) {
-                        results.push(simulateOneAlbumRun(albumSize, peopleCount, i + 1, albums));
+                        const simulationResult = simulateOneAlbumRun(albumSize, peopleCount, i + 1, albums);
+                        results.push(simulationResult.totalPurchases);
+                        ownCompletionResults.push(...simulationResult.purchasesUntilOwnCompletion);
+                        groupCompletionResults.push(...simulationResult.purchasesByPerson);
 
                         if ((i + 1) % batchSize === 0 || i + 1 === simulations) {
                             setProgress(i + 1, simulations);
                             await new Promise((resolve) => window.requestAnimationFrame(resolve));
                         }
                     }
-
-                    summarize(results, albumSize, peopleCount, simulations);
+                    summarize(results, ownCompletionResults, groupCompletionResults, albumSize, peopleCount, simulations);
                     progress.hidden = true;
                     runButton.disabled = false;
                     resetButton.disabled = false;

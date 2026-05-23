@@ -13,6 +13,25 @@
     --wc-bg: #f5f8fb;
 }
 
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.page {
+    flex: 1 0 auto;
+}
+
+#footer {
+    flex-shrink: 0;
+}
+
 #conteudo .album-simulador {
     color: var(--wc-ink);
     font-family: Arial, Helvetica, sans-serif;
@@ -27,7 +46,7 @@
 .album-hero {
     border-radius: 22px;
     overflow: hidden;
-    padding: 0px 0px 30px 0px;
+    padding: 0px;
     position: relative;
 }
 
@@ -100,13 +119,8 @@
     background: #fff;
     border: none;
     border-radius: 16px;
-    line-height: 1.65;
-    margin: 0 0 18px;
+    line-height: 1;
     padding: 18px 22px;
-}
-
-.wc-accordion-inner p {
-    margin: 0 0 10px;
 }
 
 .wc-accordion-inner ol {
@@ -161,7 +175,7 @@
 .album-stepper input {
     background: transparent;
     border: 0;
-    color: black;
+    color: var(--wc-gray);
     font-size: 14px;
     padding: 0 13px;
     width: 100%;
@@ -187,11 +201,6 @@
     background: #eef4fb;
 }
 
-.album-field input[type="range"] {
-    accent-color: var(--wc-red);
-    margin-top: 10px;
-    width: 100%;
-}
 
 .album-actions {
     align-self: end;
@@ -245,7 +254,7 @@
 
 .album-progress {
     background: #fff;
-    border: 1px solid var(--wc-line);
+    border: none;
     border-radius: 16px;
     margin: 0 0 20px;
     padding: 14px;
@@ -298,6 +307,10 @@
     width: 100%;
 }
 
+.album-results-head h2 {
+    font-size: 20px;
+}
+
 .wc-summary {
     display: grid;
     gap: 12px;
@@ -338,7 +351,7 @@
 .album-result-grid {
     display: grid;
     gap: 16px;
-    grid-template-columns: minmax(0, 1.4fr) minmax(280px, .8fr);
+    grid-template-columns: minmax(0, 1.6fr) minmax(250px, .7fr);
 }
 
 .album-chart-card,
@@ -347,20 +360,22 @@
     border: 1px solid var(--wc-line);
     border-radius: 18px;
     overflow: hidden;
-    padding: 18px;
+    padding: 10px;
 }
 
 .album-chart-card h3,
 .album-table-card h3 {
-    color: var(--wc-blue-dark);
-    font-size: 17px;
-    margin-bottom: 14px;
+    color: var(--wc-muted);
+    font-size: 15px;
+    /* Centraliza texto */
+    text-align: center;
 }
 
 .album-chart-card canvas {
     background: #fbfdff;
     border: none;
     border-radius: 14px;
+    margin-top: 30px;
     display: block;
     max-width: 100%;
 }
@@ -368,6 +383,7 @@
 .album-table {
     border-collapse: collapse;
     font-size: 13px;
+    margin-top: 25px;
     width: 100%;
 }
 
@@ -389,8 +405,14 @@
 
 .album-table td {
     color: var(--wc-blue-dark);
-    font-weight: 800;
+    font-weight: 700;
     text-align: right;
+}
+
+/* Make last th and td NOT have border-bottom */
+.album-table tbody tr:last-child th,
+.album-table tbody tr:last-child td {
+    border-bottom: 0;
 }
 
 .album-notes {
@@ -398,6 +420,116 @@
     font-size: 12px;
     line-height: 1.45;
     margin: 12px 0 0;
+}
+
+.album-chart-carousel {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+}
+
+.album-chart-viewport {
+    flex: 1;
+    min-width: 0;
+}
+
+.album-chart-slide {
+    display: none;
+}
+
+.album-chart-slide.is-active {
+    display: block;
+}
+
+.scroll-btn {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--wc-blue);
+    color: white;
+    border: none;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    z-index: 2;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.scroll-btn:hover {
+    background: var(--wc-blue-dark);
+    transform: scale(1.1);
+}
+
+.scroll-btn.left {
+    margin-right: 5px;
+}
+
+.scroll-btn.right {
+    margin-left: 5px;
+}
+
+.album-decision-card {
+    background: #fff;
+    border: 1px solid var(--wc-line);
+    border-radius: 18px;
+    margin-top: 14px;
+    overflow: hidden;
+    padding: 16px 18px;
+}
+
+.album-decision-card h3 {
+    color: var(--wc-blue-dark);
+    font-size: 16px;
+    margin: 0 0 12px;
+}
+
+.album-decision-table {
+    border-collapse: collapse;
+    font-size: 13px;
+    width: 100%;
+}
+
+.album-decision-table th,
+.album-decision-table td {
+    border-bottom: 1px solid #e6ebf2;
+    padding: 9px 8px;
+    text-align: right;
+}
+
+.album-decision-table th:first-child,
+.album-decision-table td:first-child {
+    text-align: left;
+}
+
+.album-decision-table thead th {
+    color: var(--wc-muted);
+    font-size: 11px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.album-decision-table tbody th {
+    color: var(--wc-muted);
+    font-weight: 750;
+}
+
+.album-decision-table tbody td {
+    color: var(--wc-blue-dark);
+    font-weight: 700;
+}
+
+.album-decision-table tbody tr:last-child th,
+.album-decision-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.album-decision-economy th,
+.album-decision-economy td {
+    color: var(--wc-green) !important;
 }
 
 @media (max-width: 1060px) {
@@ -429,13 +561,22 @@
 }
 
 @media (max-width: 720px) {
+
+    .album-decision-card {
+        overflow-x: auto;
+    }
+
+    .album-decision-table {
+        min-width: 640px;
+    }
+
     .album-hero {
         border-radius: 18px;
         padding: 22px;
     }
 
     .album-hero h1 {
-        font-size: 24px;
+        font-size: 18px;
     }
 
     .album-hero p {
@@ -449,6 +590,15 @@
 
     .album-actions {
         flex-direction: column;
+        gap: 10px;
+    }
+
+    .album-run,
+    .album-reset {
+        height: 26px;
+        min-height: 26px;
+        border-radius: 14px;
+        line-height: 1;
     }
 
     .album-results-head {
@@ -468,9 +618,93 @@
     .wc-stat strong {
         font-size: 23px;
     }
+
+    .album-table-card {
+        padding: 14px 16px;
+        border-radius: 16px;
+    }
+
+    .album-table {
+        margin-top: 8px;
+        font-size: 12px;
+    }
+
+    .album-table th,
+    .album-table td {
+        padding: 7px 0;
+    }
+
+    .album-table th {
+        font-size: 10px;
+        letter-spacing: .05em;
+    }
+
+    .album-table td {
+        font-size: 13px;
+    }
+
+    .album-table-card .album-notes {
+        margin-top: 8px;
+        font-size: 11px;
+        line-height: 1.35;
+    }
+
+    .album-chart-card h3,
+    .album-table-card h3 {
+        color: var(--wc-dark-blue);
+        font-size: 15px;
+        text-align: left;
+    }
+
+}
+
+@media (max-width: 720px) {
+    .album-chart-carousel {
+        display: block;
+        position: relative;
+    }
+
+    .album-chart-viewport {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .album-chart-card canvas {
+        margin-top: 12px;
+        max-width: 100%;
+    }
+
+    #album-chart-prev {
+        display: none;
+    }
+
+    #album-chart-next {
+        position: absolute;
+        top: 52%;
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
+        z-index: 5;
+        transform: translateY(-50%);
+        right: -4px;
+    }
+
+    #album-chart-next {
+        right: 2px;
+        margin-left: 0;
+    }
+
+    #album-chart-next:hover {
+        transform: translateY(-50%) scale(1.08);
+    }
 }
 
 @media (max-width: 420px) {
+    .album-chart-card h3,
+    .album-table-card h3 {
+        font-size: 14px;
+    }
+
     .wc-summary {
         grid-template-columns: 1fr;
     }
@@ -478,4 +712,142 @@
     .album-stepper {
         grid-template-columns: 1fr 38px 38px;
     }
+}
+
+.album-insights {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0 0 20px;
+}
+
+.album-insight-card {
+    background: var(--wc-surface);
+    border: none;
+    border-radius: 18px;
+    padding: 18px;
+}
+
+.album-insight-card h3 {
+    color: var(--wc-blue-dark);
+    font-size: 17px;
+    line-height: 1.25;
+    margin: 0 0 16px;
+}
+
+.album-insight-columns {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.album-insight-metric {
+    background: #fbfdff;
+    border: 1px solid #e6ebf2;
+    border-radius: 14px;
+    padding: 14px;
+}
+
+.album-insight-metric span {
+    color: var(--wc-muted);
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.album-insight-metric strong {
+    color: var(--wc-blue);
+    display: block;
+    font-size: 24px;
+    line-height: 1.1;
+}
+
+.album-insight-metric em {
+    color: var(--wc-gray);
+    display: block;
+    font-size: 14px;
+    font-style: normal;
+    margin-top: 6px;
+}
+
+@media (max-width: 900px) {
+    .album-insights {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .album-insight-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Ajuste visual dos sliders de configuração */
+.album-field input[type="range"] {
+    --range-progress: 0%;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(90deg,
+        var(--wc-blue) 0%,
+        var(--wc-blue) var(--range-progress),
+        #d6d9de var(--range-progress),
+        #d6d9de 100%);
+    border-radius: 999px;
+    cursor: pointer;
+    height: 8px;
+    outline: none;
+}
+
+.album-field input[type="range"]::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    background: transparent;
+    border-radius: 999px;
+    height: 8px;
+}
+
+.album-field input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background: #ffffff;
+    border: 3px solid var(--wc-blue);
+    border-radius: 50%;
+    height: 18px;
+    margin-top: -5px;
+    transition: transform .15s ease, box-shadow .15s ease;
+    width: 18px;
+}
+
+.album-field input[type="range"]:hover::-webkit-slider-thumb,
+.album-field input[type="range"]:focus::-webkit-slider-thumb {
+    transform: scale(1.08);
+}
+
+.album-field input[type="range"]::-moz-range-track {
+    background: #d6d9de;
+    border: 0;
+    border-radius: 999px;
+    height: 8px;
+}
+
+.album-field input[type="range"]::-moz-range-progress {
+    background: var(--wc-blue);
+    border-radius: 999px;
+    height: 8px;
+}
+
+.album-field input[type="range"]::-moz-range-thumb {
+    background: #ffffff;
+    border: 3px solid var(--wc-blue);
+    border-radius: 50%;
+    height: 14px;
+    transition: transform .15s ease, box-shadow .15s ease;
+    width: 14px;
+}
+
+.album-field input[type="range"]:hover::-moz-range-thumb,
+.album-field input[type="range"]:focus::-moz-range-thumb {
+    transform: scale(1.08);
 }
