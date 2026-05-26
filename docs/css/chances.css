@@ -1074,6 +1074,10 @@ color: #1e3a52;
     #ranking-view #barra-lateral-direita .menu-caixa > ul > li:last-child > a {
         border-bottom: none;
     }
+
+    #ranking-view .table-controls {
+    grid-template-columns: minmax(0, 1fr);
+    }
 }
 
 /* ════════════════════════════════════════
@@ -1211,13 +1215,9 @@ position: relative;
 
 /* FASE DE GRUPOS: 3 colunas na barra (Busca | Toggle | Grupos) */
 .groups-filterbar {
-  grid-template-columns: minmax(0, 1fr) 220px 220px;
+  grid-template-columns: minmax(0, 1fr) 220px;
 }
 
-/* No modo Partidas: habilita 4 itens (inclui Datas) */
-.groups-filterbar.has-date {
-  grid-template-columns: minmax(0, 1fr) 220px 220px 220px;
-}
 
 /* Dropdown de Datas só aparece no modo Partidas */
 .groups-date-dropdown { display: none; }
@@ -1249,10 +1249,6 @@ position: relative;
 .groups-mode-btn.active {
   background: #233b65;
   color: #fff;
-}
-
-@media (max-width: 920px) {
-  .groups-filterbar { grid-template-columns: 1fr; }
 }
 
 
@@ -1613,6 +1609,7 @@ position: relative;
         padding-top: 3px;
         padding-bottom: 3px;
     }
+
 }
     
 
@@ -1622,8 +1619,41 @@ position: relative;
     grid-template-columns: minmax(0, 1fr) 220px;
 }
 
-@media (max-width: 920px) {
+/* FASE DE GRUPOS EM CHANCES: filtro com busca + grupos ocupando 100% no mobile */
+@media (max-width: 768px) {
     .filterbar.chances-groups-filterbar {
         grid-template-columns: 1fr;
+        grid-template-areas:
+            "search"
+            "groups";
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .filterbar.chances-groups-filterbar .search-wrap {
+        grid-area: search;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .filterbar.chances-groups-filterbar .group-dropdown {
+        grid-area: groups;
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .filterbar.chances-groups-filterbar {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "search"
+            "groups";
+    }
+
+    .filterbar.chances-groups-filterbar .search-wrap,
+    .filterbar.chances-groups-filterbar .group-dropdown {
+        width: 100%;
+        min-width: 0;
     }
 }

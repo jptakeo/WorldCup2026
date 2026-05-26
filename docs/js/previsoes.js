@@ -484,7 +484,6 @@ function applyScoreFilters(panel) {
                 </div>
 
                 
-                ${modeHTML}
                 ${dateHTML}
 
                 <div class="date-dropdown group-dropdown">
@@ -493,6 +492,8 @@ function applyScoreFilters(panel) {
                     </button>
                     <div class="date-dropdown-menu group-dropdown-menu"></div>
                 </div>
+
+                ${modeHTML}
             </div>
             <div class="no-results groups-no-results">${includeViewToggle ? 'Nenhuma partida encontrada com os filtros selecionados.' : 'Nenhum grupo encontrado com os filtros selecionados.'}</div>
         `;
