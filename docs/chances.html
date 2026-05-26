@@ -1,14 +1,16 @@
 <!DOCTYPE html>
+
 <html>
     <head>
-        <link rel="icon" href="images/favicon.png">
-        <meta charset="UTF-8"/>      
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/styles.css" type="text/css">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="images/favicon.png" rel="icon"/>
+        <meta charset="utf-8"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <link href="css/styles.css" rel="stylesheet" type="text/css"/>
+        <link href="css/chances.css" rel="stylesheet" type="text/css"/>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
         <title>EMAp: Copa do mundo</title>
         <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119803899-1"></script>
+        <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-119803899-1"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag() {
@@ -18,71 +20,14 @@
 
             gtag('config', 'UA-119803899-1');
         </script>
-        <style>
-            @keyframes fadeInUp {
-                from { opacity: 0; transform: translateY(20px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            @keyframes flagBounce {
-                0%, 100% { transform: translateY(0) rotate(0deg); }
-                25% { transform: translateY(-3px) rotate(-5deg); }
-                50% { transform: translateY(0) rotate(0deg); }
-                75% { transform: translateY(-3px) rotate(5deg); }
-            }
-
-            .animated-row {
-                animation: fadeInUp 0.6s ease-out forwards;
-                opacity: 0;
-                transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-            }
-            .animated-row:hover {
-                transform: scale(1.015);
-                box-shadow: 0 4px 15px rgba(0, 147, 210, 0.25);
-                z-index: 10;
-                position: relative;
-            }
-            .animated-flag {
-                display: inline-block;
-                transition: transform 0.3s;
-                width: 20px;
-                height: 15px;
-                object-fit: cover;
-                border-radius: 2px;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-            }
-            .animated-row:hover .animated-flag {
-                animation: flagBounce 0.6s infinite;
-            }
-            .number-cell {
-                transition: all 0.2s ease;
-            }
-            .animated-row:hover .number-cell {
-                transform: scale(1.1);
-                color: #0093d2 !important;
-                font-weight: bold;
-                text-shadow: 0px 2px 4px rgba(0,0,0,0.1);
-            }
-            td.sorted-column {
-                background-color: rgba(255, 215, 0, 0.1) !important;
-                color: #b89205 !important;
-                font-weight: bold;
-            }
-            th.sorted-column {
-                background-color: rgba(255, 255, 255, 0.1) !important;
-                color: #fff494 !important;
-                font-weight: 900 !important;
-                text-shadow: 0 1px 4px rgba(0,0,0,0.4);
-            }
-
-        </style>
     </head>
     <body>
         <!-- Início do cabeçalho-->
-        <div class="page">   
+        <div class="page">
             <header>
                 <div class="container-header">
                     <div class="logo">
-                        <img src="images/logo.png" />
+                        <img src="images/logo.png"/>
                     </div>
 
                     <div class="menu-toggle">
@@ -95,8 +40,8 @@
                         <ul>
                             <li> <a href="index.html">Início</a></li>
                             <li><a href="modelos.html">Modelos</a></li>
-                            <li><a href="previsoes.html">Previsões</a></li>
                             <li class="active"><a href="chances.html">Chances</a></li>
+                            <li><a href="previsoes.html">Previsões</a></li>
                             <li><a href="vis.html">Retrospectiva</a></li>
                             <li><a href="equipe.html">Equipe</a></li>
                             <!--<li class="dropdown">
@@ -112,255 +57,174 @@
                     </nav>
                 </div>
             </header>
-            <!--Final do cabeçalho-->
+        <!--Final do cabeçalho-->
+        <!-- Banner das páginas -->
+        <div class="banner-cabecalho">
+            <div class="texto-banner">Chances das Seleções: Antes e Durante a Copa</div>
+        </div>
+        <!--Fim do banner das páginas-->
+        <!-- Conteudo principal -->
+        <div class="container">
+            <div id="conteudo">
+            <!-- PLACEHOLDER -->
 
-            <!-- Banner das páginas -->
-            <div class="banner-cabecalho">
-                <div class="texto-banner">Chances das Seleções: Antes e Durante a Copa</div>
+            <div aria-label="Visualização das chances" class="chances-section-tabs" role="tablist">
+                <button aria-selected="true" class="chances-section-tab active" data-chances-view="ranking" type="button">
+                    Tabela Completa
+                </button>
+                <button aria-selected="false" class="chances-section-tab" data-chances-view="groups-phase" type="button">
+                    Fase de Grupos
+                </button>
+                <button aria-selected="false" class="chances-section-tab" data-chances-view="bracket" type="button">
+                    Chaveamento Projetado
+                </button>
             </div>
-            <!--Fim do banner das páginas-->
-            <!-- Conteudo principal -->
-            <div class="container"> 
-                <div id="conteudo"> 
-                    <div class="texto max-780 font-16">
-                        <p>Veja aqui as probabilidades de cada seleção passar de fase!</p>
-                        <div class="label-chances">
-                            <b>Chances Estimadas em 01/05/2026</b>: Versão antes do início da Copa. <br>
-                            <b>Chances Estimadas em --/--/2026</b>: Versão antes do início das oitavas de finais. <br>
-                            <b>Chances Estimadas em --/--/2026</b>: Versão antes do início das quartas de finais. <br>
-                            <b>Chances Estimadas em --/--/2026</b>: Versão antes do início das semi-finais. <br>
-                            <b>Chances Estimadas em --/--/2026</b>: Versão antes do início das finais. <br>
-                        </div>
+            
+            <div class="chances-view-panel active" id="ranking-view">
+                <!--<div class="texto max-780 font-16">
+                    <div class="label-chances">
+                        <b>Chances Estimadas em 01/05/2026</b>: Versão antes do início da Copa. <br/>
+                        <b>Chances Estimadas em --/--/2026</b>: Versão antes do início das oitavas de finais. <br/>
+                        <b>Chances Estimadas em --/--/2026</b>: Versão antes do início das quartas de finais. <br/>
+                        <b>Chances Estimadas em --/--/2026</b>: Versão antes do início das semi-finais. <br/>
+                        <b>Chances Estimadas em --/--/2026</b>: Versão antes do início das finais. <br/>
                     </div>
-                    <!-- PLACEHOLDER -->
-                    <div id="chances-table-container">
-                        <div class="table-controls" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-                            <input type="text" id="searchCountry" placeholder="Buscar Seleção..." style="padding: 10px; border-radius: 5px; border: 1px solid #ccc; width: 100%; max-width: 300px; font-size: 14px; font-family: 'gotham-book';">
+                </div>-->
+
+                <div class="ranking-content-row">
+                    <div class="ranking-table-area">
+                        <!--<p class="disc" style="font-family: 'Lato', sans-serif;">-->
+                        <div class="texto max-780 font-16" style="margin-bottom: 18px; font-family: 'Lato', sans-serif;">
+                            Chances das seleções de chegar em cada fase.
+                            <!--<strong>
+                                Os resultados representam probabilidades estimadas pelo modelo, não previsões definitivas.
+                            </strong>-->
                         </div>
-                        <div style="overflow-x: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); background: white;">
-                            <table id="chancesTable" style="width: 100%; border-collapse: collapse; text-align: center; font-size: 14px; font-family: 'gotham-book', sans-serif;">
-                                <thead>
-                                    <tr style="background: linear-gradient(135deg, #0f3c68 0%, #0072bc 100%); color: white; font-family: 'gotham-bold'; cursor: pointer;">
-                                        <th onclick="sortTable(0)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Posição"># <span class="material-icons sort-icon" style="font-size: 16px; vertical-align: middle;">swap_vert</span></th>
-                                        <th onclick="sortTable(1)" style="padding: 15px; text-align: left; white-space: nowrap;" title="Ordenar por Seleção">Seleção <span class="material-icons sort-icon" style="font-size: 16px; vertical-align: middle;">swap_vert</span></th>
-                                        <th onclick="sortTable(2)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Chances de Título">Campeão <span class="material-icons sort-icon" style="font-size: 16px; vertical-align: middle;">swap_vert</span></th>
-                                        <th onclick="sortTable(3)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Chances de Chegar à Final">Final <span class="material-icons sort-icon" style="font-size: 16px; vertical-align: middle;">swap_vert</span></th>
-                                        <th onclick="sortTable(4)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Chances de Chegar à Semifinal">Semi <span class="material-icons sort-icon" style="font-size: 16px; vertical-align: middle;">swap_vert</span></th>
-                                        <th onclick="sortTable(5)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Chances de Chegar às Quartas">Quartas <span class="material-icons sort-icon" style="font-size: 16px; vertical-align: middle;">swap_vert</span></th>
-                                        <th onclick="sortTable(6)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Chances de Chegar às Oitavas">Oitavas <span class="material-icons sort-icon" style="font-size: 16px; vertical-align: middle;">swap_vert</span></th>
-                                        <th onclick="sortTable(7)" style="padding: 15px; white-space: nowrap;" title="Ordenar por Chances de Chegar aos 16-avos">16-avos <span class="material-icons sort-icon" style="font-size: 16px; vertical-align: middle;">swap_vert</span></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="chancesTableBody">
+
+                        <div class="table-controls">
+                            <div class="search-wrap">
+                                <span class="search-icon">🔎</span>
+                                <input id="searchCountry" placeholder="Buscar Seleção..." type="text"/>
+                            </div>
+
+                            <div class="date-dropdown ranking-version-dropdown">
+                                <button type="button" class="date-dropdown-btn ranking-version-btn">
+                                    Versão <span>▾</span>
+                                </button>
+                                <div class="date-dropdown-menu ranking-version-menu"></div>
+                            </div>
+                        </div>
+
+                        <div id="chances-table-container">
+                            <div class="chances-table-scroll">
+                                <table id="chancesTable">
+                                    <thead>
+                                        <tr>
+                                        <th onclick="sortTable(0)" title="Ordenar por Posição"># <span class="material-icons sort-icon">swap_vert</span></th>
+                                        <th onclick="sortTable(1)" title="Ordenar por Seleção">Seleção <span class="material-icons sort-icon">swap_vert</span></th>
+                                        <th onclick="sortTable(2)" title="Ordenar por Chances de Título">Campeão <span class="material-icons sort-icon">swap_vert</span></th>
+                                        <th onclick="sortTable(3)" title="Ordenar por Chances de Chegar à Final">Final <span class="material-icons sort-icon">swap_vert</span></th>
+                                        <th onclick="sortTable(4)" title="Ordenar por Chances de Chegar à Semifinal">Semi <span class="material-icons sort-icon">swap_vert</span></th>
+                                        <th onclick="sortTable(5)" title="Ordenar por Chances de Chegar às Quartas">Quartas <span class="material-icons sort-icon">swap_vert</span></th>
+                                        <th onclick="sortTable(6)" title="Ordenar por Chances de Chegar às Oitavas">Oitavas <span class="material-icons sort-icon">swap_vert</span></th>
+                                        <th onclick="sortTable(7)" title="Ordenar por Chances de Chegar aos 16-avos">16-avos <span class="material-icons sort-icon">swap_vert</span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="chancesTableBody">
                                     <!-- Javascript will populate this -->
-                                </tbody>
-                            </table>
-                        </div>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>                  
                     </div>
 
-                    <script>
-                        // -- DATA START --
-                        const data = [
-                            {"pos": 1, "team": "Espanha", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/es.svg", "champ": 15.57, "final": 24.88, "semi": 37.76, "qf": 50.26, "r16": 71.03, "r32": 99.37},
-                            {"pos": 2, "team": "Argentina", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ar.svg", "champ": 13.62, "final": 21.83, "semi": 34.19, "qf": 48.75, "r16": 63.51, "r32": 97.96},
-                            {"pos": 3, "team": "Inglaterra", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/gb-eng.svg", "champ": 9.24, "final": 16.39, "semi": 28.3, "qf": 45.38, "r16": 67.39, "r32": 97.95},
-                            {"pos": 4, "team": "França", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/fr.svg", "champ": 7.84, "final": 14.41, "semi": 25.62, "qf": 41.83, "r16": 67.19, "r32": 94.8},
-                            {"pos": 5, "team": "Colômbia", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/co.svg", "champ": 5.56, "final": 11.14, "semi": 20.75, "qf": 37.06, "r16": 60.88, "r32": 91.38},
-                            {"pos": 6, "team": "Alemanha", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/de.svg", "champ": 5.51, "final": 11.17, "semi": 22.28, "qf": 39.6, "r16": 71.83, "r32": 98.13},
-                            {"pos": 7, "team": "Marrocos", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ma.svg", "champ": 4.9, "final": 9.9, "semi": 19.12, "qf": 34.16, "r16": 54.78, "r32": 95.68},
-                            {"pos": 8, "team": "Portugal", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/pt.svg", "champ": 4.86, "final": 9.87, "semi": 19.12, "qf": 35.02, "r16": 58.92, "r32": 90.58},
-                            {"pos": 9, "team": "Brasil", "flag": "https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original", "champ": 4.68, "final": 9.35, "semi": 18.55, "qf": 33.94, "r16": 54.64, "r32": 96.37},
-                            {"pos": 10, "team": "Países Baixos", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/nl.svg", "champ": 4.02, "final": 8.52, "semi": 17.29, "qf": 32.85, "r16": 50.65, "r32": 92.46},
-                            {"pos": 11, "team": "Japão", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/jp.svg", "champ": 3.63, "final": 7.8, "semi": 16.07, "qf": 31.1, "r16": 49.27, "r32": 91.34},
-                            {"pos": 12, "team": "Uruguai", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/uy.svg", "champ": 2.7, "final": 6.12, "semi": 12.9, "qf": 24.84, "r16": 42.36, "r32": 90.97},
-                            {"pos": 13, "team": "Bélgica", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/be.svg", "champ": 2.5, "final": 6.04, "semi": 13.42, "qf": 32.66, "r16": 59.56, "r32": 93.86},
-                            {"pos": 14, "team": "Noruega", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/no.svg", "champ": 2.33, "final": 5.44, "semi": 12.14, "qf": 25.11, "r16": 49.88, "r32": 84.33},
-                            {"pos": 15, "team": "Equador", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ec.svg", "champ": 2.2, "final": 5.22, "semi": 11.6, "qf": 24.35, "r16": 50.77, "r32": 90.58},
-                            {"pos": 16, "team": "Croácia", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/hr.svg", "champ": 1.87, "final": 4.65, "semi": 10.53, "qf": 21.56, "r16": 45.63, "r32": 89.81},
-                            {"pos": 17, "team": "Suíça", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ch.svg", "champ": 1.72, "final": 4.56, "semi": 11.38, "qf": 27.85, "r16": 63.02, "r32": 96.52},
-                            {"pos": 18, "team": "Austrália", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/au.svg", "champ": 1.38, "final": 3.56, "semi": 8.76, "qf": 22.24, "r16": 47.94, "r32": 81.4},
-                            {"pos": 19, "team": "México", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/mx.svg", "champ": 1.13, "final": 3.03, "semi": 7.95, "qf": 19.41, "r16": 48.54, "r32": 89.64},
-                            {"pos": 20, "team": "Senegal", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/sn.svg", "champ": 0.92, "final": 2.48, "semi": 6.46, "qf": 15.75, "r16": 35.54, "r32": 69.84},
-                            {"pos": 21, "team": "Áustria", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/at.svg", "champ": 0.92, "final": 2.56, "semi": 6.33, "qf": 14.2, "r16": 28.61, "r32": 77.31},
-                            {"pos": 22, "team": "Paraguai", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/py.svg", "champ": 0.46, "final": 1.4, "semi": 4.19, "qf": 12.61, "r16": 32.75, "r32": 66.88},
-                            {"pos": 23, "team": "Canadá", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ca.svg", "champ": 0.35, "final": 1.35, "semi": 4.34, "qf": 14.32, "r16": 43.35, "r32": 85.49},
-                            {"pos": 24, "team": "Turquia", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/tn.svg", "champ": 0.3, "final": 1.06, "semi": 3.37, "qf": 11.28, "r16": 31.1, "r32": 65.06},
-                            {"pos": 25, "team": "EUA", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/us.svg", "champ": 0.26, "final": 0.91, "semi": 2.94, "qf": 10.02, "r16": 28.6, "r32": 62.34},
-                            {"pos": 26, "team": "Escócia", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/gb-sct.svg", "champ": 0.25, "final": 0.9, "semi": 3.12, "qf": 9.72, "r16": 24.48, "r32": 71.8},
-                            {"pos": 27, "team": "Argélia", "flag": "🏳️", "champ": 0.21, "final": 0.73, "semi": 2.4, "qf": 6.91, "r16": 17.18, "r32": 57.38},
-                            {"pos": 28, "team": "Uzbequistão", "flag": "https://upload.wikimedia.org/wikipedia/commons/8/84/Flag_of_Uzbekistan.svg", "champ": 0.16, "final": 0.57, "semi": 1.88, "qf": 5.52, "r16": 15.44, "r32": 44.48},
-                            {"pos": 29, "team": "Coreia do Sul", "flag": "https://upload.wikimedia.org/wikipedia/commons/0/09/Flag_of_South_Korea.svg", "champ": 0.13, "final": 0.53, "semi": 2.14, "qf": 7.89, "r16": 29.67, "r32": 73.3},
-                            {"pos": 30, "team": "Egito", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/eg.svg", "champ": 0.12, "final": 0.53, "semi": 2.02, "qf": 7.78, "r16": 26.27, "r32": 64.65},
-                            {"pos": 31, "team": "Irã", "flag": "https://upload.wikimedia.org/wikipedia/commons/c/ca/Flag_of_Iran.svg", "champ": 0.11, "final": 0.5, "semi": 1.96, "qf": 7.82, "r16": 27.02, "r32": 66.28},
-                            {"pos": 32, "team": "República Democrática do Congo", "flag": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Flag_of_the_Democratic_Republic_of_the_Congo.svg", "champ": 0.1, "final": 0.37, "semi": 1.19, "qf": 3.64, "r16": 11.22, "r32": 36.13},
-                            {"pos": 33, "team": "Tunísia", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/tn.svg", "champ": 0.07, "final": 0.32, "semi": 1.21, "qf": 4.54, "r16": 14.02, "r32": 40.0},
-                            {"pos": 34, "team": "Suécia", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/se.svg", "champ": 0.07, "final": 0.34, "semi": 1.32, "qf": 4.88, "r16": 14.96, "r32": 42.84},
-                            {"pos": 35, "team": "Tchéquia", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/cz.svg", "champ": 0.05, "final": 0.24, "semi": 1.09, "qf": 4.66, "r16": 20.56, "r32": 60.36},
-                            {"pos": 36, "team": "Costa do Marfim", "flag": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_Côte_d%27Ivoire.svg", "champ": 0.05, "final": 0.31, "semi": 1.36, "qf": 5.94, "r16": 18.89, "r32": 56.93},
-                            {"pos": 37, "team": "África do Sul", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/za.svg", "champ": 0.03, "final": 0.14, "semi": 0.69, "qf": 3.22, "r16": 15.49, "r32": 51.32},
-                            {"pos": 38, "team": "Panamá", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/pa.svg", "champ": 0.03, "final": 0.18, "semi": 0.83, "qf": 3.16, "r16": 11.07, "r32": 46.08},
-                            {"pos": 39, "team": "Iraque", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/iq.svg", "champ": 0.02, "final": 0.1, "semi": 0.43, "qf": 1.91, "r16": 7.07, "r32": 22.0},
-                            {"pos": 40, "team": "Bósnia e Herzegovina", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ba.svg", "champ": 0.02, "final": 0.1, "semi": 0.53, "qf": 3.22, "r16": 15.49, "r32": 50.74},
-                            {"pos": 41, "team": "Nova Zelândia", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/nz.svg", "champ": 0.02, "final": 0.13, "semi": 0.64, "qf": 3.11, "r16": 14.23, "r32": 44.75},
-                            {"pos": 42, "team": "Arábia Saudita", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/sa.svg", "champ": 0.02, "final": 0.12, "semi": 0.63, "qf": 3.23, "r16": 10.23, "r32": 39.09},
-                            {"pos": 43, "team": "Jordânia", "flag": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Flag_of_Jordan.svg", "champ": 0.02, "final": 0.13, "semi": 0.56, "qf": 2.3, "r16": 7.2, "r32": 32.1},
-                            {"pos": 44, "team": "Gana", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/gh.svg", "champ": 0.01, "final": 0.06, "semi": 0.25, "qf": 1.22, "r16": 4.92, "r32": 27.52},
-                            {"pos": 45, "team": "Catar", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/qa.svg", "champ": 0.0, "final": 0.02, "semi": 0.14, "qf": 1.27, "r16": 8.12, "r32": 33.72},
-                            {"pos": 46, "team": "Curaçao", "flag": "https://upload.wikimedia.org/wikipedia/commons/b/b1/Flag_of_Curaçao.svg", "champ": 0.0, "final": 0.01, "semi": 0.07, "qf": 0.62, "r16": 3.13, "r32": 17.09},
-                            {"pos": 47, "team": "Cabo Verde", "flag": "https://upload.wikimedia.org/wikipedia/commons/3/38/Flag_of_Cape_Verde.svg", "champ": 0.0, "final": 0.03, "semi": 0.15, "qf": 1.03, "r16": 4.19, "r32": 21.23},
-                            {"pos": 48, "team": "Haiti", "flag": "https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ht.svg", "champ": 0.0, "final": 0.0, "semi": 0.03, "qf": 0.23, "r16": 1.4, "r32": 10.16}
-                        ];
-                        // -- DATA END --
-
-                        let currentSortCol = 0;
-                        let currentSortAsc = true;
-
-                        function formatPercent(val) {
-                            if (val === 0) return "-";
-                            if (val < 0.01) return "<0.01%";
-                            return val.toFixed(2) + "%";
-                        }
-
-                        function renderTable(items) {
-                            const tbody = document.getElementById('chancesTableBody');
-                            tbody.innerHTML = '';
-                            items.forEach((item, index) => {
-                                const isBrasil = item.team === 'Brasil';
-                                const defaultBg = isBrasil ? 'rgba(0, 155, 58, 0.15)' : 'transparent';
-                                const hoverBg = isBrasil ? 'rgba(0, 155, 58, 0.25)' : '#f4f8fa';
-
-                                const tr = document.createElement('tr');
-                                tr.className = 'animated-row';
-                                tr.style.animationDelay = `${index * 0.03}s`;
-                                tr.style.borderBottom = isBrasil ? '2px solid #009b3a' : '1px solid #eee';
-                                tr.style.backgroundColor = defaultBg;
-                                tr.onmouseover = () => tr.style.backgroundColor = hoverBg;
-                                tr.onmouseout = () => tr.style.backgroundColor = defaultBg;
-                                
-                                const getCellClass = (colIdx) => {
-                                    return currentSortCol === colIdx ? 'number-cell sorted-column' : 'number-cell';
-                                };
-
-                                tr.innerHTML = `
-                                    <td style="padding: 12px; color: #666;">${item.pos}</td>
-                                    <td style="padding: 12px; text-align: left; font-weight: bold; font-family: 'gotham-bold';">
-                                        <img src="${item.flag}" class="animated-flag" style="margin-right: 8px; vertical-align: middle;"> ${item.team}
-                                    </td>
-                                    <td class="${getCellClass(2)}" style="padding: 12px; font-weight: bold;">${formatPercent(item.champ)}</td>
-                                    <td class="${getCellClass(3)}" style="padding: 12px; color: #444;">${formatPercent(item.final)}</td>
-                                    <td class="${getCellClass(4)}" style="padding: 12px; color: #444;">${formatPercent(item.semi)}</td>
-                                    <td class="${getCellClass(5)}" style="padding: 12px; color: #444;">${formatPercent(item.qf)}</td>
-                                    <td class="${getCellClass(6)}" style="padding: 12px; color: #444;">${formatPercent(item.r16)}</td>
-                                    <td class="${getCellClass(7)}" style="padding: 12px; color: #444;">${formatPercent(item.r32)}</td>
-                                `;
-                                tbody.appendChild(tr);
-                            });
-                        }
-
-                        function sortTable(colIndex) {
-                            if (currentSortCol === colIndex) {
-                                currentSortAsc = !currentSortAsc;
-                            } else {
-                                currentSortCol = colIndex;
-                                currentSortAsc = false; // By default sort numbers highest first
-                                if (colIndex === 1) currentSortAsc = true; // Team name sort A-Z by default
-                            }
-
-                            const cols = ['pos', 'team', 'champ', 'final', 'semi', 'qf', 'r16', 'r32'];
-                            const key = cols[colIndex];
-
-                            data.sort((a, b) => {
-                                let valA = a[key];
-                                let valB = b[key];
-                                if (typeof valA === 'string') {
-                                    let cmp = currentSortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
-                                    if (cmp === 0 && key !== 'r32') return currentSortAsc ? a.r32 - b.r32 : b.r32 - a.r32;
-                                    return cmp;
-                                } else {
-                                    if (valA === valB && key !== 'r32') return currentSortAsc ? a.r32 - b.r32 : b.r32 - a.r32;
-                                    return currentSortAsc ? valA - valB : valB - valA;
-                                }
-                            });
-
-                            const query = document.getElementById('searchCountry').value.toLowerCase();
-                            const filtered = data.filter(d => d.team.toLowerCase().includes(query));
-                            renderTable(filtered);
-                            updateHeaders();
-                        }
-
-                        function updateHeaders() {
-                            const ths = document.querySelectorAll('#chancesTable th');
-                            ths.forEach((th, index) => {
-                                const iconSpan = th.querySelector('.sort-icon');
-                                if (!iconSpan) return;
-                                
-                                if (index === currentSortCol) {
-                                    iconSpan.textContent = currentSortAsc ? 'arrow_upward' : 'arrow_downward';
-                                    iconSpan.style.opacity = '1';
-                                    th.classList.add('sorted-column');
-                                    th.style.borderBottom = '3px solid #ffd700';
-                                } else {
-                                    iconSpan.textContent = 'swap_vert';
-                                    iconSpan.style.opacity = '0.5';
-                                    th.classList.remove('sorted-column');
-                                    th.style.borderBottom = '';
-                                }
-                            });
-                        }
-
-                        document.getElementById('searchCountry').addEventListener('input', (e) => {
-                            const query = e.target.value.toLowerCase();
-                            const filtered = data.filter(d => d.team.toLowerCase().includes(query));
-                            renderTable(filtered);
-                        });
-
-                        // Initial Sort (by Campeão desc)
-                        currentSortCol = 2;
-                        currentSortAsc = false;
-                        
-                        data.sort((a, b) => b.champ - a.champ);
-                        renderTable(data);
-                        updateHeaders();
-                    </script>                    
-                </div>
-				
- 
-                <div id="barra-lateral-direita">
-                    <div class="menu-caixa">
-                        <div class="linhas-caixa menu-caixa">
-                            <div class="titulo-menu">Informações </div>
-                            <ul>
-                                <li><a href="https://github.com/BrazilianFootball/WorldCup2026" target="_blank">Repositório</a></li>
-                                <li><a href="https://www.kaggle.com/datasets/martj42/international-football-results-from-1872-to-2017" target="_blank">Base de Dados</a></li>
-                                <li><a href="https://github.com/BrazilianFootball/WorldCup2026/tree/main/stan_models" target="_blank">Implementação</a></li>
-                                <li><a href="https://www18.fgv.br/emap/copa-2022/chances_grupos.html" target="_blank">Chances da Copa de 2022</a></li>
-                            </ul>
+                    <div id="barra-lateral-direita">
+                        <div class="menu-caixa">
+                            <div class="linhas-caixa menu-caixa">
+                                <div class="titulo-menu">Informações </div>
+                                <ul>
+                                    <li><a href="https://github.com/BrazilianFootball/WorldCup2026" target="_blank">Repositório</a></li>
+                                    <li><a href="https://www.kaggle.com/datasets/martj42/international-football-results-from-1872-to-2017" target="_blank">Base de Dados</a></li>
+                                    <li><a href="https://github.com/BrazilianFootball/WorldCup2026/tree/main/stan_models" target="_blank">Implementação</a></li>
+                                    <li><a href="https://www18.fgv.br/emap/copa-2022/chances_grupos.html" target="_blank">Chances da Copa de 2022</a></li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="menu-caixa margin-top-40">
-                        <div class="linhas-caixa menu-caixa">
-                            <div class="titulo-menu">Explore Outras Ferramentas</div>
-                            <ul>
-                                <li><a href="calendario.html" target="_blank">Calendário da Copa</a></li>
-                                <li><a href="https://boleco42.web.app" target="_blank">Bolão Entre Amigos</a></li>
-                                <li><a href="album.html" target="_blank">Simulador p/ Álbum da Copa</a></li>
-                            </ul>
+                        <div class="menu-caixa margin-top-40">
+                            <div class="linhas-caixa menu-caixa">
+                                <div class="titulo-menu">Explore Outras Ferramentas</div>
+                                <ul>
+                                    <li><a href="calendario.html" target="_blank">Calendário da Copa</a></li>
+                                    <li><a href="https://boleco42.web.app" target="_blank">Bolão Entre Amigos</a></li>
+                                    <li><a href="album.html" target="_blank">Simulador p/ Álbum da Copa</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            
+
+            <div class="chances-view-panel" id="groups-phase-view">
+                <div class="dash chances-groups-dash">
+                    <div class="panel active" id="panel-grupos" data-groups-source="chances">
+                        <div class="g-grid" id="gg"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chances-view-panel" id="bracket-view">
+                <div class="dash chances-bracket-dash">
+                    <div class="panel active" id="panel-bracket">
+                        <p class="disc">
+                            % = Chance de vencer a partida.   ⚠️ 
+                            <strong>
+                                Os resultados representam probabilidades estimadas pelo modelo, não previsões definitivas.
+                            </strong>
+                        </p>
+                        <div class="bk-scroll">
+                            <div class="bk-wrap" id="bw">
+                                <svg id="bsv"></svg>
+                                <div class="half lh" id="lh"></div>
+                                <div class="fc" id="fc"></div>
+                                <div class="half rh" id="rh"></div>
+                            </div>
+                        </div>
+                        <!-- Legend -->
+                        <div class="bk-leg">
+                            <div class="bk-li"><div class="bk-ln g"></div>Trajetória do campeão projetado</div>
+                            <div class="bk-li"><div class="bk-ln gr"></div>Outros jogos</div>
+                            <div class="bk-hint">Passe o mouse ou click sobre um país — para destacar sua trajetória</div>
+                        </div>
+                        <!-- Path summary cards (rendered by showPath()) -->
+                        <div id="bk-pathPanel">
+                            <div id="bk-pathTitle">TRAJETÓRIA DO CAMPEÃO PROJETADO <span></span></div>
+                            <div id="bk-pathCards"></div>
+                        </div>
+                        <!-- Fixed stats panel (rendered by showStats()) -->
+                        <div id="stats-panel">
+                            <div class="sp-empty">Passe o mouse ou click sobre uma seleção</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
         </div>
         <!--Final do conteudo-->
         <footer id="footer">
-            <div class="container">
-                <div class="logo-rodape column-3"><img src="images/logo-rodape.png" /></div>
-                <div class="txt-middle column-3">Praia de Botafogo, 190 - Rio de Janeiro - RJ, <br>
-                    CEP: 22250-900. Tel:+55 21 3799-5917<br>
-                    emap@fgv.br</div>
-                <div class="txt-right column-3">© FGV 2026</div>
-            </div>
-        </footer>
+        <div class="container">
+        <div class="logo-rodape column-3"><img src="images/logo-rodape.png"/></div>
+        <div class="txt-middle column-3">Praia de Botafogo, 190 - Rio de Janeiro - RJ, <br/>
+                            CEP: 22250-900. Tel:+55 21 3799-5917<br/>
+                            emap@fgv.br</div>
+        <div class="txt-right column-3">© FGV 2026</div>
+        </div>
+        </footer><div class="tt" id="tt"></div>
         <script src="js/main.js"></script>
+        <script src="js/chaveamento.js"></script>
+        <script src="js/previsoes.js"></script>
+        <script src="js/chances.js"></script>
     </body>
 </html>

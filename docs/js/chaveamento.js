@@ -952,6 +952,10 @@ function showPath(name) {
 // ════════════════════════════════════════
 
 async function initChaveamento() {
+    const requiredElements = ['bw', 'bsv', 'lh', 'rh', 'fc', 'bk-pathTitle', 'bk-pathCards', 'stats-panel', 'tt'];
+    if (!requiredElements.every(id => document.getElementById(id))) {
+        return;
+    }
     try {
         await loadBracketData();
 

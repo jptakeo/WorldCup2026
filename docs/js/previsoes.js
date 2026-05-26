@@ -290,41 +290,41 @@ function applyGroupFilters(panel = document.getElementById('panel-grupos')) {
         const n = selectedGroups.length;
 
         let label;
-        if (n === 0) {label = 'Todos os grupos';} 
+        if (n === 0) {label = 'Todos os grupos';}
         else {label = `${n} grupo${n > 1 ? 's' : ''} selecionado${n > 1 ? 's' : ''}`;}
         btn.innerHTML = `${label}<span>▾</span>`;
     }
 
-    const mode = panel.dataset.groupsMode || 'games';
+    const mode = panel.dataset.groupsMode || (panel.dataset.groupsSource === 'previsoes' ? 'stickers' : 'games');
 
     let visible = 0;
 
     if (mode === 'games') {
-    if (noResults) noResults.textContent = 'Nenhum grupo encontrado com os filtros selecionados.';
+        if (noResults) noResults.textContent = 'Nenhum grupo encontrado com os filtros selecionados.';
 
-    panel.querySelectorAll('#gg .group-card').forEach(card => {
-        const matchGroup =!selectedGroups.length || selectedGroups.includes(card.dataset.group);
-        const matchText = !q || (card.dataset.search || '').includes(q);
+        panel.querySelectorAll('#gg .group-card').forEach(card => {
+            const matchGroup = !selectedGroups.length || selectedGroups.includes(card.dataset.group);
+            const matchText = !q || (card.dataset.search || '').includes(q);
 
-        const show = matchGroup && matchText;
-        card.style.display = show ? '' : 'none';
-        if (show) visible++;
-    });
+            const show = matchGroup && matchText;
+            card.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
     } else {
-    if (noResults) noResults.textContent = 'Nenhuma partida encontrada com os filtros selecionados.';
+        if (noResults) noResults.textContent = 'Nenhuma partida encontrada com os filtros selecionados.';
 
-    const selectedDates = getSelectedValues(dateMenu);
+        const selectedDates = getSelectedValues(dateMenu);
 
-    updateDateButton(dateBtn, selectedDates);
+        updateDateButton(dateBtn, selectedDates);
 
-    panel.querySelectorAll('#groups-scorecards .match-card').forEach(card => {
-        const matchGroup = !selectedGroups.length || selectedGroups.includes(card.dataset.group);
-        const matchText = !q || (card.dataset.search || '').includes(q);
-        const matchDate = !selectedDates.length || selectedDates.includes(card.dataset.date);
-        const show = matchGroup && matchText && matchDate;
-        card.style.display = show ? '' : 'none';
-        if (show) visible++;
-    });
+        panel.querySelectorAll('#groups-scorecards .match-card').forEach(card => {
+            const matchGroup = !selectedGroups.length || selectedGroups.includes(card.dataset.group);
+            const matchText = !q || (card.dataset.search || '').includes(q);
+            const matchDate = !selectedDates.length || selectedDates.includes(card.dataset.date);
+            const show = matchGroup && matchText && matchDate;
+            card.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
     }
 
     if (noResults) noResults.style.display = visible ? 'none' : 'block';
@@ -434,37 +434,58 @@ function applyScoreFilters(panel) {
         return group32Map.get(normalizeName(team)) ?? 0;
     }
 
-    // Cria os cards de cada grupo usando group_first_place do summary.csv e monta os filtros.
-    function buildGroupCards(matchRows, summaryRows) {
-        const grid = document.getElementById('gg');
-        if (!grid) return;
+    function getGroupLetters(matchRows) {
+        return [...new Set(matchRows.map(r => String(r.group ?? '').trim()))]
+            .filter(g => /^[A-L]$/.test(g))
+            .sort();
+    }
 
-        const panel = document.getElementById('panel-grupos');
-        if (!panel) return;
+    function ensureGroupsPhaseShell(panel, includeViewToggle) {
+        if (!panel || panel.querySelector('.groups-filterbar')) return;
 
-        // cria a barra só uma vez (se já existir, não duplica)
-        if (!panel.querySelector('.groups-filterbar')) {
-            const note = panel.querySelector('.g-note');
-            // HTML da barra de busca, alternância Grupos/Partidas e filtros de grupo/data.
-            const filterHTML = `
-            <div class="filterbar groups-filterbar">
-                <div class="search-wrap">
-                <span class="search-icon">🔎</span>
-                <input class="country-filter group-country-filter" type="text" placeholder="Pesquisar país..." autocomplete="off">
-                </div>
-
-                <!-- Aparece só no modo Partidas -->
-                <div class="date-dropdown groups-date-dropdown">
-                <button type="button" class="date-dropdown-btn groups-date-dropdown-btn">
-                    Todas as datas <span>▾</span>
-                </button>
-                <div class="date-dropdown-menu groups-date-dropdown-menu"></div>
-                </div>
-
+        const modeHTML = includeViewToggle ? `
                 <div class="groups-mode">
-                    <button type="button" class="groups-mode-btn" data-mode="games">Grupos</button>
-                    <button type="button" class="groups-mode-btn active" data-mode="matches">Partidas</button>
+                    <button type="button" class="groups-mode-btn active" data-mode="stickers">Figurinhas</button>
+                    <button type="button" class="groups-mode-btn" data-mode="charts">Gráficos</button>
                 </div>
+        ` : '';
+
+        const dateHTML = includeViewToggle ? `
+                <div class="date-dropdown groups-date-dropdown">
+                    <button type="button" class="date-dropdown-btn groups-date-dropdown-btn">
+                        Todas as datas <span>▾</span>
+                    </button>
+                    <div class="date-dropdown-menu groups-date-dropdown-menu"></div>
+                </div>
+        ` : '';
+
+        const filterbarClasses = includeViewToggle
+            ? 'filterbar groups-filterbar has-date'
+            : 'filterbar groups-filterbar chances-groups-filterbar';
+
+        const noteHTML = includeViewToggle
+            ? `
+                <p class="disc groups-prob-note">
+                    <span class="groups-prob-note-text">% = Probabilidade estimada de cada placar. Clique para visualizar.</span>
+                </p>
+            `
+            : `
+                <div class="texto max-780 font-16" style="margin-bottom: 16px;">
+                    <span class="groups-prob-note-text">Chances das seleções de passar a fase de grupos.</span>
+                </div>
+            `;
+            
+        const filterHTML = `
+            ${noteHTML}
+            <div class="${filterbarClasses}">
+                <div class="search-wrap">
+                    <span class="search-icon">🔎</span>
+                    <input class="country-filter group-country-filter" type="text" placeholder="Buscar Seleção..." autocomplete="off">
+                </div>
+
+                
+                ${modeHTML}
+                ${dateHTML}
 
                 <div class="date-dropdown group-dropdown">
                     <button type="button" class="date-dropdown-btn group-dropdown-btn">
@@ -473,135 +494,10 @@ function applyScoreFilters(panel) {
                     <div class="date-dropdown-menu group-dropdown-menu"></div>
                 </div>
             </div>
-            <p class="disc groups-prob-note">
-                <span class="groups-prob-note-text"> % = Chance de cada seleção passar da fase de grupos.</span>
-            </p>
-            <div class="no-results groups-no-results">Nenhum grupo encontrado com os filtros selecionados.</div>
-            `;
+            <div class="no-results groups-no-results">${includeViewToggle ? 'Nenhuma partida encontrada com os filtros selecionados.' : 'Nenhum grupo encontrado com os filtros selecionados.'}</div>
+        `;
 
-            if (note) note.insertAdjacentHTML('afterend', filterHTML);
-            else panel.insertAdjacentHTML('afterbegin', filterHTML);
-        }
-
-        if (!panel.querySelector('#groups-scorecards')) {
-        grid.insertAdjacentHTML(
-            'afterend',
-            `<div id="groups-scorecards" style="display:none"></div>`
-        );
-        }
-
-        // modo default
-        if (!panel.dataset.groupsMode) panel.dataset.groupsMode = 'matches';
-
-        grid.innerHTML = '';
-
-        const group32Map = buildGroup32Map(summaryRows);
-
-        // grupos “A..L” (apenas 1 letra)
-        const groups = [...new Set(matchRows.map(r => String(r.group ?? '').trim()))]
-            .filter(g => /^[A-L]$/.test(g))
-            .sort();
-
-        if (!groups.length) {
-            grid.innerHTML = `
-                <div class="g-card">
-                    <div class="g-head">Fase de grupos<span>—</span></div>
-                    <div class="g-team"><div class="g-name">Nenhum jogo de fase de grupos encontrado no CSV.</div></div>
-                </div>
-            `;
-            return;
-        }
-
-        groups.forEach(letter => {
-            const rows = matchRows.filter(r => String(r.group ?? '').trim() === letter);
-
-            // times do grupo
-            const teams = [...new Set(rows.flatMap(r => [r.home_team, r.away_team]).filter(Boolean))];
-
-            // Probabilidade de terminar em 1º no grupo, vinda diretamente do summary.csv.
-            const ranking = teams
-                .map(t => ({
-                    name: t,
-                    pct: getGroupFirstPlaceProbability(t, group32Map)
-                }))
-                .sort((a, b) => b.pct - a.pct);
-
-            const card = document.createElement('div');
-            card.className = 'g-card';
-            card.classList.add('group-card');
-            card.dataset.group = letter;
-            card.dataset.search = normalizeName(teams.join(' ')); // times do grupo
-            const favorite = ranking[0]?.name || '';
-            // Cabeçalho do card de grupo com a letra do grupo e a seleção favorita.
-            card.innerHTML = `
-                <div class="g-head">
-                    Grupo ${letter}
-                    <span>${favorite}</span>
-                </div>
-            `;
-
-            ranking.forEach((t, idx) => {
-                const position = idx + 1;
-
-                const label = position === 1 ? '1º' : position === 2 ? '2º' : position === 3 ? '3º' : '4º';
-                const badgeClass = position === 1 ? 'b1' : position === 2 ? 'b2' : position === 3 ? 'b3' : 'b4';
-                const statusClass = position <= 2 ? 'qualify' : position === 3 ? 'playoff' : 'elim';
-                const probDisplay = Math.round(t.pct * 10) / 10; // 1 casa
-                const probText = Number.isInteger(probDisplay) ? `${probDisplay.toFixed(0)}%` : `${probDisplay}%`;
-
-                const row = document.createElement('div');
-                row.className = `g-team ${statusClass}`;
-                // Linha visual da seleção: posição, nome, probabilidade relativa e barra de progresso.
-                row.innerHTML = `
-                    <div class="g-row">
-                        <div class="g-badge ${badgeClass}">${label}</div>
-                        <div class="g-name">
-                            ${t.name}
-                            ${t.name === favorite ? '<span class="g-fav">🔥</span>' : ''}
-                        </div>
-                        <div class="g-prob">${probText}</div>
-                    </div>
-                    <div class="g-progress">
-                        <div class="g-fill" data-width="${probDisplay}"></div>
-                    </div>
-                `;
-
-                // Interação opcional com o chaveamento (se existir)
-                if (typeof showStats === 'function' && typeof selectTeam === 'function') {
-                    row.addEventListener('mouseenter', () => showStats(t.name));
-                    row.addEventListener('mouseleave', () => {
-                        // selectedTeam existe no chaveamento.js; se não existir, volta pro favorito
-                        const back = (typeof window.selectedTeam !== 'undefined' && window.selectedTeam) ? window.selectedTeam : favorite;
-                        showStats(back);
-                    });
-                    row.addEventListener('click', () => selectTeam(t.name));
-                }
-
-                card.appendChild(row);
-
-                // if (position === 2) {
-                //     const cut = document.createElement('div');
-                //     cut.className = 'g-cut';
-                //     card.appendChild(cut);
-                // }
-            });
-
-            grid.appendChild(card);
-        });
-
-        populateGroupDropdown(groups);
-        populateGroupsDateDropdown(matchRows);
-        attachGroupFilters();
-        applyGroupFilters();
-
-        // anima as barras
-        setTimeout(() => {
-            document.querySelectorAll('#gg .g-fill').forEach(el => {
-                el.style.width = el.dataset.width + '%';
-            });
-        }, 100);
-
-        setGroupsMode(panel.dataset.groupsMode || 'matches');
+        panel.insertAdjacentHTML('afterbegin', filterHTML);
     }
 
     // Preenche o dropdown com as letras dos grupos disponíveis no CSV.
@@ -619,6 +515,7 @@ function applyScoreFilters(panel) {
             </label>
         `).join('');
     }
+
     // Converte datas no formato dd/mm ou dd/mm/aaaa para ordenação cronológica.
     function parseDropdownDate(value) {
         const [day, month, year] = String(value).trim().split('/').map(Number);
@@ -648,8 +545,8 @@ function applyScoreFilters(panel) {
 
         menu.innerHTML = uniqueDates.map(d => `
             <label class="date-option">
-            <input type="checkbox" value="${d}">
-            <span>${d}</span>
+                <input type="checkbox" value="${d}">
+                <span>${d}</span>
             </label>
         `).join('');
     }
@@ -659,16 +556,115 @@ function applyScoreFilters(panel) {
         installFilterDelegationOnce();
     }
 
-    // Renderiza os cards de partidas da fase de grupos somente quando o modo Partidas é aberto.
-    async function ensureGroupMatchCardsRendered() {
+    // Cria os cards de classificação da fase de grupos para a página de Chances.
+    function buildChancesGroupCards(matchRows, summaryRows) {
+        const grid = document.getElementById('gg');
+        if (!grid) return;
+
+        const panel = document.getElementById('panel-grupos');
+        if (!panel) return;
+
+        panel.dataset.groupsMode = 'games';
+        ensureGroupsPhaseShell(panel, false);
+
+        grid.innerHTML = '';
+
+        const group32Map = buildGroup32Map(summaryRows);
+        const groups = getGroupLetters(matchRows);
+
+        if (!groups.length) {
+            grid.innerHTML = `
+                <div class="g-card">
+                    <div class="g-head">Fase de grupos<span>—</span></div>
+                    <div class="g-team"><div class="g-name">Nenhum jogo de fase de grupos encontrado no CSV.</div></div>
+                </div>
+            `;
+            return;
+        }
+
+        groups.forEach(letter => {
+            const rows = matchRows.filter(r => String(r.group ?? '').trim() === letter);
+            const teams = [...new Set(rows.flatMap(r => [r.home_team, r.away_team]).filter(Boolean))];
+
+            const ranking = teams
+                .map(t => ({
+                    name: t,
+                    pct: getGroupFirstPlaceProbability(t, group32Map)
+                }))
+                .sort((a, b) => b.pct - a.pct);
+
+            const card = document.createElement('div');
+            card.className = 'g-card group-card';
+            card.dataset.group = letter;
+            card.dataset.search = normalizeName(teams.join(' '));
+            const favorite = ranking[0]?.name || '';
+
+            card.innerHTML = `
+                <div class="g-head">
+                    Grupo ${letter}
+                    <span>${favorite}</span>
+                </div>
+            `;
+
+            ranking.forEach((t, idx) => {
+                const position = idx + 1;
+                const label = position === 1 ? '1º' : position === 2 ? '2º' : position === 3 ? '3º' : '4º';
+                const badgeClass = position === 1 ? 'b1' : position === 2 ? 'b2' : position === 3 ? 'b3' : 'b4';
+                const statusClass = position <= 2 ? 'qualify' : position === 3 ? 'playoff' : 'elim';
+                const probDisplay = Math.round(t.pct * 10) / 10;
+                const probText = Number.isInteger(probDisplay) ? `${probDisplay.toFixed(0)}%` : `${probDisplay}%`;
+
+                const row = document.createElement('div');
+                row.className = `g-team ${statusClass}`;
+                row.innerHTML = `
+                    <div class="g-row">
+                        <div class="g-badge ${badgeClass}">${label}</div>
+                        <div class="g-name">
+                            ${t.name}
+                            ${t.name === favorite ? '<span class="g-fav">🔥</span>' : ''}
+                        </div>
+                        <div class="g-prob">${probText}</div>
+                    </div>
+                    <div class="g-progress">
+                        <div class="g-fill" data-width="${probDisplay}"></div>
+                    </div>
+                `;
+
+                if (typeof showStats === 'function' && typeof selectTeam === 'function') {
+                    row.addEventListener('mouseenter', () => showStats(t.name));
+                    row.addEventListener('mouseleave', () => {
+                        const back = (typeof window.selectedTeam !== 'undefined' && window.selectedTeam) ? window.selectedTeam : favorite;
+                        showStats(back);
+                    });
+                    row.addEventListener('click', () => selectTeam(t.name));
+                }
+
+                card.appendChild(row);
+            });
+
+            grid.appendChild(card);
+        });
+
+        populateGroupDropdown(groups);
+        attachGroupFilters();
+        applyGroupFilters(panel);
+
+        setTimeout(() => {
+            document.querySelectorAll('#gg .g-fill').forEach(el => {
+                el.style.width = el.dataset.width + '%';
+            });
+        }, 100);
+    }
+
+    // Renderiza os cards de partidas da fase de grupos para Previsões, separados em Figurinhas e Gráficos.
+    async function ensurePrevisoesGroupMatchCardsRendered() {
         const panel = document.getElementById('panel-grupos');
         const container = panel?.querySelector('#groups-scorecards');
         if (!panel || !container) return;
         if (container.dataset.ready === '1') return;
-        // só partidas da fase de grupos (A..L)
+
         const stageRows = GROUP_STAGE_ROWS.filter(r => /^[A-L]$/.test(String(r.group ?? '').trim()));
 
-        // usa o renderer existente dos cards de placares
         if (!window.ScoreCards?.renderScoreCardHTML || !window.ScoreCards?.getFlagGetterOnce) {
             container.innerHTML = '';
             container.dataset.ready = '1';
@@ -676,69 +672,97 @@ function applyScoreFilters(panel) {
         }
 
         const getFlag = await window.ScoreCards.getFlagGetterOnce();
+        const stickersCards = stageRows.map((r, i) => window.ScoreCards.renderStickerCard(r, getFlag, i)).join('');
+        const scorecards = stageRows.map(r => window.ScoreCards.renderScoreCardHTML(r, getFlag)).join('');
+        // <div class="section-title">Figurinhas</div> <div class="section-title">Gráficos Detalhados</div>
         container.innerHTML = `
-            <div class="section-title">Figurinhas</div>
-            <div class="stickers-carousel">
-                <button class="scroll-btn left" onclick="this.nextElementSibling.scrollBy({left: -300, behavior: 'smooth'})">❮</button>
-                <div class="stickers-grid">
-                    ${stageRows.map((r, i) => window.ScoreCards.renderStickerCard(r, getFlag, i)).join('')}
+            <div id="groups-stickers-view" class="groups-display-view">
+                <div class="stickers-carousel">
+                    <button class="scroll-btn left" onclick="this.nextElementSibling.scrollBy({left: -300, behavior: 'smooth'})">❮</button>
+                    <div class="stickers-grid">
+                        ${stickersCards}
+                    </div>
+                    <button class="scroll-btn right" onclick="this.previousElementSibling.scrollBy({left: 300, behavior: 'smooth'})">❯</button>
                 </div>
-                <button class="scroll-btn right" onclick="this.previousElementSibling.scrollBy({left: 300, behavior: 'smooth'})">❯</button>
             </div>
-            <div class="section-title">Gráficos Detalhados</div>
-            <div class="scorecards-grid">
-                ${stageRows.map(r => window.ScoreCards.renderScoreCardHTML(r, getFlag)).join('')}
+            <div id="groups-charts-view" class="groups-display-view">
+                <div class="scorecards-grid">
+                    ${scorecards}
+                </div>
             </div>
         `;
-        /* aplica a regra do .score-total.tall também na Fase de Grupos */
+
         window.ScoreCards.adjustScoreTotalHeights?.(container);
         container.dataset.ready = '1';
     }
 
-    // Alterna entre visualização de ranking dos grupos e visualização dos cards de partidas.
+    function buildPrevisoesGroupMatchViews(matchRows) {
+        const panel = document.getElementById('panel-grupos');
+        if (!panel) return;
+
+        panel.dataset.groupsSource = 'previsoes';
+        if (!panel.dataset.groupsMode) panel.dataset.groupsMode = 'stickers';
+
+        ensureGroupsPhaseShell(panel, true);
+
+        let grid = document.getElementById('gg');
+        if (grid) grid.style.display = 'none';
+
+        if (!panel.querySelector('#groups-scorecards')) {
+            panel.insertAdjacentHTML('beforeend', `<div id="groups-scorecards"></div>`);
+        }
+
+        const groups = getGroupLetters(matchRows);
+        populateGroupDropdown(groups);
+        populateGroupsDateDropdown(matchRows);
+        attachGroupFilters();
+        setGroupsMode(panel.dataset.groupsMode || 'stickers');
+    }
+
     async function setGroupsMode(mode) {
         const panel = document.getElementById('panel-grupos');
         if (!panel) return;
 
+        // A página de Chances usa apenas a visualização de grupos.
+        if (panel.dataset.groupsSource === 'chances') {
+            panel.dataset.groupsMode = 'games';
+            applyGroupFilters(panel);
+            return;
+        }
+
         panel.dataset.groupsMode = mode;
 
         const filterbar = panel.querySelector('.groups-filterbar');
-        if (filterbar) filterbar.classList.toggle('has-date', mode === 'matches');
+        if (filterbar) filterbar.classList.add('has-date');
 
         const probNoteText = panel.querySelector('.groups-prob-note-text');
         if (probNoteText) {
-            probNoteText.textContent = mode === 'matches'
-                ? '% = Chance estimada de cada resultado.'
-                : '% = Chance de cada seleção passar da fase de grupos.';
-        }
-
-        // se saiu de "matches", limpa seleção de datas
-        if (mode !== 'matches') {
-        panel.querySelectorAll('.groups-date-dropdown-menu input[type="checkbox"]').forEach(i => (i.checked = false));
-        const dateBtn = panel.querySelector('.groups-date-dropdown-btn');
-        if (dateBtn) dateBtn.innerHTML = `Todas as datas <span>▾</span>`;
+            probNoteText.textContent = '% = Probabilidade estimada de cada placar. Clique para visualizar.';
         }
 
         panel.querySelectorAll('.groups-mode-btn').forEach(b => {
             b.classList.toggle('active', b.dataset.mode === mode);
         });
 
-        const gg = panel.querySelector('#gg');
-        const sc = panel.querySelector('#groups-scorecards');
+        await ensurePrevisoesGroupMatchCardsRendered();
 
-        if (gg) gg.style.display = (mode === 'games') ? '' : 'none';
-        if (sc) sc.style.display = (mode === 'matches') ? '' : 'none';
+        const stickersView = panel.querySelector('#groups-stickers-view');
+        const chartsView = panel.querySelector('#groups-charts-view');
 
-        if (mode === 'matches') await ensureGroupMatchCardsRendered();
+        if (stickersView) stickersView.style.display = (mode === 'stickers') ? '' : 'none';
+        if (chartsView) chartsView.style.display = (mode === 'charts') ? '' : 'none';
 
-        applyGroupFilters();
+        applyGroupFilters(panel);
     }
 
     window.PrevisoesActions = window.PrevisoesActions || {};
     window.PrevisoesActions.setGroupsMode = setGroupsMode;
 
-    // Ponto de entrada da fase de grupos: carrega o CSV e chama a montagem dos cards.
+    // Ponto de entrada da fase de grupos: carrega o CSV e chama a montagem correspondente.
     async function renderGroupStage() {
+        const panel = document.getElementById('panel-grupos');
+        if (!panel) return;
+
         try {
             const [matchRows, summaryRows] = await Promise.all([
                 loadCSV(MATCHES_CSV_URL),
@@ -746,7 +770,12 @@ function applyScoreFilters(panel) {
             ]);
 
             GROUP_STAGE_ROWS = matchRows;
-            buildGroupCards(matchRows, summaryRows);
+
+            if (panel.dataset.groupsSource === 'chances') {
+                buildChancesGroupCards(matchRows, summaryRows);
+            } else {
+                buildPrevisoesGroupMatchViews(matchRows);
+            }
         } catch (e) {
             const grid = document.getElementById('gg');
             if (grid) {
@@ -1133,9 +1162,10 @@ function applyScoreFilters(panel) {
                     <div class="search-wrap">
                         <span class="search-icon">🔎</span>
                         <input 
+                            id="${stage.panelId}-country-filter"
                             class="country-filter" 
                             type="text" 
-                            placeholder="Pesquisar país..."
+                            placeholder="Buscar Seleção..."
                             autocomplete="off"
                         >
                     </div>
