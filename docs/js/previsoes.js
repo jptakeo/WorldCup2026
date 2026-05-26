@@ -912,12 +912,13 @@ function applyScoreFilters(panel) {
             value: 0
         };
 
-        //const homeTotal = sumOutcomes(homeWin);
-        //const drawTotal = sumOutcomes(draw);
-        //const awayTotal = sumOutcomes(awayWin);
-        const homeTotal = getOutcomeTotalFromColumn(row, 'home_win', homeWin);
-        const drawTotal = getOutcomeTotalFromColumn(row, 'draw', draw);
-        const awayTotal = getOutcomeTotalFromColumn(row, 'away_win', awayWin);
+        const rawHomeTotal = getOutcomeTotalFromColumn(row, 'home_win', homeWin);
+        const rawDrawTotal = getOutcomeTotalFromColumn(row, 'draw', draw);
+        const rawAwayTotal = getOutcomeTotalFromColumn(row, 'away_win', awayWin);
+
+        const homeTotal = Number(rawHomeTotal.toFixed(1));
+        const drawTotal = Number(rawDrawTotal.toFixed(1));
+        const awayTotal = Number((100 - homeTotal - drawTotal).toFixed(1));
 
         const homeFlag = getFlag(homeCountry);
         const awayFlag = getFlag(awayCountry);
@@ -1003,9 +1004,14 @@ function applyScoreFilters(panel) {
         const awayCountry = getAwayCountry(row);
         const { homeWin, draw, awayWin } = getOutcomeGroups(row);
         const best = getBestScore(homeWin, draw, awayWin) || { label: '0x0', homeGoals: 0, awayGoals: 0, value: 0 };
-        const homeTotal = getOutcomeTotalFromColumn(row, 'home_win', homeWin);
-        const drawTotal = getOutcomeTotalFromColumn(row, 'draw', draw);
-        const awayTotal = getOutcomeTotalFromColumn(row, 'away_win', awayWin);
+        
+        const rawHomeTotal = getOutcomeTotalFromColumn(row, 'home_win', homeWin);
+        const rawDrawTotal = getOutcomeTotalFromColumn(row, 'draw', draw);
+
+        const homeTotal = Number(rawHomeTotal.toFixed(1));
+        const drawTotal = Number(rawDrawTotal.toFixed(1));
+        const awayTotal = Number((100 - homeTotal - drawTotal).toFixed(1));
+
         const homeFlag = getFlag(homeCountry);
         const awayFlag = getFlag(awayCountry);
         const matchDate = row.date || '';
