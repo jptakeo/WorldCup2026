@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/styles.css" type="text/css">
         <link rel="stylesheet" href="css/album.css" type="text/css">
-        <title>EMAp: Simulador de Álbum</title>
+        <title>EMAp: Álbum da Copa</title>
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119803899-1"></script>
         <script>
@@ -51,209 +51,239 @@
 
             <!-- Banner das páginas -->
             <div class="banner-cabecalho">
-                <div class="texto-banner">Simulador de Álbum</div>
+                <div class="texto-banner">Álbum da Copa 2026</div>
             </div>
             <!--Fim do banner das páginas-->
 
             <!-- Conteúdo principal -->
             <div class="container">
                 <div id="conteudo" style="width: 100%; max-width: 1200px; margin: 0 auto;">
-                    <section id="album-simulador" class="album-simulador">
-                        <div class="album-hero">
-                            <h1>Quanto custa completar o álbum da copa 2026 em grupo?</h1>
-                            <p>
-                                Nesta simulação, você e seus amigos compram figurinhas e trocam as repetidas em ordem circular.<br>
-                                Cada rodada sorteia novas figurinhas, repassa duplicatas para quem ainda precisa delas e continua até que
-                                <u>todos os participantes completem seus álbuns</u>. O resultado usa o método de <em>Monte Carlo</em>:
-                                repetimos o experimento muitas vezes e resumimos a média e a variação esperada.
-                            </p>
-                        </div>
-
-                        <button class="wc-accordion-toggle" type="button" aria-expanded="false" aria-controls="album-how-it-works">
-                            <span class="arrow">▶</span>
-                            <span class="accordion-label">Como funciona?</span>
+                    <div class="chances-section-tabs album-section-tabs" role="tablist" aria-label="Seções do simulador de álbum">
+                        <button
+                            id="album-tab-simulador"
+                            class="chances-section-tab active"
+                            type="button"
+                            role="tab"
+                            aria-selected="true"
+                            aria-controls="album-main-view"
+                            data-album-view="simulador">
+                            Simulador do Álbum
                         </button>
 
-                        <div id="album-how-it-works" class="wc-accordion-content">
-                            <div class="wc-accordion-inner">
-                                <ol>
-                                    <li>Cada participante compra um pacotinho (7 figurinhas) por vez, em rodízio.</li>
-                                    <li>Se a pessoa já tem uma figurinha, ela passa a repetida para o próximo participante do círculo.</li>
-                                    <li>A figurinha continua circulando até encontrar alguém que ainda não a tenha; se todos já tiverem, ela é descartada.</li>
-                                    <li><strong>Importante:</strong> quem completa o álbum primeiro continua comprando para ajudar o grupo até que o último álbum seja fechado.</li>
-                                </ol>
-                            </div>
-                        </div>
-
-                        <button class="wc-accordion-toggle" type="button" aria-expanded="false" aria-controls="album-alone">
-                            <span class="arrow">▶</span>
-                            <span class="accordion-label">Quanto custa completar o álbum sozinho?</span>
+                        <button
+                            id="album-tab-raras"
+                            class="chances-section-tab"
+                            type="button"
+                            role="tab"
+                            aria-selected="false"
+                            aria-controls="album-raras-view"
+                            data-album-view="raras">
+                            Cartas Extras
                         </button>
+                    </div>
 
-                        <div id="album-alone" class="wc-accordion-content">
-                            <div class="wc-accordion-inner">
+                    <div id="album-main-view" class="album-view-panel active" role="tabpanel" aria-labelledby="album-tab-simulador" data-album-panel="simulador">
+                        <section id="album-simulador" class="album-simulador">
+                            <div class="album-hero">
+                                <h1>Quanto custa completar o álbum da copa 2026 em grupo?</h1>
                                 <p>
-                                    Para uma pessoa tentando completar o álbum sozinha, usamos a fórmula clássica do
-                                    <strong>problema do colecionador de cupons</strong>:
-                                    <strong>E[T] = n · H<sub>n</sub></strong>, em que <strong>n = 980</strong> é o número de figurinhas
-                                    diferentes no álbum. 
-                                    Com 980 figurinhas, o valor esperado é de aproximadamente
-                                    <u>7.316 figurinhas compradas</u> (R$ 7.316).
+                                    Nesta simulação, você e seus amigos compram figurinhas e trocam as repetidas em ordem circular.<br>
+                                    Cada rodada sorteia novas figurinhas, repassa duplicatas para quem ainda precisa delas e continua até que
+                                    <u>todos os participantes completem seus álbuns</u>. O resultado usa o método de <em>Monte Carlo</em>:
+                                    repetimos o experimento muitas vezes e resumimos a média e a variação esperada.
                                 </p>
                             </div>
-                        </div>
 
-                        <div class="album-controls" aria-label="Configurações da simulação">
-                            <div class="album-field">
-                                <label for="album-stickers">Figurinhas no álbum</label>
-                                <div class="album-stepper">
-                                    <input id="album-stickers" type="number" inputmode="numeric" min="10" max="980" step="1" value="980">
-                                    <button type="button" data-step-target="album-stickers" data-step="-10" aria-label="Diminuir figurinhas">−</button>
-                                    <button type="button" data-step-target="album-stickers" data-step="10" aria-label="Aumentar figurinhas">+</button>
+                            <button class="wc-accordion-toggle" type="button" aria-expanded="false" aria-controls="album-how-it-works">
+                                <span class="arrow">▶</span>
+                                <span class="accordion-label">Como funciona?</span>
+                            </button>
+
+                            <div id="album-how-it-works" class="wc-accordion-content">
+                                <div class="wc-accordion-inner">
+                                    <ol>
+                                        <li>Cada participante compra um pacotinho (7 figurinhas) por vez, em rodízio.</li>
+                                        <li>Se a pessoa já tem uma figurinha, ela passa a repetida para o próximo participante do círculo.</li>
+                                        <li>A figurinha continua circulando até encontrar alguém que ainda não a tenha; se todos já tiverem, ela é descartada.</li>
+                                        <li><strong>Importante:</strong> quem completa o álbum primeiro continua comprando para ajudar o grupo até que o último álbum seja fechado.</li>
+                                    </ol>
                                 </div>
-                                <input id="album-stickers-range" type="range" min="10" max="980" step="10" value="980" aria-label="Figurinhas no álbum">
                             </div>
 
-                            <div class="album-field">
-                                <label for="album-people">Pessoas no grupo <small>(inclui você)</small></label>
-                                <div class="album-stepper">
-                                    <input id="album-people" type="number" inputmode="numeric" min="1" max="30" step="1" value="3">
-                                    <button type="button" data-step-target="album-people" data-step="-1" aria-label="Diminuir pessoas">−</button>
-                                    <button type="button" data-step-target="album-people" data-step="1" aria-label="Aumentar pessoas">+</button>
+                            <button class="wc-accordion-toggle" type="button" aria-expanded="false" aria-controls="album-alone">
+                                <span class="arrow">▶</span>
+                                <span class="accordion-label">Quanto custa completar o álbum sozinho?</span>
+                            </button>
+
+                            <div id="album-alone" class="wc-accordion-content">
+                                <div class="wc-accordion-inner">
+                                    <p>
+                                        Para uma pessoa tentando completar o álbum sozinha, usamos a fórmula clássica do
+                                        <strong>problema do colecionador de cupons</strong>:
+                                        <strong>E[T] = n · H<sub>n</sub></strong>, em que <strong>n = 980</strong> é o número de figurinhas
+                                        diferentes no álbum. 
+                                        Com 980 figurinhas, o valor esperado é de aproximadamente
+                                        <u>7.316 figurinhas compradas</u> (R$ 7.316).
+                                    </p>
                                 </div>
-                                <input id="album-people-range" type="range" min="1" max="30" step="1" value="3" aria-label="Pessoas no grupo">
                             </div>
 
-                            <div class="album-field">
-                                <label for="album-simulations">Simulações</label>
-                                <div class="album-stepper">
-                                    <input id="album-simulations" type="number" inputmode="numeric" min="100" max="10000" step="100" value="1000">
-                                    <button type="button" data-step-target="album-simulations" data-step="-100" aria-label="Diminuir simulações">−</button>
-                                    <button type="button" data-step-target="album-simulations" data-step="100" aria-label="Aumentar simulações">+</button>
-                                </div>
-                                <input id="album-simulations-range" type="range" min="100" max="10000" step="100" value="1000" aria-label="Número de simulações">
-                            </div>
-
-                            <div class="album-actions">
-                                <button id="album-run" class="album-run" type="button">Rodar simulação</button>
-                                <button id="album-reset" class="album-reset" type="button">Limpar</button>
-                            </div>
-
-                            <p class="album-hint">
-                                Para cada simulação, o algoritmo cria álbuns vazios, sorteia figurinhas com probabilidade uniforme e registra quantas compras foram necessárias até todos completarem.
-                            </p>
-                        </div>
-
-                        <div id="album-progress" class="album-progress" hidden>
-                            <div class="album-progress-top">
-                                <span>Simulando...</span>
-                                <strong id="album-progress-label">0%</strong>
-                            </div>
-                            <div class="album-progress-bar" aria-hidden="true">
-                                <span id="album-progress-fill"></span>
-                            </div>
-                        </div>
-
-                        <div id="album-results" class="album-results" hidden>
-                            <!--<div class="album-results-head">
-                                <div>
-                                    <h2>Resultados das Simulações</h2>
-                                </div>
-                                <p id="album-result-text"></p>
-                            </div>-->
-
-                            <div id="album-summary" class="album-insights" aria-label="Resumo numérico da simulação"></div>
-
-                            <div class="album-result-grid">
-                                <div class="album-chart-card">
-                                    <div class="album-chart-carousel" aria-label="Gráficos da simulação">
-                                        <button id="album-chart-prev" class="scroll-btn left" type="button" aria-label="Gráfico anterior">❮</button>
-                                        <div class="album-chart-viewport">
-                                            <div class="album-chart-slide is-active" data-chart-slide>
-                                                <h3 style="margin-left: 6px;">Distribuição de quantas figurinhas você terá comprado ao fim da jornada do grupo</h3>
-                                                <canvas id="album-histogram-group-person" height="220"></canvas>
-                                            </div>
-                                            <div class="album-chart-slide" data-chart-slide>
-                                                <h3 style="margin-left: 6px;">Distribuição de quantas figurinhas você terá comprado quando completar seu álbum</h3>
-                                                <canvas id="album-histogram-own-completion" height="220"></canvas>
-                                            </div>
-                                            <div class="album-chart-slide" data-chart-slide>
-                                                <h3 style="margin-left: 6px;">Distribuição do total de figurinhas compradas pelo grupo</h3>
-                                                <canvas id="album-histogram-total" height="220"></canvas>
-                                            </div>
-                                        </div>
-                                        <button id="album-chart-next" class="scroll-btn right" type="button" aria-label="Próximo gráfico">❯</button>
+                            <div class="album-controls" aria-label="Configurações da simulação">
+                                <div class="album-field">
+                                    <label for="album-stickers">Figurinhas no álbum</label>
+                                    <div class="album-stepper">
+                                        <input id="album-stickers" type="number" inputmode="numeric" min="10" max="980" step="1" value="980">
+                                        <button type="button" data-step-target="album-stickers" data-step="-10" aria-label="Diminuir figurinhas">−</button>
+                                        <button type="button" data-step-target="album-stickers" data-step="10" aria-label="Aumentar figurinhas">+</button>
                                     </div>
-                                    <p class="album-notes">O gráfico mostra a concentração dos resultados: quanto mais alta a barra, mais simulações terminaram naquele intervalo.</p>
+                                    <input id="album-stickers-range" type="range" min="10" max="980" step="10" value="980" aria-label="Figurinhas no álbum">
                                 </div>
 
-                                <div class="album-table-card">
-                                    <h3>Detalhes das Simulações</h3>
-                                    <table class="album-table">
-                                        <tbody id="album-detail-body"></tbody>
-                                    </table>
-                                    <!--<p class="album-notes">A referência “sozinho” usa a estimativa clássica do problema do colecionador de cupons para uma pessoa sem trocas.</p>-->
+                                <div class="album-field">
+                                    <label for="album-people">Pessoas no grupo <small>(inclui você)</small></label>
+                                    <div class="album-stepper">
+                                        <input id="album-people" type="number" inputmode="numeric" min="1" max="30" step="1" value="3">
+                                        <button type="button" data-step-target="album-people" data-step="-1" aria-label="Diminuir pessoas">−</button>
+                                        <button type="button" data-step-target="album-people" data-step="1" aria-label="Aumentar pessoas">+</button>
+                                    </div>
+                                    <input id="album-people-range" type="range" min="1" max="30" step="1" value="3" aria-label="Pessoas no grupo">
+                                </div>
+
+                                <div class="album-field">
+                                    <label for="album-simulations">Simulações</label>
+                                    <div class="album-stepper">
+                                        <input id="album-simulations" type="number" inputmode="numeric" min="100" max="10000" step="100" value="1000">
+                                        <button type="button" data-step-target="album-simulations" data-step="-100" aria-label="Diminuir simulações">−</button>
+                                        <button type="button" data-step-target="album-simulations" data-step="100" aria-label="Aumentar simulações">+</button>
+                                    </div>
+                                    <input id="album-simulations-range" type="range" min="100" max="10000" step="100" value="1000" aria-label="Número de simulações">
+                                </div>
+
+                                <div class="album-actions">
+                                    <button id="album-run" class="album-run" type="button">Rodar simulação</button>
+                                    <button id="album-reset" class="album-reset" type="button">Limpar</button>
+                                </div>
+
+                                <p class="album-hint">
+                                    Para cada simulação, o algoritmo cria álbuns vazios, sorteia figurinhas com probabilidade uniforme e registra quantas compras foram necessárias até todos completarem.
+                                </p>
+                            </div>
+
+                            <div id="album-progress" class="album-progress" hidden>
+                                <div class="album-progress-top">
+                                    <span>Simulando...</span>
+                                    <strong id="album-progress-label">0%</strong>
+                                </div>
+                                <div class="album-progress-bar" aria-hidden="true">
+                                    <span id="album-progress-fill"></span>
                                 </div>
                             </div>
 
-                            <div id="album-decision" class="album-decision-card" aria-label="Tabela de decisão da simulação"></div>
-                        </div>
-                    </section>
-
-                    <section id="album-raras" class="album-simulador album-rarity-section">
-                        <div class="album-hero album-rarity-hero">
-                            <h1>Chance de obter cartas extras (cromos raros)</h1>
-                            <p>
-                                Essas figurinhas não contam para completar o álbum oficial, mas são itens especiais de colecionador.
-                                As chances abaixo usam as proporções médias divulgadas para cada raridade.
-                            </p>
-                        </div>
-
-                        <div class="rare-grid" aria-label="Chance de obter cartas extras">
-                            <div class="rare-card rare-probability-card">
-                                <div class="rare-card-head">
+                            <div id="album-results" class="album-results" hidden>
+                                <!--<div class="album-results-head">
                                     <div>
-                                        <!--<h2>Chance por quantidade de pacotinhos</h2>-->
-                                        <p>Escolha quantos pacotinhos você pretende comprar e veja a chance de tirar pelo menos uma carta de cada raridade.</p>
+                                        <h2>Resultados das Simulações</h2>
                                     </div>
-                                    <strong id="rare-pack-label" class="rare-pack-label">500 pacotinhos</strong>
-                                </div>
+                                    <p id="album-result-text"></p>
+                                </div>-->
 
-                                <div class="rare-slider-row">
-                                    <input id="rare-pack-count" class="rare-range" type="range" min="1" max="5000" step="1" value="500" aria-label="Pacotinhos para calcular chance de cartas extras">
-                                    <input id="rare-pack-count-number" class="rare-number" type="number" inputmode="numeric" min="1" max="5000" step="1" value="500" aria-label="Número de pacotinhos">
-                                </div>
+                                <div id="album-summary" class="album-insights" aria-label="Resumo numérico da simulação"></div>
 
-                                <div id="rare-bars" class="rare-bars" aria-live="polite"></div>
+                                <div class="album-result-grid">
+                                    <div class="album-chart-card">
+                                        <div class="album-chart-carousel" aria-label="Gráficos da simulação">
+                                            <button id="album-chart-prev" class="scroll-btn left" type="button" aria-label="Gráfico anterior">❮</button>
+                                            <div class="album-chart-viewport">
+                                                <div class="album-chart-slide is-active" data-chart-slide>
+                                                    <h3 style="margin-left: 6px;">Distribuição de quantas figurinhas você terá comprado ao fim da jornada do grupo</h3>
+                                                    <canvas id="album-histogram-group-person" height="220"></canvas>
+                                                </div>
+                                                <div class="album-chart-slide" data-chart-slide>
+                                                    <h3 style="margin-left: 6px;">Distribuição de quantas figurinhas você terá comprado quando completar seu álbum</h3>
+                                                    <canvas id="album-histogram-own-completion" height="220"></canvas>
+                                                </div>
+                                                <div class="album-chart-slide" data-chart-slide>
+                                                    <h3 style="margin-left: 6px;">Distribuição do total de figurinhas compradas pelo grupo</h3>
+                                                    <canvas id="album-histogram-total" height="220"></canvas>
+                                                </div>
+                                            </div>
+                                            <button id="album-chart-next" class="scroll-btn right" type="button" aria-label="Próximo gráfico">❯</button>
+                                        </div>
+                                        <p class="album-notes">O gráfico mostra a concentração dos resultados: quanto mais alta a barra, mais simulações terminaram naquele intervalo.</p>
+                                    </div>
+
+                                    <div class="album-table-card">
+                                        <h3>Detalhes das Simulações</h3>
+                                        <table class="album-table">
+                                            <tbody id="album-detail-body"></tbody>
+                                        </table>
+                                        <!--<p class="album-notes">A referência “sozinho” usa a estimativa clássica do problema do colecionador de cupons para uma pessoa sem trocas.</p>-->
+                                    </div>
+                                </div>
+                                <div id="album-decision" class="album-decision-card" aria-label="Tabela de decisão da simulação"></div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div id="album-raras-view" class="album-view-panel" role="tabpanel" aria-labelledby="album-tab-raras" data-album-panel="raras" hidden>
+                        <section id="album-raras" class="album-simulador album-rarity-section">
+                            <div class="album-hero album-rarity-hero">
+                                <h1>Quão raras são as cartas extras?</h1>
+                                <p>
+                                    Essas figurinhas não contam para completar o álbum oficial, mas são itens especiais de colecionador.
+                                    As chances abaixo usam as proporções médias estimadas para cada raridade.
+                                </p>
                             </div>
 
-                            <div class="rare-card rare-pack-card">
-                                <div class="rare-pack-copy">
-                                    <h2>Simulador de abertura</h2>
-                                    <p>Simule uma quantidade de pacotinhos e veja as cartas extras encontradas.</p>
-                                </div>
-
-                                <div class="rare-pack-layout">
-                                    <div class="rare-pack-visual" aria-live="polite">
-                                        <img src="images/pacotinho.png" alt="Pacotinho Panini Copa 2026">
-                                        <div id="rare-pack-result-overlay" class="rare-pack-result-overlay">
-                                            <strong>Abra pacotinhos</strong>
-                                            <span>As estatísticas aparecem aqui.</span>
+                            <div class="rare-grid" aria-label="Chance de obter cartas extras">
+                                <div class="rare-card rare-probability-card">
+                                    <div class="rare-card-head">
+                                        <div>
+                                            <h2>Chance por quantidade de pacotinhos</h2>
+                                            <p>Escolha quantos pacotinhos você pretende comprar e veja a chance de tirar pelo menos uma carta de cada raridade.</p>
                                         </div>
+                                        <strong id="rare-pack-label" class="rare-pack-label">500 pacotinhos</strong>
                                     </div>
 
-                                    <div class="rare-open-panel">
-                                        <label for="rare-open-count">Pacotinhos para abrir</label>
-                                        <input id="rare-open-count" type="number" inputmode="numeric" min="1" max="10000" step="1" value="100">
-                                        <button id="rare-open-button" type="button">Abrir pacotinhos</button>
-                                        <div id="rare-pack-result-summary" class="rare-pack-result-summary" aria-live="polite">
-                                            <p>Você ainda não abriu nenhum pacotinho nesta simulação.</p>
+                                    <div class="rare-slider-row">
+                                        <input id="rare-pack-count" class="rare-range" type="range" min="1" max="5000" step="1" value="500" aria-label="Pacotinhos para calcular chance de cartas extras">
+                                        <input id="rare-pack-count-number" class="rare-number" type="number" inputmode="numeric" min="1" max="5000" step="1" value="500" aria-label="Número de pacotinhos">
+                                    </div>
+
+                                    <div id="rare-bars" class="rare-bars" aria-live="polite"></div>
+                                </div>
+
+                                <div class="rare-card rare-pack-card">
+                                    <div class="rare-pack-copy">
+                                        <h2>Simulador de abertura</h2>
+                                        <p>Simule uma quantidade de pacotinhos e veja as cartas extras encontradas.</p>
+                                    </div>
+
+                                    <div class="rare-pack-layout">
+                                        <div class="rare-opening-stage">
+                                            <div class="rare-pack-visual" aria-live="polite">
+                                                <span class="rare-pack-shine" aria-hidden="true"></span>
+                                                <img src="images/pacotinho.png" alt="Pacotinho Panini Copa 2026">
+                                                <div id="rare-pack-result-overlay" class="rare-pack-result-overlay">
+                                                    <strong>Abra pacotinhos</strong>
+                                                    <span>As estatísticas aparecem aqui.</span>
+                                                </div>
+                                            </div>
+                                            <button id="rare-open-button" type="button">Abrir 100 pacotinhos</button>
+                                        </div>
+
+                                        <div class="rare-open-panel">
+                                            <label for="rare-open-count">Pacotinhos para abrir</label>
+                                            <input id="rare-open-count" type="number" inputmode="numeric" min="1" max="10000" step="1" value="100">
+                                            <div id="rare-pack-result-summary" class="rare-pack-result-summary" aria-live="polite">
+                                                <p>Você ainda não abriu nenhum pacotinho nesta simulação.</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </section>  
+                        </section>  
+                    </div>
                 </div>
             </div>
         </div>
@@ -311,6 +341,46 @@
                 const chartNextButton = $('#album-chart-next');
                 let activeChartIndex = 0;
                 let chartData = [];
+                const albumTabs = Array.from(document.querySelectorAll('[data-album-view]'));
+                const albumPanels = Array.from(document.querySelectorAll('[data-album-panel]'));
+
+                function setAlbumView(viewName) {
+                    albumTabs.forEach((tab) => {
+                        const isActive = tab.dataset.albumView === viewName;
+                        tab.classList.toggle('active', isActive);
+                        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                        tab.tabIndex = isActive ? 0 : -1;
+                    });
+
+                    albumPanels.forEach((panel) => {
+                        const isActive = panel.dataset.albumPanel === viewName;
+                        panel.classList.toggle('active', isActive);
+                        panel.hidden = !isActive;
+                    });
+
+                    if (viewName === 'simulador' && resultsPanel && !resultsPanel.hidden) {
+                        window.requestAnimationFrame(drawActiveChart);
+                    }
+                }
+
+                albumTabs.forEach((tab) => {
+                    tab.addEventListener('click', () => {
+                        setAlbumView(tab.dataset.albumView);
+                    });
+
+                    tab.addEventListener('keydown', (event) => {
+                        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+
+                        event.preventDefault();
+
+                        const currentIndex = albumTabs.indexOf(tab);
+                        const direction = event.key === 'ArrowRight' ? 1 : -1;
+                        const nextIndex = (currentIndex + direction + albumTabs.length) % albumTabs.length;
+
+                        albumTabs[nextIndex].focus();
+                        setAlbumView(albumTabs[nextIndex].dataset.albumView);
+                    });
+                });
 
                 const rarePackRange = $('#rare-pack-count');
                 const rarePackNumber = $('#rare-pack-count-number');
@@ -320,6 +390,8 @@
                 const rareOpenButton = $('#rare-open-button');
                 const rarePackOverlay = $('#rare-pack-result-overlay');
                 const rarePackSummary = $('#rare-pack-result-summary');
+                const rarePackVisual = document.querySelector('.rare-pack-visual');
+                const rarePackCard = document.querySelector('.rare-pack-card');
 
                 const defaults = {
                     stickers: 980,
@@ -611,11 +683,31 @@
                     }).join('');
                 }
 
+                function getBestRareCard(counts) {
+                    const rarityOrder = ['gold', 'silver', 'bronze', 'purple'];
+                    return RARE_CARDS.find((card) => rarityOrder.includes(card.key) && counts[card.key] > 0 && card.key === rarityOrder.find((key) => counts[key] > 0)) || null;
+                }
+
+                function clearRareOpeningState() {
+                    if (!rarePackVisual || !rarePackCard) return;
+
+                    ['is-opening', 'is-opened', 'rare-best-purple', 'rare-best-bronze', 'rare-best-silver', 'rare-best-gold'].forEach((className) => {
+                        rarePackVisual.classList.remove(className);
+                        rarePackCard.classList.remove(className);
+                    });
+                }
+
+                function updateRareOpenButtonLabel() {
+                    if (!rareOpenButton || !rareOpenInput) return;
+                    rareOpenButton.textContent = `Abrir ${formatter.format(readRarePackCount(rareOpenInput))} pacotinhos`;
+                }
+
                 function simulateRareOpenings() {
-                    if (!rareOpenInput || !rarePackOverlay || !rarePackSummary) return;
+                    if (!rareOpenInput || !rarePackSummary) return;
 
                     const packCount = readRarePackCount(rareOpenInput);
                     rareOpenInput.value = packCount;
+
                     const counts = RARE_CARDS.reduce((acc, card) => {
                         acc[card.key] = 0;
                         return acc;
@@ -630,18 +722,67 @@
                     }
 
                     const totalSpecial = RARE_CARDS.reduce((acc, card) => acc + counts[card.key], 0);
-                    rarePackOverlay.classList.add('is-open');
-                    rarePackOverlay.innerHTML = `
-                        <strong>Você abriu ${formatter.format(packCount)} pacotinhos</strong>
-                        <span>Total de cromos raros: ${formatter.format(totalSpecial)}</span>
-                    `;
-                    //<p>Você abriu <strong>${formatter.format(packCount)}</strong> pacotinhos:</p>
-                    rarePackSummary.innerHTML = `
-                        <h3>Resultados</h3>
-                        <ul>
-                            ${RARE_CARDS.map((card) => `<li class="rare-result-${card.key}"><span>${card.plural}</span><strong>${formatter.format(counts[card.key])}</strong></li>`).join('')}
-                        </ul>
-                    `;
+                    const bestCard = getBestRareCard(counts);
+
+                    clearRareOpeningState();
+
+                    if (rareOpenButton) {
+                        rareOpenButton.disabled = true;
+                        rareOpenButton.textContent = 'Abrindo...';
+                    }
+
+                    if (rarePackVisual && rarePackCard) {
+                        rarePackVisual.classList.remove('is-opening');
+                        rarePackCard.classList.remove('is-opening');
+
+                        void rarePackVisual.offsetWidth;
+
+                        rarePackVisual.classList.add('is-opening');
+                        rarePackCard.classList.add('is-opening');
+                    }
+
+                    window.setTimeout(() => {
+                        if (rarePackVisual && rarePackCard) {
+                            rarePackVisual.classList.remove('is-opening');
+                            rarePackCard.classList.remove('is-opening');
+
+                            rarePackVisual.classList.add('is-opened');
+                            rarePackCard.classList.add('is-opened');
+
+                            if (bestCard) {
+                                rarePackVisual.classList.add(`rare-best-${bestCard.key}`);
+                                rarePackCard.classList.add(`rare-best-${bestCard.key}`);
+                            }
+                        }
+
+                        if (rarePackOverlay) {
+                            rarePackOverlay.classList.add('is-open');
+                            rarePackOverlay.innerHTML = `
+                                <strong>Resultados</strong>
+                                <span>Total de cromos raros: ${formatter.format(totalSpecial)}</span>
+                            `;
+                        }
+
+                        rarePackSummary.innerHTML = `
+                            <div class="rare-opening-message">
+                                <strong>Resultados</strong>
+                                <span>${totalSpecial > 0 ? `${formatter.format(totalSpecial)} cromo${totalSpecial === 1 ? '' : 's'} raro${totalSpecial === 1 ? '' : 's'} encontrado${totalSpecial === 1 ? '' : 's'}.` : 'Nenhum cromo raro desta vez.'}</span>
+                            </div>
+                            <div class="rare-result-grid">
+                                ${RARE_CARDS.map((card) => `
+                                    <div class="rare-result-chip rare-result-${card.key}">
+                                        <span>${card.plural}</span>
+                                        <strong>${formatter.format(counts[card.key])}</strong>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+
+                        if (rareOpenButton) {
+                            rareOpenButton.disabled = false;
+                            updateRareOpenButtonLabel();
+                        }
+                    }, 650);
                 }
 
                 function initRareCardsSection() {
@@ -651,11 +792,17 @@
                     rarePackNumber.addEventListener('input', () => updateRareChances(rarePackNumber));
                     rarePackNumber.addEventListener('change', () => updateRareChances(rarePackNumber));
 
+                    if (rareOpenInput) {
+                        rareOpenInput.addEventListener('input', updateRareOpenButtonLabel);
+                        rareOpenInput.addEventListener('change', updateRareOpenButtonLabel);
+                    }
+
                     if (rareOpenButton) {
                         rareOpenButton.addEventListener('click', simulateRareOpenings);
                     }
 
                     updateRareChances(rarePackRange);
+                    updateRareOpenButtonLabel();
                 }
 
                 function setProgress(done, total) {

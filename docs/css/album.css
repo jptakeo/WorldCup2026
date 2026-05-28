@@ -8,9 +8,11 @@
     --wc-gray: #777;
     --wc-ink: #1b2838;
     --wc-muted: #667085;
+    --muted: #6b8bab;
     --wc-line: #d7dee8;
     --wc-surface: #ffffff;
     --wc-bg: #f5f8fb;
+    --soft-border: #dbe3ec;
 }
 
 html,
@@ -1003,7 +1005,6 @@ body {
     display: flex;
     gap: 16px;
     justify-content: space-between;
-    margin-bottom: 16px;
 }
 
 .rare-card-head p,
@@ -1143,7 +1144,6 @@ body {
 .rare-bar-row small {
     display: block;
     font-size: 11px;
-    margin-top: 5px;
 }
 
 .rare-purple .rare-bar-track span { background: linear-gradient(90deg, #6d4cc4, #9a7cf0); }
@@ -1156,10 +1156,11 @@ body {
     display: grid;
     gap: 18px;
     grid-template-columns: minmax(150px, .85fr) minmax(0, 1fr);
-    margin-top: 16px;
 }
 
 .rare-pack-visual {
+    box-shadow: none;
+    filter: none;
     background: none;
     border: none;
     border-radius: 18px;
@@ -1168,6 +1169,8 @@ body {
 }
 
 .rare-pack-visual img {
+    box-shadow: none;
+    filter: none;
     border-radius: 12px;
     display: block;
     margin: 0 auto;
@@ -1239,7 +1242,6 @@ body {
 
 .rare-pack-result-summary {
     background: #fbfdff;
-    border: 1px solid #e6ebf2;
     border-radius: 14px;
     padding: 12px;
 }
@@ -1319,4 +1321,521 @@ body {
 #rare-pack-label,
 #rare-pack-result-overlay {
     display: none !important;
+}
+
+.chances-section-tabs.album-section-tabs {
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+    width: 100%;
+    margin: 20px 0 24px;
+    border-bottom: 2px solid var(--wc-line);
+    padding-bottom: 5px;
+}
+
+.chances-section-tab {
+    position: relative;
+    border: 0;
+    background: transparent;
+    padding: 0 0 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--muted);
+    font-family: 'gotham-bold', 'gotham-book', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color .15s ease;
+}
+
+.chances-section-tab:hover {
+    color: var(--wc-blue-dark);
+}
+
+.chances-section-tab.active {
+    color: var(--wc-blue-dark);
+}
+
+.chances-section-tab.active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -7px;
+    height: 3px;
+    background: #f0c040;
+    border-radius: 999px;
+}
+
+.album-view-panel {
+    display: none;
+}
+
+.album-view-panel.active {
+    display: block;
+}
+
+.album-view-panel .album-rarity-section {
+    margin-top: 0;
+}
+
+@media (max-width: 600px) {
+    .chances-section-tabs.album-section-tabs {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0;
+        width: 100%;
+        margin-top: 22px;
+        overflow: hidden;
+        padding-bottom: 5px;
+    }
+
+    .chances-section-tab {
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        padding: 0 4px 6px;
+        font-size: clamp(11px, 2.2vw, 11px);
+        line-height: 1.15;
+        letter-spacing: 0.2px;
+        white-space: normal;
+        text-align: center;
+        justify-self: stretch;
+    }
+
+    .chances-section-tab.active::after {
+        left: 0;
+        right: 0;
+    }
+    .rare-open-panel {
+        border: none !important;
+    }
+    .rare-opening-message strong {
+        font-size: 14px;
+    }
+    .rare-opening-message p {
+        font-size: 12px;
+    }
+}
+
+/* Redesign da seção de cartas extras */
+.album-rarity-section {
+    margin-top: 0;
+}
+
+.rare-grid {
+    align-items: stretch;
+    gap: 18px;
+    grid-template-columns: minmax(280px, .88fr) minmax(430px, 1.12fr);
+}
+
+.rare-card {
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    border: 1px solid #dce5ef;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.rare-card h2,
+.rare-pack-result-summary h3 {
+    font-size: 17px;
+}
+
+.rare-card-head p,
+.rare-pack-copy p {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.rare-probability-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.rare-slider-row {
+    background: #f5f8fb;
+    border: 1px solid #e5ebf3;
+    border-radius: 16px;
+    grid-template-columns: 1fr 96px;
+    margin: 14px 0 14px;
+    padding: 12px;
+}
+
+.rare-number,
+.rare-open-panel input {
+    background: #ffffff;
+    border-color: #d3dce8;
+    height: 36px;
+}
+
+.rare-bars {
+    gap: 0px;
+}
+
+.rare-bar-row {
+    background: #ffffff;
+    border: 0px;
+    border-radius: 14px;
+    padding: 10px 12px;
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+
+.rare-bar-row:hover {
+    border-color: #ccd8e8;
+    box-shadow: 0 6px 16px rgba(9, 35, 61, .06);
+    transform: translateY(-1px);
+}
+
+.rare-bar-meta {
+    margin-bottom: 7px;
+}
+
+.rare-bar-meta span,
+.rare-bar-meta strong {
+    font-size: 13px;
+}
+
+.rare-bar-track {
+    background: #edf2f7;
+    height: 7px;
+}
+
+.rare-bar-row small {
+    font-size: 10.5px;
+    margin-top: 4px;
+}
+
+.rare-pack-layout {
+    align-items: stretch;
+    gap: 20px;
+    grid-template-columns: minmax(190px, .85fr) minmax(250px, 1fr);
+    margin-top: 14px;
+}
+
+.rare-opening-stage {
+    display: grid;
+    gap: 8px;
+}
+
+.rare-pack-visual {
+    align-items: center;
+    border: 0px;
+    border-radius: 22px;
+    display: flex;
+    justify-content: center;
+    min-height: 100px;
+    overflow: hidden;
+    padding: 36px;
+    position: relative;
+}
+
+.rare-pack-visual::after {
+    background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,.9) 50%, transparent 78%);
+    content: "";
+    left: -90%;
+    opacity: 0;
+    position: absolute;
+    top: -25%;
+    transform: rotate(12deg);
+    width: 60%;
+}
+
+.rare-pack-shine {
+    background: radial-gradient(circle, rgba(240, 179, 35, .22), transparent 64%);
+    border-radius: 50%;
+    height: 180px;
+    opacity: 0;
+    position: absolute;
+    width: 180px;
+}
+
+.rare-pack-visual img {
+    filter: drop-shadow(0 14px 16px rgba(9, 35, 61, .18));
+    max-height: 248px;
+    position: relative;
+    transition: transform .2s ease, filter .2s ease;
+    width: auto;
+    z-index: 1;
+}
+
+.rare-pack-visual:hover img {
+    transform: translateY(-2px) scale(1.015);
+}
+
+
+.rare-pack-card.rare-best-purple .rare-pack-visual { box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 0 0 4px rgba(109,76,196,.09), 0 14px 30px rgba(109,76,196,.16); }
+.rare-pack-card.rare-best-bronze .rare-pack-visual { box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 0 0 4px rgba(182,106,43,.09), 0 14px 30px rgba(182,106,43,.16); }
+.rare-pack-card.rare-best-silver .rare-pack-visual { box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 0 0 4px rgba(156,163,175,.13), 0 14px 30px rgba(100,116,139,.16); }
+.rare-pack-card.rare-best-gold .rare-pack-visual { box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 0 0 4px rgba(240,179,35,.14), 0 16px 34px rgba(212,160,23,.24); }
+
+
+.rare-open-panel {
+    align-content: center;
+    background: rgba(255,255,255,.75);
+    border-left: 1px solid #e4ebf4;
+    gap: 11px;
+    padding: 16px;
+}
+
+.rare-open-panel button {
+    box-shadow: 0 8px 18px rgba(24, 134, 90, .18);
+    font-size: 15px;
+    height: 46px;
+}
+
+.rare-open-panel button:disabled {
+    cursor: wait;
+    opacity: .78;
+    transform: none;
+}
+
+.rare-pack-result-summary {
+    background: #ffffff;
+    border-color: #e3eaf3;
+    border-radius: 16px;
+    min-height: 96px;
+    padding: 12px;
+}
+
+.rare-opening-message {
+    border-bottom: 1px solid #e8eef5;
+    margin-bottom: 10px;
+    padding-bottom: 9px;
+}
+
+.rare-opening-message strong,
+.rare-opening-message span {
+    display: block;
+    font-family: 'gotham-book';
+}
+
+.rare-opening-message strong {
+    color: var(--wc-blue-dark);
+    font-family: 'gotham-bold';
+    font-size: 16px;
+}
+
+.rare-opening-message span {
+    color: var(--wc-muted);
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.rare-result-grid {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.rare-result-chip {
+    background: #fbfdff;
+    border: 1px solid #e8eef5;
+    border-radius: 12px;
+    display: grid;
+    gap: 3px;
+    padding: 9px 10px;
+}
+
+.rare-result-chip span,
+.rare-result-chip strong {
+    font-family: 'gotham-bold';
+}
+
+.rare-result-chip span {
+    color: var(--wc-muted);
+    font-size: 11px;
+}
+
+.rare-result-chip strong {
+    color: var(--wc-blue-dark);
+    font-size: 18px;
+    line-height: 1;
+}
+
+.rare-result-chip.rare-result-purple { border-color: rgba(109,76,196,.28); background: rgba(109,76,196,.045); }
+.rare-result-chip.rare-result-bronze { border-color: rgba(182,106,43,.28); background: rgba(182,106,43,.045); }
+.rare-result-chip.rare-result-silver { border-color: rgba(156,163,175,.38); background: rgba(156,163,175,.07); }
+.rare-result-chip.rare-result-gold { border-color: rgba(212,160,23,.35); background: rgba(240,179,35,.09); }
+
+@keyframes rarePackShake {
+    0%, 100% { transform: translateX(0) rotate(0deg) scale(1); }
+    16% { transform: translateX(-5px) rotate(-2.8deg) scale(1.015); }
+    32% { transform: translateX(5px) rotate(2.8deg) scale(1.025); }
+    50% { transform: translateX(-3px) rotate(-1.5deg) scale(1.03); }
+    68% { transform: translateX(3px) rotate(1.5deg) scale(1.02); }
+}
+
+@keyframes rarePanelGlow {
+    0% { box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 12px 28px rgba(9, 35, 61, .08); }
+    50% { box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 0 0 5px rgba(240,179,35,.14), 0 18px 38px rgba(78,140,203,.22); }
+    100% { box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 12px 28px rgba(9, 35, 61, .08); }
+}
+
+@keyframes rareSweep {
+    0% { left: -90%; opacity: 0; }
+    35% { opacity: .75; }
+    100% { left: 130%; opacity: 0; }
+}
+
+@keyframes rarePulse {
+    0% { opacity: 0; transform: scale(.7); }
+    48% { opacity: 1; transform: scale(1.15); }
+    100% { opacity: 0; transform: scale(1.35); }
+}
+
+@media (max-width: 1060px) {
+    .rare-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rare-pack-layout {
+        grid-template-columns: minmax(220px, .75fr) minmax(260px, 1fr);
+    }
+}
+
+@media (max-width: 720px) {
+    .rare-card {
+        padding: 16px;
+    }
+
+    .rare-slider-row,
+    .rare-pack-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .rare-pack-visual {
+        min-height: 240px;
+    }
+
+    .rare-pack-visual img {
+        max-height: 215px;
+    }
+
+    .rare-result-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+
+.rare-pack-visual.is-opening img {
+    animation: packShakeTear .65s ease both;
+}
+
+@keyframes packShakeTear {
+    0% { transform: rotate(0) scale(1); filter: brightness(1); }
+    15% { transform: rotate(-3deg) scale(1.02); }
+    30% { transform: rotate(3deg) scale(1.03); }
+    45% { transform: rotate(-2deg) scale(1.04); }
+    65% { transform: rotate(2deg) scale(1.02); filter: brightness(1.25); }
+    100% { transform: rotate(0) scale(1); filter: brightness(1); }
+}
+
+.rare-pack-card.is-opening .rare-pack-visual::after,
+.rare-pack-visual.is-opening::after {
+    content: "";
+    position: absolute;
+    left: 14%;
+    top: 48%;
+    width: 72%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--wc-blue-light) 18%, var(--wc-blue) 52%, var(--wc-gold) 82%, transparent);
+    border-radius: 999px;
+    box-shadow: 0 0 10px rgba(78, 140, 203, .65), 0 0 14px rgba(240, 179, 35, .35);
+    transform: rotate(-8deg) scaleX(0);
+    transform-origin: left center;
+    animation: rareTearLine .65s ease forwards;
+    z-index: 5;
+    pointer-events: none;
+}
+
+@keyframes rareTearLine {
+    0% {
+        height: 2px;
+        opacity: 0;
+        transform: rotate(-8deg) scaleX(0);
+    }
+
+    28% {
+        height: 3px;
+        opacity: 1;
+        transform: rotate(-8deg) scaleX(.35);
+    }
+
+    58% {
+        height: 7px;
+        opacity: 1;
+        transform: rotate(-8deg) scaleX(.72);
+    }
+
+    100% {
+        height: 2px;
+        opacity: 1;
+        transform: rotate(-8deg) scaleX(1);
+    }
+}
+/* Ajustes solicitados: pacotinho mais alto, brilho na imagem, rasgo colorido e botão abaixo do pacotinho */
+.rare-opening-stage {
+    align-content: start;
+}
+
+.rare-opening-stage .rare-pack-visual {
+    margin-top: -12px;
+    box-shadow: none;
+}
+
+.rare-opening-stage .rare-pack-visual img {
+    filter: none;
+}
+
+.rare-pack-card.is-opening .rare-pack-visual,
+.rare-pack-card.is-opened .rare-pack-visual,
+.rare-pack-card.rare-best-purple .rare-pack-visual,
+.rare-pack-card.rare-best-bronze .rare-pack-visual,
+.rare-pack-card.rare-best-silver .rare-pack-visual,
+.rare-pack-card.rare-best-gold .rare-pack-visual {
+    box-shadow: none;
+}
+
+.rare-pack-card.is-opening .rare-pack-visual img,
+.rare-pack-visual.is-opening img {
+    filter: drop-shadow(0 0 18px rgba(240, 179, 35, .75)) drop-shadow(0 18px 28px rgba(9, 35, 61, .22));
+}
+
+.rare-pack-card.rare-best-purple .rare-pack-visual img { filter: drop-shadow(0 0 18px rgba(109,76,196,.45)) }
+.rare-pack-card.rare-best-bronze .rare-pack-visual img { filter: drop-shadow(0 0 18px rgba(182,106,43,.45)) }
+.rare-pack-card.rare-best-silver .rare-pack-visual img { filter: drop-shadow(0 0 18px rgba(156,163,175,.55)) }
+.rare-pack-card.rare-best-gold .rare-pack-visual img { filter: drop-shadow(0 0 20px rgba(240,179,35,.70)) }
+
+.rare-opening-stage #rare-open-button {
+    background: var(--wc-green);
+    border: 0;
+    border-radius: 12px;
+    box-shadow: 0 8px 18px rgba(24, 134, 90, .18);
+    color: #fff;
+    cursor: pointer;
+    font-family: 'gotham-bold';
+    font-size: 15px;
+    height: 46px;
+    padding: 0 14px;
+    transition: transform .15s ease, background .15s ease;
+    width: 100%;
+}
+
+.rare-opening-stage #rare-open-button:hover {
+    background: #35764f;
+    transform: translateY(-1px);
+}
+
+.rare-opening-stage #rare-open-button:disabled {
+    cursor: wait;
+    opacity: .78;
+    transform: none;
+}
+
+
+@media (max-width: 720px) {
+    .rare-opening-stage .rare-pack-visual {
+        margin-top: -6px;
+    }
 }
