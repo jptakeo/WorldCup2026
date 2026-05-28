@@ -954,7 +954,7 @@ PROBABILIDADES DE PREVISÃO
 
     .filterbar.groups-filterbar,
     .filterbar.groups-filterbar.has-date {
-    grid-template-columns: 1fr 140px;
+    grid-template-columns: 1fr 150px;
     grid-template-areas:
       "search toggle"
       "groups dates";
