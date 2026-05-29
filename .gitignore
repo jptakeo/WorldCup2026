@@ -210,4 +210,8 @@ __marimo__/
 # Other files to ignore
 *.exe
 
+# Stan compiled binaries (no extension, executable)
+stan_models/n_poisson_ranking
+
+# Posterior samples
 data/outputs/models
