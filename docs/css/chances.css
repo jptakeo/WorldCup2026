@@ -1258,7 +1258,7 @@ position: relative;
     width: 100%;
     max-width: 1260px;
     /* 16px é o espaço entre as barras (pesquisa e filtro de data) e o começo dos cards em baixo */
-    margin: 0 auto 16px;
+    margin: 0 auto 12px;
     border-radius: 10px;
     display: grid;
     gap: 5px;
@@ -1432,9 +1432,7 @@ position: relative;
         max-width: 1260px;
         margin: 0 auto 15px;
         border-radius: 100px;
-        padding: 10px;
         display: grid;
-        gap: 10px;
         align-items: end;
     }
 
@@ -1539,7 +1537,7 @@ position: relative;
 
 @media (max-width: 480px) {
 
-    #panel-grupos,
+    /*#panel-grupos,*/
     #panel-r32,
     #panel-oitavas,
     #panel-quartas,
@@ -1626,8 +1624,6 @@ position: relative;
         grid-template-areas:
             "search"
             "groups";
-        gap: 8px;
-        padding: 10px;
     }
 
     .filterbar.chances-groups-filterbar .search-wrap {
