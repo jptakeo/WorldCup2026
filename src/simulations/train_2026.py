@@ -4,8 +4,8 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 
 from cmdstanpy import CmdStanModel
 
-from model_sel.validate import train_and_save
 from src.data import load_ranking_priors, prepare_cycle_data
+from src.model_sel.validate import train_and_save
 
 if __name__ == "__main__":
     # Enable additional model variants here when the 2026 training run should
