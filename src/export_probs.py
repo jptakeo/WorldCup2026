@@ -479,7 +479,7 @@ def main() -> None:
 
     print("Gerando CSV com todos os confrontos possíveis...")
     df_all = build_all_matchups_dataframe(wc, max_goals=args.max_goals)
-    all_matchups_path = DATA_DIR / "all_matchups.csv"
+    all_matchups_path = Path("docs/csv/previsoes/all_matchups.csv")
     df_all.to_csv(all_matchups_path, index=False)
     print(f"Arquivo salvo em: {all_matchups_path} ({len(df_all)} confrontos)")
 
