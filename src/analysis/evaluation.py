@@ -3,9 +3,7 @@ import pandas as pd
 from scipy.stats import poisson
 
 
-def calculate_model_brier(
-    draws, teams_list, answer_key_path="data/raw/jogos_2022.csv"
-):
+def calculate_model_brier(draws, teams_list, answer_key_path="data/raw/jogos_2022.csv"):
     """Evaluate posterior draws with a three-outcome Brier score."""
     t_map = {name: i for i, name in enumerate(teams_list)}
 

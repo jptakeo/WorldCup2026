@@ -1,8 +1,7 @@
-"""FIFA World Cup 2026 tournament structure and Monte Carlo simulation."""
+"""Frequentist World Cup 2026 tournament simulation using MLE parameters."""
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 from itertools import combinations
 
 import numpy as np
@@ -18,53 +17,17 @@ from src.constants import (
     ROUND_OF_32_FIXED,
     SEMIFINAL_PAIRS,
 )
-from src.freq_model.data_classes import TournamentModelParams, TournamentParamsSeries
-from src.freq_model.utils import (
+from src.data import resolve_team_name
+from src.model.params import TournamentModelParams, TournamentParamsSeries
+from src.model.utils import (
     effective_home_gamma_vec,
-    resolve_team_name,
     score_probability_matrix_batched,
 )
+from src.tournament.base import GroupStanding, TournamentResult, TournamentSimulator
 
 
-@dataclass
-class GroupStanding:
-    team: str
-    points: int = 0
-    goals_for: int = 0
-    goals_against: int = 0
-    wins: int = 0
-    draws: int = 0
-    losses: int = 0
-
-    @property
-    def goal_diff(self) -> int:
-        return self.goals_for - self.goals_against
-
-    @property
-    def sort_key(self) -> tuple[int, int, int]:
-        """Higher is better for all components."""
-        return (self.points, self.goal_diff, self.goals_for)
-
-
-@dataclass
-class TournamentResult:
-    """Accumulated results across many simulations."""
-
-    counts: int = 0
-    first_place: dict[str, int] = field(default_factory=dict)
-    second_place: dict[str, int] = field(default_factory=dict)
-    third_place: dict[str, int] = field(default_factory=dict)
-    group_stage: dict[str, int] = field(default_factory=dict)
-    round_of_32: dict[str, int] = field(default_factory=dict)
-    round_of_16: dict[str, int] = field(default_factory=dict)
-    quarterfinals: dict[str, int] = field(default_factory=dict)
-    semifinals: dict[str, int] = field(default_factory=dict)
-    final: dict[str, int] = field(default_factory=dict)
-    champion: dict[str, int] = field(default_factory=dict)
-
-
-class WorldCup2026:
-    """Simulate the entire FIFA World Cup 2026 tournament."""
+class WorldCup2026(TournamentSimulator):
+    """Simulate the FIFA World Cup 2026 tournament (frequentist parameterization)."""
 
     _THIRD_SLOTS: list[tuple[int, str]] = [
         (i, sb) for i, (_, sb) in enumerate(ROUND_OF_32_FIXED) if sb.startswith("3_")
@@ -134,7 +97,6 @@ class WorldCup2026:
                 )
             self._flat_probs = None
             self._flat_probs_et = None
-            # CDFs not pre-computable in series mode
             self._flat_cdf = None
             self._flat_cdf_et = None
         else:
@@ -150,8 +112,6 @@ class WorldCup2026:
                 "with an explicit TournamentModelParams if needed."
             )
         return self.fixed_params
-
-    # ── fast-path helpers (index-based) ──────────────────────────
 
     def _precompute_probs(self) -> None:
         assert self.fixed_params is not None
@@ -190,9 +150,6 @@ class WorldCup2026:
                     self._flat_probs_et[i, j] = pe.ravel()
                     self._flat_probs_et[j, i] = pe.T.ravel()
 
-        # ── Optimisation: pre-compute CDFs once, reuse in every knockout draw ──
-        # searchsorted on a pre-built CDF is ~3–5× faster than rng.choice(p=...)
-        # because it avoids internal normalisation and a fresh cumsum each call.
         self._flat_cdf = np.cumsum(self._flat_probs, axis=-1)
         self._flat_cdf_et = np.cumsum(self._flat_probs_et, axis=-1)
 
@@ -206,7 +163,6 @@ class WorldCup2026:
         ib: int,
         lambda_scale: float,
     ) -> np.ndarray:
-        """Score distributions for (ia, ib) with ia < ib; shape (chunk, mg*mg)."""
         hb = self._host_boost
         hi = self._host_indices
         i_host = ia in hi and ib not in hi
@@ -230,7 +186,6 @@ class WorldCup2026:
         return m.reshape(m.shape[0], -1)
 
     def _sample_from_probs_rows(self, flat: np.ndarray, mg2: int) -> np.ndarray:
-        """Sample one category per row from distributions flat (C, mg2)."""
         c = flat.shape[0]
         out = np.empty(c, dtype=np.int32)
         for r in range(c):
@@ -240,7 +195,6 @@ class WorldCup2026:
     def _reg_et_flats_for_pair(
         self, sim: int, i: int, j: int
     ) -> tuple[np.ndarray, np.ndarray]:
-        """Flattened (regular, extra-time) probs with first axis = goals for team i."""
         assert self.series_params is not None
         sp = self.series_params
         att = sp.attack[sim : sim + 1]
@@ -285,15 +239,12 @@ class WorldCup2026:
         return i if u3 < 0.5 else j
 
     def _ko(self, i: int, j: int, *, sim: int | None = None) -> int:
-        """Knockout match; ``sim`` selects the parameter row when using a series."""
         mg, mg2 = self._mg, self._mg2
         if sim is None:
-            # Fixed-params mode: use pre-computed CDFs directly.
             assert self._flat_cdf is not None
             cdf = self._flat_cdf[i, j]
             cdf_et = self._flat_cdf_et[i, j]
         else:
-            # Series mode: CDFs are not pre-computed; build from raw probs on the fly.
             flat, flat_et = self._reg_et_flats_for_pair(sim, i, j)
             cdf = np.cumsum(flat)
             cdf_et = np.cumsum(flat_et)
@@ -305,7 +256,6 @@ class WorldCup2026:
         runners: dict[str, int],
         thirds: dict[str, int],
     ) -> list[tuple[int, int]]:
-        """Resolve R32 matchups (index-based) with cached 3rd-place assignment."""
         key = frozenset(thirds.keys())
         if key not in self._third_cache:
             self._third_cache[key] = self._match_thirds(
@@ -345,7 +295,6 @@ class WorldCup2026:
         )
 
     def _simulate_knockout_match(self, team_a: str, team_b: str) -> str:
-        """Simulate a knockout match: extra time → penalties if drawn."""
         if self.series_params is not None:
             row = self._strength_row
             if row is None:
@@ -370,7 +319,6 @@ class WorldCup2026:
         if ga != gb:
             return team_a if ga > gb else team_b
 
-        # Extra time: Poisson with λ/3
         mg = et_prob.shape[0]
         idx = self.rng.choice(mg * mg, p=et_prob.ravel())
         et_a, et_b = int(idx // mg), int(idx % mg)
@@ -379,7 +327,6 @@ class WorldCup2026:
         if ga != gb:
             return team_a if ga > gb else team_b
 
-        # Penalties: 50/50
         return team_a if self.rng.random() < 0.5 else team_b
 
     def simulate_group_stage(self) -> dict[str, list[GroupStanding]]:
@@ -422,7 +369,6 @@ class WorldCup2026:
     def _pick_best_thirds(
         standings: dict[str, list[GroupStanding]],
     ) -> list[tuple[str, str]]:
-        """Select the 8 best third-placed teams. Return [(group, team), ...]."""
         thirds = []
         for gname, table in standings.items():
             t = table[2]
@@ -435,7 +381,6 @@ class WorldCup2026:
         self,
         standings: dict[str, list[GroupStanding]],
     ) -> list[tuple[str, str]]:
-        """Build the 16 Round-of-32 matchups from group results."""
         winners = {g: table[0].team for g, table in standings.items()}
         runners = {g: table[1].team for g, table in standings.items()}
 
@@ -478,11 +423,7 @@ class WorldCup2026:
         slots: list[tuple[int, str]],
         qualified_groups: set[str],
     ) -> dict[int, str]:
-        """Bipartite matching: assign each qualified 3rd-place group to a slot.
-
-        Uses backtracking to find a valid assignment where each slot gets
-        exactly one group from its allowed set.
-        """
+        """Bipartite backtracking to assign each qualified 3rd-place group to a slot."""
         allowed: list[tuple[int, list[str]]] = []
         for idx, slot_label in slots:
             groups_in_slot = [
@@ -519,8 +460,6 @@ class WorldCup2026:
         """Run one full tournament. Return {team: stage_reached}.
 
         Stage values: 0=group, 1=R32, 2=R16, 3=QF, 4=SF, 5=final, 6=champion.
-
-        With ``TournamentParamsSeries``, pick the parameter row via ``strength_row``.
         """
         if self.series_params is not None:
             if not (0 <= strength_row < self.series_params.n_replications):
@@ -602,7 +541,6 @@ class WorldCup2026:
         assert self._flat_probs is not None
         assert self._flat_cdf is not None
 
-        # ── Phase 1: batch-sample all 72 group matches ──────────
         group_hg = np.empty((ng, n_mp, n), dtype=np.int8)
         group_ag = np.empty((ng, n_mp, n), dtype=np.int8)
         rng = self.rng
@@ -630,7 +568,6 @@ class WorldCup2026:
                         group_hg[gi, mi] = samples // mg
                         group_ag[gi, mi] = samples % mg
 
-        # ── Phase 2: vectorised standings ────────────────────────
         pts = np.zeros((ng, n, 4), dtype=np.int16)
         gf = np.zeros((ng, n, 4), dtype=np.int16)
         ga = np.zeros((ng, n, 4), dtype=np.int16)
@@ -648,7 +585,6 @@ class WorldCup2026:
             pts[:, :, lj] += 3 * aw + dr
         gd = gf - ga
 
-        # ── Phase 3: group rankings ─────────────────────────────
         noise = rng.random((ng, n, 4)) * 0.01
         composite = pts * 10_000.0 + (gd + 100) * 100.0 + gf + noise
         order = np.argsort(-composite, axis=2)
@@ -666,7 +602,6 @@ class WorldCup2026:
         second_c = np.bincount(r_global.reshape(-1), minlength=nt)
         third_c = np.bincount(t_global.reshape(-1), minlength=nt)
 
-        # ── Phase 4: best 8 thirds ──────────────────────────────
         gi_ax = np.arange(ng)[:, None]
         sim_ax = np.arange(n)[None, :]
         t_pts = pts[gi_ax, sim_ax, third_local]
@@ -676,7 +611,6 @@ class WorldCup2026:
         t_comp = t_pts * 10_000.0 + (t_gd + 100) * 100.0 + t_gf + t_noise
         best_8 = np.argsort(-t_comp.T, axis=1)[:, :8]
 
-        # ── Phase 5: per-simulation knockout ─────────────────────
         r32_c = np.zeros(nt, dtype=np.int32)
         r16_c = np.zeros(nt, dtype=np.int32)
         qf_c = np.zeros(nt, dtype=np.int32)
@@ -684,7 +618,6 @@ class WorldCup2026:
         final_c = np.zeros(nt, dtype=np.int32)
         champ_c = np.zeros(nt, dtype=np.int32)
 
-        # Use pre-computed CDFs instead of raw probability vectors.
         cdf = self._flat_cdf
         cdf_et = self._flat_cdf_et
         kwp = WorldCup2026._knockout_winner_pair
@@ -770,16 +703,7 @@ class WorldCup2026:
             ] += 1
 
         return self._accumulate_counts(
-            n,
-            first_c,
-            second_c,
-            third_c,
-            r32_c,
-            r16_c,
-            qf_c,
-            sf_c,
-            final_c,
-            champ_c,
+            n, first_c, second_c, third_c, r32_c, r16_c, qf_c, sf_c, final_c, champ_c
         )
 
     def _simulate_with_series(self, n: int) -> TournamentResult:
@@ -907,16 +831,7 @@ class WorldCup2026:
             champ_c[self._ko(sfw[0], sfw[1], sim=sim)] += 1
 
         return self._accumulate_counts(
-            n,
-            first_c,
-            second_c,
-            third_c,
-            r32_c,
-            r16_c,
-            qf_c,
-            sf_c,
-            final_c,
-            champ_c,
+            n, first_c, second_c, third_c, r32_c, r16_c, qf_c, sf_c, final_c, champ_c
         )
 
     def _accumulate_counts(

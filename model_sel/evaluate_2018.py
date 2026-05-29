@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from src.data_prep import prepare_cycle_data
-from src.evaluation import calculate_model_brier
+from src.analysis import calculate_model_brier
+from src.data import prepare_cycle_data
 
 
 def load_draws(path):

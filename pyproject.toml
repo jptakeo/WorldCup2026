@@ -64,6 +64,7 @@ select = [
 "src/simulate.py" = ["E402"]
 "src/freq_model/simulate.py" = ["E402"]
 "src/fetch_kaggle_dataset.py" = ["E402"]
+"src/output/dashboard.py" = ["E501"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["worldcup2026"]

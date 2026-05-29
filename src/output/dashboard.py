@@ -18,7 +18,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         .node text { font-size: 14px; fill: #f0f6fc; pointer-events: none; text-shadow: 1px 1px 2px rgba(0,0,0,0.9); }
         .hitbox { fill: transparent; cursor: pointer; }
         image { pointer-events: none; }
-        
+
         /* Floating title overlay; pointer events pass through to the graph. */
         #title-box {
             position: absolute;
@@ -180,7 +180,7 @@ def generate_dashboard(
     if not os.path.exists(json_file):
         raise FileNotFoundError(f"Arquivo {json_file} não encontrado.")
 
-    with open(json_file, "r") as f:
+    with open(json_file) as f:
         data = json.load(f)
 
     root = {"name": title, "children": []}

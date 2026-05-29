@@ -44,8 +44,8 @@ jobs:
       - name: Run simulation
         # Injects cmdstanpy at runtime just in case it's not in pyproject.toml
         run: |
-          uv run --with cmdstanpy python -m simulations.update_2026
-          
+          uv run --with cmdstanpy python -m src.simulations.update_2026
+
       - name: Commit changes (if any)
         run: |
           git config user.name "github-actions"

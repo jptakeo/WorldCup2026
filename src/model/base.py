@@ -1,4 +1,4 @@
-"""Abstract Dixon–Coles match model (shared by MLE and future Bayesian fits)."""
+"""Abstract Dixon–Coles match model (shared by frequentist and Bayesian fits)."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from src.constants import MAX_GOALS
-from src.freq_model.utils import effective_home_gamma, score_probability_matrix
+from src.model.utils import effective_home_gamma, score_probability_matrix
 
 
 class BaseDixonColesMatchModel(ABC):

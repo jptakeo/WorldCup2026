@@ -1,18 +1,12 @@
+from __future__ import annotations
+
 import json
 import os
 
-import numpy as np
-
-from src.dashboard import generate_dashboard
-from src.data_prep import prepare_cycle_data
-from src.simulate import simulate_world_cup_2022
-
-
-def load_draws(path):
-    """Carrega os draws gerados pelo Stan e salvos no treino."""
-    loaded = np.load(path)
-    return {key: loaded[key] for key in loaded.files}
-
+from src.data import prepare_cycle_data
+from src.model.bayesian import load_draws
+from src.output import generate_dashboard
+from src.simulations.utils import simulate_world_cup_2022
 
 if __name__ == "__main__":
     os.makedirs("data/outputs/results", exist_ok=True)
@@ -42,7 +36,7 @@ if __name__ == "__main__":
     print(f"Carregando: {model_path}")
     draws_22 = load_draws(model_path)
 
-    probs_2022 = simulate_world_cup_2022(draws_22, teams_22, groups_2022, n_sim=100000)
+    probs_2022 = simulate_world_cup_2022(draws_22, teams_22, groups_2022, n_sim=100_000)
 
     # Dashboard generator expects probabilities grouped by stage.
     json_output_22 = {
@@ -50,12 +44,12 @@ if __name__ == "__main__":
             {"team": teams_22[i], "probability": probs_2022[stage][i]}
             for i in range(len(teams_22))
         ]
-        for stage in probs_2022.keys()
+        for stage in probs_2022
     }
     with open("data/outputs/results/sim_results_2022.json", "w") as f:
         json.dump(json_output_22, f)
 
-    participants_22 = set(team for teams in groups_2022.values() for team in teams)
+    participants_22 = {team for teams in groups_2022.values() for team in teams}
     stage_labels_22 = {
         "avancou_grupos": "Fase de Grupos",
         "quarter_finalists": "Oitavas",

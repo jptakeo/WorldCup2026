@@ -4,7 +4,7 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 import numpy as np
 from cmdstanpy import CmdStanModel
 
-from src.data_prep import load_ranking_priors, prepare_cycle_data
+from src.data import load_ranking_priors, prepare_cycle_data
 
 
 def train_and_save(
@@ -26,7 +26,7 @@ def train_and_save(
         "y_i": df["home_score"].values.astype(int),
         "y_j": df["away_score"].values.astype(int),
         "game_weight": df["game_weight"].values,
-        "prior_strength": ranking_priors
+        "prior_strength": ranking_priors,
     }
 
     stan_model = CmdStanModel(stan_file=stan_file, exe_file=exe_file)
@@ -39,7 +39,7 @@ def train_and_save(
     output_path = f"data/outputs/models/draws_{cycle_name}_{model_name}.npz"
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
-    np.savez_compressed(output_path, **post_draws)
+    np.savez_compressed(output_path, teams=np.array(teams), **post_draws)
     print(f"Salvo em: {output_path}")
 
 
@@ -104,7 +104,7 @@ if __name__ == "__main__":
     jobs = []
 
     for cycle_name, df, teams, team_map, ranking_priors in cycles:
-        for model_key in stan_model_files.keys():
+        for model_key in stan_model_files:
             jobs.append(
                 (
                     cycle_name,

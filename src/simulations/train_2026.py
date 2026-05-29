@@ -1,9 +1,11 @@
+from __future__ import annotations
+
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 from cmdstanpy import CmdStanModel
 
 from model_sel.validate import train_and_save
-from src.data_prep import load_ranking_priors, prepare_cycle_data
+from src.data import load_ranking_priors, prepare_cycle_data
 
 if __name__ == "__main__":
     # Enable additional model variants here when the 2026 training run should
@@ -55,7 +57,7 @@ if __name__ == "__main__":
     jobs = []
 
     for cycle_name, df, teams, team_map, ranking_priors in cycles:
-        for model_key in stan_model_files.keys():
+        for model_key in stan_model_files:
             jobs.append(
                 (
                     cycle_name,

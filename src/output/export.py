@@ -28,9 +28,9 @@ from src.constants import (
     TEAM_MAP_EN_TO_PT,
     TEAM_MAP_PT_TO_EN,
 )
-from src.freq_model.model import build_model
-from src.freq_model.tournament import WorldCup2026
-from src.freq_model.utils import detect_phase, load_wc_results
+from src.data import detect_phase, load_wc_results
+from src.model.frequentist import build_model
+from src.tournament.frequentist import WorldCup2026
 
 
 def _knockout_winner(
@@ -513,7 +513,7 @@ def main() -> None:
     print(f"Arquivo salvo em: {output_path}")
     print(
         "Nota: partidas.csv e all_matchups.csv são gerados pelo pipeline Stan "
-        "(uv run python simulations/sim_2026.py)."
+        "(uv run python -m src.simulations.sim_2026)."
     )
 
 

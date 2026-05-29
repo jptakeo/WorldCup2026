@@ -8,12 +8,16 @@ import numpy as np
 from numpy.typing import NDArray
 
 from src.constants import MAX_GOALS
-from src.freq_model.utils import effective_home_gamma, score_probability_matrix
+from src.model.base import BaseDixonColesMatchModel
+from src.model.utils import effective_home_gamma, score_probability_matrix
 
 
 @dataclass
-class TournamentModelParams:
-    """Single fitted Dixon–Coles snapshot for tournament simulation (no training)."""
+class TournamentModelParams(BaseDixonColesMatchModel):
+    """Single fitted Dixon–Coles snapshot for tournament simulation (no training).
+
+    Inherits match_probs() and simulate_match() from BaseDixonColesMatchModel.
+    """
 
     teams: list[str]
     attack: NDArray[np.floating]
@@ -31,38 +35,11 @@ class TournamentModelParams:
     def get_defense(self, team: str) -> float:
         return float(self.defense[self._idx[team]])
 
-    def match_probs(
-        self,
-        home: str,
-        away: str,
-        neutral: bool = True,
-        max_goals: int = MAX_GOALS,
-        lambda_scale: float = 1.0,
-        home_boost: float = 0.0,
-    ) -> NDArray[np.floating]:
-        att_h = self.get_attack(home)
-        def_h = self.get_defense(home)
-        att_a = self.get_attack(away)
-        def_a = self.get_defense(away)
-        gamma = effective_home_gamma(self.home_effect, neutral, home_boost)
-        hl = att_h * def_a * gamma * lambda_scale
-        al = att_a * def_h * lambda_scale
-        return score_probability_matrix(hl, al, self.rho, max_goals)
+    def get_rho(self) -> float:
+        return float(self.rho)
 
-    def simulate_match(
-        self,
-        home: str,
-        away: str,
-        neutral: bool = True,
-        home_boost: float = 0.0,
-        rng: np.random.Generator | None = None,
-    ) -> tuple[int, int]:
-        if rng is None:
-            rng = np.random.default_rng()
-        prob = self.match_probs(home, away, neutral=neutral, home_boost=home_boost)
-        mg = prob.shape[0]
-        idx = rng.choice(mg * mg, p=prob.ravel())
-        return int(idx // mg), int(idx % mg)
+    def get_home_effect(self) -> float:
+        return float(self.home_effect)
 
 
 @dataclass

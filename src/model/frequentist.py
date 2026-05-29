@@ -1,4 +1,4 @@
-"""Dixon-Coles model for international football match prediction."""
+"""Frequentist Dixon-Coles model: MLE fitting via L-BFGS-B."""
 
 from __future__ import annotations
 
@@ -17,8 +17,8 @@ from src.constants import (
     DEFAULT_TOURNAMENT_WEIGHT,
     TOURNAMENT_WEIGHT,
 )
-from src.freq_model.data_classes import TournamentModelParams
-from src.freq_model.dixon_coles_base import BaseDixonColesMatchModel
+from src.model.base import BaseDixonColesMatchModel
+from src.model.params import TournamentModelParams
 
 
 def load_and_prepare_data(
@@ -35,7 +35,6 @@ def load_and_prepare_data(
     if extra_data is not None:
         data = pd.concat([data, extra_data[COLUMNS]], ignore_index=True)
 
-    # Scheduled fixtures (e.g. future World Cup games) often have empty scores.
     data = data.dropna(subset=["home_score", "away_score"])
 
     data["date"] = pd.to_datetime(data["date"])
@@ -96,7 +95,7 @@ def load_and_prepare_data(
 
 
 class DixonColesModel(BaseDixonColesMatchModel):
-    """Dixon-Coles model with separate attack/defense and regularization (MLE)."""
+    """Frequentist Dixon-Coles model with separate attack/defense and regularization."""
 
     def __init__(self, reg_lambda: float = DEFAULT_REG_LAMBDA) -> None:
         self.teams: list[str] = []
@@ -165,7 +164,6 @@ class DixonColesModel(BaseDixonColesMatchModel):
             nll = -float((w * (ll_h + ll_a + np.log(tau))).sum())
             nll += reg * float((ac**2).sum() + (dc**2).sum())
 
-            # ∂log(τ)/∂hl and ∂log(τ)/∂al
             dtau_dhl = np.zeros_like(hl)
             dtau_dhl[m00] = -al[m00] * rho
             dtau_dhl[m01] = rho
@@ -179,27 +177,22 @@ class DixonColesModel(BaseDixonColesMatchModel):
             dll_dhl = hs / hl - 1 + dlt_dhl
             dll_dal = a_s / al - 1 + dlt_dal
 
-            # Gradient w.r.t. centered log-attack (a_c)
             ac_g = np.zeros(n)
             np.add.at(ac_g, hi, w * dll_dhl * hl)
             np.add.at(ac_g, ai, w * dll_dal * al)
             ac_g = -ac_g + 2 * reg * ac
 
-            # Gradient w.r.t. centered log-defense (d_c)
             dc_g = np.zeros(n)
             np.add.at(dc_g, ai, w * dll_dhl * hl)
             np.add.at(dc_g, hi, w * dll_dal * al)
             dc_g = -dc_g + 2 * reg * dc
 
-            # Chain rule: ∂f/∂a[k] = ∂f/∂ac[k] - mean(∂f/∂ac)
             a_g = ac_g - ac_g.mean()
             d_g = dc_g - dc_g.mean()
 
-            # Home-effect gradient
             mask = has_home.astype(bool)
             gamma_g = -float((w[mask] * dll_dhl[mask] * hl[mask] / gamma).sum())
 
-            # Rho gradient
             dt_drho = np.zeros_like(hl)
             dt_drho[m00] = -hl[m00] * al[m00]
             dt_drho[m10] = al[m10]
@@ -215,9 +208,9 @@ class DixonColesModel(BaseDixonColesMatchModel):
             return nll, grad
 
         bounds: list[tuple[float | None, float | None]] = []
-        bounds += [(None, None)] * (2 * n)  # a, d unconstrained
-        bounds += [(0.5, 3.0)]  # gamma
-        bounds += [(-1.0 + 1e-6, 1.0 - 1e-6)]  # rho
+        bounds += [(None, None)] * (2 * n)
+        bounds += [(0.5, 3.0)]
+        bounds += [(-1.0 + 1e-6, 1.0 - 1e-6)]
 
         x0 = np.zeros(2 * n + 2)
         x0[-2] = 1.2

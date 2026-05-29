@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import subprocess
 
@@ -5,11 +7,11 @@ import numpy as np
 import pandas as pd
 from cmdstanpy import CmdStanModel
 
-from simulations.sim_2026 import load_draws
 from src.constants import TEAM_MAP_PT_TO_EN
-from src.data_prep import load_ranking_priors, prepare_cycle_data
-from src.export_probs import update_html_from_summary
-from src.simulate import simulate_stage_and_remaining
+from src.data import load_ranking_priors, prepare_cycle_data
+from src.model.bayesian import load_draws
+from src.output import update_html_from_summary
+from src.tournament.bayesian import simulate_stage_and_remaining
 
 
 def train_and_save(
@@ -54,10 +56,10 @@ if __name__ == "__main__":
 
     if actual_results["home_real"].isna().sum() == actual_results.shape[0]:
         print("\n=== TREINANDO MODELO PARA 2026 ===\n")
-        subprocess.run(["python", "-m", "simulations.train_2026"], check=True)
+        subprocess.run(["python", "-m", "src.simulations.train_2026"], check=True)
 
         print("\n=== SIMULANDO COPA 2026 ===\n")
-        subprocess.run(["python", "-m", "simulations.sim_2026"], check=True)
+        subprocess.run(["python", "-m", "src.simulations.sim_2026"], check=True)
     else:
         if (
             actual_results.loc[actual_results["stage"] == "semi_final", "home_real"]
@@ -258,7 +260,9 @@ if __name__ == "__main__":
             "data/new_results.csv", "2022-11-19", apply_decay=True
         )
 
-        ranking_priors_26 = load_ranking_priors("data/raw/fifa_ranking_2022.csv", teams_26)
+        ranking_priors_26 = load_ranking_priors(
+            "data/raw/fifa_ranking_2022.csv", teams_26
+        )
 
         print("\n=== COMPILANDO MODELO ===\n")
         stan_file = "stan_models/n_poisson_ranking.stan"
