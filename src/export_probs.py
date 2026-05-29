@@ -106,43 +106,42 @@ def build_all_matchups_dataframe(
     wc,
     max_goals=4,
 ):
-    """Build a DataFrame with score probabilities for every ordered pair of
-    World Cup teams (48*47 = 2256 rows), all treated as neutral-venue.
-    Both A vs B and B vs A are included."""
+    """Build a DataFrame with score probabilities for every unique pair of
+    World Cup teams (C(48,2) = 1128 rows), all treated as neutral-venue.
+    Each pair appears once; columns use team_a / team_b (order-independent)."""
 
     all_teams = wc.all_teams
     rows = []
 
-    for home_en, away_en in combinations(all_teams, 2):
+    for team_a_en, team_b_en in combinations(all_teams, 2):
         prob = wc.params.match_probs(
-            home_en, away_en, neutral=True, max_goals=max_goals
+            team_a_en, team_b_en, neutral=True, max_goals=max_goals
         )
 
-        for p, t_home, t_away in [(prob, home_en, away_en), (prob.T, away_en, home_en)]:
-            home_pt = TEAM_MAP_EN_TO_PT.get(t_home, t_home)
-            away_pt = TEAM_MAP_EN_TO_PT.get(t_away, t_away)
+        team_a_pt = TEAM_MAP_EN_TO_PT.get(team_a_en, team_a_en)
+        team_b_pt = TEAM_MAP_EN_TO_PT.get(team_b_en, team_b_en)
 
-            home_win = float(np.tril(p, k=-1).sum()) * 100
-            draw = float(np.trace(p)) * 100
-            away_win = float(np.triu(p, k=1).sum()) * 100
+        win_a = float(np.tril(prob, k=-1).sum()) * 100
+        draw = float(np.trace(prob)) * 100
+        win_b = float(np.triu(prob, k=1).sum()) * 100
 
-            row = {
-                "home_team": home_pt,
-                "away_team": away_pt,
-                "home_win": round(home_win, 4),
-                "draw": round(draw, 4),
-                "away_win": round(away_win, 4),
-            }
+        row = {
+            "team_a": team_a_pt,
+            "team_b": team_b_pt,
+            "team_a_win": round(win_a, 4),
+            "draw": round(draw, 4),
+            "team_b_win": round(win_b, 4),
+        }
 
-            for i in range(p.shape[0]):
-                for j in range(p.shape[1]):
-                    if (i, j) in SCORE_MAP:
-                        row[SCORE_MAP[(i, j)]] = round(100 * p[i, j], 4)
+        for i in range(prob.shape[0]):
+            for j in range(prob.shape[1]):
+                if (i, j) in SCORE_MAP:
+                    row[SCORE_MAP[(i, j)]] = round(100 * prob[i, j], 4)
 
-            rows.append(row)
+        rows.append(row)
 
     df = pd.DataFrame(rows)
-    df = df[["home_team", "away_team", "home_win", "draw", "away_win"] + ALL_SCORE_COLS]
+    df = df[["team_a", "team_b", "team_a_win", "draw", "team_b_win"] + ALL_SCORE_COLS]
     return df
 
 
