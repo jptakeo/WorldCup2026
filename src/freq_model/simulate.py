@@ -22,7 +22,6 @@ from src.constants import (
 )
 from src.export_probs import (
     build_stage_dataframe,
-    export_phase_probs,
     update_html_from_summary,
 )
 from src.freq_model.model import build_model
@@ -226,10 +225,6 @@ def main() -> None:
     }
 
     print_top_n(stage_results, args.num_simulations, top_n=args.top)
-
-    print("Exportando matrizes de probabilidade...")
-    prob_path = export_phase_probs(wc, known)
-    print(f"  Salvo em: {prob_path}")
 
     build_stage_dataframe(stage_results, args.num_simulations)
 

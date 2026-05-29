@@ -1,12 +1,259 @@
+from itertools import combinations
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 
-from src.constants import TEAM_MAP_EN_TO_PT, TEAM_MAP_PT_TO_EN
+from src.constants import (
+    ALL_MATCHUPS_EXPORT_COLS,
+    PARTIDAS_EXPORT_COLS,
+    TEAM_MAP_EN_TO_PT,
+    TEAM_MAP_PT_TO_EN,
+)
 
 # Precomputed factorials for score probabilities from 0 to 10 goals.
 FACTORIALS = np.array([1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800])
 
+NUM_TO_WORD = {0: "zero", 1: "one", 2: "two", 3: "three", 4: "four"}
+
+DEFAULT_DRAWS_PATH = "data/outputs/models/draws_2026_n_poisson_ranking.npz"
+DEFAULT_MATCH_SIMS = 100_000
+ALL_MATCHUPS_BATCH_SIZE = 128
+
 current_results_df = pd.read_csv("data/world_cup_results.csv")
+
+
+def load_draws(path: str | Path) -> dict[str, np.ndarray]:
+    """Load Stan posterior draws saved as ``.npz``."""
+    loaded = np.load(path)
+    return {key: loaded[key] for key in loaded.files}
+
+
+def _load_schedule_orientations(
+    results_path: str | Path | pd.DataFrame = "data/world_cup_results.csv",
+) -> dict[frozenset[str], tuple[str, str, str, object]]:
+    """Map unordered PT pair -> (home_pt, away_pt, group, date)."""
+    if isinstance(results_path, pd.DataFrame):
+        results_df = results_path.copy()
+    else:
+        results_df = pd.read_csv(results_path)
+    for col in ["home_team", "away_team", "group"]:
+        results_df[col] = results_df[col].astype(str).str.strip()
+
+    orientations: dict[frozenset[str], tuple[str, str, str, object]] = {}
+    for row in results_df.itertuples(index=False):
+        orientations[frozenset({row.home_team, row.away_team})] = (
+            row.home_team,
+            row.away_team,
+            row.group,
+            row.date,
+        )
+    return orientations
+
+
+def _resolve_fixture_orientation(
+    team_a_en: str,
+    team_b_en: str,
+    schedule: dict[frozenset[str], tuple[str, str, str, object]],
+) -> tuple[str, str, str | None, object | None]:
+    team_a_pt = TEAM_MAP_EN_TO_PT.get(team_a_en, team_a_en)
+    team_b_pt = TEAM_MAP_EN_TO_PT.get(team_b_en, team_b_en)
+    scheduled = schedule.get(frozenset({team_a_pt, team_b_pt}))
+
+    if scheduled is None:
+        return team_a_en, team_b_en, None, None
+
+    home_pt, away_pt, group, date = scheduled
+    home_en = TEAM_MAP_PT_TO_EN.get(home_pt, home_pt)
+    away_en = TEAM_MAP_PT_TO_EN.get(away_pt, away_pt)
+    return home_en, away_en, group, date
+
+
+def _sample_posterior(
+    post_draws: dict[str, np.ndarray],
+    n_sim: int,
+    seed: int | None = None,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray | None, np.ndarray]:
+    if seed is not None:
+        np.random.seed(seed)
+    n_samples = len(post_draws["attack"])
+    sample_idx = np.random.choice(n_samples, n_sim)
+    atk = post_draws["attack"][sample_idx]
+    dfn = post_draws["defense"][sample_idx]
+    rho = post_draws["rho"][sample_idx] if "rho" in post_draws else None
+    et = post_draws["eta"][sample_idx]
+    return atk, dfn, rho, et
+
+
+def _match_lambdas(
+    atk: np.ndarray,
+    dfn: np.ndarray,
+    home_idx: int | np.ndarray,
+    away_idx: int | np.ndarray,
+    et: np.ndarray,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Poisson intensities with Stan ``eta`` added on both sides (log-scale)."""
+    et = et.reshape(-1, 1)
+    n_sim = atk.shape[0]
+    if np.isscalar(home_idx) or (
+        isinstance(home_idx, np.ndarray) and home_idx.ndim == 1
+    ):
+        return (
+            np.exp(atk[:, home_idx] - dfn[:, away_idx] + et),
+            np.exp(atk[:, away_idx] - dfn[:, home_idx] + et),
+        )
+    row_idx = np.arange(n_sim)[:, None]
+    return (
+        np.exp(atk[row_idx, home_idx] - dfn[row_idx, away_idx] + et),
+        np.exp(atk[row_idx, away_idx] - dfn[row_idx, home_idx] + et),
+    )
+
+
+def _aggregate_match_probs(g1: np.ndarray, g2: np.ndarray) -> dict[str, float]:
+    """Empirical outcome and scoreline probabilities (%) from simulated goals."""
+    row: dict[str, float] = {
+        "home_win": float(np.mean(g1 > g2) * 100),
+        "draw": float(np.mean(g1 == g2) * 100),
+        "away_win": float(np.mean(g1 < g2) * 100),
+    }
+    for i in range(5):
+        for j in range(5):
+            key = f"{NUM_TO_WORD[i]}_{NUM_TO_WORD[j]}"
+            row[key] = float(np.mean((g1 == i) & (g2 == j)) * 100)
+    return row
+
+
+def _simulate_match_goals(
+    atk: np.ndarray,
+    dfn: np.ndarray,
+    rho: np.ndarray | None,
+    et: np.ndarray,
+    home_idx: int | np.ndarray,
+    away_idx: int | np.ndarray,
+    n_sim: int,
+) -> tuple[np.ndarray, np.ndarray]:
+    n_pairs = 1 if np.isscalar(home_idx) else len(home_idx)
+    l1, l2 = _match_lambdas(atk, dfn, home_idx, away_idx, et)
+    rho_exp = None
+    if rho is not None:
+        rho_exp = np.repeat(rho[:, None], n_pairs, axis=1)
+    return simulate_matches(l1, l2, rho_exp, n_sim)
+
+
+def build_all_matchups_dataframe_mc(
+    teams_list: list[str],
+    wc_teams: list[str],
+    atk: np.ndarray,
+    dfn: np.ndarray,
+    rho: np.ndarray | None,
+    et: np.ndarray,
+    n_sim: int,
+    pair_goals_cache: dict[tuple[str, str], tuple[np.ndarray, np.ndarray]]
+    | None = None,
+    schedule_path: str | Path = "data/world_cup_results.csv",
+    batch_size: int = ALL_MATCHUPS_BATCH_SIZE,
+) -> pd.DataFrame:
+    """Monte Carlo match probabilities for every WC team pair.
+
+    Uses Stan ``eta`` on both sides.
+    """
+    t_to_idx = {name: i for i, name in enumerate(teams_list)}
+    schedule = _load_schedule_orientations(schedule_path)
+    cache = pair_goals_cache or {}
+
+    pairs: list[tuple[str, str]] = list(combinations(wc_teams, 2))
+    rows: list[dict] = []
+
+    pending: list[tuple[str, str, str, str, int]] = []
+
+    def flush_pending() -> None:
+        if not pending:
+            return
+        home_idxs_arr = np.array([item[4] for item in pending], dtype=int)
+        away_idxs_arr = np.array([item[5] for item in pending], dtype=int)
+        g1, g2 = _simulate_match_goals(
+            atk, dfn, rho, et, home_idxs_arr, away_idxs_arr, n_sim
+        )
+        for m, (home_pt, away_pt, _home_en, _away_en, _, _) in enumerate(pending):
+            rows.append(
+                {
+                    "home_team": home_pt,
+                    "away_team": away_pt,
+                    **_aggregate_match_probs(g1[:, m], g2[:, m]),
+                }
+            )
+        pending.clear()
+
+    for team_a_en, team_b_en in pairs:
+        home_en, away_en, _, _ = _resolve_fixture_orientation(
+            team_a_en, team_b_en, schedule
+        )
+        home_pt = TEAM_MAP_EN_TO_PT.get(home_en, home_en)
+        away_pt = TEAM_MAP_EN_TO_PT.get(away_en, away_en)
+        cache_key = (home_en, away_en)
+
+        if cache_key in cache:
+            hg, ag = cache[cache_key]
+            rows.append(
+                {
+                    "home_team": home_pt,
+                    "away_team": away_pt,
+                    **_aggregate_match_probs(hg, ag),
+                }
+            )
+            continue
+
+        pending.append(
+            (
+                home_pt,
+                away_pt,
+                home_en,
+                away_en,
+                t_to_idx[home_en],
+                t_to_idx[away_en],
+            )
+        )
+        if len(pending) >= batch_size:
+            flush_pending()
+
+    flush_pending()
+
+    df = pd.DataFrame(rows).round(4)
+    return df[ALL_MATCHUPS_EXPORT_COLS]
+
+
+def export_stan_match_csvs(
+    teams_list: list[str],
+    wc_teams: list[str],
+    partidas_df: pd.DataFrame,
+    atk: np.ndarray,
+    dfn: np.ndarray,
+    rho: np.ndarray | None,
+    et: np.ndarray,
+    n_sim: int,
+    pair_goals_cache: dict[tuple[str, str], tuple[np.ndarray, np.ndarray]]
+    | None = None,
+    partidas_path: str | Path = "docs/csv/previsoes/partidas.csv",
+    all_matchups_path: str | Path = "docs/csv/previsoes/all_matchups.csv",
+) -> None:
+    """Write ``partidas.csv`` and ``all_matchups.csv`` from Stan Monte Carlo draws."""
+    partidas_out = partidas_df[PARTIDAS_EXPORT_COLS].round(4)
+    partidas_out.to_csv(partidas_path, index=False)
+    partidas_out.to_csv("data/probs_fase_de_grupos.csv", index=False)
+
+    print("Gerando all_matchups.csv (Monte Carlo Stan)...")
+    all_df = build_all_matchups_dataframe_mc(
+        teams_list,
+        wc_teams,
+        atk,
+        dfn,
+        rho,
+        et,
+        n_sim=n_sim,
+        pair_goals_cache=pair_goals_cache,
+    )
+    all_df.to_csv(all_matchups_path, index=False)
+    print(f"  Salvo em: {all_matchups_path} ({len(all_df)} confrontos)")
 
 
 def simulate_matches(mu1, mu2, rho_draws=None, n_sim=100000, max_goals=10):
@@ -146,7 +393,9 @@ def simulate_world_cup_2022(post_draws, teams_list, groups, n_sim=100000):
         )
         ga, gb = simulate_matches(la, lb, rho_exp, n_sim)
 
-        team_a_wins = (ga > gb) | ((ga == gb) & (np.random.rand(n_sim, n_matches) < 0.5))
+        team_a_wins = (ga > gb) | (
+            (ga == gb) & (np.random.rand(n_sim, n_matches) < 0.5)
+        )
         return np.where(team_a_wins, ta, tb)
 
     # Round-of-16 bracket ordering for the 2018/2022 format.
@@ -169,7 +418,7 @@ def simulate_world_cup_2022(post_draws, teams_list, groups, n_sim=100000):
     champion = play_round(finalists[:, [0]], finalists[:, [1]])
     count_stage(champion, "champion")
 
-    probs = {stage: stats[stage] / n_sim for stage in stats.keys()}
+    probs = {stage: stats[stage] / n_sim for stage in stats}
     return probs
 
 
@@ -178,7 +427,8 @@ def simulate_stage_and_remaining(
 ):
     """
     Simula uma fase específica e todas as subsequentes até o campeão.
-    O matches_df deve estar ordenado em formato de chaveamento (0 enfrenta 1, 2 enfrenta 3...).
+    O matches_df deve estar ordenado em formato de chaveamento
+    (0 enfrenta 1, 2 enfrenta 3...).
     """
     atk_draws, dfn_draws, eta_draws = (
         post_draws["attack"],
@@ -352,28 +602,20 @@ def simulate_world_cup_2026(
     teams_list,
     groups,
     df_schedule=current_results_df,
-    TEAM_MAP_PT_TO_EN=TEAM_MAP_PT_TO_EN,
-    TEAM_MAP_EN_TO_PT=TEAM_MAP_EN_TO_PT,
+    team_map_pt_to_en=TEAM_MAP_PT_TO_EN,
+    team_map_en_to_pt=TEAM_MAP_EN_TO_PT,
     n_sim=100_000,
+    seed=None,
 ):
-    atk_draws, dfn_draws, eta_draws = (
-        post_draws["attack"],
-        post_draws["defense"],
-        post_draws["eta"],
-    )
     uses_dixon_coles = "rho" in post_draws
-    rho_draws = post_draws["rho"] if uses_dixon_coles else None
+    atk, dfn, rho, et = _sample_posterior(post_draws, n_sim, seed=seed)
 
-    n_samples, n_teams = len(eta_draws), len(teams_list)
+    n_teams = len(teams_list)
 
     # Map model team names to integer IDs for vectorized indexing.
     t_to_idx = {name: i for i, name in enumerate(teams_list)}
     g_indices = np.array([[t_to_idx[t] for t in ts] for ts in groups.values()])
-
-    sample_idx = np.random.choice(n_samples, n_sim)
-    atk, dfn = atk_draws[sample_idx], dfn_draws[sample_idx]
-    et = eta_draws[sample_idx].reshape(-1, 1)
-    rho = rho_draws[sample_idx] if uses_dixon_coles else None
+    schedule = _load_schedule_orientations(df_schedule)
 
     original_stages = [
         "avancou_grupos",
@@ -393,13 +635,13 @@ def simulate_world_cup_2026(
     stats = {f: np.zeros(n_teams) for f in all_stages}
 
     # Attach model IDs to the public schedule so exported match dates stay aligned.
-    name_to_idx = {name: idx for name, idx in t_to_idx.items()}
+    name_to_idx = dict(t_to_idx)
 
     df_schedule["home_id"] = (
-        df_schedule["home_team"].map(TEAM_MAP_PT_TO_EN).map(name_to_idx).astype("Int64")
+        df_schedule["home_team"].map(team_map_pt_to_en).map(name_to_idx).astype("Int64")
     )
     df_schedule["away_id"] = (
-        df_schedule["away_team"].map(TEAM_MAP_PT_TO_EN).map(name_to_idx).astype("Int64")
+        df_schedule["away_team"].map(team_map_pt_to_en).map(name_to_idx).astype("Int64")
     )
 
     date_map = {}
@@ -410,7 +652,7 @@ def simulate_world_cup_2026(
 
     # Group stage: simulate every six-match group schedule.
     match_stats = []
-    num_to_word = {0: "zero", 1: "one", 2: "two", 3: "three", 4: "four"}
+    pair_goals_cache: dict[tuple[str, str], tuple[np.ndarray, np.ndarray]] = {}
 
     pairs = [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)]
     pts, sg, gp = (
@@ -421,8 +663,7 @@ def simulate_world_cup_2026(
 
     for p1, p2 in pairs:
         i1, i2 = g_indices[:, p1], g_indices[:, p2]
-        l1 = np.exp(atk[:, i1] - dfn[:, i2] + et)
-        l2 = np.exp(atk[:, i2] - dfn[:, i1] + et)
+        l1, l2 = _match_lambdas(atk, dfn, i1, i2, et)
         rho_exp = np.repeat(rho[:, None], 12, axis=1) if uses_dixon_coles else None
 
         g1, g2 = simulate_matches(l1, l2, rho_exp, n_sim)
@@ -435,20 +676,23 @@ def simulate_world_cup_2026(
             )
             g1_g, g2_g = g1[:, g], g2[:, g]
 
+            home_en, away_en, sched_group, sched_date = _resolve_fixture_orientation(
+                team1, team2, schedule
+            )
+            if team1 == home_en:
+                hg, ag = g1_g, g2_g
+            else:
+                hg, ag = g2_g, g1_g
+
+            pair_goals_cache[(home_en, away_en)] = (hg, ag)
+
             match_info = {
-                "group": list(groups.keys())[g],
-                "home_team": team1,
-                "away_team": team2,
-                "date": match_date,
-                "home_win": np.mean(g1_g > g2_g) * 100,
-                "draw": np.mean(g1_g == g2_g) * 100,
-                "away_win": 100 - (np.mean(g1_g > g2_g) * 100 + np.mean(g1_g == g2_g) * 100)
+                "group": sched_group or list(groups.keys())[g],
+                "home_team": home_en,
+                "away_team": away_en,
+                "date": sched_date if sched_date is not None else match_date,
+                **_aggregate_match_probs(hg, ag),
             }
-            for i in range(5):
-                for j in range(5):
-                    match_info[f"{num_to_word[i]}_{num_to_word[j]}"] = (
-                        np.mean((g1_g == i) & (g2_g == j)) * 100
-                    )
             match_stats.append(match_info)
 
         pts[:, :, p1] += (g1 > g2) * 3 + (g1 == g2)
@@ -586,12 +830,7 @@ def simulate_world_cup_2026(
     def play_round(competitors):
         n = competitors.shape[1] // 2
         a, b = competitors[:, 0::2], competitors[:, 1::2]
-        la = np.exp(
-            atk[np.arange(n_sim)[:, None], a] - dfn[np.arange(n_sim)[:, None], b] + et
-        )
-        lb = np.exp(
-            atk[np.arange(n_sim)[:, None], b] - dfn[np.arange(n_sim)[:, None], a] + et
-        )
+        la, lb = _match_lambdas(atk, dfn, a, b, et)
         rho_exp = np.repeat(rho[:, None], n, axis=1) if uses_dixon_coles else None
 
         ga, gb = simulate_matches(la, lb, rho_exp, n_sim)
@@ -618,7 +857,9 @@ def simulate_world_cup_2026(
     df_summary = (df_summary / n_sim * 100).round(2)
     df_summary.insert(0, "team", teams_list)
 
-    teams_in_groups = [time for team_group_list in groups.values() for time in team_group_list]
+    teams_in_groups = [
+        time for team_group_list in groups.values() for time in team_group_list
+    ]
     df_summary = df_summary[df_summary["team"].isin(teams_in_groups)]
     df_summary = df_summary.sort_values(by="champion", ascending=False).reset_index(
         drop=True
@@ -651,11 +892,22 @@ def simulate_world_cup_2026(
     df_csv.to_csv("data/summary.csv", index=False)
     df_csv.to_csv("docs/csv/previsoes/summary.csv", index=False)
 
-    df_matches = pd.DataFrame(match_stats).round(4)
+    df_matches = pd.DataFrame(match_stats)
     df_matches["home_team"] = df_matches["home_team"].replace(TEAM_MAP_EN_TO_PT)
     df_matches["away_team"] = df_matches["away_team"].replace(TEAM_MAP_EN_TO_PT)
-    df_matches.to_csv("data/probs_fase_de_grupos.csv", index=False)
-    df_matches.to_csv("docs/csv/previsoes/partidas.csv", index=False)
+
+    wc_teams = [team for group_teams in groups.values() for team in group_teams]
+    export_stan_match_csvs(
+        teams_list,
+        wc_teams,
+        df_matches,
+        atk,
+        dfn,
+        rho,
+        et,
+        n_sim=n_sim,
+        pair_goals_cache=pair_goals_cache,
+    )
 
     # Deterministic display bracket based on the most likely advancement paths.
 
@@ -663,7 +915,7 @@ def simulate_world_cup_2026(
     group_runners_up = {}
     third_places = []
 
-    for g_idx, (g_name, g_teams) in enumerate(groups.items()):
+    for _g_idx, (g_name, g_teams) in enumerate(groups.items()):
         g_df = df_summary[df_summary["team"].isin(g_teams)].copy()
 
         first = g_df.sort_values(by="group_first_place", ascending=False).iloc[0][
@@ -698,8 +950,8 @@ def simulate_world_cup_2026(
         "K": ["D", "E", "I", "J", "L"],
     }
 
-    assigned_thirds = {k: "TBD" for k in valid_groups_for_1st.keys()}
-    slots = list(valid_groups_for_1st.keys())
+    assigned_thirds = dict.fromkeys(valid_groups_for_1st, "TBD")
+    slots = list(valid_groups_for_1st)
     allocation = {}
 
     def allocate_thirds(index, available_thirds):
@@ -835,8 +1087,9 @@ def simulate_world_cup_2026(
                 loser = t2 if winner == t1 else t1
             else:
                 idx1, idx2 = t_to_idx[t1], t_to_idx[t2]
-                la = np.exp(atk[:, idx1] - dfn[:, idx2] + et[:, 0]).reshape(-1, 1)
-                lb = np.exp(atk[:, idx2] - dfn[:, idx1] + et[:, 0]).reshape(-1, 1)
+                la, lb = _match_lambdas(atk, dfn, idx1, idx2, et)
+                la = la.reshape(-1, 1)
+                lb = lb.reshape(-1, 1)
                 rho_exp = rho.reshape(-1, 1) if uses_dixon_coles else None
 
                 ga, gb = simulate_matches(la, lb, rho_exp, n_sim)
@@ -846,7 +1099,8 @@ def simulate_world_cup_2026(
                 prob_draw = np.mean(ga == gb) * 100
                 prob_t2 = np.mean(gb > ga) * 100
 
-                # NEW: Total chance to advance = Win in 90 mins + (Draw in 90 mins * 50% chance in ET/Pens)
+                # Chance de avançar = vitória no tempo normal
+                # + (empate no tempo normal × 50% em prorrogação/pênaltis)
                 prob_adv_t1 = prob_t1 + (prob_draw * 0.5)
                 prob_adv_t2 = 100 - prob_adv_t1
 
@@ -883,7 +1137,11 @@ def simulate_world_cup_2026(
             )
         elif round_label not in ["Semifinal", "3º Lugar", "Final"]:
             final_rounds[i + 1][2].extend(
-                list(zip(next_matches_teams[0::2], next_matches_teams[1::2]))
+                list(
+                    zip(
+                        next_matches_teams[0::2], next_matches_teams[1::2], strict=False
+                    )
+                )
             )
 
     bracket_df = (

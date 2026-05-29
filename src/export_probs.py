@@ -287,7 +287,6 @@ def export_phase_probs(
     if df["group"].values[0] == "":
         df["group"] = PHASE_LABELS[phase][1]
 
-    save_matches_to_prod(df)
     output_path = DATA_DIR / f"probs_{label}.csv"
     df.to_csv(output_path, index=False)
     return output_path
@@ -512,16 +511,10 @@ def main() -> None:
     output_path = DATA_DIR / filename
     df.to_csv(output_path, index=False)
     print(f"Arquivo salvo em: {output_path}")
-
-    save_matches_to_prod(df)
-    partidas_path = Path("docs/csv/previsoes/partidas.csv")
-    print(f"Arquivo salvo em: {partidas_path}")
-
-    print("Gerando CSV com todos os confrontos possíveis...")
-    df_all = build_all_matchups_dataframe(wc, max_goals=args.max_goals)
-    all_matchups_path = Path("docs/csv/previsoes/all_matchups.csv")
-    df_all.to_csv(all_matchups_path, index=False)
-    print(f"Arquivo salvo em: {all_matchups_path} ({len(df_all)} confrontos)")
+    print(
+        "Nota: partidas.csv e all_matchups.csv são gerados pelo pipeline Stan "
+        "(uv run python simulations/sim_2026.py)."
+    )
 
 
 if __name__ == "__main__":

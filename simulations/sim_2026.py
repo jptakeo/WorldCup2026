@@ -1,19 +1,10 @@
 import json
 import os
 
-import numpy as np
-
 from src.dashboard import generate_dashboard
 from src.data_prep import prepare_cycle_data
 from src.export_probs import update_html_from_summary
-from src.simulate import simulate_world_cup_2026
-
-
-def load_draws(path):
-    """Carrega os draws gerados pelo Stan e salvos no treino."""
-    loaded = np.load(path)
-    return {key: loaded[key] for key in loaded.files}
-
+from src.simulate import load_draws, simulate_world_cup_2026
 
 if __name__ == "__main__":
     os.makedirs("data/outputs/results", exist_ok=True)
@@ -53,12 +44,12 @@ if __name__ == "__main__":
             {"team": teams_26[i], "probability": probs_2026[stage][i]}
             for i in range(len(teams_26))
         ]
-        for stage in probs_2026.keys()
+        for stage in probs_2026
     }
     with open("data/outputs/results/sim_results_2026.json", "w") as f:
         json.dump(json_output_26, f)
 
-    participants_26 = set(team for teams in groups_2026.values() for team in teams)
+    participants_26 = {team for teams in groups_2026.values() for team in teams}
     stage_labels_26 = {
         "avancou_grupos": "Fase de Grupos",
         "round_of_32": "16 Avos",

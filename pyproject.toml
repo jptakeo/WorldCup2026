@@ -61,6 +61,7 @@ select = [
 
 [tool.ruff.lint.per-file-ignores]
 "src/simulate.py" = ["E402"]
+"src/freq_model/simulate.py" = ["E402"]
 "src/fetch_kaggle_dataset.py" = ["E402"]
 
 [tool.ruff.lint.isort]
