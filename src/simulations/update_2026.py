@@ -51,6 +51,7 @@ def train_and_save(
 if __name__ == "__main__":
     print("\n=== PREPARANDO DADOS ===\n")
 
+    stage = ""
     old_results = pd.read_csv("data/raw/results.csv")
     actual_results = pd.read_csv("data/world_cup_results.csv")
 
@@ -360,4 +361,11 @@ if __name__ == "__main__":
             df_matches.to_csv(f"data/probs_{stage}.csv", index=False)
             df_matches.to_csv(f"docs/csv/previsoes/probs_{stage}.csv", index=False)
 
-    update_html_from_summary()
+    _stage_to_version = {
+        "round_of_32": "Antes do 16-Avos",
+        "round_of_16": "Antes das Oitavas",
+        "quarter_final": "Antes das Quartas",
+        "semi_final": "Antes da Semi",
+        "final": "Antes da Final",
+    }
+    update_html_from_summary(version=_stage_to_version.get(stage, "Antes da Copa"))

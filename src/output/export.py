@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import json
-import re
 from collections import defaultdict
 from itertools import combinations
 from pathlib import Path
@@ -402,16 +400,18 @@ def get_flag(team_name):
 
 
 def update_html_from_summary(
-    csv_file="data/summary.csv", html_file="docs/chances.html"
+    csv_file="data/summary.csv",
+    tabela_csv="docs/csv/previsoes/tabela_chances.csv",
+    version="Antes da Copa",
 ):
-    data = []
-
+    new_rows = []
     with open(csv_file, encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
             team = row["team"]
-            data.append(
+            new_rows.append(
                 {
+                    "versão": version,
                     "pos": int(row["position"]),
                     "team": team,
                     "flag": get_flag(team),
@@ -424,38 +424,37 @@ def update_html_from_summary(
                 }
             )
 
-    js_data = "                        const data = [\n"
-    rows = []
-    for d in data:
-        obj = {
-            "pos": d["pos"],
-            "team": d["team"],
-            "flag": d["flag"],
-            "champ": d["champ"],
-            "final": d["final"],
-            "semi": d["semi"],
-            "qf": d["qf"],
-            "r16": d["r16"],
-            "r32": d["r32"],
-        }
+    tabela_path = Path(tabela_csv)
+    fieldnames = [
+        "versão",
+        "pos",
+        "team",
+        "flag",
+        "champ",
+        "final",
+        "semi",
+        "qf",
+        "r16",
+        "r32",
+    ]
 
-        rows.append(" " * 28 + json.dumps(obj, ensure_ascii=False))
+    existing_rows = []
+    if tabela_path.exists():
+        with open(tabela_path, encoding="utf-8", newline="") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                v = row.get("versão") or row.get("versao") or row.get("version", "")
+                if v != version:
+                    existing_rows.append({k: row.get(k, "") for k in fieldnames})
 
-    js_data += ",\n".join(rows)
-    js_data += "\n                        ];"
+    combined = existing_rows + new_rows
+    tabela_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(tabela_path, "w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(combined)
 
-    with open(html_file, encoding="utf-8") as f:
-        html_content = f.read()
-
-    pattern = r"(// -- DATA START --).*?(// -- DATA END --)"
-    replacement = f"\\1\n{js_data}\n                        \\2"
-
-    new_html = re.sub(pattern, replacement, html_content, flags=re.DOTALL)
-
-    with open(html_file, "w", encoding="utf-8") as f:
-        f.write(new_html)
-
-    print("HTML atualizado com sucesso.")
+    print(f"tabela_chances.csv atualizado com versão '{version}'.")
 
 
 def main() -> None:
