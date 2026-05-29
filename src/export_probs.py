@@ -10,6 +10,7 @@ from collections import defaultdict
 from itertools import combinations
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 from src.constants import (
@@ -99,6 +100,50 @@ def get_phase_matchups(
 
     sfw = _get_ko_winners(sf, known)
     return [(sfw[0], sfw[1], "")]
+
+
+def build_all_matchups_dataframe(
+    wc,
+    max_goals=4,
+):
+    """Build a DataFrame with score probabilities for every ordered pair of
+    World Cup teams (48*47 = 2256 rows), all treated as neutral-venue.
+    Both A vs B and B vs A are included."""
+
+    all_teams = wc.all_teams
+    rows = []
+
+    for home_en, away_en in combinations(all_teams, 2):
+        prob = wc.params.match_probs(
+            home_en, away_en, neutral=True, max_goals=max_goals
+        )
+
+        for p, t_home, t_away in [(prob, home_en, away_en), (prob.T, away_en, home_en)]:
+            home_pt = TEAM_MAP_EN_TO_PT.get(t_home, t_home)
+            away_pt = TEAM_MAP_EN_TO_PT.get(t_away, t_away)
+
+            home_win = float(np.tril(p, k=-1).sum()) * 100
+            draw = float(np.trace(p)) * 100
+            away_win = float(np.triu(p, k=1).sum()) * 100
+
+            row = {
+                "home_team": home_pt,
+                "away_team": away_pt,
+                "home_win": round(home_win, 4),
+                "draw": round(draw, 4),
+                "away_win": round(away_win, 4),
+            }
+
+            for i in range(p.shape[0]):
+                for j in range(p.shape[1]):
+                    if (i, j) in SCORE_MAP:
+                        row[SCORE_MAP[(i, j)]] = round(100 * p[i, j], 4)
+
+            rows.append(row)
+
+    df = pd.DataFrame(rows)
+    df = df[["home_team", "away_team", "home_win", "draw", "away_win"] + ALL_SCORE_COLS]
+    return df
 
 
 def build_prob_dataframe(
@@ -305,18 +350,20 @@ def build_stage_dataframe(
 def get_flags():
     flags = {}
     try:
-        with open('docs/images/flags/flag.csv', 'r', encoding='utf-8') as f:
+        with open("docs/images/flags/flag.csv", encoding="utf-8") as f:
             reader = csv.reader(f)
             header = next(reader)
-            col_pt = header.index([h for h in header if 'country_pt' in h][0])
-            col_svg = header.index([h for h in header if 'svg_github' in h][0])
+            col_pt = header.index([h for h in header if "country_pt" in h][0])
+            col_svg = header.index([h for h in header if "svg_github" in h][0])
             for row in reader:
                 flags[row[col_pt].strip()] = row[col_svg].strip()
     except Exception as e:
         print("Could not load flags", e)
     return flags
 
+
 FLAGS = get_flags()
+
 
 def get_flag(team_name):
     return FLAGS.get(team_name, "🏳️")
@@ -430,6 +477,12 @@ def main() -> None:
     output_path = DATA_DIR / filename
     df.to_csv(output_path, index=False)
     print(f"Arquivo salvo em: {output_path}")
+
+    print("Gerando CSV com todos os confrontos possíveis...")
+    df_all = build_all_matchups_dataframe(wc, max_goals=args.max_goals)
+    all_matchups_path = DATA_DIR / "all_matchups.csv"
+    df_all.to_csv(all_matchups_path, index=False)
+    print(f"Arquivo salvo em: {all_matchups_path} ({len(df_all)} confrontos)")
 
 
 if __name__ == "__main__":
