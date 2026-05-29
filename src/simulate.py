@@ -1,3 +1,4 @@
+import gc
 from itertools import combinations
 from pathlib import Path
 
@@ -233,13 +234,17 @@ def export_stan_match_csvs(
     n_sim: int,
     pair_goals_cache: dict[tuple[str, str], tuple[np.ndarray, np.ndarray]]
     | None = None,
+    export_all_matchups: bool = True,
     partidas_path: str | Path = "docs/csv/previsoes/partidas.csv",
     all_matchups_path: str | Path = "docs/csv/previsoes/all_matchups.csv",
 ) -> None:
-    """Write ``partidas.csv`` and ``all_matchups.csv`` from Stan Monte Carlo draws."""
+    """Write ``partidas.csv`` and optionally ``all_matchups.csv`` from Stan draws."""
     partidas_out = partidas_df[PARTIDAS_EXPORT_COLS].round(4)
     partidas_out.to_csv(partidas_path, index=False)
     partidas_out.to_csv("data/probs_fase_de_grupos.csv", index=False)
+
+    if not export_all_matchups:
+        return
 
     print("Gerando all_matchups.csv (Monte Carlo Stan)...")
     all_df = build_all_matchups_dataframe_mc(
@@ -254,6 +259,8 @@ def export_stan_match_csvs(
     )
     all_df.to_csv(all_matchups_path, index=False)
     print(f"  Salvo em: {all_matchups_path} ({len(all_df)} confrontos)")
+    del all_df
+    gc.collect()
 
 
 def simulate_matches(mu1, mu2, rho_draws=None, n_sim=100000, max_goals=10):
@@ -606,6 +613,7 @@ def simulate_world_cup_2026(
     team_map_en_to_pt=TEAM_MAP_EN_TO_PT,
     n_sim=100_000,
     seed=None,
+    export_all_matchups: bool = True,
 ):
     uses_dixon_coles = "rho" in post_draws
     atk, dfn, rho, et = _sample_posterior(post_draws, n_sim, seed=seed)
@@ -907,6 +915,7 @@ def simulate_world_cup_2026(
         et,
         n_sim=n_sim,
         pair_goals_cache=pair_goals_cache,
+        export_all_matchups=export_all_matchups,
     )
 
     # Deterministic display bracket based on the most likely advancement paths.

@@ -1,0 +1,76 @@
+"""Export all_matchups.csv using the same Stan seed as sim_2026."""
+
+from pathlib import Path
+
+import pandas as pd
+
+from src.constants import ALL_MATCHUPS_EXPORT_COLS, PARTIDAS_EXPORT_COLS
+from src.data_prep import prepare_cycle_data
+from src.simulate import (
+    DEFAULT_MATCH_SIMS,
+    _sample_posterior,
+    build_all_matchups_dataframe_mc,
+    load_draws,
+)
+
+DEFAULT_SIM_SEED = 42
+PARTIDAS_PATH = Path("docs/csv/previsoes/partidas.csv")
+
+GROUPS_2026 = {
+    "A": ["Mexico", "South Africa", "South Korea", "Czech Republic"],
+    "B": ["Canada", "Bosnia and Herzegovina", "Qatar", "Switzerland"],
+    "C": ["Brazil", "Morocco", "Haiti", "Scotland"],
+    "D": ["United States", "Paraguay", "Australia", "Turkey"],
+    "E": ["Germany", "Curaçao", "Ivory Coast", "Ecuador"],
+    "F": ["Netherlands", "Japan", "Sweden", "Tunisia"],
+    "G": ["Belgium", "Egypt", "Iran", "New Zealand"],
+    "H": ["Spain", "Cape Verde", "Saudi Arabia", "Uruguay"],
+    "I": ["France", "Senegal", "Iraq", "Norway"],
+    "J": ["Argentina", "Algeria", "Austria", "Jordan"],
+    "K": ["Portugal", "DR Congo", "Uzbekistan", "Colombia"],
+    "L": ["England", "Croatia", "Ghana", "Panama"],
+}
+
+if __name__ == "__main__":
+    _, teams_26, _ = prepare_cycle_data(
+        "data/raw/results.csv", "2022-11-19", apply_decay=True
+    )
+    draws = load_draws("data/outputs/models/draws_2026_n_poisson_ranking.npz")
+    atk, dfn, rho, et = _sample_posterior(
+        draws, DEFAULT_MATCH_SIMS, seed=DEFAULT_SIM_SEED
+    )
+    wc_teams = [team for teams in GROUPS_2026.values() for team in teams]
+
+    print("Gerando all_matchups.csv (Monte Carlo Stan)...")
+    df_all = build_all_matchups_dataframe_mc(
+        teams_26,
+        wc_teams,
+        atk,
+        dfn,
+        rho,
+        et,
+        n_sim=DEFAULT_MATCH_SIMS,
+    )
+    output = "docs/csv/previsoes/all_matchups.csv"
+    if PARTIDAS_PATH.exists():
+        partidas = pd.read_csv(PARTIDAS_PATH)
+        prob_cols = [
+            c
+            for c in PARTIDAS_EXPORT_COLS
+            if c not in ("group", "home_team", "away_team", "date")
+        ]
+        merged = df_all.merge(
+            partidas[["home_team", "away_team"] + prob_cols],
+            on=["home_team", "away_team"],
+            how="left",
+            suffixes=("_all", "_partidas"),
+        )
+        for col in prob_cols:
+            partidas_col = f"{col}_partidas"
+            if partidas_col in merged.columns:
+                merged[col] = merged[partidas_col].combine_first(merged[f"{col}_all"])
+                merged = merged.drop(columns=[f"{col}_all", partidas_col])
+        df_all = merged[ALL_MATCHUPS_EXPORT_COLS]
+
+    df_all.to_csv(output, index=False)
+    print(f"  Salvo em: {output} ({len(df_all)} confrontos)")

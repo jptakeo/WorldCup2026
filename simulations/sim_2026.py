@@ -6,6 +6,8 @@ from src.data_prep import prepare_cycle_data
 from src.export_probs import update_html_from_summary
 from src.simulate import load_draws, simulate_world_cup_2026
 
+DEFAULT_SIM_SEED = 42
+
 if __name__ == "__main__":
     os.makedirs("data/outputs/results", exist_ok=True)
     os.makedirs("data/outputs/dashboards", exist_ok=True)
@@ -36,7 +38,14 @@ if __name__ == "__main__":
     print(f"Carregando: {model_path}")
     draws_26 = load_draws(model_path)
 
-    probs_2026 = simulate_world_cup_2026(draws_26, teams_26, groups_2026, n_sim=100_000)
+    probs_2026 = simulate_world_cup_2026(
+        draws_26,
+        teams_26,
+        groups_2026,
+        n_sim=100_000,
+        seed=DEFAULT_SIM_SEED,
+        export_all_matchups=False,
+    )
 
     # Dashboard generator expects probabilities grouped by stage.
     json_output_26 = {
@@ -72,3 +81,12 @@ if __name__ == "__main__":
     print("Sucesso! Dashboard gerado em data/outputs/dashboards/dashboard_2026.html")
 
     update_html_from_summary()
+
+    print("\n=== EXPORTANDO all_matchups.csv ===\n")
+    import subprocess
+    import sys
+
+    subprocess.run(
+        [sys.executable, "-m", "simulations.export_all_matchups"],
+        check=True,
+    )
