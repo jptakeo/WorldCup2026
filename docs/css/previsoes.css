@@ -86,12 +86,12 @@ border-bottom: 3px solid #f0c040;
 .dh-top {
 display: flex;
 align-items: center;
-gap: 10px;
-padding-bottom: 11px;
+gap: 15px;
+padding-bottom: 12px;
 }
 
 /* Ícone exibido no cabeçalho. (logo FGV EMAP) */
-.dh-icon { font-size: 20px; }
+.dh-icon { font-size: 20px}
 
 /* Título do dashboard dentro do cabeçalho. (COPA DO MUNDO 2026) */
 .dh-ti {
@@ -924,6 +924,7 @@ PROBABILIDADES DE PREVISÃO
     .dh-top {
         padding-left: 8px;
         padding-right: 8px;
+        gap: 10px;
     }
 
     .dash {
@@ -1091,7 +1092,7 @@ STICKERS (FIGURINHAS) E SEÇÕES
     font-size: 16px;
     font-weight: 800;
     color: var(--text-blue);
-    margin: 30px 0 15px;
+    margin: 0px 0 15px;
     text-transform: uppercase;
     letter-spacing: 1px;
     border-bottom: 2px solid var(--soft-border);
@@ -1556,3 +1557,179 @@ STICKER MODAL / EXPANDED VIEW
     opacity: 1;
     bottom: 40px;
 }
+
+/* ════════════════════════════════════════
+ABAS PRINCIPAIS DE PREVISÕES
+════════════════════════════════════════ */
+.chances-view-panel {
+    display: none;
+}
+
+.chances-view-panel.active {
+    display: block;
+}
+
+/* ════════════════════════════════════════
+SIMULADOR DE CONFRONTO
+════════════════════════════════════════ */
+.simulator-dash {
+    font-family: 'Lato', sans-serif;
+}
+
+.simulator-panel {
+    background: #ffffff;
+    border-radius: 10px;
+    min-height: 520px;
+}
+
+
+.simulator-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 42px minmax(0, 1fr);
+    align-items: end;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+
+.simulator-field {
+    display: grid;
+    gap: 7px;
+}
+
+.simulator-field span {
+    color: var(--text-blue);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.simulator-field input {
+    width: 100%;
+    height: 38px;
+    border: 1px solid #cfd9ea;
+    border-radius: 9px;
+    padding: 0 12px;
+    background: #ffffff;
+    color: var(--text-blue);
+    font-size: 13px;
+    font-weight: 700;
+    outline: none;
+}
+
+.simulator-field input:focus {
+    border-color: #1f6fb2;
+}
+
+.simulator-versus {
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-blue);
+    font-size: 24px;
+    font-weight: 900;
+}
+
+.simulator-feedback {
+    min-height: 22px;
+    color: #6a7f99;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.simulator-feedback[data-type="success"] {
+    color: var(--primary-blue);
+}
+
+.simulator-feedback[data-type="error"] {
+    color: #b64040;
+}
+
+.simulator-result {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 410px;
+    padding: 0px 0 8px;
+    overflow: visible;
+}
+
+.simulator-result .match-card.sticker-wrapper,
+.simulator-result .match-card.sticker-wrapper:hover {
+    transform: none;
+    margin-right: 0;
+    z-index: 1;
+}
+
+.simulator-result .match-card.sticker-wrapper:hover + .match-card.sticker-wrapper {
+    transform: none;
+}
+
+.simulator-content-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 285px;
+    gap: 100px;
+    align-items: start;
+}
+
+.simulator-main-area {
+    min-width: 0;
+}
+
+.simulator-content-row #barra-lateral-direita {
+    float: none;
+    width: 100%;
+    max-width: none;
+    overflow: visible;
+}
+
+.simulator-sidebar .menu-caixa > ul {
+    margin-bottom: 0;
+}
+
+
+#simulado-view #barra-lateral-direita .menu-caixa ul li a,
+#simulado-view #barra-lateral-direita .menu-caixa ul li a:visited {
+    color: #233b65;
+}
+
+#simulado-view #barra-lateral-direita .menu-caixa ul li a:hover {
+    color: #1f4e8c;
+}
+
+@media (max-width: 900px) {
+    .simulator-content-row {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .simulator-content-row #barra-lateral-direita {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .simulator-panel {
+        padding: 18px 14px;
+    }
+
+    .simulator-intro {
+        display: block;
+    }
+
+    .simulator-intro p {
+        margin-top: 10px;
+    }
+
+    .simulator-controls {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .simulator-versus {
+        height: 24px;
+    }
+}
+

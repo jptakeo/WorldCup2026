@@ -82,49 +82,121 @@
             <!-- Conteudo principal -->
             <div class="container">
                 <div id="conteudo" style="width: 100%; max-width: 1200px; margin: 0 auto;">
-                    <div class="dash">
-                        <!-- ── HEADER ── -->
-                        <div class="dh">
-                            <div class="dh-top">
-                                <div class="dh-icon">
-                                    <img alt="Logo" src="images/logo-rodape.png"/>
-                                </div>
-                                <div>
-                                    <div class="dh-ti">Copa do Mundo 2026 — Nossa Projeção Estatística</div>
-                                    <div class="dh-su">EUA · Canadá · México  |  11 Jun - 19 Jul 2026  |  48 seleções · 12 grupos</div>
-                                </div>
-                                <!--
-                                <div class="dh-badge">
-                                    <div class="dh-bl">Campeão projetado</div>
-                                    <div class="dh-bv">Espanha</div>
-                                </div> -->
-                            </div>
-                            <!-- Tab navigation -->
-                            <div class="tabs">
-                                <button class="tab active" onclick="switchTab('grupos',this)">⚽ Fase de Grupos</button>
-                                <button class="tab" onclick="switchTab('r32',this)">⚔️ 16-avos</button>
-                                <button class="tab" onclick="switchTab('oitavas',this)">⚔️ Oitavas</button>
-                                <button class="tab" onclick="switchTab('quartas',this)">⚔️ Quartas</button>
-                                <button class="tab" onclick="switchTab('semis',this)">🏅 Semi</button>
-                                <button class="tab" onclick="switchTab('final',this)">🏆 Final</button>
-                            </div>
-                        </div>
-                        <!-- ── BRACKET PANEL ── -->
 
-                        <!-- ── GROUP STAGE PANEL ── -->
-                        <div class="panel active" id="panel-grupos" data-groups-source="previsoes">
-                        <div class="g-grid" id="gg"></div>
+                    <div aria-label="Visualização das previsões" class="chances-section-tabs" role="tablist">
+                        <button aria-selected="true" class="chances-section-tab active" data-chances-view="confrontos" type="button">
+                            Confrontos Definidos
+                        </button>
+                        <button aria-selected="false" class="chances-section-tab" data-chances-view="simulado" type="button">
+                            Simule um Confronto
+                        </button>
+                    </div>
+
+                    <div class="chances-view-panel active" id="confrontos-view">
+                        <div class="dash">
+                            <!-- ── HEADER ── -->
+                            <div class="dh">
+                                <div class="dh-top">
+                                    <div class="dh-icon">
+                                        <img alt="Logo" src="images/logo-rodape.png"/>
+                                    </div>
+                                    <div>
+                                        <div class="dh-ti">Copa do Mundo 2026 — Nossa Projeção Estatística</div>
+                                        <div class="dh-su">EUA · Canadá · México  |  11 Jun - 19 Jul 2026  |  48 seleções · 12 grupos</div>
+                                    </div>
+                                    <!--
+                                    <div class="dh-badge">
+                                        <div class="dh-bl">Campeão projetado</div>
+                                        <div class="dh-bv">Espanha</div>
+                                    </div> -->
+                                </div>
+                                <!-- Tab navigation -->
+                                <div class="tabs">
+                                    <button class="tab active" onclick="switchTab('grupos',this)">⚽ Fase de Grupos</button>
+                                    <button class="tab" onclick="switchTab('r32',this)">⚔️ 16-avos</button>
+                                    <button class="tab" onclick="switchTab('oitavas',this)">⚔️ Oitavas</button>
+                                    <button class="tab" onclick="switchTab('quartas',this)">⚔️ Quartas</button>
+                                    <button class="tab" onclick="switchTab('semis',this)">🏅 Semi</button>
+                                    <button class="tab" onclick="switchTab('final',this)">🏆 Final</button>
+                                </div>
+                            </div>
+                            <!-- ── BRACKET PANEL ── -->
+
+                            <!-- ── GROUP STAGE PANEL ── -->
+                            <div class="panel active" id="panel-grupos" data-groups-source="previsoes">
+                            <div class="g-grid" id="gg"></div>
+                            </div>
+                            <!-- ── R 32 PANEL ── -->
+                            <div class="panel" id="panel-r32"></div>
+                            <!-- ── OITAVAS PANEL ── -->
+                            <div class="panel" id="panel-oitavas"></div>
+                            <!-- ── QUARTAS PANEL ── -->
+                            <div class="panel" id="panel-quartas"></div>
+                            <!-- ── SEMI-FINAIS PANEL ── -->
+                            <div class="panel" id="panel-semis"></div>
+                            <!-- ── FINAL PANEL ── -->
+                            <div class="panel" id="panel-final"></div>
                         </div>
-                        <!-- ── R 32 PANEL ── -->
-                        <div class="panel" id="panel-r32"></div>
-                        <!-- ── OITAVAS PANEL ── -->
-                        <div class="panel" id="panel-oitavas"></div>
-                        <!-- ── QUARTAS PANEL ── -->
-                        <div class="panel" id="panel-quartas"></div>
-                        <!-- ── SEMI-FINAIS PANEL ── -->
-                        <div class="panel" id="panel-semis"></div>
-                        <!-- ── FINAL PANEL ── -->
-                        <div class="panel" id="panel-final"></div>
+                    </div>
+                    <div class="chances-view-panel" id="simulado-view">
+                        <div class="dash simulator-dash">
+                            <section class="simulator-panel" aria-label="Simulador de confronto">
+                                <div class="texto font-16" style="margin-bottom: 16px; font-family: 'Lato', sans-serif;">
+                                    Escolha duas seleções diferentes para gerar as previsões do confronto.
+                                </div>
+
+                                <div class="simulator-content-row">
+                                    <div class="simulator-main-area">
+                                        <div class="simulator-controls">
+                                            <label class="simulator-field" for="sim-home-team">
+                                                <span>Seleção 1</span>
+                                                <input id="sim-home-team" list="sim-countries-list" placeholder="Digite ou selecione..." type="text" autocomplete="off"/>
+                                            </label>
+
+                                            <div class="simulator-versus">×</div>
+
+                                            <label class="simulator-field" for="sim-away-team">
+                                                <span>Seleção 2</span>
+                                                <input id="sim-away-team" list="sim-countries-list" placeholder="Digite ou selecione..." type="text" autocomplete="off"/>
+                                            </label>
+
+                                            <datalist id="sim-countries-list"></datalist>
+                                        </div>
+
+                                        <div class="simulator-feedback" id="simulator-message">
+                                        </div>
+
+                                        <div class="simulator-result" id="simulator-result" aria-live="polite"></div>
+                                    </div>
+
+                                    <aside id="barra-lateral-direita" class="simulator-sidebar">
+                                        <div class="menu-caixa">
+                                            <div class="linhas-caixa menu-caixa">
+                                                <div class="titulo-menu">Informações</div>
+                                                <ul>
+                                                    <li><a href="https://github.com/BrazilianFootball/WorldCup2026" target="_blank">Repositório</a></li>
+                                                    <li><a href="https://www.kaggle.com/datasets/martj42/international-football-results-from-1872-to-2017" target="_blank">Base de Dados</a></li>
+                                                    <li><a href="https://github.com/BrazilianFootball/WorldCup2026/tree/main/stan_models" target="_blank">Implementação</a></li>
+                                                    <li><a href="https://www18.fgv.br/emap/copa-2022/chances_grupos.html" target="_blank">Chances da Copa de 2022</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="menu-caixa margin-top-40">
+                                            <div class="linhas-caixa menu-caixa">
+                                                <div class="titulo-menu">Explore Outras Ferramentas</div>
+                                                <ul>
+                                                    <li><a href="calendario.html" target="_blank">Calendário da Copa</a></li>
+                                                    <li><a href="https://boleco42.web.app" target="_blank">Bolão Entre Amigos</a></li>
+                                                    <li><a href="album.html" target="_blank">Simulador p/ Álbum da Copa</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </aside>
+                                </div>
+
+                            </section>
+                        </div>
                     </div>
                 </div>
             </div>

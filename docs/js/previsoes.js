@@ -24,6 +24,7 @@ function makePlaceholder(panelId, stageLabel) {
     `;
 }
 
+
 // Insere o placeholder no painel informado, se ele existir na página.
 function renderPlaceholder(panelId, stageLabel) {
     const panel = document.getElementById(panelId);
@@ -34,6 +35,7 @@ function renderPlaceholder(panelId, stageLabel) {
 //const GROUPS_PROBS = 'https://raw.githubusercontent.com/BrazilianFootball/WorldCup2026/main/data/summary.csv';
 const GROUPS_PROBS = 'csv/previsoes/summary.csv';
 const MATCHES_CSV_URL = 'csv/previsoes/partidas.csv';
+const SIMULATOR_CSV_URL = 'csv/previsoes/all_matchups.csv';
 const FLAGS_CSV_URL = 'images/flags/flag.csv';
 const SCORE_STAGES = [
     {panelId: 'panel-r32',     groupValue: 'R32',       showFilters: true,  gridClass: 'scorecards-grid'},
@@ -1339,6 +1341,160 @@ function applyScoreFilters(panel) {
     });
 })();
 
+
+
+// ════════════════════════════════════════
+// SIMULADOR DE CONFRONTOS
+// Uses csv/confrontos.csv
+// ════════════════════════════════════════
+(function () {
+    let simulatorRows = [];
+    let simulatorCountries = [];
+
+    function resolveSimulatorCountry(value) {
+        const normalized = normalizeName(value);
+        if (!normalized) return '';
+        return simulatorCountries.find(country => normalizeName(country) === normalized) || '';
+    }
+
+    function getSimulatorCountries(rows) {
+        return [...new Set(rows
+            .flatMap(row => [getHomeCountry(row), getAwayCountry(row)])
+            .map(country => String(country || '').trim())
+            .filter(Boolean)
+        )].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+    }
+
+    function findSimulatorRow(homeCountry, awayCountry) {
+        const homeKey = normalizeName(homeCountry);
+        const awayKey = normalizeName(awayCountry);
+
+        const exact = simulatorRows.find(row =>
+            normalizeName(getHomeCountry(row)) === homeKey &&
+            normalizeName(getAwayCountry(row)) === awayKey
+        );
+
+        if (exact) {
+            return {
+                ...exact,
+                home_team: homeCountry,
+                away_team: awayCountry,
+                group: 'Simulação',
+                date: ''
+            };
+        }
+
+        const reversed = simulatorRows.find(row =>
+            normalizeName(getHomeCountry(row)) === awayKey &&
+            normalizeName(getAwayCountry(row)) === homeKey
+        );
+
+        if (!reversed) return null;
+
+        const swapped = {
+            ...reversed,
+            home_team: homeCountry,
+            away_team: awayCountry,
+            home_win: reversed.away_win,
+            away_win: reversed.home_win,
+            draw: reversed.draw,
+            group: 'Simulação',
+            date: ''
+        };
+
+        SCORES.forEach(({ h, a, key }) => {
+            swapped[key] = reversed[scoreKey(a, h)] ?? reversed[key];
+        });
+
+        return swapped;
+    }
+
+    function setSimulatorMessage(message, type = '') {
+        const messageEl = document.getElementById('simulator-message');
+        if (!messageEl) return;
+        messageEl.textContent = message;
+        messageEl.dataset.type = type;
+    }
+
+    async function renderSimulatorSticker() {
+        const homeInput = document.getElementById('sim-home-team');
+        const awayInput = document.getElementById('sim-away-team');
+        const result = document.getElementById('simulator-result');
+        if (!homeInput || !awayInput || !result) return;
+
+        const homeCountry = resolveSimulatorCountry(homeInput.value);
+        const awayCountry = resolveSimulatorCountry(awayInput.value);
+
+        result.innerHTML = '';
+
+        if (!homeInput.value.trim() && !awayInput.value.trim()) {
+            setSimulatorMessage('');
+            return;
+        }
+
+        if (!homeCountry || !awayCountry) {
+            setSimulatorMessage('Digite ou selecione duas seleções válidas.');
+            return;
+        }
+
+        if (normalizeName(homeCountry) === normalizeName(awayCountry)) {
+            setSimulatorMessage('Escolha duas seleções diferentes.');
+            return;
+        }
+
+        const row = findSimulatorRow(homeCountry, awayCountry);
+        if (!row) {
+            setSimulatorMessage('Não encontramos esse confronto no arquivo csv/confrontos.csv.', 'error');
+            return;
+        }
+
+        try {
+            const getFlag = await window.ScoreCards.getFlagGetterOnce();
+            result.innerHTML = window.ScoreCards.renderStickerCard(row, getFlag, 0);
+            setSimulatorMessage(``, 'success');
+        } catch (error) {
+            console.error(error);
+            setSimulatorMessage('Não foi possível gerar a figurinha deste confronto.', 'error');
+        }
+    }
+
+    function populateSimulatorDatalist() {
+        const datalist = document.getElementById('sim-countries-list');
+        if (!datalist) return;
+        datalist.innerHTML = simulatorCountries
+            .map(country => `<option value="${escapeHTML(country)}"></option>`)
+            .join('');
+    }
+
+    async function initConfrontoSimulator() {
+        const panel = document.getElementById('simulado-view');
+        const homeInput = document.getElementById('sim-home-team');
+        const awayInput = document.getElementById('sim-away-team');
+        if (!panel || !homeInput || !awayInput) return;
+
+        try {
+            simulatorRows = await loadCSV(SIMULATOR_CSV_URL);
+            simulatorCountries = getSimulatorCountries(simulatorRows);
+            populateSimulatorDatalist();
+
+            if (!simulatorCountries.length) {
+                setSimulatorMessage('Nenhuma seleção encontrada em csv/previsoes/all_matchups.csv.', 'error');
+                return;
+            }
+
+            ['input', 'change'].forEach(eventName => {
+                homeInput.addEventListener(eventName, renderSimulatorSticker);
+                awayInput.addEventListener(eventName, renderSimulatorSticker);
+            });
+        } catch (error) {
+            console.error(error);
+            setSimulatorMessage('Erro ao carregar csv/previsoes/all_matchups.csv.', 'error');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initConfrontoSimulator);
+})();
+
 // Global Modal Functions for Stickers
 window.openStickerModal = function(element, home, away) {
     let modal = document.getElementById('sticker-modal');
@@ -1417,14 +1573,78 @@ function showToast(msg) {
     setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
+function initPrevisoesSectionTabs() {
+    const buttons = [...document.querySelectorAll('.chances-section-tab')];
+
+    const panels = {
+        confrontos: document.getElementById('confrontos-view'),
+        simulado: document.getElementById('simulado-view')
+    };
+
+    if (!buttons.length) return;
+
+    function setPrevisoesSectionView(view) {
+        if (!panels[view]) return;
+
+        buttons.forEach(button => {
+            const active = button.dataset.chancesView === view;
+            button.classList.toggle('active', active);
+            button.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+
+        Object.entries(panels).forEach(([key, panel]) => {
+            if (panel) panel.classList.toggle('active', key === view);
+        });
+
+        document.body.classList.toggle('previsoes-simulado-active', view === 'simulado');
+
+        if (view === 'confrontos') {
+            requestAnimationFrame(() => {
+                window.dispatchEvent(new Event('resize'));
+                window.ScoreCards?.adjustScoreTotalHeights?.(document.getElementById('confrontos-view'));
+            });
+        }
+    }
+
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            setPrevisoesSectionView(button.dataset.chancesView);
+        });
+    });
+
+    window.PrevisoesActions = window.PrevisoesActions || {};
+    window.PrevisoesActions.setSectionView = setPrevisoesSectionView;
+
+    const activeButton =
+        buttons.find(button => button.classList.contains('active')) ||
+        buttons[0];
+
+    setPrevisoesSectionView(activeButton.dataset.chancesView);
+}
+
 function abrirTabPelaURL() {
     const tabName = window.location.hash.replace('#', '').trim();
 
     if (!tabName) return;
 
-    const tabsValidas = ['bracket', 'grupos', 'r32', 'oitavas', 'quartas', 'semis', 'final'];
+    const sectionTabs = ['confrontos', 'simulado'];
+
+    if (sectionTabs.includes(tabName)) {
+        window.PrevisoesActions?.setSectionView?.(tabName);
+
+        document.querySelector('.chances-section-tabs')?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+
+        return;
+    }
+
+    const tabsValidas = ['grupos', 'r32', 'oitavas', 'quartas', 'semis', 'final'];
 
     if (!tabsValidas.includes(tabName)) return;
+
+    window.PrevisoesActions?.setSectionView?.('confrontos');
 
     const botao = [...document.querySelectorAll('.tabs .tab')]
         .find(btn => {
@@ -1442,5 +1662,9 @@ function abrirTabPelaURL() {
     }
 }
 
-window.addEventListener('DOMContentLoaded', abrirTabPelaURL);
+window.addEventListener('DOMContentLoaded', () => {
+    initPrevisoesSectionTabs();
+    abrirTabPelaURL();
+});
+
 window.addEventListener('hashchange', abrirTabPelaURL);

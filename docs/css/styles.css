@@ -25,18 +25,27 @@
 *{
     box-sizing: border-box;
 }
-body{
+html,
+body {
+    min-height: 100%;
+}
+
+body {
     margin: 0;
     font-family: 'gotham-book';
     line-height: 1.4;
     overflow-x: hidden;
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 img {
     max-width: 100%;
     height: auto;
 }
-.page{
-    flex: 1;
+.page {
+    flex: 1 0 auto;
     max-width: 1260px;
     width: 100%;
     margin: 0 auto;
@@ -982,7 +991,6 @@ color: red;
 
 
 /* EDITION BADGE */
-
 .edition-badge {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -2323,7 +2331,9 @@ box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     margin: 0 auto;
     /*max-width: 1260px;*/
     width: 100%;
+    flex-shrink: 0;
 }
+
 #footer .container{
     display: flex; 
     margin: 0 auto;
@@ -2367,6 +2377,90 @@ box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 .flourish-footer {
   display: none !important;
 }*/
+
+.chances-section-tabs {
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+    width: 100%;
+    margin: 20px 0 15px;
+    border-bottom: 2px solid var(--soft-border);
+    padding-bottom: 5px;
+}
+
+.chances-section-tab {
+    position: relative;
+    border: 0;
+    background: transparent;
+    padding: 0 0 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--muted);
+    font-family: 'gotham-bold', 'gotham-book', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    transition: color .15s ease;
+}
+
+.chances-section-tab:hover {
+    color: var(--text-blue);
+}
+
+.chances-section-tab.active {
+    color: var(--text-blue);
+}
+
+.chances-section-tab.active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -7px;
+    height: 3px;
+    background: #f0c040;
+    border-radius: 999px;
+}
+
+.chances-view-panel {
+    display: none;
+}
+
+.chances-view-panel.active {
+    display: block;
+}
+
+@media (max-width: 600px) {
+    .chances-section-tabs {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0;
+        width: 100%;
+        margin-top: 22px;
+        overflow: hidden;
+        padding-bottom: 5px;
+    }
+
+    .chances-section-tab {
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        padding: 0 4px 6px;
+        font-size: clamp(11px, 2.2vw, 11px);
+        line-height: 1.15;
+        letter-spacing: 0.2px;
+        white-space: normal;
+        text-align: center;
+        justify-self: stretch;
+    }
+
+    .chances-section-tab.active::after {
+        left: 0;
+        right: 0;
+    }
+}
+
 
 /* ==========================================================================
    MEDIA QUERIES (CONSOLIDATED AT THE END FOR CORRECT CASCADE)

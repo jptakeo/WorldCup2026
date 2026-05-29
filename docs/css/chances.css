@@ -103,51 +103,6 @@ CHANCES: controles e alternância de visualização
     display: block;
 }
 
-.chances-section-tabs {
-    display: flex;
-    align-items: flex-end;
-    gap: 24px;
-    width: 100%;
-    margin: 20px 0 15px;
-    border-bottom: 2px solid var(--soft-border);
-    padding-bottom: 5px;
-}
-
-.chances-section-tab {
-    position: relative;
-    border: 0;
-    background: transparent;
-    padding: 0 0 6px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 800;
-    color: var(--muted);
-    font-family: 'gotham-bold', 'gotham-book', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-
-    transition: color .15s ease;
-}
-
-.chances-section-tab:hover {
-    color: var(--text-blue);
-}
-
-.chances-section-tab.active {
-    color: var(--text-blue);
-}
-
-.chances-section-tab.active::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -7px;
-    height: 3px;
-    background: #f0c040;
-    border-radius: 999px;
-}
-
 .chances-table-scroll {
     overflow-x: auto;
     border-radius: 10px;
@@ -592,36 +547,6 @@ min-width: 980px;
 
     .bk-scroll::-webkit-scrollbar-thumb:hover {
         background: #97a6b8;
-    }
-}
-
-@media (max-width: 600px) {
-    .chances-section-tabs {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0;
-        width: 100%;
-        margin-top: 22px;
-        overflow: hidden;
-        padding-bottom: 5px;
-    }
-
-    .chances-section-tab {
-        width: 100%;
-        min-width: 0;
-        max-width: none;
-        padding: 0 4px 6px;
-        font-size: clamp(11px, 2.2vw, 11px);
-        line-height: 1.15;
-        letter-spacing: 0.2px;
-        white-space: normal;
-        text-align: center;
-        justify-self: stretch;
-    }
-
-    .chances-section-tab.active::after {
-        left: 0;
-        right: 0;
     }
 }
 
