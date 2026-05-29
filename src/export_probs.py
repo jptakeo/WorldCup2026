@@ -14,17 +14,19 @@ import numpy as np
 import pandas as pd
 
 from src.constants import (
-    ALL_SCORE_COLS,
+    ALL_MATCHUPS_EXPORT_COLS,
     DATA_DIR,
     DEFAULT_MIN_DATE,
     DEFAULT_SEED,
     MAX_GOALS,
+    PARTIDAS_EXPORT_COLS,
+    PARTIDAS_SCORE_COLS,
     PHASE_LABELS,
     QUARTERFINAL_PAIRS,
     ROUND_OF_16_PAIRS,
-    SCORE_MAP,
     SEMIFINAL_PAIRS,
     TEAM_MAP_EN_TO_PT,
+    TEAM_MAP_PT_TO_EN,
 )
 from src.freq_model.model import build_model
 from src.freq_model.tournament import WorldCup2026
@@ -102,142 +104,174 @@ def get_phase_matchups(
     return [(sfw[0], sfw[1], "")]
 
 
-def build_all_matchups_dataframe(
-    wc,
-    max_goals=4,
-):
-    """Build a DataFrame with score probabilities for every unique pair of
-    World Cup teams (C(48,2) = 1128 rows), all treated as neutral-venue.
-    Each pair appears once; columns use team_a / team_b (order-independent)."""
-
-    all_teams = wc.all_teams
-    rows = []
-
-    for team_a_en, team_b_en in combinations(all_teams, 2):
-        prob = wc.params.match_probs(
-            team_a_en, team_b_en, neutral=True, max_goals=max_goals
-        )
-
-        team_a_pt = TEAM_MAP_EN_TO_PT.get(team_a_en, team_a_en)
-        team_b_pt = TEAM_MAP_EN_TO_PT.get(team_b_en, team_b_en)
-
-        win_a = float(np.tril(prob, k=-1).sum()) * 100
-        draw = float(np.trace(prob)) * 100
-        win_b = float(np.triu(prob, k=1).sum()) * 100
-
-        row = {
-            "team_a": team_a_pt,
-            "team_b": team_b_pt,
-            "team_a_win": round(win_a, 4),
-            "draw": round(draw, 4),
-            "team_b_win": round(win_b, 4),
-        }
-
-        for i in range(prob.shape[0]):
-            for j in range(prob.shape[1]):
-                if (i, j) in SCORE_MAP:
-                    row[SCORE_MAP[(i, j)]] = round(100 * prob[i, j], 4)
-
-        rows.append(row)
-
-    df = pd.DataFrame(rows)
-    df = df[["team_a", "team_b", "team_a_win", "draw", "team_b_win"] + ALL_SCORE_COLS]
-    return df
+def _match_prob_matrix(
+    wc: WorldCup2026,
+    home_en: str,
+    away_en: str,
+    max_goals: int,
+) -> np.ndarray:
+    """Return score probability matrix with rows = home goals, cols = away goals."""
+    return wc.params.match_probs(home_en, away_en, neutral=True, max_goals=max_goals)
 
 
-def build_prob_dataframe(
-    wc,
-    matchups,
-    max_goals=4,
-    results_path="data/world_cup_results.csv",
-):
+def _outcome_probs(prob: np.ndarray) -> tuple[float, float, float]:
+    home_win = float(np.tril(prob, k=-1).sum()) * 100
+    draw = float(np.trace(prob)) * 100
+    away_win = float(np.triu(prob, k=1).sum()) * 100
+    return home_win, draw, away_win
+
+
+def _score_probs(prob: np.ndarray, score_cols: int = 5) -> dict[str, float]:
+    scores: dict[str, float] = {}
+    for h in range(score_cols):
+        for a in range(score_cols):
+            if h < prob.shape[0] and a < prob.shape[1]:
+                key = PARTIDAS_SCORE_COLS[h * score_cols + a]
+                scores[key] = round(100 * prob[h, a], 4)
+    return scores
+
+
+def _build_match_prob_row(
+    wc: WorldCup2026,
+    home_en: str,
+    away_en: str,
+    max_goals: int,
+) -> dict[str, float]:
+    """Shared Dixon–Coles export for one fixture orientation (home_en vs away_en)."""
+    prob = _match_prob_matrix(wc, home_en, away_en, max_goals=max_goals)
+    home_win, draw, away_win = _outcome_probs(prob)
+    return {
+        "home_win": round(home_win, 4),
+        "draw": round(draw, 4),
+        "away_win": round(away_win, 4),
+        **_score_probs(prob),
+    }
+
+
+def _load_schedule_orientations(
+    results_path: str = "data/world_cup_results.csv",
+) -> dict[frozenset[str], tuple[str, str, str, object]]:
+    """Map unordered pair -> (home_pt, away_pt, group, date)."""
     results_df = pd.read_csv(results_path)
     for col in ["home_team", "away_team", "group"]:
         results_df[col] = results_df[col].astype(str).str.strip()
 
+    orientations: dict[frozenset[str], tuple[str, str, str, object]] = {}
+    for row in results_df.itertuples(index=False):
+        home_pt = row.home_team
+        away_pt = row.away_team
+        orientations[frozenset({home_pt, away_pt})] = (
+            home_pt,
+            away_pt,
+            row.group,
+            row.date,
+        )
+    return orientations
+
+
+def _resolve_fixture_orientation(
+    team_a_en: str,
+    team_b_en: str,
+    schedule: dict[frozenset[str], tuple[str, str, str, object]],
+) -> tuple[str, str, str | None, object | None]:
+    """Return (home_en, away_en, group, date) for a pair of teams."""
+    team_a_pt = TEAM_MAP_EN_TO_PT.get(team_a_en, team_a_en)
+    team_b_pt = TEAM_MAP_EN_TO_PT.get(team_b_en, team_b_en)
+    scheduled = schedule.get(frozenset({team_a_pt, team_b_pt}))
+
+    if scheduled is None:
+        return team_a_en, team_b_en, None, None
+
+    home_pt, away_pt, group, date = scheduled
+    home_en = TEAM_MAP_PT_TO_EN.get(home_pt, home_pt)
+    away_en = TEAM_MAP_PT_TO_EN.get(away_pt, away_pt)
+    return home_en, away_en, group, date
+
+
+def build_all_matchups_dataframe(
+    wc: WorldCup2026,
+    max_goals: int = MAX_GOALS,
+    results_path: str = "data/world_cup_results.csv",
+) -> pd.DataFrame:
+    """Build score probabilities for every unique pair (C(48,2) rows).
+
+    Scheduled fixtures use the same home/away orientation as ``partidas.csv`` so
+    overlapping rows share identical probabilities.
+    """
+    schedule = _load_schedule_orientations(results_path)
+    rows = []
+
+    for team_a_en, team_b_en in combinations(wc.all_teams, 2):
+        home_en, away_en, _, _ = _resolve_fixture_orientation(
+            team_a_en, team_b_en, schedule
+        )
+        home_pt = TEAM_MAP_EN_TO_PT.get(home_en, home_en)
+        away_pt = TEAM_MAP_EN_TO_PT.get(away_en, away_en)
+
+        row = {
+            "home_team": home_pt,
+            "away_team": away_pt,
+            **_build_match_prob_row(wc, home_en, away_en, max_goals=max_goals),
+        }
+        rows.append(row)
+
+    return pd.DataFrame(rows)[ALL_MATCHUPS_EXPORT_COLS]
+
+
+def build_prob_dataframe(
+    wc: WorldCup2026,
+    matchups: list[tuple[str, str, str]],
+    max_goals: int = MAX_GOALS,
+    results_path: str = "data/world_cup_results.csv",
+) -> pd.DataFrame:
+    schedule = _load_schedule_orientations(results_path)
     rows = []
 
     for home_en, away_en, group in matchups:
-        home = TEAM_MAP_EN_TO_PT.get(home_en)
-        away = TEAM_MAP_EN_TO_PT.get(away_en)
+        home_pt = TEAM_MAP_EN_TO_PT.get(home_en)
+        away_pt = TEAM_MAP_EN_TO_PT.get(away_en)
 
-        if home is None or away is None:
+        if home_pt is None or away_pt is None:
             raise ValueError(f"Time sem mapeamento: {home_en} vs {away_en}")
 
-        prob = wc.params.match_probs(
-            home_en, away_en, neutral=True, max_goals=max_goals
+        resolved_home_en, resolved_away_en, sched_group, date = (
+            _resolve_fixture_orientation(home_en, away_en, schedule)
         )
+        home_pt = TEAM_MAP_EN_TO_PT.get(resolved_home_en, resolved_home_en)
+        away_pt = TEAM_MAP_EN_TO_PT.get(resolved_away_en, resolved_away_en)
 
-        match_info = results_df[
-            (results_df["group"] == group)
-            & (results_df["home_team"] == home)
-            & (results_df["away_team"] == away)
-        ]
-
-        flipped = False
-
-        if match_info.empty:
-            match_info = results_df[
-                (results_df["group"] == group)
-                & (results_df["home_team"] == away)
-                & (results_df["away_team"] == home)
-            ]
-            flipped = True
-
-        if len(match_info) != 1:
-            date = None
-            home_real = None
-            away_real = None
-        else:
-            date = match_info["date"].values[0]
-            home_real = match_info["home_real"].values[0]
-            away_real = match_info["away_real"].values[0]
-
-        if flipped:
-            prob = prob.T
-            home, away = away, home
+        if group == "" and sched_group is not None:
+            group = sched_group
 
         row = {
             "group": group,
-            "home_team": home,
-            "away_team": away,
+            "home_team": home_pt,
+            "away_team": away_pt,
             "date": date,
-            **dict.fromkeys(ALL_SCORE_COLS, 0.0),
-            "home_real": home_real,
-            "away_real": away_real,
+            **_build_match_prob_row(
+                wc, resolved_home_en, resolved_away_en, max_goals=max_goals
+            ),
         }
-
-        for i in range(prob.shape[0]):
-            for j in range(prob.shape[1]):
-                if (i, j) in SCORE_MAP:
-                    row[SCORE_MAP[(i, j)]] = round(100 * prob[i, j], 4)
-
         rows.append(row)
 
-    df = pd.DataFrame(rows)
-    df = df[
-        ["group", "home_team", "away_team", "date"]
-        + ALL_SCORE_COLS
-        + ["home_real", "away_real"]
-    ]
-
-    return df
+    return pd.DataFrame(rows)[PARTIDAS_EXPORT_COLS]
 
 
 def save_matches_to_prod(
-    df: pd.DataFrame, prod_path="docs/csv/previsoes/partidas.csv"
+    df: pd.DataFrame, prod_path: str = "docs/csv/previsoes/partidas.csv"
 ) -> None:
     path = Path(prod_path)
+    export_df = df[PARTIDAS_EXPORT_COLS]
     key_cols = ["group", "home_team", "away_team"]
     if path.exists():
         existing = pd.read_csv(path)
-        combined = pd.concat([existing, df], ignore_index=True)
+        combined = pd.concat([existing, export_df], ignore_index=True)
         combined = combined.drop_duplicates(subset=key_cols, keep="last")
     else:
-        combined = df.copy()
+        combined = export_df.copy()
         combined = combined.drop_duplicates(subset=key_cols, keep="last")
 
-    combined.to_csv(path, index=False)
+    combined[PARTIDAS_EXPORT_COLS].to_csv(path, index=False)
 
 
 def export_phase_probs(
@@ -471,11 +505,17 @@ def main() -> None:
     print(f"Jogos na fase: {len(matchups)}")
 
     df = build_prob_dataframe(wc, matchups, max_goals=args.max_goals)
+    if len(df) and df["group"].values[0] == "":
+        df["group"] = PHASE_LABELS[phase][1]
 
     filename = f"probs_{label}.csv"
     output_path = DATA_DIR / filename
     df.to_csv(output_path, index=False)
     print(f"Arquivo salvo em: {output_path}")
+
+    save_matches_to_prod(df)
+    partidas_path = Path("docs/csv/previsoes/partidas.csv")
+    print(f"Arquivo salvo em: {partidas_path}")
 
     print("Gerando CSV com todos os confrontos possíveis...")
     df_all = build_all_matchups_dataframe(wc, max_goals=args.max_goals)

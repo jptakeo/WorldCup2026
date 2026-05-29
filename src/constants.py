@@ -196,6 +196,31 @@ SCORE_MAP = {
 
 ALL_SCORE_COLS = list(SCORE_MAP.values())
 
+_GOAL_WORDS = ("zero", "one", "two", "three", "four")
+PARTIDAS_SCORE_COLS = [
+    f"{_GOAL_WORDS[h]}_{_GOAL_WORDS[a]}" for h in range(5) for a in range(5)
+]
+
+PARTIDAS_EXPORT_COLS = [
+    "group",
+    "home_team",
+    "away_team",
+    "date",
+    "home_win",
+    "draw",
+    "away_win",
+    *PARTIDAS_SCORE_COLS,
+]
+
+ALL_MATCHUPS_EXPORT_COLS = [
+    "home_team",
+    "away_team",
+    "home_win",
+    "draw",
+    "away_win",
+    *PARTIDAS_SCORE_COLS,
+]
+
 TEAM_MAP_EN_TO_PT = {
     # Group A
     "Mexico": "México",
