@@ -127,8 +127,8 @@ if __name__ == "__main__":
             df_to_concat = pd.DataFrame(
                 {
                     "date": matches_to_add["date"],
-                    "home_team": matches_to_add["home_team"],
-                    "away_team": matches_to_add["away_team"],
+                    "home_team": matches_to_add["home_team"].map(TEAM_MAP_PT_TO_EN),
+                    "away_team": matches_to_add["away_team"].map(TEAM_MAP_PT_TO_EN),
                     "home_score": matches_to_add["home_real"],
                     "away_score": matches_to_add["away_real"],
                     "tournament": "FIFA World Cup",
@@ -163,8 +163,8 @@ if __name__ == "__main__":
             df_to_concat = pd.DataFrame(
                 {
                     "date": matches_to_add["date"],
-                    "home_team": matches_to_add["home_team"],
-                    "away_team": matches_to_add["away_team"],
+                    "home_team": matches_to_add["home_team"].map(TEAM_MAP_PT_TO_EN),
+                    "away_team": matches_to_add["away_team"].map(TEAM_MAP_PT_TO_EN),
                     "home_score": matches_to_add["home_real"],
                     "away_score": matches_to_add["away_real"],
                     "tournament": "FIFA World Cup",
@@ -204,8 +204,8 @@ if __name__ == "__main__":
             df_to_concat = pd.DataFrame(
                 {
                     "date": matches_to_add["date"],
-                    "home_team": matches_to_add["home_team"],
-                    "away_team": matches_to_add["away_team"],
+                    "home_team": matches_to_add["home_team"].map(TEAM_MAP_PT_TO_EN),
+                    "away_team": matches_to_add["away_team"].map(TEAM_MAP_PT_TO_EN),
                     "home_score": matches_to_add["home_real"],
                     "away_score": matches_to_add["away_real"],
                     "tournament": "FIFA World Cup",
@@ -244,8 +244,8 @@ if __name__ == "__main__":
             df_to_concat = pd.DataFrame(
                 {
                     "date": matches_to_add["date"],
-                    "home_team": matches_to_add["home_team"],
-                    "away_team": matches_to_add["away_team"],
+                    "home_team": matches_to_add["home_team"].map(TEAM_MAP_PT_TO_EN),
+                    "away_team": matches_to_add["away_team"].map(TEAM_MAP_PT_TO_EN),
                     "home_score": matches_to_add["home_real"],
                     "away_score": matches_to_add["away_real"],
                     "tournament": "FIFA World Cup",
