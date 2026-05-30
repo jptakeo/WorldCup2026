@@ -1971,7 +1971,7 @@ SIMULADOR DE CONFRONTO
     color: #64748b;
 }
 
-/* HOLOGRAPHIC CALCULATION LOADER */
+/* HOLOGRAPHIC CALCULATION LOADER (PREMIUM BRIGHT GLASSMORPHIC AI VERSION) */
 .simulator-hologram-loader {
     display: flex;
     flex-direction: column;
@@ -1982,11 +1982,43 @@ SIMULADOR DE CONFRONTO
     position: absolute;
     top: 0;
     left: 0;
-    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%);
+    background: rgba(248, 250, 252, 0.94); /* Premium bright white slate frosted background */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     z-index: 30;
-    border-radius: 14px;
+    border-radius: 20px;
     overflow: hidden;
-    animation: fadeInFast 0.2s ease-out;
+    box-sizing: border-box;
+    animation: fadeInFast 0.25s ease-out;
+}
+
+/* Floating AI background aura gradients (FGV Blue & Sky Blue on Light Background) */
+.simulator-hologram-loader::before {
+    content: '';
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(30, 64, 175, 0.22) 0%, rgba(30, 64, 175, 0.04) 60%, transparent 100%);
+    top: -20px;
+    left: -20px;
+    filter: blur(28px);
+    animation: floatGlow1 5s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+
+.simulator-hologram-loader::after {
+    content: '';
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.2) 0%, rgba(14, 165, 233, 0.03) 60%, transparent 100%);
+    bottom: -10px;
+    right: -10px;
+    filter: blur(26px);
+    animation: floatGlow2 4.2s ease-in-out infinite alternate;
+    pointer-events: none;
 }
 
 .hologram-scanner {
@@ -1999,6 +2031,20 @@ SIMULADOR DE CONFRONTO
     margin-bottom: 24px;
 }
 
+/* Subtle cyan/blue background glow behind rings */
+.hologram-scanner::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, transparent 75%);
+    filter: blur(12px);
+    animation: pulseBeam 2s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
 .hologram-ring {
     position: absolute;
     border: 2px solid transparent;
@@ -2009,37 +2055,44 @@ SIMULADOR DE CONFRONTO
 }
 
 .hologram-ring.outer {
-    border-top-color: #1f6fb2;
-    border-bottom-color: #eab308;
+    border-top-color: #1e40af; /* FGV Cobalt Blue */
+    border-bottom-color: rgba(30, 64, 175, 0.25);
+    filter: drop-shadow(0 0 6px rgba(30, 64, 175, 0.3));
     animation: rotateClockwise 1.5s cubic-bezier(0.53, 0.21, 0.29, 0.82) infinite;
 }
 
 .hologram-ring.inner {
     width: 80%;
     height: 80%;
-    border-left-color: #22c55e;
-    border-right-color: #1f6fb2;
+    border-left-color: #0ea5e9; /* Cyan / Light Blue */
+    border-right-color: rgba(14, 165, 233, 0.2);
+    filter: drop-shadow(0 0 4px rgba(14, 165, 233, 0.2));
     animation: rotateCounterClockwise 1.2s cubic-bezier(0.53, 0.21, 0.29, 0.82) infinite;
 }
 
 .hologram-core {
     position: relative;
-    width: 54px;
-    height: 54px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
-    background: #ffffff;
-    box-shadow: 0 4px 15px rgba(31, 111, 178, 0.15);
+    background: rgba(255, 255, 255, 0.7); /* Frosted bright glass core */
+    border: 1px solid rgba(30, 64, 175, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 8px 32px 0 rgba(30, 64, 175, 0.08), 0 0 10px rgba(14, 165, 233, 0.15);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    z-index: 1;
 }
 
 .hologram-laser-line {
     position: absolute;
     width: 100%;
     height: 2px;
-    background: linear-gradient(90deg, transparent, #22c55e, #1f6fb2, #eab308, transparent);
+    background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.3), #ffffff, rgba(14, 165, 233, 0.3), transparent);
+    box-shadow: 0 0 6px #0ea5e9, 0 0 12px #ffffff;
     top: 50%;
     left: 0;
     transform: translateY(-50%);
@@ -2051,7 +2104,7 @@ SIMULADOR DE CONFRONTO
     position: absolute;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, rgba(31, 111, 178, 0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
     animation: pulseBeam 1.5s infinite;
 }
 
@@ -2070,7 +2123,7 @@ SIMULADOR DE CONFRONTO
     height: 14px;
     object-fit: cover;
     border-radius: 2px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     animation: pulseFlag 1s infinite alternate;
 }
 
@@ -2086,30 +2139,33 @@ SIMULADOR DE CONFRONTO
     font-family: 'Courier New', Courier, monospace;
     font-size: 12px;
     font-weight: 700;
-    color: #1e293b;
-    background: rgba(241, 245, 249, 0.8);
-    border: 1px solid #cbd5e1;
+    color: #1e3a8a; /* High-contrast FGV dark blue text */
+    background: rgba(255, 255, 255, 0.9); /* Pure white frosted HUD */
+    border: 1px solid rgba(30, 64, 175, 0.25);
     border-radius: 6px;
-    padding: 6px 12px;
+    padding: 6px 14px;
     letter-spacing: 1px;
-    text-shadow: 0 0 1px rgba(30, 41, 59, 0.1);
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    text-shadow: 0 0 1px rgba(30, 64, 175, 0.1);
+    box-shadow: 0 4px 12px rgba(30, 64, 175, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+    z-index: 2;
     animation: hudPulse 0.4s infinite alternate;
 }
 
 .hologram-progress-track {
     width: 140px;
     height: 4px;
-    background: #e2e8f0;
+    background: rgba(15, 23, 42, 0.06); /* Subtle light track slot */
     border-radius: 2px;
     overflow: hidden;
     margin-top: 14px;
+    z-index: 2;
 }
 
 .hologram-progress-fill {
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg, #1f6fb2, #22c55e);
+    background: linear-gradient(90deg, #1e40af, #0ea5e9, #93c5fd); /* FGV Blue, Sky Blue, and Light Blue gradient */
+    box-shadow: 0 0 6px rgba(14, 165, 233, 0.4);
     border-radius: 2px;
     animation: loadingSweep 1.5s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
 }
@@ -2401,12 +2457,32 @@ SIMULADOR DE CONFRONTO
 
 @keyframes hudPulse {
     0% {
-        opacity: 0.8;
-        border-color: #cbd5e1;
+        opacity: 0.85;
+        border-color: rgba(30, 64, 175, 0.2);
+        box-shadow: 0 4px 12px rgba(30, 64, 175, 0.05);
     }
     100% {
         opacity: 1;
-        border-color: var(--primary-blue);
+        border-color: rgba(14, 165, 233, 0.45);
+        box-shadow: 0 4px 16px rgba(30, 64, 175, 0.1), 0 0 8px rgba(14, 165, 233, 0.25);
+    }
+}
+
+@keyframes floatGlow1 {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    100% {
+        transform: translate(25px, 15px) scale(1.1) rotate(45deg);
+    }
+}
+
+@keyframes floatGlow2 {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    100% {
+        transform: translate(-20px, -15px) scale(1.15) rotate(-45deg);
     }
 }
 
