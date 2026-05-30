@@ -1325,20 +1325,6 @@ function applyScoreFilters(panel) {
     }
 
     document.addEventListener('DOMContentLoaded', renderScoreStagePanels);
-    
-    // Check for sticker deep link after everything is initialized
-    window.addEventListener('load', () => {
-        setTimeout(async () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const stickerParam = urlParams.get('sticker');
-            if (stickerParam) {
-                const [home, away] = stickerParam.split('-');
-                if (home && away && window.openStickerFromData) {
-                    window.openStickerFromData(home, away);
-                }
-            }
-        }, 1000);
-    });
 })();
 
 
@@ -1350,6 +1336,10 @@ function applyScoreFilters(panel) {
 (function () {
     let simulatorRows = [];
     let simulatorCountries = [];
+    let activeSimulations = [];
+    let cardCounter = 0;
+    let getFlag = null;
+    let activeIntervals = new Map(); // Store HUD interval IDs for calculating cards
 
     function resolveSimulatorCountry(value) {
         const normalized = normalizeName(value);
@@ -1408,87 +1398,440 @@ function applyScoreFilters(panel) {
 
         return swapped;
     }
+    window.findSimulatorRow = findSimulatorRow;
 
-    function setSimulatorMessage(message, type = '') {
-        const messageEl = document.getElementById('simulator-message');
-        if (!messageEl) return;
-        messageEl.textContent = message;
-        messageEl.dataset.type = type;
+    // Dynamic state management & rendering
+    function addSimulationCard(home = '', away = '', triggerAnim = false) {
+        cardCounter++;
+        const cardId = `sim-card-${cardCounter}`;
+        
+        const validatedHome = resolveSimulatorCountry(home);
+        const validatedAway = resolveSimulatorCountry(away);
+        
+        const sim = {
+            id: cardId,
+            homeTeam: validatedHome,
+            awayTeam: validatedAway,
+            status: 'empty'
+        };
+
+        if (validatedHome && validatedAway && validatedHome !== validatedAway) {
+            if (triggerAnim) {
+                sim.status = 'calculating';
+                startCalculationSequence(sim);
+            } else {
+                sim.status = 'ready';
+            }
+        }
+
+        activeSimulations.push(sim);
+        updateSimulationsURL();
+        renderSimulatorDashboard();
+
+        // Scroll to the end of the carousel to reveal the new card
+        setTimeout(() => {
+            const grid = document.getElementById('simulator-cards-grid');
+            if (grid) {
+                grid.scrollLeft = grid.scrollWidth;
+            }
+        }, 100);
     }
 
-    async function renderSimulatorSticker() {
-        const homeInput = document.getElementById('sim-home-team');
-        const awayInput = document.getElementById('sim-away-team');
-        const result = document.getElementById('simulator-result');
-        if (!homeInput || !awayInput || !result) return;
-
-        const homeCountry = resolveSimulatorCountry(homeInput.value);
-        const awayCountry = resolveSimulatorCountry(awayInput.value);
-
-        result.innerHTML = '';
-
-        if (!homeInput.value.trim() && !awayInput.value.trim()) {
-            setSimulatorMessage('');
-            return;
+    function removeSimulationCard(id) {
+        // Clear HUD cycle interval if active
+        if (activeIntervals.has(id)) {
+            clearInterval(activeIntervals.get(id));
+            activeIntervals.delete(id);
         }
 
-        if (!homeCountry || !awayCountry) {
-            setSimulatorMessage('Digite ou selecione duas seleções válidas.');
-            return;
-        }
-
-        if (normalizeName(homeCountry) === normalizeName(awayCountry)) {
-            setSimulatorMessage('Escolha duas seleções diferentes.');
-            return;
-        }
-
-        const row = findSimulatorRow(homeCountry, awayCountry);
-        if (!row) {
-            setSimulatorMessage('Não encontramos esse confronto no arquivo csv/confrontos.csv.', 'error');
-            return;
-        }
-
-        try {
-            const getFlag = await window.ScoreCards.getFlagGetterOnce();
-            result.innerHTML = window.ScoreCards.renderStickerCard(row, getFlag, 0);
-            setSimulatorMessage(``, 'success');
-        } catch (error) {
-            console.error(error);
-            setSimulatorMessage('Não foi possível gerar a figurinha deste confronto.', 'error');
-        }
+        activeSimulations = activeSimulations.filter(sim => sim.id !== id);
+        updateSimulationsURL();
+        renderSimulatorDashboard();
     }
 
-    function populateSimulatorDatalist() {
-        const datalist = document.getElementById('sim-countries-list');
-        if (!datalist) return;
-        datalist.innerHTML = simulatorCountries
-            .map(country => `<option value="${escapeHTML(country)}"></option>`)
-            .join('');
+    function startCalculationSequence(sim) {
+        const duration = 1500;
+        const tickRate = 80;
+        
+        // Start the HUD random scorelines/probs cycling interval
+        const intervalId = setInterval(() => {
+            const hudEl = document.querySelector(`#hud-${sim.id}`);
+            if (hudEl) {
+                const randomHome = Math.floor(Math.random() * 4);
+                const randomAway = Math.floor(Math.random() * 4);
+                const randomPct = (Math.random() * 30 + 5).toFixed(1);
+                hudEl.textContent = `${randomHome}x${randomAway} | ${randomPct}%`;
+            }
+        }, tickRate);
+
+        activeIntervals.set(sim.id, intervalId);
+
+        setTimeout(() => {
+            clearInterval(intervalId);
+            activeIntervals.delete(sim.id);
+            sim.status = 'ready';
+            renderSimulatorDashboard();
+        }, duration);
+    }
+
+    function updateSimulationsURL() {
+        const url = new URL(window.location.href);
+        const simsEncoded = activeSimulations
+            .filter(sim => sim.homeTeam && sim.awayTeam)
+            .map(sim => `${sim.homeTeam}-${sim.awayTeam}`)
+            .join(',');
+
+        if (simsEncoded) {
+            url.searchParams.set('sims', simsEncoded);
+            url.searchParams.delete('sticker'); // remove legacy param if present
+        } else {
+            url.searchParams.delete('sims');
+        }
+
+        window.history.replaceState({}, '', url.toString());
+    }
+
+    window.copySimulatorDashboardLink = function() {
+        const url = new URL(window.location.href);
+        navigator.clipboard.writeText(url.toString()).then(() => {
+            showToast('O link da comparação foi copiado para a área de transferência!');
+        });
+    };
+
+    function renderSimulatorDashboard() {
+        const grid = document.getElementById('simulator-cards-grid');
+        const shareBtn = document.getElementById('simulator-share-btn');
+        if (!grid) return;
+
+        grid.innerHTML = '';
+
+        // Update Share button status
+        if (shareBtn) {
+            const hasMatches = activeSimulations.some(sim => sim.homeTeam && sim.awayTeam);
+            shareBtn.disabled = !hasMatches;
+        }
+
+        // Render each card
+        activeSimulations.forEach((sim, idx) => {
+            const card = document.createElement('div');
+            card.className = `simulator-card ${sim.status === 'ready' ? 'ready' : ''}`;
+            card.id = sim.id;
+
+            // HTML content structure of the card
+            let resultHTML = '';
+            let hasResultClass = '';
+            if (sim.status === 'empty') {
+                resultHTML = `
+                    <div class="card-result-placeholder">
+                        <div class="placeholder-icon">⚽</div>
+                        <div class="placeholder-text">
+                            Escolha duas seleções acima para iniciar a simulação.
+                        </div>
+                    </div>
+                `;
+            } else if (sim.status === 'calculating') {
+                const flagHome = getFlag ? getFlag(sim.homeTeam) : '';
+                const flagAway = getFlag ? getFlag(sim.awayTeam) : '';
+                resultHTML = `
+                    <div class="simulator-hologram-loader">
+                        <div class="hologram-scanner">
+                            <div class="hologram-ring outer"></div>
+                            <div class="hologram-ring inner"></div>
+                            <div class="hologram-core">
+                                <div class="hologram-laser-line"></div>
+                                <div class="hologram-beam"></div>
+                                <div class="hologram-flag-pulsar">
+                                    ${flagHome ? `<img src="${flagHome}" alt="">` : ''}
+                                    ${flagAway ? `<img src="${flagAway}" alt="">` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hologram-hud" id="hud-${sim.id}">0x0 | --.-%</div>
+                        <div class="hologram-progress-track">
+                            <div class="hologram-progress-fill"></div>
+                        </div>
+                    </div>
+                `;
+            } else if (sim.status === 'ready') {
+                const row = findSimulatorRow(sim.homeTeam, sim.awayTeam);
+                if (row && getFlag) {
+                    resultHTML = window.ScoreCards.renderStickerCard(row, getFlag, idx);
+                    hasResultClass = 'has-result';
+                } else {
+                    resultHTML = `
+                        <div class="card-result-placeholder" style="color: #ef4444;">
+                            <div class="placeholder-icon">⚠️</div>
+                            <div class="placeholder-text" style="color: #ef4444;">
+                                Confronto não disponível no simulador.
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            card.innerHTML = `
+                <button class="card-delete-btn" title="Fechar simulação" onclick="if(window.removeSimulationCard) window.removeSimulationCard('${sim.id}')">×</button>
+                <div class="card-title">Simulação #${idx + 1}</div>
+                <div class="card-team-selectors">
+                    <!-- Home Country Dropdown -->
+                    <div class="custom-select-container" id="selector-home-${sim.id}" data-type="home">
+                        <div class="custom-select-trigger ${sim.homeTeam ? 'active' : ''}">
+                            ${sim.homeTeam ? `
+                                <img class="trigger-flag" src="${getFlag ? getFlag(sim.homeTeam) : ''}" alt="">
+                                <span class="trigger-label">${escapeHTML(sim.homeTeam)}</span>
+                            ` : `
+                                <div class="trigger-flag-placeholder">?</div>
+                                <span class="trigger-label">Seleção 1</span>
+                            `}
+                        </div>
+                        <div class="custom-select-dropdown">
+                            <div class="custom-select-search">
+                                <input type="text" placeholder="Buscar..." class="custom-select-search-input" autocomplete="off">
+                            </div>
+                            <div class="custom-select-list">
+                                ${generateDropdownOptions(sim.awayTeam)}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-versus">×</div>
+
+                    <!-- Away Country Dropdown -->
+                    <div class="custom-select-container" id="selector-away-${sim.id}" data-type="away">
+                        <div class="custom-select-trigger ${sim.awayTeam ? 'active' : ''}">
+                            ${sim.awayTeam ? `
+                                <img class="trigger-flag" src="${getFlag ? getFlag(sim.awayTeam) : ''}" alt="">
+                                <span class="trigger-label">${escapeHTML(sim.awayTeam)}</span>
+                            ` : `
+                                <div class="trigger-flag-placeholder">?</div>
+                                <span class="trigger-label">Seleção 2</span>
+                            `}
+                        </div>
+                        <div class="custom-select-dropdown">
+                            <div class="custom-select-search">
+                                <input type="text" placeholder="Buscar..." class="custom-select-search-input" autocomplete="off">
+                            </div>
+                            <div class="custom-select-list">
+                                ${generateDropdownOptions(sim.homeTeam)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-result-container ${hasResultClass}">
+                    ${resultHTML}
+                </div>
+            `;
+
+            grid.appendChild(card);
+
+            // Bind click handlers to dropdown trigger buttons
+            const bindTrigger = (selectorId, type) => {
+                const container = card.querySelector(`#${selectorId}`);
+                if (!container) return;
+
+                const trigger = container.querySelector('.custom-select-trigger');
+                const dropdown = container.querySelector('.custom-select-dropdown');
+                const searchInput = container.querySelector('.custom-select-search-input');
+                const options = container.querySelectorAll('.custom-select-option');
+
+                trigger.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // Close all other dropdowns
+                    document.querySelectorAll('.custom-select-dropdown.open').forEach(d => {
+                        if (d !== dropdown) d.classList.remove('open');
+                    });
+                    
+                    dropdown.classList.toggle('open');
+                    if (dropdown.classList.contains('open')) {
+                        searchInput.value = '';
+                        filterDropdownOptions(container, '');
+                        searchInput.focus();
+                    }
+                });
+
+                searchInput.addEventListener('input', (e) => {
+                    filterDropdownOptions(container, e.target.value);
+                });
+
+                searchInput.addEventListener('click', (e) => {
+                    e.stopPropagation(); // prevent closing dropdown
+                });
+
+                options.forEach(opt => {
+                    opt.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const val = opt.getAttribute('data-value');
+                        
+                        if (type === 'home') {
+                            sim.homeTeam = val;
+                        } else {
+                            sim.awayTeam = val;
+                        }
+
+                        dropdown.classList.remove('open');
+                        
+                        // If both selected, run animation, else empty
+                        if (sim.homeTeam && sim.awayTeam && sim.homeTeam !== sim.awayTeam) {
+                            sim.status = 'calculating';
+                            startCalculationSequence(sim);
+                        } else {
+                            sim.status = 'empty';
+                        }
+
+                        updateSimulationsURL();
+                        renderSimulatorDashboard();
+                    });
+                });
+            };
+
+            bindTrigger(`selector-home-${sim.id}`, 'home');
+            bindTrigger(`selector-away-${sim.id}`, 'away');
+        });
+
+        // Append trailing "+" button
+        const addBtnCard = document.createElement('div');
+        addBtnCard.className = 'add-card-placeholder';
+        addBtnCard.onclick = () => {
+            addSimulationCard('', '', false);
+        };
+        addBtnCard.innerHTML = `
+            <div class="add-card-plus-icon"></div>
+            <div class="add-card-label">Nova Simulação</div>
+        `;
+        grid.appendChild(addBtnCard);
+    }
+
+    function generateDropdownOptions(excludeCountry = '') {
+        const normalizedExclude = normalizeName(excludeCountry);
+        return simulatorCountries
+            .filter(country => !normalizedExclude || normalizeName(country) !== normalizedExclude)
+            .map(country => {
+                const flagUrl = getFlag ? getFlag(country) : '';
+                return `
+                    <div class="custom-select-option" data-value="${escapeHTML(country)}">
+                        ${flagUrl ? `<img class="option-flag" src="${flagUrl}" alt="">` : ''}
+                        <span>${escapeHTML(country)}</span>
+                    </div>
+                `;
+            }).join('');
+    }
+
+    function filterDropdownOptions(container, query) {
+        const normalizedQuery = normalizeName(query);
+        const options = container.querySelectorAll('.custom-select-option');
+        options.forEach(opt => {
+            const val = normalizeName(opt.getAttribute('data-value'));
+            if (!normalizedQuery || val.includes(normalizedQuery)) {
+                opt.style.display = 'flex';
+            } else {
+                opt.style.display = 'none';
+            }
+        });
+    }
+
+    // Close any open dropdown on click outside
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.custom-select-dropdown.open').forEach(dropdown => {
+            dropdown.classList.remove('open');
+        });
+    });
+
+    // Make global handlers available to HTML controls
+    window.removeSimulationCard = removeSimulationCard;
+
+    async function loadSimulationsFromURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const simsParam = urlParams.get('sims');
+        const stickerParam = urlParams.get('sticker'); // legacy single matchup fallback
+
+        let matchups = [];
+        let shouldSwitchToSimulado = false;
+
+        if (simsParam) {
+            matchups = simsParam.split(',').map(m => m.split('-'));
+            shouldSwitchToSimulado = true;
+        } else if (stickerParam) {
+            const parts = stickerParam.split('-');
+            const home = parts[0];
+            const away = parts[1];
+
+            if (home && away) {
+                // Wait for matchesData to be loaded to see if it's an official match or custom simulation
+                let attempts = 0;
+                while ((!window.ScoreCards || !window.ScoreCards.matchesData) && attempts < 20) {
+                    await new Promise(r => setTimeout(r, 50));
+                    attempts++;
+                }
+
+                const isOfficial = window.ScoreCards?.matchesData?.some(
+                    r => (r.home_team === home && r.away_team === away)
+                );
+
+                if (isOfficial) {
+                    // If it is an official matchup, do not add as simulation card
+                    // and keep on confrontos tab
+                    matchups = [];
+                } else {
+                    // Custom simulation: load it on simulator and switch to simulado tab!
+                    matchups = [[home, away]];
+                    shouldSwitchToSimulado = true;
+                }
+
+                // Schedule opening the sticker in full screen (modal)
+                setTimeout(() => {
+                    if (window.openStickerFromData) {
+                        window.openStickerFromData(home, away);
+                    }
+                }, 500);
+            }
+        }
+
+        if (matchups.length) {
+            // Load and animate with a staggered visual delay
+            matchups.forEach(([home, away], idx) => {
+                if (home && away) {
+                    setTimeout(() => {
+                        addSimulationCard(home, away, true);
+                    }, idx * 250);
+                }
+            });
+        } else {
+            // No URL configurations: show only a single "+" button
+            renderSimulatorDashboard();
+        }
+
+        if (shouldSwitchToSimulado) {
+            // Ensure window.PrevisoesActions is fully defined
+            let actionAttempts = 0;
+            while ((!window.PrevisoesActions || !window.PrevisoesActions.setSectionView) && actionAttempts < 20) {
+                await new Promise(r => setTimeout(r, 50));
+                actionAttempts++;
+            }
+            if (window.PrevisoesActions && typeof window.PrevisoesActions.setSectionView === 'function') {
+                window.PrevisoesActions.setSectionView('simulado');
+            }
+        }
     }
 
     async function initConfrontoSimulator() {
         const panel = document.getElementById('simulado-view');
-        const homeInput = document.getElementById('sim-home-team');
-        const awayInput = document.getElementById('sim-away-team');
-        if (!panel || !homeInput || !awayInput) return;
+        if (!panel) return;
 
         try {
             simulatorRows = await loadCSV(SIMULATOR_CSV_URL);
             simulatorCountries = getSimulatorCountries(simulatorRows);
-            populateSimulatorDatalist();
+            getFlag = await window.ScoreCards.getFlagGetterOnce();
 
             if (!simulatorCountries.length) {
-                setSimulatorMessage('Nenhuma seleção encontrada em csv/previsoes/all_matchups.csv.', 'error');
+                console.error('Nenhuma seleção encontrada em csv/previsoes/all_matchups.csv.');
                 return;
             }
 
-            ['input', 'change'].forEach(eventName => {
-                homeInput.addEventListener(eventName, renderSimulatorSticker);
-                awayInput.addEventListener(eventName, renderSimulatorSticker);
-            });
+            // Read state and load deep link
+            await loadSimulationsFromURL();
         } catch (error) {
             console.error(error);
-            setSimulatorMessage('Erro ao carregar csv/previsoes/all_matchups.csv.', 'error');
         }
     }
 
@@ -1533,8 +1876,17 @@ window.openStickerModal = function(element, home, away) {
 };
 
 window.openStickerFromData = async function(home, away) {
-    if (!window.ScoreCards || !window.ScoreCards.matchesData) return;
-    const row = window.ScoreCards.matchesData.find(r => r.home_team === home && r.away_team === away);
+    if (!window.ScoreCards) return;
+    
+    let row = null;
+    if (window.ScoreCards.matchesData) {
+        row = window.ScoreCards.matchesData.find(r => r.home_team === home && r.away_team === away);
+    }
+
+    if (!row && typeof window.findSimulatorRow === 'function') {
+        row = window.findSimulatorRow(home, away);
+    }
+
     if (!row) return;
 
     const getFlag = await window.ScoreCards.getFlagGetterOnce();
@@ -1554,6 +1906,7 @@ window.closeStickerModal = function() {
 
 window.copyStickerLink = function(home, away) {
     const url = new URL(window.location.href);
+    url.search = ''; // Clear other parameters like sims so only this card is shared!
     url.searchParams.set('sticker', `${home}-${away}`);
     navigator.clipboard.writeText(url.toString()).then(() => {
         showToast('O link foi copiado para a área de transferência!');
