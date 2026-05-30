@@ -395,9 +395,25 @@
             }
         }
 
+        function checkHash() {
+            const hash = window.location.hash.replace('#', '');
+            if (panels[hash]) {
+                setChancesView(hash);
+            }
+        }
+
         buttons.forEach(button => {
-            button.addEventListener('click', () => setChancesView(button.dataset.chancesView));
+            button.addEventListener('click', () => {
+                const view = button.dataset.chancesView;
+                window.location.hash = view;
+            });
         });
+
+        // Executa a checagem no carregamento inicial da página
+        checkHash();
+
+        // Escuta mudanças de hash (navegação via links ou histórico)
+        window.addEventListener('hashchange', checkHash);
     }
 
     function init() {

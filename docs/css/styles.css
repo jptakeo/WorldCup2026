@@ -64,13 +64,21 @@ img {
 }
 /* ============= CABEÇALHO =================*/
 header{
-    padding: 30px 0 50px;
+    padding: 30px 0 10px;
     width: 100%;
     margin: 0 auto;
     position: relative;
 }
+.container-header {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .logo {
-    float: left;
+    /* float: left; (removido para evitar conflitos com Flexbox) */
 }
 .menu-toggle {
     display: none;
@@ -100,7 +108,7 @@ header{
     transform: translateY(-9px) rotate(-45deg);
 }
 .menu {
-    float: right;
+    /* float: right; (removido para evitar conflitos com Flexbox) */
 }
 .menu > ul {
     padding: 0;
@@ -2336,21 +2344,28 @@ box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 
 #footer .container{
     display: flex; 
+    justify-content: space-between;
+    align-items: center;
     margin: 0 auto;
     color:#FFFFFF;
     font-family: 'gotham-book';
     font-size: 11px;
+    padding: 0 20px;
 }
 .column-3 {
     align-self: center;
 }
+.logo-rodape {
+    flex: 0 0 auto;
+}
 .txt-middle {
-    width: 50%;
-    padding-left: 100px;
+    flex: 1 1 auto;
+    text-align: center;
+    padding-left: 0;
     font-size: 12px;
 }
 .txt-right {
-    width: 40%;
+    flex: 0 0 auto;
     text-align: right;
     font-size: 14px;
 }
@@ -2908,7 +2923,7 @@ box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     display: none;
     position: absolute;
 
-    top: 30px;
+    top: 38px;
     bottom: auto;
     left: 50%;
     transform: translateX(-50%);
@@ -2957,5 +2972,276 @@ box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 .submenu li a:hover {
     background-color: #eeeeee;
 }
+
+/* ==========================================================================
+   PORTAL HOME PAGE STYLING (REWORK DE OUTUBRO 2026)
+   ========================================================================== */
+
+.portal-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px 60px; /* Adicionado 60px de espaçamento no fundo para afastar do rodapé */
+}
+
+.portal-section {
+    margin-bottom: 60px;
+    padding-bottom: 40px;
+    border-bottom: 1.5px solid #e8eff5;
+}
+
+.portal-section:last-child {
+    margin-bottom: 20px;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.portal-section-header {
+    margin-bottom: 30px;
+}
+
+.portal-category-eyebrow {
+    font-family: 'gotham-bold', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #0093d2;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.portal-category-title {
+    font-family: 'gotham-bold', sans-serif;
+    font-size: 26px;
+    color: #0f3c68;
+    margin: 0 0 10px 0;
+    line-height: 1.2;
+}
+
+.portal-category-desc {
+    font-family: 'gotham-book', sans-serif;
+    font-size: 14.5px;
+    color: #5c6f84;
+    max-width: 900px;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* CARDS E LISTAGEM DO PORTAL */
+.portal-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.portal-card {
+    display: flex;
+    flex-direction: row;
+    height: 240px;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e3edf5;
+    box-shadow: 0 4px 16px rgba(15, 60, 104, 0.03);
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                border-color 0.3s ease;
+    width: 100%;
+}
+
+.portal-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(15, 60, 104, 0.08);
+    border-color: rgba(0, 147, 210, 0.25);
+}
+
+/* Alternância automática de imagem esquerda / direita para layout editorial */
+.portal-card:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.portal-card-content {
+    flex: 1;
+    padding: 30px 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.portal-eyebrow {
+    font-family: 'gotham-bold', sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #0072bc;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.portal-card-title {
+    font-family: 'gotham-bold', sans-serif;
+    font-size: 20px;
+    color: #0f3c68;
+    margin: 0 0 12px 0;
+    line-height: 1.3;
+}
+
+.portal-card-desc {
+    font-family: 'gotham-book', sans-serif;
+    font-size: 13.5px;
+    color: #5c6f84;
+    line-height: 1.6;
+    margin: 0 0 24px 0;
+}
+
+.portal-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 22px;
+    font-family: 'gotham-medium', sans-serif;
+    font-size: 13px;
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #0093d2 0%, #0072bc 100%);
+    border: none;
+    border-radius: 8px;
+    text-decoration: none !important;
+    box-shadow: 0 3px 10px rgba(0, 147, 210, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    cursor: pointer;
+    max-width: fit-content;
+}
+
+.portal-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(0, 147, 210, 0.35);
+    filter: brightness(1.05);
+}
+
+.portal-btn:active {
+    transform: translateY(1px);
+}
+
+.portal-card-img-wrap {
+    width: 320px;
+    height: 100%;
+    flex-shrink: 0;
+    background: #f8fafc;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid #e3edf5;
+}
+
+/* Ajuste da borda do wrap da imagem de acordo com a alternância */
+.portal-card:nth-child(even) .portal-card-img-wrap {
+    border-left: none;
+    border-right: 1px solid #e3edf5;
+}
+
+.portal-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.portal-card:hover .portal-card-img {
+    transform: scale(1.03);
+}
+
+/* GRID RESPONSIVO PARA EQUIPE E MIDIA (SOBRE O PROJETO) */
+.portal-grid-sobre {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.portal-card-sobre {
+    background: #f8fafc;
+    border: 1px solid #eaf1f7;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.portal-card-sobre:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(15, 60, 104, 0.05);
+    border-color: rgba(0, 147, 210, 0.2);
+}
+
+.portal-card-sobre h4 {
+    font-family: 'gotham-bold', sans-serif;
+    font-size: 16px;
+    color: #0f3c68;
+    margin: 0 0 10px 0;
+}
+
+.portal-card-sobre p {
+    font-family: 'gotham-book', sans-serif;
+    font-size: 13px;
+    color: #5c6f84;
+    line-height: 1.5;
+    margin: 0 0 20px 0;
+}
+
+/* DISCLAIMER REESTILIZADO PARA O PORTAL */
+.portal-disclaimer-card {
+    margin-top: 50px;
+    padding: 22px 26px;
+    background: #f8fafc;
+    border-left: 5px solid #0093d2;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(15, 60, 104, 0.02);
+}
+
+.portal-disclaimer-card h5 {
+    font-family: 'gotham-bold', sans-serif;
+    font-size: 13px;
+    color: #0f3c68;
+    margin: 0 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.portal-disclaimer-card p {
+    font-family: 'gotham-book', sans-serif;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: #62758a;
+    margin: 0;
+}
+
+/* RESPONSIVIDADE DO PORTAL */
+@media (max-width: 860px) {
+    .portal-card, .portal-card:nth-child(even) {
+        flex-direction: column !important;
+        height: auto !important;
+    }
+    
+    .portal-card-img-wrap {
+        width: 100% !important;
+        height: 180px !important;
+        min-height: 180px !important;
+        border-left: none !important;
+        border-right: none !important;
+        border-bottom: 1px solid #e3edf5;
+    }
+    
+    .portal-card-content {
+        padding: 24px 20px;
+    }
+    
+    .portal-category-title {
+        font-size: 22px;
+    }
+}
+
 
 

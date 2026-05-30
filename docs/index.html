@@ -85,47 +85,227 @@
                 <div class="texto-banner inicial">Projeto de Iniciação Científica:<br>Modelagem Preditiva na Copa do Mundo 2026</div>
             </div>
 
-            <!-- Conteudo principal -->
-            <div class="container">
-                <div id="conteudo" style="max-width: 780px;">
-                    <div class="texto max-780 font-16">
-                        <p> A Copa do Mundo traz paixões, memórias e debates. 
-                            Além da emoção de cada partida, ela também levanta perguntas que podem ser exploradas com dados,
-                            matemática e estatística. Este site nasceu desse encontro entre futebol e modelagem.
-                            É um projeto de iniciação científica desenvolvida por alunos da EMAp para investigar
-                            o que os números podem revelar sobre os jogos da Copa do Mundo de 2026.</p>
-
-                        <p> Alimentamos uma base de dados com os resultados de 2997 confrontos entre 187 seleções da FIFA
-                            nos últimos quatro anos. Os modelos desenvolvidos foram então usados para comparar as seleções e realizar simulações.
-                            Não há pretensão em adivinhar o que vai acontecer na Copa, no entanto é razoável confiar que, na média,
-                            o modelo tenha um bom desempenho. Esperamos enriquecer as discussões das rodas de amigos com argumentos baseados
-                            em números. </p>
-
-                        <ul>
-                        <li> Quais perguntas os dados conseguem ajudar a responder?</li>
-                        <li> Qual é a probabilidade do Brasil ser campeão?</li>
-                        <li> Qual é a probabilidade de cada placar da fase de grupos?</li>
-                        </ul>
-
-                        <p> Este site foi pensado para qualquer pessoa interessada na Copa que busca explorar perguntas,
-                            comparar cenários e enxergar a competição por um ângulo diferente, independentemente de familiaridade com estatística.
-                        </p>
-                        
-                        <p>
-                        O conteúdo será atualizado ao longo da Copa de 2026, acompanhando o andamento da competição e incorporando novos resultados.</p>
-
-                        <div class="disclaimer">
-                        Este projeto foi desenvolvido de forma independente por alunos da EMAp, no contexto de uma iniciativa de iniciação científica.
-                        As análises, modelos e resultados apresentados neste site não representam posicionamentos oficiais da Fundação Getulio Vargas (FGV)
-                        ou de qualquer instituição associada. Parte da automação dos processos do site contou com o auxílio de ferramentas
-                        de inteligência artificial, como o GitHub Copilot e o ChatGPT.
-                        </div>   
-
+            <!-- Conteúdo principal do Portal -->
+            <div class="portal-container" style="margin-top: 40px;">
+                
+                <!-- INTRODUÇÃO / BOAS VINDAS -->
+                <div style="margin-bottom: 50px; text-align: center;">
+                    <div style="max-width: 800px; margin: 0 auto; font-family: 'gotham-book', sans-serif; font-size: 16px; line-height: 1.6; color: #334155;">
+                        <p>A Copa do Mundo traz paixões, memórias e debates intensos. Além da emoção de cada partida, ela também levanta perguntas que podem ser exploradas com dados, matemática e estatística. Este site nasceu desse encontro entre futebol e modelagem preditiva, desenvolvido por alunos da EMAp/FGV para investigar o que os números podem revelar sobre os jogos da Copa do Mundo de 2026 de forma interativa e visual.</p>
+                        <p style="margin-top: 15px; font-weight: bold; color: #0072bc;">Explore nosso portal abaixo para navegar por todas as análises, chances e ferramentas interativas do projeto!</p>
                     </div>
                 </div>
 
-                <div id="barra-lateral-direita" style="max-width: 360px;">
-                    <img src="images/soccer.png" alt="Copa do Mundo 2026">
+                <!-- 1. CATEGORIA: CHANCES DAS SELEÇÕES -->
+                <section class="portal-section" id="portal-chances">
+                    <div class="portal-section-header">
+                        <span class="portal-category-eyebrow">Análises Probabilísticas</span>
+                        <h3 class="portal-category-title">Chances das Seleções</h3>
+                        <p class="portal-category-desc">Acompanhe as probabilidades agregadas de cada um dos 48 países avançarem de fase e conquistarem a taça, calculadas por meio de 100.000 simulações.</p>
+                    </div>
+                    <div class="portal-cards-list">
+                        <!-- Sub-page A: Tabela Completa -->
+                        <article class="portal-card">
+                            <div class="portal-card-content">
+                                <span class="portal-eyebrow">Classificação Geral</span>
+                                <h4 class="portal-card-title">Tabela Completa de Probabilidades</h4>
+                                <p class="portal-card-desc">Explore o ranking completo das chances de cada seleção alcançar cada fase do mata-mata (16-avos, oitavas, quartas, semis, final) e de erguer o troféu.</p>
+                                <a href="chances.html#ranking" class="portal-btn">Ver Tabela Completa</a>
+                            </div>
+                            <div class="portal-card-img-wrap">
+                                <img src="images/portal/tabela_de_chances.png" alt="Tabela de Chances" class="portal-card-img">
+                            </div>
+                        </article>
+
+                        <!-- Sub-page B: Fase de Grupos -->
+                        <article class="portal-card">
+                            <div class="portal-card-content">
+                                <span class="portal-eyebrow">Fase de Grupos</span>
+                                <h4 class="portal-card-title">Chances na Fase de Grupos</h4>
+                                <p class="portal-card-desc">Descubra as probabilidades de classificação em primeiro e segundo lugar em cada um dos 12 grupos da Copa do Mundo, detalhadas seleção por seleção.</p>
+                                <a href="chances.html#groups-phase" class="portal-btn">Analisar Grupos</a>
+                            </div>
+                            <div class="portal-card-img-wrap">
+                                <img src="images/portal/fase_de_grupos.png" alt="Chances na Fase de Grupos" class="portal-card-img">
+                            </div>
+                        </article>
+
+                        <!-- Sub-page C: Chaveamento Projetado -->
+                        <article class="portal-card">
+                            <div class="portal-card-content">
+                                <span class="portal-eyebrow">Mata-Mata Projetado</span>
+                                <h4 class="portal-card-title">Chaveamento Dinâmico Projetado</h4>
+                                <p class="portal-card-desc">Visualize o desenho dinâmico do chaveamento de mata-mata projetado a partir dos resultados simulados, com as probabilidades estimadas de avanço de cada lado.</p>
+                                <a href="chances.html#bracket" class="portal-btn">Explorar Chaveamento</a>
+                            </div>
+                            <div class="portal-card-img-wrap">
+                                <img src="images/portal/mata_mata.png" alt="Chaveamento Projetado" class="portal-card-img">
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- 2. CATEGORIA: SIMULAÇÕES DE JOGOS -->
+                <section class="portal-section" id="portal-simulacoes">
+                    <div class="portal-section-header">
+                        <span class="portal-category-eyebrow">Simulações e Prognósticos</span>
+                        <h3 class="portal-category-title">Simulações de Partidas</h3>
+                        <p class="portal-category-desc">Acompanhe as estimativas de placares para os confrontos definidos da competição ou crie suas próprias simulações personalizadas combinando quaisquer seleções do mundo.</p>
+                    </div>
+                    <div class="portal-cards-list">
+                        <!-- Sub-page A: Confrontos Definidos -->
+                        <article class="portal-card">
+                            <div class="portal-card-content">
+                                <span class="portal-eyebrow">Placares Projetados</span>
+                                <h4 class="portal-card-title">Confrontos Definidos do Torneio</h4>
+                                <p class="portal-card-desc">Veja as probabilidades de vitória, empate e cada placar exato para todos os jogos oficiais agendados na Copa do Mundo de 2026, atualizados rodada a rodada.</p>
+                                <a href="previsoes.html#confrontos" class="portal-btn">Visualizar Placares</a>
+                            </div>
+                            <div class="portal-card-img-wrap">
+                                <img src="images/portal/placares_projetados.png" alt="Confrontos Definidos" class="portal-card-img">
+                            </div>
+                        </article>
+                        
+                        <!-- Sub-page B: Simule um Confronto -->
+                        <article class="portal-card">
+                            <div class="portal-card-content">
+                                <span class="portal-eyebrow">Simulador Interativo</span>
+                                <h4 class="portal-card-title">Simule Qualquer Confronto</h4>
+                                <p class="portal-card-desc">Crie um confronto personalizado escolhendo quaisquer seleções. Compare suas forças de ataque e defesa lado a lado e simule os placares de forma instantânea.</p>
+                                <a href="previsoes.html#simulado" class="portal-btn">Simular Partida</a>
+                            </div>
+                            <div class="portal-card-img-wrap">
+                                <img src="images/portal/confrontos_simulados.png" alt="Simule um Confronto" class="portal-card-img">
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- 3. CATEGORIA: LABORATÓRIO DA COPA (FERRAMENTAS INTERATIVAS) -->
+                <section class="portal-section" id="portal-laboratorio">
+                    <div class="portal-section-header">
+                        <span class="portal-category-eyebrow">Ferramentas Interativas</span>
+                        <h3 class="portal-category-title">Laboratório da Copa</h3>
+                        <p class="portal-category-desc">Explore utilitários estatísticos e ferramentas interativas desenvolvidas para enriquecer sua experiência durante a Copa do Mundo.</p>
+                    </div>
+                    <div class="portal-cards-list">
+                        <!-- Sub-page A: Calendário da Copa -->
+                        <article class="portal-card">
+                            <div class="portal-card-content">
+                                <span class="portal-eyebrow">Calendário Interativo</span>
+                                <h4 class="portal-card-title">Tabela de Jogos e Exportador de Agenda</h4>
+                                <p class="portal-card-desc">Filtre partidas por seleção, cidade ou fuso horário (Brasília ou local) e exporte a agenda customizada de jogos (.ics) direto para seu Google Agenda, Apple Calendar ou Outlook.</p>
+                                <a href="calendario.html" class="portal-btn">Acessar Calendário</a>
+                            </div>
+                            <div class="portal-card-img-wrap">
+                                <img src="images/portal/calendario.png" alt="Calendário Interativo" class="portal-card-img">
+                            </div>
+                        </article>
+
+                        <!-- Sub-page B: Simulador do Álbum -->
+                        <article class="portal-card">
+                            <div class="portal-card-content">
+                                <span class="portal-eyebrow">Simulador de Figurinhas</span>
+                                <h4 class="portal-card-title">Simulador de Custo do Álbum e Cartas Raras</h4>
+                                <p class="portal-card-desc">Descubra matematicamente quanto custa completar o álbum sozinho ou trocando figurinhas em grupo com amigos. Simule também a abertura de pacotes e veja a raridade de cartas extras.</p>
+                                <a href="album.html" class="portal-btn">Simular Álbum</a>
+                            </div>
+                            <div class="portal-card-img-wrap">
+                                <img src="images/portal/album_de_figurinhas.png" alt="Simulador do Álbum" class="portal-card-img">
+                            </div>
+                        </article>
+
+                        <!-- Sub-page C: Bolão entre Amigos -->
+                        <article class="portal-card">
+                            <div class="portal-card-content">
+                                <span class="portal-eyebrow">Bolão Online</span>
+                                <h4 class="portal-card-title">Bolão Entre Amigos (Boleco42)</h4>
+                                <p class="portal-card-desc">Crie um grupo de bolão, convide seus amigos, dê seus palpites de placares para os jogos e acompanhe a pontuação e os rankings de acertos de forma online.</p>
+                                <a href="https://boleco42.web.app" target="_blank" class="portal-btn">Participar do Bolão</a>
+                            </div>
+                            <div class="portal-card-img-wrap">
+                                <img src="images/portal/boleco.png" alt="Bolão Entre Amigos" class="portal-card-img">
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- 4. CATEGORIA: RETROSPECTIVA HISTÓRICA -->
+                <section class="portal-section" id="portal-retrospectiva">
+                    <div class="portal-section-header">
+                        <span class="portal-category-eyebrow">História & Dados</span>
+                        <h3 class="portal-category-title">Retrospectiva Histórica</h3>
+                        <p class="portal-category-desc">Uma viagem de dados pelas edições passadas da Copa do Mundo FIFA, desde as trajetórias de campeões até curiosidades visuais marcantes do torneio.</p>
+                    </div>
+                    <div class="portal-cards-list">
+                        <article class="portal-card">
+                            <div class="portal-card-content">
+                                <span class="portal-eyebrow">Acervo das Copas</span>
+                                <h4 class="portal-card-title">Estatísticas, Mascotes, Bolas e Camisas do Brasil</h4>
+                                <p class="portal-card-desc">Explore estatísticas e chaveamentos das últimas 5 Copas, mapas interativos de melhor desempenho dos países, a evolução de todas as bolas oficiais, mascotes históricos e o manto sagrado da Seleção Brasileira com seus fornecedores.</p>
+                                <a href="vis.html" class="portal-btn">Explorar História</a>
+                            </div>
+                            <div class="portal-card-img-wrap">
+                                <img src="images/portal/retrospectiva.png" alt="Retrospectiva Histórica" class="portal-card-img">
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- 5. CATEGORIA: CIÊNCIA DOS MODELOS -->
+                <section class="portal-section" id="portal-modelos">
+                    <div class="portal-section-header">
+                        <span class="portal-category-eyebrow">Bastidores Científicos</span>
+                        <h3 class="portal-category-title">Ciência dos Modelos</h3>
+                        <p class="portal-category-desc">Conheça a matemática aplicada e o rigor estatístico que guiam os palpites e probabilidades expostos neste site.</p>
+                    </div>
+                    <div class="portal-cards-list">
+                        <article class="portal-card">
+                            <div class="portal-card-content">
+                                <span class="portal-eyebrow">Fundamentação Matemática</span>
+                                <h4 class="portal-card-title">Formulação e Validação dos Modelos Preditivos</h4>
+                                <p class="portal-card-desc">Saiba como funcionam os modelos baseados em Dixon-Coles e Poisson combinados com Inferência Bayesiana. Leia nossa documentação técnica, as validações feitas em Copas passadas e entenda os pesos atribuídos aos torneios e o decaimento exponencial temporal.</p>
+                                <a href="modelos.html" class="portal-btn">Ler Fundamentação</a>
+                            </div>
+                            <div class="portal-card-img-wrap">
+                                <img src="images/portal/modelos.jpeg" alt="Ciência dos Modelos" class="portal-card-img">
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- 6. CATEGORIA: SOBRE O PROJETO (EQUIPE E MÍDIA EM GRID) -->
+                <section class="portal-section" id="portal-sobre">
+                    <div class="portal-section-header">
+                        <span class="portal-category-eyebrow">Institucional</span>
+                        <h3 class="portal-category-title">Sobre o Projeto</h3>
+                        <p class="portal-category-desc">Saiba mais sobre a iniciativa científica por trás deste portal e seu impacto na comunidade e nos canais de comunicação.</p>
+                    </div>
+                    <div class="portal-grid-sobre">
+                        <!-- Sub-page A: Nossa Equipe -->
+                        <div class="portal-card-sobre">
+                            <div>
+                                <h4>Nossa Equipe</h4>
+                                <p>Conheça os estudantes de graduação de iniciação científica e os professores pesquisadores da Escola de Matemática Aplicada da FGV (EMAp) envolvidos na modelagem, programação e análise dos dados.</p>
+                            </div>
+                            <a href="equipe.html" class="portal-btn">Ver Equipe</a>
+                        </div>
+                        
+                        <!-- Sub-page B: Na Mídia -->
+                        <div class="portal-card-sobre">
+                            <div>
+                                <h4>Na Mídia</h4>
+                                <p>Acompanhe a repercussão científica do projeto, artigos publicados e a cobertura de grandes canais de notícias nacionais e internacionais sobre as previsões da Copa do Mundo 2026.</p>
+                            </div>
+                            <a href="midia.html" class="portal-btn">Acessar Repercussão</a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DISCLAIMER INTEGRADO -->
+                <div class="portal-disclaimer-card">
+                    <h5>Disclaimer Importante</h5>
+                    <p>Este projeto foi desenvolvido de forma independente por alunos da EMAp, no contexto de uma iniciativa de iniciação científica. As análises, modelos e resultados apresentados neste site não representam posicionamentos oficiais da Fundação Getulio Vargas (FGV) ou de qualquer instituição associada. Parte da automação dos processos do site contou com o auxílio de ferramentas de inteligência artificial, como o GitHub Copilot e o ChatGPT. O conteúdo será atualizado ao longo da Copa de 2026, acompanhando o andamento da competição e incorporando novos resultados.</p>
                 </div>
 
             </div>
