@@ -578,22 +578,24 @@ class BayesianWorldCup2026(TournamentSimulator):
                 assigned_thirds[slot] = team_name
 
         r32_matches = [
-            (group_winners["E"], assigned_thirds["E"]),
-            (group_winners["I"], assigned_thirds["I"]),
-            (group_runners["A"], group_runners["B"]),
-            (group_winners["F"], group_runners["C"]),
-            (group_winners["C"], group_runners["F"]),
-            (group_runners["E"], group_runners["I"]),
-            (group_winners["A"], assigned_thirds["A"]),
-            (group_winners["L"], assigned_thirds["L"]),
-            (group_winners["D"], assigned_thirds["D"]),
-            (group_winners["G"], assigned_thirds["G"]),
-            (group_runners["K"], group_runners["L"]),
-            (group_winners["H"], group_runners["J"]),
-            (group_winners["B"], assigned_thirds["B"]),
-            (group_winners["J"], group_runners["H"]),
-            (group_winners["K"], assigned_thirds["K"]),
-            (group_runners["D"], group_runners["G"]),
+            # ── Left half ──────────────────────────────────────────────────
+            (group_winners["E"], assigned_thirds["E"]),  # L1: M74 → R16 M89
+            (group_winners["I"], assigned_thirds["I"]),  # L2: M77 → R16 M89
+            (group_runners["A"], group_runners["B"]),  # L3: M73 → R16 M90
+            (group_winners["F"], group_runners["C"]),  # L4: M75 → R16 M90
+            (group_runners["K"], group_runners["L"]),  # L5: M83 → R16 M93
+            (group_winners["H"], group_runners["J"]),  # L6: M84 → R16 M93
+            (group_winners["D"], assigned_thirds["D"]),  # L7: M81 → R16 M94
+            (group_winners["G"], assigned_thirds["G"]),  # L8: M82 → R16 M94
+            # ── Right half ─────────────────────────────────────────────────
+            (group_winners["C"], group_runners["F"]),  # R1: M76 → R16 M91
+            (group_runners["E"], group_runners["I"]),  # R2: M78 → R16 M91
+            (group_winners["A"], assigned_thirds["A"]),  # R3: M79 → R16 M92
+            (group_winners["L"], assigned_thirds["L"]),  # R4: M80 → R16 M92
+            (group_winners["B"], assigned_thirds["B"]),  # R5: M85 → R16 M96
+            (group_winners["K"], assigned_thirds["K"]),  # R6: M87 → R16 M96
+            (group_winners["J"], group_runners["H"]),  # R7: M86 → R16 M95
+            (group_runners["D"], group_runners["G"]),  # R8: M88 → R16 M95
         ]
 
         order_map = {
@@ -731,14 +733,7 @@ class BayesianWorldCup2026(TournamentSimulator):
                     }
                 )
 
-            if round_label == "Quartas":
-                final_rounds[i + 1][2].extend(
-                    [
-                        (next_teams[0], next_teams[2]),
-                        (next_teams[1], next_teams[3]),
-                    ]
-                )
-            elif round_label == "Semifinal":
+            if round_label == "Semifinal":
                 final_rounds[i + 1][2].append((next_losers[0], next_losers[1]))
                 final_rounds[i + 2][2].append((next_teams[0], next_teams[1]))
             elif round_label not in ("Semifinal", "3º Lugar", "Final"):
