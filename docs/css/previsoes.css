@@ -1585,7 +1585,7 @@ SIMULADOR DE CONFRONTO
     background: #ffffff;
     border-radius: 12px;
     min-height: 600px;
-    padding: 24px;
+    padding: 0px 24px 24px 24px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
 
@@ -2370,10 +2370,27 @@ SIMULADOR DE CONFRONTO
 .simulator-content-row {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 280px;
-    gap: 32px;
+    gap: 40px;
     align-items: start;
     margin-top: 16px;
 }
+
+
+#simulado-view #barra-lateral-direita .menu-caixa ul li a,
+#simulado-view #barra-lateral-direita .menu-caixa ul li a:visited {
+    color: #233b65;
+}
+
+#simulado-view #barra-lateral-direita .menu-caixa ul li a:hover {
+    color: #1f4e8c;
+}
+
+
+/* Mantém o scroll horizontal da tabela sem estourar o layout */
+#simulado-view #chances-table-container {
+    width: 100%;
+}
+
 
 /* ANIMATIONS */
 @keyframes slideDownFade {
