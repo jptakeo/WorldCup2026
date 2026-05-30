@@ -915,12 +915,11 @@ function applyScoreFilters(panel) {
         };
 
         const rawHomeTotal = getOutcomeTotalFromColumn(row, 'home_win', homeWin);
-        const rawDrawTotal = getOutcomeTotalFromColumn(row, 'draw', draw);
         const rawAwayTotal = getOutcomeTotalFromColumn(row, 'away_win', awayWin);
 
         const homeTotal = Number(rawHomeTotal.toFixed(1));
-        const drawTotal = Number(rawDrawTotal.toFixed(1));
-        const awayTotal = Number((100 - homeTotal - drawTotal).toFixed(1));
+        const awayTotal = Number(rawAwayTotal.toFixed(1));
+        const drawTotal = Number((100 - homeTotal - awayTotal).toFixed(1));
 
         const homeFlag = getFlag(homeCountry);
         const awayFlag = getFlag(awayCountry);
@@ -1008,11 +1007,11 @@ function applyScoreFilters(panel) {
         const best = getBestScore(homeWin, draw, awayWin) || { label: '0x0', homeGoals: 0, awayGoals: 0, value: 0 };
         
         const rawHomeTotal = getOutcomeTotalFromColumn(row, 'home_win', homeWin);
-        const rawDrawTotal = getOutcomeTotalFromColumn(row, 'draw', draw);
+        const rawAwayTotal = getOutcomeTotalFromColumn(row, 'away_win', awayWin);
 
         const homeTotal = Number(rawHomeTotal.toFixed(1));
-        const drawTotal = Number(rawDrawTotal.toFixed(1));
-        const awayTotal = Number((100 - homeTotal - drawTotal).toFixed(1));
+        const awayTotal = Number(rawAwayTotal.toFixed(1));
+        const drawTotal = Number((100 - homeTotal - awayTotal).toFixed(1));
 
         const homeFlag = getFlag(homeCountry);
         const awayFlag = getFlag(awayCountry);
