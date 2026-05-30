@@ -731,7 +731,14 @@ class BayesianWorldCup2026(TournamentSimulator):
                     }
                 )
 
-            if round_label == "Semifinal":
+            if round_label == "Quartas":
+                final_rounds[i + 1][2].extend(
+                    [
+                        (next_teams[0], next_teams[2]),
+                        (next_teams[1], next_teams[3]),
+                    ]
+                )
+            elif round_label == "Semifinal":
                 final_rounds[i + 1][2].append((next_losers[0], next_losers[1]))
                 final_rounds[i + 2][2].append((next_teams[0], next_teams[1]))
             elif round_label not in ("Semifinal", "3º Lugar", "Final"):
