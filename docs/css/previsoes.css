@@ -1585,17 +1585,15 @@ SIMULADOR DE CONFRONTO
     background: #ffffff;
     border-radius: 12px;
     min-height: 600px;
-    padding: 0px 24px 24px 24px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
 
 .simulator-header-bar {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-    gap: 16px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
 }
 
 .simulator-header-bar .simulator-intro-text {
@@ -1647,7 +1645,6 @@ SIMULADOR DE CONFRONTO
 .simulator-carousel {
     position: relative;
     width: 100%;
-    margin-bottom: 24px;
     display: flex;
     align-items: center;
 }
@@ -1659,7 +1656,7 @@ SIMULADOR DE CONFRONTO
     justify-content: flex-start;
     overflow-x: auto;
     overflow-y: hidden;
-    padding: 20px 8px 25px 8px;
+    padding: 10px 0px 20px 0px;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     width: 100%;
@@ -2366,25 +2363,6 @@ SIMULADOR DE CONFRONTO
     color: var(--primary-blue);
 }
 
-/* SIDEBAR LAYOUT ALIGNMENTS */
-.simulator-content-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 280px;
-    gap: 40px;
-    align-items: start;
-    margin-top: 16px;
-}
-
-
-#simulado-view #barra-lateral-direita .menu-caixa ul li a,
-#simulado-view #barra-lateral-direita .menu-caixa ul li a:visited {
-    color: #233b65;
-}
-
-#simulado-view #barra-lateral-direita .menu-caixa ul li a:hover {
-    color: #1f4e8c;
-}
-
 
 /* Mantém o scroll horizontal da tabela sem estourar o layout */
 #simulado-view #chances-table-container {
@@ -2528,21 +2506,6 @@ SIMULADOR DE CONFRONTO
     }
 }
 
-/* RESPONSIVE RESPONSIVENESS */
-@media (max-width: 992px) {
-    .simulator-content-row {
-        grid-template-columns: 1fr;
-        gap: 32px;
-    }
-    .simulator-content-row #barra-lateral-direita {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 20px;
-    }
-    #simulado-view #barra-lateral-direita .menu-caixa.margin-top-40 {
-        margin-top: 0;
-    }
-}
 
 @media (max-width: 768px) {
     .simulator-panel {
@@ -2556,6 +2519,7 @@ SIMULADOR DE CONFRONTO
     .simulator-share-btn {
         width: 100%;
         justify-content: center;
+        margin-bottom:10px;
     }
     .simulator-cards-grid {
         padding: 10px 4px 15px 4px;

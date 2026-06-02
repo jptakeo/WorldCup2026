@@ -705,7 +705,7 @@ body {
 
     .album-hero {
         border-radius: 18px;
-        padding: 22px;
+        padding: 0 20px 20px 20px;
     }
 
     .album-hero h1 {
@@ -962,10 +962,6 @@ body {
 /* Cartas extras / cromos raros */
 .album-rarity-section {
     margin-top: 44px;
-}
-
-.album-rarity-hero {
-    margin-bottom: 16px;
 }
 
 .rare-grid {

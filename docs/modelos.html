@@ -19,54 +19,55 @@
             gtag('config', 'UA-119803899-1');
         </script>
     </head>
+
     <body>
         <!-- Início do cabeçalho-->
-        <div class="page">   
-            <header>
-                <div class="container-header">
-                    <div class="logo">
-                        <img src="images/logo.png" />
-                    </div>
-
-                    <div class="menu-toggle">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-
-                    <nav class="menu">
-                        <ul>
-                            <li> <a href="index.html">Início</a></li>
-                            <li class="active"><a href="modelos.html">Modelos</a></li>
-                            <li><a href="chances.html">Chances</a></li>
-                            <li><a href="previsoes.html">Previsões</a></li>
-                            <li><a href="vis.html">Retrospectiva</a></li>
-                            <!--<li><a href="equipe.html">Equipe</a></li>-->
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-link">
-                                    Outros
-                                </a>
-                                <ul class="submenu">
-                                    <li><a href="equipe.html">Equipe</a></li>
-                                    <li><a href="midia.html">Na Mídia</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
+        <header>
+            <div class="container-header">
+                <div class="logo">
+                    <img src="images/logo.png" />
                 </div>
-            </header>
-            <!--Final do cabeçalho-->
 
-            <!-- Banner das páginas -->
-            <div class="banner-cabecalho">
-                <div class="texto-banner">Formulação dos Modelos</div>
+                <div class="menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <nav class="menu">
+                    <ul>
+                        <li> <a href="index.html">Início</a></li>
+                        <li class="active"><a href="modelos.html">Modelos</a></li>
+                        <li><a href="chances.html">Chances</a></li>
+                        <li><a href="previsoes.html">Previsões</a></li>
+                        <li><a href="vis.html">Retrospectiva</a></li>
+                        <!--<li><a href="equipe.html">Equipe</a></li>-->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-link" aria-haspopup="true" aria-expanded="false">
+                                Outros
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="equipe.html">Equipe</a></li>
+                                <li><a href="midia.html">Na Mídia</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
             </div>
+        </header>
+        <!--Final do cabeçalho-->
 
+        <!-- Banner das páginas -->
+        <div class="banner-cabecalho">
+            <div class="texto-banner">Formulação dos Modelos</div>
+        </div>
+
+        <div class="page">
             <!-- Conteudo principal -->
-            <div class="container">
-                <div id="conteudo">
+            <div id="conteudo">
+                <div class="content-row">
                     <div class="texto max-780 font-16">
-                        <p> Prever o resultado de uma partida de futebol é notoriamente difícil. Diferentemente de esportes de alta pontuação,
+                        <p style="margin-top: 0px;"> Prever o resultado de uma partida de futebol é notoriamente difícil. Diferentemente de esportes de alta pontuação,
                             o futebol é decidido por poucos gols, o que torna o jogo altamente sensível a fatores aleatórios, como desvio de sorte, erro de arbitragem ou um momento de brilhantismo individual.
                             Para lidar com essa imprevisibilidade, utilizamos um motor estatístico sofisticado baseado nos 
                             modelos de Dixon-Coles e Poisson, combinados com inferência Bayesiana, para calcular as probabilidades de cada resultado possível. 
@@ -99,45 +100,48 @@
                             A partir dessas simulações, calculamos as <strong>chances</strong> percentuais de cada seleção alcançar cada fase do torneio. 
                         </p>
 
-			            <p> As probabilidades dos placares dos jogos da Copa podem ser visualizados nas seguintes páginas:
-							<ul>
-							  <li> <a href="previsoes.html#grupos" target="_blank">Previsões da fase de grupos</a> (atualizado em 10/05/26)</li>
-                              <li> <a href="previsoes.html#r32" target="_blank">Jogos dos 16-avos</a> (atualizado em --/--/26)</li>
-                              <li> <a href="previsoes.html#oitavas">Jogos das oitavas de final</a> (atualizado em -/-/26).</li>
-							  <li> <a href="previsoes.html#quartas" target="_blank">Jogos das quartas de final</a> (atualizado em -/-/26).</li>
-                              <li> <a href="previsoes.html#semis" target="_blank">Jogos das semifinais</a> (atualizado em -/-/26).</li>
-                              <li> <a href="previsoes.html#final" target="_blank">Jogo da Final</a> (atualizado em -/-/26).</li>
-							</ul>
-
-                            Veja mais detalhes de processamento e modelagem <a href="notes_wc26.pdf" target="_blank">aqui</a>. A formulação foi inspirada no artigo para os <a href="https://www18.fgv.br/emap/copa-2022/Previsoes_Copa_2018.pdf" target="_blank">jogos da Copa do Mundo de 2018</a>.
-						</p>
-                    </div>
-                </div>
-
-                <!-- BARRA LATERAL-->
-                <div id="barra-lateral-direita">
- 		            <div class="menu-caixa">
-                        <div class="titulo-menu">Informações </div>
-                        <ul>
-                            <li><a href="https://github.com/BrazilianFootball/WorldCup2026" target="_blank">Repositório</a></li>
-                            <li><a href="https://www.kaggle.com/datasets/martj42/international-football-results-from-1872-to-2017" target="_blank">Base de Dados</a></li>
-                            <li><a href="https://github.com/BrazilianFootball/WorldCup2026/tree/main/stan_models" target="_blank">Implementação</a></li>
-                            <li><a href="https://www18.fgv.br/emap/copa-2022/previsoes_finais.html" target="_blank">Previsões da Copa de 2022</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="menu-caixa margin-top-40">
-                        <div class="titulo-menu">Explore Outras Ferramentas</div>
+                        <p style="margin-bottom: 0px;"> As probabilidades dos placares dos jogos da Copa podem ser visualizados nas seguintes páginas:</p>
                             <ul>
-                                <li><a href="calendario.html" target="_blank">Calendário da Copa</a></li>
-                                <li><a href="https://boleco42.web.app" target="_blank">Bolão Entre Amigos</a></li>
-                                <li><a href="album.html" target="_blank">Simulador p/ Álbum da Copa</a></li>
+                                <li> <a href="previsoes.html#grupos" target="_blank">Previsões da fase de grupos</a> (atualizado em 10/05/26)</li>
+                                <li> <a href="previsoes.html#r32" target="_blank">Jogos dos 16-avos</a> (atualizado em --/--/26)</li>
+                                <li> <a href="previsoes.html#oitavas">Jogos das oitavas de final</a> (atualizado em -/-/26).</li>
+                                <li> <a href="previsoes.html#quartas" target="_blank">Jogos das quartas de final</a> (atualizado em -/-/26).</li>
+                                <li> <a href="previsoes.html#semis" target="_blank">Jogos das semifinais</a> (atualizado em -/-/26).</li>
+                                <li> <a href="previsoes.html#final" target="_blank">Jogo da Final</a> (atualizado em -/-/26).</li>
+                            </ul>
+                        <p style="margin-bottom: 0px;">
+                            Veja mais detalhes de processamento e modelagem <a href="notes_wc26.pdf" target="_blank">aqui</a>.
+                            A formulação foi inspirada no artigo para os <a href="https://www18.fgv.br/emap/copa-2022/Previsoes_Copa_2018.pdf" target="_blank">jogos da Copa do Mundo de 2018</a>.
+                        </p>
+                    </div>
+
+                    <!-- BARRA LATERAL-->
+                    <div id="barra-lateral-direita">
+                        <div class="menu-caixa">
+                            <div class="titulo-menu">Informações </div>
+                            <ul>
+                                <li><a href="https://github.com/BrazilianFootball/WorldCup2026" target="_blank">Repositório</a></li>
+                                <li><a href="https://www.kaggle.com/datasets/martj42/international-football-results-from-1872-to-2017" target="_blank">Base de Dados</a></li>
+                                <li><a href="https://github.com/BrazilianFootball/WorldCup2026/tree/main/stan_models" target="_blank">Implementação</a></li>
+                                <li><a href="https://www18.fgv.br/emap/copa-2022/previsoes_finais.html" target="_blank">Previsões da Copa de 2022</a></li>
                             </ul>
                         </div>
+
+                        <div class="menu-caixa margin-top-40">
+                            <div class="titulo-menu">Explore Outras Ferramentas</div>
+                                <ul>
+                                    <li><a href="calendario.html" target="_blank">Calendário da Copa</a></li>
+                                    <li><a href="https://boleco42.web.app" target="_blank">Bolão Entre Amigos</a></li>
+                                    <li><a href="album.html" target="_blank">Simulador p/ Álbum da Copa</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
-            </div>
         </div>
+
+
         <!--Final do conteudo-->
         <footer id="footer">
             <div class="container">

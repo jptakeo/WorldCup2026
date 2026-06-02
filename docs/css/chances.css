@@ -108,6 +108,7 @@ CHANCES: controles e alternância de visualização
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     background: white;
+    margin-bottom:32px;
 }
 
 #chancesTable {
@@ -192,7 +193,6 @@ body.chances-bracket-active .container > #conteudo {
 /* Layout do ranking: controles ficam na coluna da tabela; sidebar começa na altura da tabela */
 .ranking-content-row {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 300px;
     grid-template-rows: auto auto auto;
     column-gap: 40px;
     row-gap: 0;
@@ -232,16 +232,6 @@ body.chances-bracket-active .container > #conteudo {
     width: 300px;
     margin-left: 0;
 }
-
-#ranking-view #barra-lateral-direita .menu-caixa ul li a,
-#ranking-view #barra-lateral-direita .menu-caixa ul li a:visited {
-    color: #233b65;
-}
-
-#ranking-view #barra-lateral-direita .menu-caixa ul li a:hover {
-    color: #1f4e8c;
-}
-
 
 /* Mantém o scroll horizontal da tabela sem estourar o layout */
 #ranking-view #chances-table-container {
@@ -967,11 +957,16 @@ font-weight: 700;
 color: #1e3a52;
 }
 
+@media (max-width: 1024px) {
+    #ranking-view #barra-lateral-direita {
+        padding:0;
+    }
+}
+
 @media (max-width: 920px) {
     .ranking-content-row {
         display: flex;
         flex-direction: column;
-        gap: 24px;
     }
 
     .ranking-table-area {
@@ -985,21 +980,6 @@ color: #1e3a52;
 }
 
 @media (max-width: 480px) {
-    #ranking-view #barra-lateral-direita .menu-caixa > ul {
-        padding-left: 0;
-        margin: 0;
-    }
-
-    #ranking-view #barra-lateral-direita .menu-caixa > ul > li {
-        margin-bottom: 0;
-        padding: 0;
-        list-style: none;
-    }
-
-    #ranking-view #barra-lateral-direita .menu-caixa > ul > li:last-child > a {
-        border-bottom: none;
-    }
-
     #ranking-view .table-controls {
     grid-template-columns: minmax(0, 1fr);
     }

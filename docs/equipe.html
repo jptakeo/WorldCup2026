@@ -17,55 +17,66 @@
 
             gtag('config', 'UA-119803899-1');
         </script>
+        <style>
+            .texto.font-16{
+                padding: 0 0px 18px 0px;
+            }
+            @media (max-width: 768px) {
+                .texto.font-16{
+                    padding: 0 18px 18px 18px;
+                }
+            }
+        </style>
     </head>
 
     <body>
         <!-- Início do cabeçalho-->
-        <div class="page">   
-            <header>
-                <div class="container-header">
-                    <div class="logo">
-                        <img src="images/logo.png" />
-                    </div>
-
-                    <div class="menu-toggle">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-
-                    <nav class="menu">
-                        <ul>
-                            <li> <a href="index.html">Início</a></li>
-                            <li><a href="modelos.html">Modelos</a></li>
-                            <li><a href="chances.html">Chances</a></li>
-                            <li><a href="previsoes.html">Previsões</a></li>
-                            <li><a href="vis.html">Retrospectiva</a></li>
-                            <!--<li class="active"><a href="equipe.html">Equipe</a></li>-->
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-link">
-                                    Outros
-                                </a>
-                                <ul class="submenu">
-                                    <li class="active"><a href="equipe.html">Equipe</a></li>
-                                    <li><a href="midia.html">Na Mídia</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
+        <header>
+            <div class="container-header">
+                <div class="logo">
+                    <img src="images/logo.png" />
                 </div>
-            </header>
-            <!--Final do cabeçalho-->
 
-            <!-- Banner das páginas -->
-            <div class="banner-cabecalho">
-                <div class="texto-banner">Equipe Responsável</div>
+                <div class="menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <nav class="menu">
+                    <ul>
+                        <li> <a href="index.html">Início</a></li>
+                        <li><a href="modelos.html">Modelos</a></li>
+                        <li><a href="chances.html">Chances</a></li>
+                        <li><a href="previsoes.html">Previsões</a></li>
+                        <li><a href="vis.html">Retrospectiva</a></li>
+                        <!--<li class="active"><a href="equipe.html">Equipe</a></li>-->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-link" aria-haspopup="true" aria-expanded="false">
+                                Outros
+                            </a>
+                            <ul class="submenu">
+                                <li class="active"><a href="equipe.html">Equipe</a></li>
+                                <li><a href="midia.html">Na Mídia</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
             </div>
-            <!--Fim do banner das páginas-->
+        </header>
+        <!--Final do cabeçalho-->
+
+        <!-- Banner das páginas -->
+        <div class="banner-cabecalho">
+            <div class="texto-banner">Equipe Responsável</div>
+        </div>
+        <!--Fim do banner das páginas-->
+
+        <div class="page">   
             <!-- Conteudo principal -->
-            <div class="container">
-                <div id="conteudo" style="width:100%;margin:0 auto;max-width: 1200px">
-                    <p style="margin-top: 0; line-height: 1.6;margin-bottom: 30px;">
+            <div id="conteudo">
+                <div class="texto font-16">
+                    <p style="margin-top: 0px;">
                         A iniciativa dá continuidade a uma tradição da EMAp na área de análise esportiva.
                         Em edições anteriores da Copa, projetos semelhantes desenvolvidos por alunos e pesquisadores da Escola ganharam
                         destaque em veículos como Jornal da Globo, g1, Lance! e Jornal do Brasil. O trabalho integra o programa
@@ -73,343 +84,343 @@
                         Reconhecida nacionalmente pela excelência em matemática aplicada, estatística e ciência de dados,
                         a EMAp reafirma, com o projeto, seu compromisso com a transformação de dados em análises relevantes para diferentes áreas da sociedade.
                     </p>
+                </div>
 
-                    <div class="equipe-grid">
-                        <!-- Moacyr -->
-                        <div class="membro-card">
-                            <div class="membro-info">
-                                <strong>Moacyr Alvim Horta Barbosa da Silva</strong>
-                                <span>Professor e Pesquisador da Escola de Matemática Aplicada da FGV. Orientador e Idealizador do Projeto.</span>
-                            </div>
-                            <div class="membro-foto">
-                                <img src="images/fotos/moacyr.silva.jpg" alt="Moacyr Alvim Horta Barbosa da Silva" />
-                                <a href="mailto:moacyr.silva@fgv.br" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/email.svg" alt="Email Icon" />
-                                    <span>moacyr.silva</span>
-                                </a>
-                            </div>
+                <div class="equipe-grid">
+                    <!-- Moacyr -->
+                    <div class="membro-card">
+                        <div class="membro-info">
+                            <strong>Moacyr Alvim Horta Barbosa da Silva</strong>
+                            <span>Professor e Pesquisador da Escola de Matemática Aplicada da FGV. Orientador e Idealizador do Projeto.</span>
                         </div>
-
-                        <!-- Paulo Cezar -->
-                        <div class="membro-card">
-                            <div class="membro-info">
-                                <strong>Paulo Cezar Pinto Carvalho</strong>
-                                <span>Professor e Pesquisador da Escola de Matemática Aplicada da FGV. Idealizador do Projeto.</span>
-                            </div>
-                            <div class="membro-foto">
-                                <img src="images/fotos/paulo.carvalho.jpg" alt="Paulo Cezar Pinto Carvalho" />
-                                <a href="mailto:paulo.carvalho@fgv.br" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/email.svg" alt="Email Icon" />
-                                    <span>paulo.carvalho</span>
-                                </a>
-                            </div>
+                        <div class="membro-foto">
+                            <img src="images/fotos/moacyr.silva.jpg" alt="Moacyr Alvim Horta Barbosa da Silva" />
+                            <a href="mailto:moacyr.silva@fgv.br" target="_blank" rel="noopener noreferrer">
+                                <img src="images/email.svg" alt="Email Icon" />
+                                <span>moacyr.silva</span>
+                            </a>
                         </div>
+                    </div>
 
-                        <!-- Walter -->
-                        <div class="membro-card">
-                            <div class="membro-info">
-                                <strong>Walter Wagner Carvalho Sande</strong>
-                                <span>Professor e Pesquisador da Escola de Matemática Aplicada da FGV. Idealizador do projeto.</span>
-                            </div>
-                            <div class="membro-foto">
-                                <img src="images/fotos/walter.sande.jpg" alt="Walter Wagner Carvalho Sande" />
-                                <a href="mailto:walter.sande@fgv.br" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/email.svg" alt="Email Icon" />
-                                    <span>walter.sande</span>
-                                </a>
-                            </div>
+                    <!-- Paulo Cezar -->
+                    <div class="membro-card">
+                        <div class="membro-info">
+                            <strong>Paulo Cezar Pinto Carvalho</strong>
+                            <span>Professor e Pesquisador da Escola de Matemática Aplicada da FGV. Idealizador do Projeto.</span>
                         </div>
-
-                        <!-- Targino -->
-                        <div class="membro-card">
-                            <div class="membro-info">
-                                <strong>Rodrigo dos Santos Targino</strong>
-                                <span>Professor e Pesquisador da Escola de Matemática Aplicada da FGV. Colaborador do Projeto.</span>
-                            </div>
-                            <div class="membro-foto">
-                                <img src="images/fotos/rodrigo.targino.jpg" alt="Rodrigo dos Santos Targino" />
-                                <a href="mailto:rodrigo.targino@fgv.br" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/email.svg" alt="Email Icon" />
-                                    <span>rodrigo.targino</span>
-                                </a>
-                            </div>
+                        <div class="membro-foto">
+                            <img src="images/fotos/paulo.carvalho.jpg" alt="Paulo Cezar Pinto Carvalho" />
+                            <a href="mailto:paulo.carvalho@fgv.br" target="_blank" rel="noopener noreferrer">
+                                <img src="images/email.svg" alt="Email Icon" />
+                                <span>paulo.carvalho</span>
+                            </a>
                         </div>
+                    </div>
 
-                        <!-- Max -->
-                        <div class="membro-card">
-                            <div class="membro-info">
-                                <strong>Luiz Max Fagundes de Carvalho</strong>
-                                <span>Professor e Pesquisador da Escola de Matemática Aplicada da FGV. Colaborador do projeto.</span>
-                            </div>
-                            <div class="membro-foto">
-                                <img src="images/fotos/max.carvalho.jpg" alt="Luiz Max Fagundes de Carvalho" />
-                                <a href="mailto:luiz.fagundes@fgv.br" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/email.svg" alt="Email Icon" />
-                                    <span>luiz.fagundes</span>
-                                </a>
-                            </div>
+                    <!-- Walter -->
+                    <div class="membro-card">
+                        <div class="membro-info">
+                            <strong>Walter Wagner Carvalho Sande</strong>
+                            <span>Professor e Pesquisador da Escola de Matemática Aplicada da FGV. Idealizador do projeto.</span>
                         </div>
-
-
-                        <!-- Ezequiel -->
-                        <div class="membro-card">
-                            <div class="membro-info">
-                                <strong>Ezequiel de Braga Santos</strong>
-                                <span>Mestrando em Matemática Aplicada e Ciência de Dados na FGV EMAp. Responsável pela formulação e implementação dos modelos.</span>
-                            </div>
-                            <div class="membro-foto">
-                                <img src="images/fotos/ezequiel.braga.png" alt="Ezequiel" />
-                                <a href="mailto:ezequiel.braga.santos@gmail.com"
-                                    class="email-link email-long"
-                                    target="_blank" rel="noopener noreferrer">
-                                    <img src="images/email.svg" alt="Email Icon" />
-                                    <span>ezequiel.braga.santos</span>
-                                </a>
-                            </div>
+                        <div class="membro-foto">
+                            <img src="images/fotos/walter.sande.jpg" alt="Walter Wagner Carvalho Sande" />
+                            <a href="mailto:walter.sande@fgv.br" target="_blank" rel="noopener noreferrer">
+                                <img src="images/email.svg" alt="Email Icon" />
+                                <span>walter.sande</span>
+                            </a>
                         </div>
+                    </div>
 
-                        <!-- Igor -->
-                        <div class="membro-card">
-                            <div class="membro-info">
-                                <strong>Igor Patrício Michels</strong>
-                                <span>Mestre em Matemática Aplicada e Ciência de Dados na FGV EMAp. Responsável pela formulação e implementação dos modelos.</span>
-                            </div>
-                            <div class="membro-foto">
-                                <img src="images/fotos/igor.michels.png" alt="Igor" />
-                                <a href="mailto:igorpmichels@gmail.com"
-                                target="_blank" 
-                                rel="noopener noreferrer">
-                                    <img src="images/email.svg" alt="Email Icon" />
-                                    <span>igorpmichels</span>
-                                </a>
-                            </div>
+                    <!-- Targino -->
+                    <div class="membro-card">
+                        <div class="membro-info">
+                            <strong>Rodrigo dos Santos Targino</strong>
+                            <span>Professor e Pesquisador da Escola de Matemática Aplicada da FGV. Colaborador do Projeto.</span>
                         </div>
-
-                        <!-- Pablo-->
-                        <div class="membro-card">
-                            <div class="membro-info">
-                                <strong> Pablo Alcântara </strong>
-                                <span>Aluno de Matemática Aplicada na FGV EMAp. Responsável pela implementação dos modelos.</span>
-                            </div>
-                            <div class="membro-foto">
-                                <img src="images/fotos/pablo.alcantara.png" alt="Pablo"/>
-                                <a href="mailto:pablolevy19@gmail.com" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/email.svg" alt="Email Icon" />
-                                    <span>pablolevy19</span>
-                                </a>
-                            </div>
+                        <div class="membro-foto">
+                            <img src="images/fotos/rodrigo.targino.jpg" alt="Rodrigo dos Santos Targino" />
+                            <a href="mailto:rodrigo.targino@fgv.br" target="_blank" rel="noopener noreferrer">
+                                <img src="images/email.svg" alt="Email Icon" />
+                                <span>rodrigo.targino</span>
+                            </a>
                         </div>
+                    </div>
 
-                        <!-- Raul -->
-                        <div class="membro-card">
-                            <div class="membro-info">
-                                <strong> Raul Martinelli </strong>
-                                <span>Aluno de Matemática Aplicada na FGV EMAp. Responsável pela implementação dos modelos.</span>
-                            </div>
-                            <div class="membro-foto">
-                                <img src="images/fotos/raul.martinelli.png" alt="Raul"/>
-                                <a href="mailto:raulmedici74@gmail.com" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/email.svg" alt="Email Icon" />
-                                    <span>raulmedici74</span>
-                                </a>
-                            </div>
+                    <!-- Max -->
+                    <div class="membro-card">
+                        <div class="membro-info">
+                            <strong>Luiz Max Fagundes de Carvalho</strong>
+                            <span>Professor e Pesquisador da Escola de Matemática Aplicada da FGV. Colaborador do projeto.</span>
                         </div>
-
-                        <!-- Iara -->
-                        <div class="membro-card">
-                            <div class="membro-info">
-                                <strong>Iara Cristina Mescua Castro</strong>
-                                <span>Mestranda em Matemática Aplicada e Ciência de Dados na FGV EMAp. Responsável pelo desenvolvimento do site.</span>
-                            </div>
-                            <div class="membro-foto">
-                                <img src="images/fotos/iara.castro.jpg" alt="Iara Cristina Mescua Castro" />
-                                <a href="mailto:iaramescuacastro@gmail.com" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/email.svg" alt="Email Icon" />
-                                    <span>iaramescuacastro</span>
-                                </a>
-                            </div>
+                        <div class="membro-foto">
+                            <img src="images/fotos/max.carvalho.jpg" alt="Luiz Max Fagundes de Carvalho" />
+                            <a href="mailto:luiz.fagundes@fgv.br" target="_blank" rel="noopener noreferrer">
+                                <img src="images/email.svg" alt="Email Icon" />
+                                <span>luiz.fagundes</span>
+                            </a>
                         </div>
+                    </div>
 
-                        <!-- Janaina    -->
-                        <div class="membro-card">
-                            <div class="membro-info">
-                                <strong>Janaina Neres Evangelista</strong>
-                                <span>Mestranda em Matemática Aplicada e Ciência de Dados na FGV EMAp. Responsável pelo desenvolvimento do site.</span>
-                            </div>
-                            <div class="membro-foto">
-                                <img src="images/fotos/janaina.neres.jpeg" alt="Janaina Neres Evangelista" />
 
-                                <a href="mailto:janaina.evangelistaneres@gmail.com" 
+                    <!-- Ezequiel -->
+                    <div class="membro-card">
+                        <div class="membro-info">
+                            <strong>Ezequiel de Braga Santos</strong>
+                            <span>Mestrando em Matemática Aplicada e Ciência de Dados na FGV EMAp. Responsável pela formulação e implementação dos modelos.</span>
+                        </div>
+                        <div class="membro-foto">
+                            <img src="images/fotos/ezequiel.braga.png" alt="Ezequiel" />
+                            <a href="mailto:ezequiel.braga.santos@gmail.com"
                                 class="email-link email-long"
-                                target="_blank"
-                                rel="noopener noreferrer">
-                                    <img src="images/email.svg" alt="Email Icon" />
-                                    <span>janaina.evangelistaneres</span>
-                                </a>
-                            </div>
+                                target="_blank" rel="noopener noreferrer">
+                                <img src="images/email.svg" alt="Email Icon" />
+                                <span>ezequiel.braga.santos</span>
+                            </a>
                         </div>
+                    </div>
 
-                        <!-- Laguardia -->
-                        <div class="membro-card">
-                            <div class="membro-info">
-                                <strong>Luís Fernando Laguardia</strong>
-                                <span>Mestrando em Matemática Aplicada e Ciência de Dados na FGV EMAp. Responsável pelo desenvolvimento do site.</span>
-                            </div>
-                            <div class="membro-foto">
-                                <img src="images/fotos/laguardia.png" alt="Luís Fernando Laguardia" />
-                                <a href="mailto:laguardialuis@gmail.com" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/email.svg" alt="Email Icon" />
-                                    <span>laguardialuis</span>
-                                </a>
-                            </div>
+                    <!-- Igor -->
+                    <div class="membro-card">
+                        <div class="membro-info">
+                            <strong>Igor Patrício Michels</strong>
+                            <span>Mestre em Matemática Aplicada e Ciência de Dados na FGV EMAp. Responsável pela formulação e implementação dos modelos.</span>
                         </div>
-
-
-                        <!-- Bianca -->
-                        <div class="membro-card">
-                            <div class="membro-info">
-                                <strong> Bianca Nunes </strong>
-                                <span>Aluna de Comunicação na FGV ECMI. Responsável pela gestão das mídias e divulgação do projeto.</span>
-                            </div>
-                            <div class="membro-foto">
-                                <img src="images/fotos/bianca.nunes.jpg" alt="Bianca"/>
-                                <a href="mailto:Biancanunexz@gmail.com" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/email.svg" alt="Email Icon" />
-                                    <span>Biancanunexz</span>
-                                </a>
-                            </div>
+                        <div class="membro-foto">
+                            <img src="images/fotos/igor.michels.png" alt="Igor" />
+                            <a href="mailto:igorpmichels@gmail.com"
+                            target="_blank" 
+                            rel="noopener noreferrer">
+                                <img src="images/email.svg" alt="Email Icon" />
+                                <span>igorpmichels</span>
+                            </a>
                         </div>
+                    </div>
 
-                        <!-- Lindsey -->
-                        <div class="membro-card">
-                            <div class="membro-info">
-                                <strong> Lindsey de Vargas de Azevedo</strong>
-                                <span>Aluna de Comunicação na FGV ECMI. Responsável pela gestão das mídias e divulgação do projeto.</span>
-                            </div>
-                            <div class="membro-foto">
-                                <img src="images/fotos/lindsey.azevedo.jpg" alt="Lindsey"/>
-                                <a href="mailto:lindseyvazevedo@gmail.com" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/email.svg" alt="Email Icon" />
-                                    <span>lindseyvazevedo</span>
-                                </a>
-                            </div>
+                    <!-- Pablo-->
+                    <div class="membro-card">
+                        <div class="membro-info">
+                            <strong> Pablo Alcântara </strong>
+                            <span>Aluno de Matemática Aplicada na FGV EMAp. Responsável pela implementação dos modelos.</span>
                         </div>
-
-                        <!-- Mari -->
-                        <div class="membro-card">
-                            <div class="membro-info">
-                                <strong> Mariana Gontijo </strong>
-                                <span>Aluna de Comunicação na FGV ECMI. Responsável pela gestão das mídias e divulgação do projeto.</span>
-                            </div>
-                            <div class="membro-foto">
-                                <img src="images/fotos/mariana.gontijo.jpg" alt="Mari"/>
-                                <a href="mailto:marianagontijob13@gmail.com" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/email.svg" alt="Email Icon" />
-                                    <span>marianagontijo</span>
-                                </a>
-                            </div>
+                        <div class="membro-foto">
+                            <img src="images/fotos/pablo.alcantara.png" alt="Pablo"/>
+                            <a href="mailto:pablolevy19@gmail.com" target="_blank" rel="noopener noreferrer">
+                                <img src="images/email.svg" alt="Email Icon" />
+                                <span>pablolevy19</span>
+                            </a>
                         </div>
+                    </div>
+
+                    <!-- Raul -->
+                    <div class="membro-card">
+                        <div class="membro-info">
+                            <strong> Raul Martinelli </strong>
+                            <span>Aluno de Matemática Aplicada na FGV EMAp. Responsável pela implementação dos modelos.</span>
+                        </div>
+                        <div class="membro-foto">
+                            <img src="images/fotos/raul.martinelli.png" alt="Raul"/>
+                            <a href="mailto:raulmedici74@gmail.com" target="_blank" rel="noopener noreferrer">
+                                <img src="images/email.svg" alt="Email Icon" />
+                                <span>raulmedici74</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Iara -->
+                    <div class="membro-card">
+                        <div class="membro-info">
+                            <strong>Iara Cristina Mescua Castro</strong>
+                            <span>Mestranda em Matemática Aplicada e Ciência de Dados na FGV EMAp. Responsável pelo desenvolvimento do site.</span>
+                        </div>
+                        <div class="membro-foto">
+                            <img src="images/fotos/iara.castro.jpg" alt="Iara Cristina Mescua Castro" />
+                            <a href="mailto:iaramescuacastro@gmail.com" target="_blank" rel="noopener noreferrer">
+                                <img src="images/email.svg" alt="Email Icon" />
+                                <span>iaramescuacastro</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Janaina    -->
+                    <div class="membro-card">
+                        <div class="membro-info">
+                            <strong>Janaina Neres Evangelista</strong>
+                            <span>Mestranda em Matemática Aplicada e Ciência de Dados na FGV EMAp. Responsável pelo desenvolvimento do site.</span>
+                        </div>
+                        <div class="membro-foto">
+                            <img src="images/fotos/janaina.neres.jpeg" alt="Janaina Neres Evangelista" />
+
+                            <a href="mailto:janaina.evangelistaneres@gmail.com" 
+                            class="email-link email-long"
+                            target="_blank"
+                            rel="noopener noreferrer">
+                                <img src="images/email.svg" alt="Email Icon" />
+                                <span>janaina.evangelistaneres</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Laguardia -->
+                    <div class="membro-card">
+                        <div class="membro-info">
+                            <strong>Luís Fernando Laguardia</strong>
+                            <span>Mestrando em Matemática Aplicada e Ciência de Dados na FGV EMAp. Responsável pelo desenvolvimento do site.</span>
+                        </div>
+                        <div class="membro-foto">
+                            <img src="images/fotos/laguardia.png" alt="Luís Fernando Laguardia" />
+                            <a href="mailto:laguardialuis@gmail.com" target="_blank" rel="noopener noreferrer">
+                                <img src="images/email.svg" alt="Email Icon" />
+                                <span>laguardialuis</span>
+                            </a>
+                        </div>
+                    </div>
+
+
+                    <!-- Bianca -->
+                    <div class="membro-card">
+                        <div class="membro-info">
+                            <strong> Bianca Nunes </strong>
+                            <span>Aluna de Comunicação na FGV ECMI. Responsável pela gestão das mídias e divulgação do projeto.</span>
+                        </div>
+                        <div class="membro-foto">
+                            <img src="images/fotos/bianca.nunes.jpg" alt="Bianca"/>
+                            <a href="mailto:Biancanunexz@gmail.com" target="_blank" rel="noopener noreferrer">
+                                <img src="images/email.svg" alt="Email Icon" />
+                                <span>Biancanunexz</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Lindsey -->
+                    <div class="membro-card">
+                        <div class="membro-info">
+                            <strong> Lindsey de Vargas de Azevedo</strong>
+                            <span>Aluna de Comunicação na FGV ECMI. Responsável pela gestão das mídias e divulgação do projeto.</span>
+                        </div>
+                        <div class="membro-foto">
+                            <img src="images/fotos/lindsey.azevedo.jpg" alt="Lindsey"/>
+                            <a href="mailto:lindseyvazevedo@gmail.com" target="_blank" rel="noopener noreferrer">
+                                <img src="images/email.svg" alt="Email Icon" />
+                                <span>lindseyvazevedo</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Mari -->
+                    <div class="membro-card">
+                        <div class="membro-info">
+                            <strong> Mariana Gontijo </strong>
+                            <span>Aluna de Comunicação na FGV ECMI. Responsável pela gestão das mídias e divulgação do projeto.</span>
+                        </div>
+                        <div class="membro-foto">
+                            <img src="images/fotos/mariana.gontijo.jpg" alt="Mari"/>
+                            <a href="mailto:marianagontijob13@gmail.com" target="_blank" rel="noopener noreferrer">
+                                <img src="images/email.svg" alt="Email Icon" />
+                                <span>marianagontijo</span>
+                            </a>
+                        </div>
+                    </div>
 
 
 
-                        <!--<div class="membro-card">
-                            <div class="membro-info">
-                                <strong>Yuri Fahham Saporito</strong>
-                                <span>Professor e Pesquisador da Escola de Matemática Aplicada da FGV. Parceiro do Projeto.</span>
-                            </div>
-                            <div class="membro-foto">
-                                <img src="images/fotos/yuri.saporito.jpg" alt="Yuri Fahham Saporito" />
-                                <a href="mailto:yuri.saporito@fgv.br" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/email.svg" alt="Email Icon" />
-                                    <span>yuri.saporito</span>
-                                </a>
-                            </div>
-                        </div>-->
-                    </div> 
+                    <!--<div class="membro-card">
+                        <div class="membro-info">
+                            <strong>Yuri Fahham Saporito</strong>
+                            <span>Professor e Pesquisador da Escola de Matemática Aplicada da FGV. Parceiro do Projeto.</span>
+                        </div>
+                        <div class="membro-foto">
+                            <img src="images/fotos/yuri.saporito.jpg" alt="Yuri Fahham Saporito" />
+                            <a href="mailto:yuri.saporito@fgv.br" target="_blank" rel="noopener noreferrer">
+                                <img src="images/email.svg" alt="Email Icon" />
+                                <span>yuri.saporito</span>
+                            </a>
+                        </div>
+                    </div>-->
+                </div> 
 
-                    <br>
-                    <!--<div class="equipe-grid">
+                <br>
+                <!--<div class="equipe-grid">
 
-                    </div>  
+                </div>  
+                
+                <br>
+                <div class="equipe-grid">
                     
-                    <br>
-                    <div class="equipe-grid">
-                        
-                    
-                    </div> -->
+                
+                </div> -->
 
-                    <section class="contato-equipe">
-                        <div class="contato-topo">
-                            <!-- <span class="contato-tag">Fale com a equipe</span> -->
-                            <h2>Fale Conosco!</h2>
-                            <p>
-                                Entre em contato com nossa equipe para tirar dúvidas,
-                                formar parcerias, dar sugestões ou obter informações adicionais sobre o projeto.
-                            </p>
-                        </div>
+                <section class="contato-equipe">
+                    <div class="contato-topo">
+                        <!-- <span class="contato-tag">Fale com a equipe</span> -->
+                        <h2>Fale Conosco!</h2>
+                        <p>
+                            Entre em contato com nossa equipe para tirar dúvidas,
+                            formar parcerias, dar sugestões ou obter informações adicionais sobre o projeto.
+                        </p>
+                    </div>
 
-                        <div class="contato-grid">
-                            <div class="contato-canais">
-                                <div class="contato-card">
-                                    <span class="contato-card-titulo">
-                                        <img src="images/email.svg" alt="Ícone de e-mail" class="contato-icone">
-                                        E-mail
-                                    </span>
-                                    <a href="mailto:esportesemnumeros@gmail.com" target="_blank" rel="noopener noreferrer">
-                                        esportesemnumeros@gmail.com
-                                    </a>
-                                </div>
-
-                                <div class="contato-card">
-                                    <span class="contato-card-titulo">
-                                        <img src="https://www.svgrepo.com/show/521711/instagram.svg" alt="Ícone do Instagram" class="contato-icone">
-                                        Instagram
-                                    </span>
-                                    <a href="https://www.instagram.com/copacomdados/" target="_blank" rel="noopener noreferrer">
-                                        @copacomdados
-                                    </a>
-                                </div>
+                    <div class="contato-grid">
+                        <div class="contato-canais">
+                            <div class="contato-card">
+                                <span class="contato-card-titulo">
+                                    <img src="images/email.svg" alt="Ícone de e-mail" class="contato-icone">
+                                    E-mail
+                                </span>
+                                <a href="mailto:esportesemnumeros@gmail.com" target="_blank" rel="noopener noreferrer">
+                                    esportesemnumeros@gmail.com
+                                </a>
                             </div>
 
-                            <div class="contato-form-box">
-                                <h3>Envie uma mensagem</h3>
+                            <div class="contato-card">
+                                <span class="contato-card-titulo">
+                                    <img src="https://www.svgrepo.com/show/521711/instagram.svg" alt="Ícone do Instagram" class="contato-icone">
+                                    Instagram
+                                </span>
+                                <a href="https://www.instagram.com/copacomdados/" target="_blank" rel="noopener noreferrer">
+                                    @copacomdados
+                                </a>
+                            </div>
+                        </div>
 
-                                <form class="contato-form"  id="form-contato">
-                                    
-                                    <div class="contato-form-grid">
-                                        <div class="contato-form-grupo">
-                                            <label for="nome">Nome *</label>
-                                            <input type="text" id="nome" name="Nome" placeholder="Seu nome completo" required>
-                                        </div>
+                        <div class="contato-form-box">
+                            <h3>Envie uma mensagem</h3>
 
-                                        <div class="contato-form-grupo">
-                                            <!-- Email Icon -->
-                                            <label for="email"> E-mail *</label>
-                                            <input type="email" id="email" name="Email" placeholder="seuemail@dominio.com" required>
-                                        </div>
-
-                                        <div class="contato-form-grupo full">
-                                            <label for="assunto">Assunto</label>
-                                            <input type="text" id="assunto" name="Assunto" placeholder="Ex.: parceria, sugestão ou dúvida">
-                                        </div>
-
-                                        <div class="contato-form-grupo full">
-                                            <label for="mensagem">Mensagem *</label>
-                                            <textarea id="mensagem" name="Mensagem" placeholder="Descreva sua mensagem..." required></textarea>
-                                        </div>
+                            <form class="contato-form"  id="form-contato">
+                                
+                                <div class="contato-form-grid">
+                                    <div class="contato-form-grupo">
+                                        <label for="nome">Nome *</label>
+                                        <input type="text" id="nome" name="Nome" placeholder="Seu nome completo" required>
                                     </div>
 
-                                    <button type="submit" class="contato-botao">Enviar mensagem</button>
+                                    <div class="contato-form-grupo">
+                                        <!-- Email Icon -->
+                                        <label for="email"> E-mail *</label>
+                                        <input type="email" id="email" name="Email" placeholder="seuemail@dominio.com" required>
+                                    </div>
 
-                                    <p class="contato-observacao">
-                                        Ao clicar em “Enviar mensagem”, o site abrirá o aplicativo de e-mail padrão do visitante com os dados preenchidos.
-                                    </p>
-                                </form>
-                            </div>
+                                    <div class="contato-form-grupo full">
+                                        <label for="assunto">Assunto</label>
+                                        <input type="text" id="assunto" name="Assunto" placeholder="Ex.: parceria, sugestão ou dúvida">
+                                    </div>
+
+                                    <div class="contato-form-grupo full">
+                                        <label for="mensagem">Mensagem *</label>
+                                        <textarea id="mensagem" name="Mensagem" placeholder="Descreva sua mensagem..." required></textarea>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="contato-botao">Enviar mensagem</button>
+
+                                <p class="contato-observacao">
+                                    Ao clicar em “Enviar mensagem”, o site abrirá o aplicativo de e-mail padrão do visitante com os dados preenchidos.
+                                </p>
+                            </form>
                         </div>
-                    </section>
-                       
-                </div>
+                    </div>
+                </section>
+                    
             </div>
         </div>
         <!--Final do conteudo-->
