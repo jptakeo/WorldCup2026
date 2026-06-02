@@ -1634,6 +1634,9 @@ SIMULADOR DE CONFRONTO
 ════════════════════════════════════════ */
 .simulator-dash {
     font-family: 'Lato', sans-serif;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .simulator-panel {
@@ -1641,6 +1644,9 @@ SIMULADOR DE CONFRONTO
     border-radius: 12px;
     min-height: 600px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .simulator-header-bar {
@@ -1696,12 +1702,28 @@ SIMULADOR DE CONFRONTO
     fill: currentColor;
 }
 
+.simulator-panel .content-row {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.simulator-main-area {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+}
+
 /* CAROUSEL */
 .simulator-carousel {
     position: relative;
     width: 100%;
     display: flex;
     align-items: center;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .simulator-cards-grid {
@@ -1709,6 +1731,9 @@ SIMULADOR DE CONFRONTO
     flex-wrap: nowrap;
     gap: 20px;
     justify-content: flex-start;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     overflow-x: auto;
     overflow-y: hidden;
     padding: 10px 0px 20px 0px;
