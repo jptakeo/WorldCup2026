@@ -57,6 +57,28 @@
     margin: 22px 0;
     padding: 14px;
 }
+
+.wc-controls,
+.wc-controls * {
+    box-sizing: border-box;
+}
+
+.wc-field,
+.wc-multiselect,
+.wc-multiselect-button,
+.wc-field input,
+.wc-field select {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.wc-multiselect-label,
+.wc-field input {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .wc-field label {
     color: var(--wc-muted);
     display: block;
@@ -219,6 +241,29 @@
     overflow: auto;
     padding: 10px;
 }
+
+.wc-board-wrap,
+.wc-board-wrap * {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+
+    -webkit-touch-callout: none;
+}
+
+.wc-board-wrap img,
+.wc-board-wrap a,
+.wc-board-wrap svg {
+    -webkit-user-drag: none;
+    user-drag: none;
+}
+
+.wc-board-wrap.is-dragging {
+    cursor: grabbing;
+}
+
+
 .wc-grid {
     display: grid;
     gap: 1px;
@@ -461,9 +506,49 @@
 }
 
 @media (max-width: 960px) {
-    .wc-controls { grid-template-columns: 1fr 1fr; }
-    .wc-reset { grid-column: 1 / -1; }
+    .wc-controls {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .wc-reset {
+        grid-column: 1 / -1;
+        width: 100%;
+    }
+
+    .wc-search-hint {
+        grid-column: 1 / -1;
+    }
 }
+
+@media (max-width: 380px) {
+    .wc-controls {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .wc-field label {
+        font-size: 11px;
+    }
+
+    .wc-field input,
+    .wc-field select,
+    .wc-multiselect-button {
+        height: 40px;
+        padding-left: 9px;
+        padding-right: 9px;
+        font-size: 13px;
+    }
+
+    .wc-multiselect-arrow {
+        margin-left: 5px;
+        flex-shrink: 0;
+    }
+
+    .wc-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+
 @media (max-width: 640px) {
     .wc-stat strong { font-size: 22px; }
     .wc-stat span { font-size: 11px; }
@@ -474,6 +559,66 @@
     .wc-city-head { font-size: 12px; }
 }
 
+@media (max-width: 480px) {
+    .wc-board-wrap {
+        touch-action: pan-x pan-y;
+        overscroll-behavior: contain;
+        --wc-board-zoom: 1;
+    }
+
+    .wc-board-wrap.is-pinching {
+        cursor: grabbing;
+    }
+
+    .wc-board-wrap .wc-grid {
+        zoom: var(--wc-board-zoom);
+    }
+}
+
 @media (max-width: 380px) {
-    .wc-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .wc-viewbar {
+        width: 100%;
+    }
+    .wc-right-controls {
+        width: 100%;
+        margin-left: 0;
+
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 10px;
+        align-items: stretch;
+    }
+
+    .wc-right-controls .wc-view-buttons {
+        width: 100%;
+        min-width: 0;
+        justify-content: center;
+    }
+
+    .wc-right-controls .wc-view-buttons:nth-child(1) {
+        grid-column: 1;
+    }
+
+    .wc-right-controls .wc-view-buttons:nth-child(2) {
+        grid-column: 2;
+    }
+
+    .wc-right-controls .wc-view-buttons:nth-child(3) {
+        grid-column: 1 / -1;
+    }
+
+    .wc-right-controls .wc-view-buttons button {
+        min-width: 0;
+        padding: 8px 10px;
+        font-size: 13px;
+        white-space: normal;
+        line-height: 1.1;
+    }
+
+    #wc-export-calendar {
+        width: 100%;
+    }
+
+    .wc-stat strong { font-size: 20px; }
+    .wc-stat span { font-size: 10px; }
 }

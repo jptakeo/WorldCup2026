@@ -21,6 +21,11 @@
         activeTimezone: 'et'
     };
 
+    const BOARD_MIN_ZOOM = 0.62;
+    const BOARD_MAX_ZOOM = 1;
+
+    let boardZoom = 1;
+
     document.addEventListener('DOMContentLoaded', init);
 
     async function init() {
@@ -189,7 +194,11 @@
     }
 
     function buildFilters() {
-        fillSelect('wc-filter-phase', orderedUnique(state.matches.map(match => match.fase), PHASE_ORDER));
+        fillMultiSelect('wc-filter-phase', orderedUnique(state.matches.map(match => match.fase), PHASE_ORDER), {
+            singular: 'fase selecionada',
+            plural: 'fases selecionadas',
+            formatter: value => value
+        });
 
         fillMultiSelect('wc-filter-group', ['A','B','C','D','E','F','G','H','I','J','K','L'], {
             singular: 'grupo selecionado',
@@ -333,14 +342,14 @@
     function applyFilters() {
         const query = normalizeText(document.getElementById('wc-search').value);
         const searchTerms = getSearchTerms(query);
-        const phase = document.getElementById('wc-filter-phase').value;
+        const phases = getSelectedValues('wc-filter-phase');
         const groups = getSelectedValues('wc-filter-group');
         const regions = getSelectedValues('wc-filter-region');
         const cities = getSelectedValues('wc-filter-city');
 
         state.filtered = state.matches.filter(match => {
             const matchesText = !query || (searchTerms.length > 0 && searchTerms.some(term => match.searchText.includes(term)));
-            const matchesPhase = !phase || match.fase === phase;
+            const matchesPhase = !phases.length || phases.includes(match.fase);
             const matchesGroup = !groups.length || groups.includes(match.grupo);
             const matchesRegion = !regions.length || regions.includes(match.regiao);
             const matchesCity = !cities.length || cities.includes(match.cidade);
@@ -415,6 +424,8 @@
         html.push('</div>');
         container.innerHTML = html.join('');
         bindBoardDrag();
+        bindBoardPinchZoom();
+        applyBoardZoom();
 
         // TOP SCROLL HERE
         //const topScroll = document.querySelector('.wc-scroll-top');
@@ -578,6 +589,106 @@
         }
         parts.push(current);
         return parts.join('\r\n');
+    }
+
+    function isBoardZoomMobile() {
+        return window.matchMedia('(max-width: 480px)').matches;
+    }
+
+    function clampBoardZoom(value) {
+        return Math.min(BOARD_MAX_ZOOM, Math.max(BOARD_MIN_ZOOM, value));
+    }
+
+    function touchDistance(touchA, touchB) {
+        const dx = touchA.clientX - touchB.clientX;
+        const dy = touchA.clientY - touchB.clientY;
+
+        return Math.hypot(dx, dy);
+    }
+
+    function applyBoardZoom() {
+        const board = document.querySelector('.wc-board-wrap');
+
+        if (!board) return;
+
+        if (!isBoardZoomMobile()) {
+            boardZoom = 1;
+        }
+
+        board.style.setProperty('--wc-board-zoom', String(boardZoom));
+    }
+
+    function bindBoardPinchZoom() {
+        const board = document.querySelector('.wc-board-wrap');
+
+        if (!board || board.dataset.pinchZoomBound === 'true') return;
+
+        let isPinching = false;
+        let startDistance = 0;
+        let startZoom = 1;
+
+        let startScrollLeft = 0;
+        let startScrollTop = 0;
+
+        let anchorX = 0;
+        let anchorY = 0;
+
+        board.addEventListener('touchstart', (event) => {
+            if (!isBoardZoomMobile()) return;
+            if (event.touches.length !== 2) return;
+
+            isPinching = true;
+            board.classList.add('is-pinching');
+
+            const rect = board.getBoundingClientRect();
+
+            const centerX = ((event.touches[0].clientX + event.touches[1].clientX) / 2) - rect.left;
+            const centerY = ((event.touches[0].clientY + event.touches[1].clientY) / 2) - rect.top;
+
+            startDistance = touchDistance(event.touches[0], event.touches[1]);
+            startZoom = boardZoom;
+
+            startScrollLeft = board.scrollLeft;
+            startScrollTop = board.scrollTop;
+
+            anchorX = (startScrollLeft + centerX) / startZoom;
+            anchorY = (startScrollTop + centerY) / startZoom;
+        }, { passive: true });
+
+        board.addEventListener('touchmove', (event) => {
+            if (!isPinching) return;
+            if (event.touches.length !== 2) return;
+
+            event.preventDefault();
+
+            const rect = board.getBoundingClientRect();
+
+            const centerX = ((event.touches[0].clientX + event.touches[1].clientX) / 2) - rect.left;
+            const centerY = ((event.touches[0].clientY + event.touches[1].clientY) / 2) - rect.top;
+
+            const currentDistance = touchDistance(event.touches[0], event.touches[1]);
+            const ratio = currentDistance / startDistance;
+
+            boardZoom = clampBoardZoom(startZoom * ratio);
+            applyBoardZoom();
+
+            board.scrollLeft = (anchorX * boardZoom) - centerX;
+            board.scrollTop = (anchorY * boardZoom) - centerY;
+        }, { passive: false });
+
+        board.addEventListener('touchend', (event) => {
+            if (event.touches.length < 2) {
+                isPinching = false;
+                board.classList.remove('is-pinching');
+            }
+        });
+
+        board.addEventListener('touchcancel', () => {
+            isPinching = false;
+            board.classList.remove('is-pinching');
+        });
+
+        board.dataset.pinchZoomBound = 'true';
     }
 
     function bindBoardDrag() {
