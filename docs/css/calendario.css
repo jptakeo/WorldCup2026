@@ -562,7 +562,8 @@
 @media (max-width: 480px) {
     .wc-board-wrap {
         touch-action: pan-x pan-y;
-        overscroll-behavior: contain;
+        overscroll-behavior-x: contain;
+        overscroll-behavior-y: auto;
         --wc-board-zoom: 1;
     }
 
