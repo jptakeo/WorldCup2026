@@ -934,7 +934,12 @@ function applyScoreFilters(panel) {
 
         return `
             <section 
-                class="match-card g-card"
+                class="match-card g-card scorecard-preview"
+                onclick="if(window.openMatchCardModal) window.openMatchCardModal(this)"
+                onkeydown="if((event.key === 'Enter' || event.key === ' ') && window.openMatchCardModal){event.preventDefault();window.openMatchCardModal(this)}"
+                role="button"
+                tabindex="0"
+                style="cursor: pointer;"
                 data-home="${escapeHTML(homeCountry)}"
                 data-away="${escapeHTML(awayCountry)}"
                 data-search="${escapeHTML(searchText)}"
@@ -1743,6 +1748,7 @@ function applyScoreFilters(panel) {
         const urlParams = new URLSearchParams(window.location.search);
         const simsParam = urlParams.get('sims');
         const stickerParam = urlParams.get('sticker'); // legacy single matchup fallback
+        const scorecardParam = urlParams.get('scorecard');
 
         let matchups = [];
         let shouldSwitchToSimulado = false;
@@ -1781,6 +1787,33 @@ function applyScoreFilters(panel) {
                 setTimeout(() => {
                     if (window.openStickerFromData) {
                         window.openStickerFromData(home, away);
+                    }
+                }, 500);
+            }
+        } else if (scorecardParam) {
+            const parts = scorecardParam.split('|');
+            const home = parts[0];
+            const away = parts[1];
+
+            if (home && away) {
+                let attempts = 0;
+
+                while ((!window.ScoreCards || !window.ScoreCards.matchesData) && attempts < 30) {
+                    await new Promise(r => setTimeout(r, 50));
+                    attempts++;
+                }
+
+                if (window.PrevisoesActions?.setSectionView) {
+                    window.PrevisoesActions.setSectionView('confrontos');
+                }
+
+                if (window.PrevisoesActions?.setGroupsMode) {
+                    window.PrevisoesActions.setGroupsMode('charts');
+                }
+
+                setTimeout(() => {
+                    if (window.openMatchCardFromData) {
+                        window.openMatchCardFromData(home, away);
                     }
                 }, 500);
             }
@@ -1910,6 +1943,113 @@ window.copyStickerLink = function(home, away) {
     navigator.clipboard.writeText(url.toString()).then(() => {
         showToast('O link foi copiado para a área de transferência!');
     });
+};
+
+// Modal para os cards da aba "Gráficos"
+window.openMatchCardModal = function(element) {
+    if (!element) return;
+
+    const home = element.dataset.home || '';
+    const away = element.dataset.away || '';
+
+    let modal = document.getElementById('match-card-modal');
+
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'match-card-modal';
+        modal.className = 'sticker-modal match-card-modal';
+        modal.innerHTML = `
+            <div class="sticker-modal-overlay" onclick="closeMatchCardModal()"></div>
+            <div class="sticker-modal-content">
+                <div id="match-card-modal-card-container"></div>
+                <div class="sticker-modal-actions">
+                    <button class="sticker-modal-btn" id="match-card-modal-share-btn" type="button">
+                        🔗 Compartilhar
+                    </button>
+                    <button class="sticker-modal-btn" onclick="closeMatchCardModal()" type="button">
+                        ✖ Fechar
+                    </button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+    }
+
+    const container = modal.querySelector('#match-card-modal-card-container');
+    const shareBtn = modal.querySelector('#match-card-modal-share-btn');
+
+    container.innerHTML = '';
+
+    const clone = element.cloneNode(true);
+
+    clone.classList.add('match-card-modal-clone');
+    clone.removeAttribute('onclick');
+    clone.removeAttribute('onkeydown');
+    clone.removeAttribute('tabindex');
+    clone.removeAttribute('role');
+    clone.style.cursor = 'default';
+    clone.style.transform = 'none';
+
+    container.appendChild(clone);
+
+    if (shareBtn) {
+        shareBtn.onclick = function () {
+            copyMatchCardLink(home, away);
+        };
+    }
+
+    document.body.classList.add('modal-open');
+
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+};
+
+window.closeMatchCardModal = function() {
+    const modal = document.getElementById('match-card-modal');
+
+    if (modal) {
+        modal.classList.remove('active');
+
+        setTimeout(() => {
+            modal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }, 300);
+    }
+};
+
+window.copyMatchCardLink = function(home, away) {
+    const url = new URL(window.location.href);
+
+    url.search = '';
+    url.hash = 'confrontos';
+    url.searchParams.set('scorecard', `${home}|${away}`);
+
+    navigator.clipboard.writeText(url.toString()).then(() => {
+        showToast('O link foi copiado para a área de transferência!');
+    });
+};
+
+window.openMatchCardFromData = async function(home, away) {
+    if (!window.ScoreCards?.matchesData || !window.ScoreCards?.renderScoreCardHTML) return;
+
+    const row = window.ScoreCards.matchesData.find(r =>
+        r.home_team === home &&
+        r.away_team === away
+    );
+
+    if (!row) return;
+
+    const getFlag = await window.ScoreCards.getFlagGetterOnce();
+
+    const temp = document.createElement('div');
+    temp.innerHTML = window.ScoreCards.renderScoreCardHTML(row, getFlag);
+
+    const card = temp.firstElementChild;
+
+    if (card) {
+        window.openMatchCardModal(card);
+    }
 };
 
 function showToast(msg) {

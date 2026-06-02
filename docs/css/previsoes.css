@@ -1541,6 +1541,65 @@ STICKER MODAL / EXPANDED VIEW
     transform: translateY(-2px);
 }
 
+/* ════════════════════════════════════════
+MATCH CARD MODAL / GRÁFICOS EXPANDIDOS
+════════════════════════════════════════ */
+
+body.modal-open {
+    overflow: hidden;
+}
+
+.match-card-modal #match-card-modal-card-container {
+    width: min(430px, 84vw);
+}
+
+.match-card-modal .match-card-modal-clone {
+    width: 100%;
+    cursor: default;
+    transform: none !important;
+}
+
+.match-card-modal .match-card-modal-clone:hover {
+    transform: none !important;
+}
+
+.match-card-modal .score-card {
+    min-height: auto;
+}
+
+.match-card-modal .real-result {
+    border-radius: 0 0 10px 10px;
+}
+
+.match-card-modal .sticker-modal-actions {
+    margin-top: 30px;
+}
+
+@media (max-width: 768px) {
+    .match-card-modal #match-card-modal-card-container {
+        width: min(420px, 84vw);
+    }
+
+    .match-card-modal.active .sticker-modal-content {
+        transform: scale(1.08);
+    }
+}
+
+@media (max-width: 480px) {
+    .match-card-modal #match-card-modal-card-container {
+        width: 86vw;
+    }
+
+    .match-card-modal.active .sticker-modal-content {
+        transform: scale(1);
+    }
+
+    .match-card-modal .score-columns {
+        gap: 5px;
+    }
+}
+
+
 .toast-message {
     position: fixed;
     bottom: -50px;
