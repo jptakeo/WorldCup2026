@@ -1961,7 +1961,7 @@ window.openMatchCardModal = function(element) {
         modal.innerHTML = `
             <div class="sticker-modal-overlay" onclick="closeMatchCardModal()"></div>
             <div class="sticker-modal-content">
-                <div id="match-card-modal-card-container"></div>
+                <div id="match-card-modal-card-container" class="dash"></div>
                 <div class="sticker-modal-actions">
                     <button class="sticker-modal-btn" id="match-card-modal-share-btn" type="button">
                         🔗 Compartilhar
@@ -1999,8 +1999,6 @@ window.openMatchCardModal = function(element) {
         };
     }
 
-    document.body.classList.add('modal-open');
-
     modal.style.display = 'flex';
     setTimeout(() => modal.classList.add('active'), 10);
 };
@@ -2013,7 +2011,6 @@ window.closeMatchCardModal = function() {
 
         setTimeout(() => {
             modal.style.display = 'none';
-            document.body.classList.remove('modal-open');
         }, 300);
     }
 };

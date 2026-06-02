@@ -1545,10 +1545,6 @@ STICKER MODAL / EXPANDED VIEW
 MATCH CARD MODAL / GRÁFICOS EXPANDIDOS
 ════════════════════════════════════════ */
 
-body.modal-open {
-    overflow: hidden;
-}
-
 .match-card-modal #match-card-modal-card-container {
     width: min(430px, 84vw);
 }
