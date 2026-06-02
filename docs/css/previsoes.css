@@ -1169,7 +1169,6 @@ STICKERS (FIGURINHAS) E SEÇÕES
         height: 30px;
         font-size: 12px;
     }
-    .stickers-grid { padding-bottom: 10px; }
 }
 
 .sticker-wrapper {
@@ -2615,6 +2614,12 @@ SIMULADOR DE CONFRONTO
     }
     .custom-select-trigger {
         height: 76px;
+    }
+    :root {
+        --sticker-scale: 0.9;
+    }
+    .stickers-grid {
+        padding: 60px 20px 10px 20px;
     }
 }
 
