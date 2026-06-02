@@ -33,7 +33,7 @@ test:
 	uv run pre-commit run --all-files
 
 run-data:
-	uv run python src/fetch_kaggle_dataset.py
+	uv run python -c "from src.data.loader import data_pipeline; data_pipeline()"
 
 clean:
 	find . -type f -name "*.pyc" -delete

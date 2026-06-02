@@ -3,9 +3,9 @@
 Predictive modeling, simulation, evaluation, and static-site assets for the FIFA
 World Cup 2026 project developed around EMAp/FGV work on football forecasting.
 
-The repository contains the full path from international match data to published
+The repository covers the full pipeline from international match data to published
 probability tables: data download and preparation, Bayesian Stan models,
-frequency/Dixon-Coles models, Monte Carlo tournament simulators, validation
+frequentist Dixon-Coles models, Monte Carlo tournament simulators, validation
 scripts for the 2018 and 2022 World Cups, generated CSV/JSON/HTML outputs, and
 the public static website under `docs/`.
 
@@ -17,17 +17,17 @@ outputs are:
 
 - qualification and title probabilities by team;
 - match-level scoreline probabilities;
-- deterministic/static bracket probability exports;
+- bracket probability exports for each knockout phase;
 - model comparison outputs such as Brier score tables and plots;
 - HTML dashboards and a Portuguese static site for the public-facing project.
 
 There are two modeling tracks in the repo:
 
-- `src/freq_model/`: a maximum-likelihood Dixon-Coles/frequency-model pipeline
-  used for fast fitting and simulation.
-- `stan_models/`, `src/data_prep.py`, `src/simulate.py`, `simulations/`, and
-  `model_sel/`: Stan-based Bayesian workflows with posterior draws saved as
-  compressed NumPy files.
+- **Bayesian (Stan)**: `stan_models/` + `src/data/loader.py` + `src/model/bayesian.py`
+  + `src/tournament/bayesian.py` + `src/simulations/` — full Bayesian posterior
+  workflow with CmdStan, draws saved as compressed NumPy files.
+- **Frequentist (Dixon-Coles)**: `src/model/frequentist.py` + `src/tournament/frequentist.py`
+  — maximum-likelihood fitting with L-BFGS-B for fast iteration and export.
 
 ## Repository Layout
 
@@ -37,7 +37,7 @@ There are two modeling tracks in the repo:
 | `pyproject.toml` | Python package metadata, core dependencies, Ruff, mypy, pytest, and coverage configuration. |
 | `requirements.txt` | Additional lightweight requirements used by the Stan-oriented scripts, including `cmdstanpy`. |
 | `uv.lock` | Locked dependency resolution for `uv`. |
-| `.python-version` | Python version expected by the project tooling. |
+| `.python-version` | Python version pinned for the project tooling. |
 | `.pre-commit-config.yaml` | Pre-commit hook configuration. |
 | `Makefile` | Common setup, lint, formatting, data download, and cleanup commands for macOS/Linux. |
 | `setup.ps1` | Windows PowerShell setup helper. |
@@ -51,72 +51,106 @@ There are two modeling tracks in the repo:
 | `docs/` | Static website served by GitHub Pages or any static file server. |
 | `docs/csv/` | CSV files consumed by the website pages and JavaScript visualizations. |
 | `docs/css/`, `docs/js/`, `docs/images/` | Website styling, client-side behavior, fonts, flags, team photos, mascots, shirts, and visual assets. |
-| `model_sel/` | Model validation, training, and Brier-score evaluation scripts for historical tournaments. |
 | `notebooks/` | Exploratory notebooks for data cleaning, model experimentation, and examples. |
-| `simulations/` | Script entry points for training and simulating the 2018, 2022, and 2026 tournaments. |
-| `src/` | Main Python source code for data access, modeling, simulation, export, evaluation, and dashboards. |
-| `src/freq_model/` | Faster frequency-model implementation: data classes, Dixon-Coles likelihood, utilities, and tournament simulator. |
-| `stan_models/` | Stan model definitions and compiled model binaries. |
+| `src/` | Main Python source package: data loading, modeling, simulation, export, analysis, and dashboards. |
+| `src/analysis/` | Brier-score evaluation and team-strength visualization. |
+| `src/data/` | Kaggle dataset download, time-decay weighting, and training-frame preparation. |
+| `src/model/` | Abstract base class, Bayesian wrapper, and frequentist Dixon-Coles model. |
+| `src/model_sel/` | Model validation and Brier-score evaluation scripts for 2018 and 2022 tournaments. |
+| `src/output/` | Score probability export, site HTML update, and D3 dashboard generation. |
+| `src/simulations/` | Entry points for training and simulating the 2018, 2022, and 2026 tournaments. |
+| `src/tournament/` | Group-stage, best-third allocation, knockout bracket, and Monte Carlo simulation logic. |
+| `stan_models/` | Stan model source files (`.stan`) and compiled binaries. |
 
-## Main Source Modules
+## Source Package Structure
 
-| File | Role |
+`src/` is a proper Python package. All imports use the `src.*` namespace.
+
+### `src/constants.py`
+
+Central constants: data paths, tournament weights, 2026 groups, bracket rules,
+score labels, team-name mappings (`TEAM_MAP_EN_TO_PT`, `TEAM_MAP_PT_TO_EN`), and
+display labels.
+
+### `src/data/`
+
+| Module | Purpose |
 | --- | --- |
-| `src/constants.py` | Central constants: data paths, tournament weights, 2026 groups, bracket rules, score labels, team-name mappings, and display labels. |
-| `src/fetch_kaggle_dataset.py` | Downloads the Kaggle international football results dataset, copies `results.csv`, `shootouts.csv`, and `goalscorers.csv` into `data/`, and sorts results by date. |
-| `src/data_prep.py` | Prepares cycle-specific training data for Stan models: filters low-volume teams, creates tournament/time weights, maps teams to integer IDs, and loads FIFA ranking priors. |
-| `src/simulate.py` | Vectorized simulation utilities for Stan posterior draws, including 2022-style tournaments, 2026 group/bracket simulation, current-phase simulation, and CSV exports. |
-| `src/evaluation.py` | Computes Brier scores for fitted posterior draws against known World Cup match results. |
-| `src/dashboard.py` | Generates D3-based standalone HTML dashboards from simulation JSON outputs. |
-| `src/export_probs.py` | Exports match score probability matrices, stage summaries, and updates the website probability table in `docs/chances.html`. |
-| `src/forces.py` | Generates a posterior team-strength distribution plot from saved Stan draws. |
+| `loader.py` | Kaggle dataset download (`get_data()`, `data_pipeline()`), time-decay and importance weighting (`prepare_cycle_data()`), ranking prior loading (`load_ranking_priors()`), team-name resolution, and `load_data()` for general use. |
 
-## Frequentist Model Track
+### `src/model/`
 
-The `src/freq_model/` package implements a fast Dixon-Coles-style model and a
-2026 tournament simulator.
-
-| File | Role |
+| Module | Purpose |
 | --- | --- |
-| `data_classes.py` | Structured containers for fitted model parameters and posterior-like parameter series. |
-| `dixon_coles_base.py` | Shared match-probability logic for Dixon-Coles models. |
-| `model.py` | Loads and weights match data, fits attack/defense/home/rho parameters with L-BFGS-B, and exposes `build_model()`. |
-| `tournament.py` | Full 48-team World Cup 2026 simulator: group standings, best third-place allocation, round-of-32 bracket, knockout rounds, known-result handling, and vectorized Monte Carlo loops. |
-| `utils.py` | Name resolution, probability-matrix helpers, World Cup result loading, and phase detection. |
-| `simulate.py` | CLI-style entry point for fitting the frequency model, running tournament simulations, exporting probabilities, and updating the site. |
+| `base.py` | `BaseDixonColesMatchModel` abstract base class: `match_probs()`, `simulate_match()`, `win_draw_loss()`. |
+| `params.py` | `TournamentModelParams` (single-point parameters) and `TournamentParamsSeries` (vectorized posterior series) dataclasses. |
+| `frequentist.py` | `DixonColesModel`: L-BFGS-B fitting of attack/defense/home/rho parameters. `build_model()` convenience constructor. |
+| `bayesian.py` | `BayesianDixonColesModel`: loads `.npz` posterior draws and wraps them in the shared match-probability interface. `load_draws()` helper. |
+| `utils.py` | `score_probability_matrix()`, `score_probability_matrix_batched()`, and home-advantage helpers. |
+
+### `src/tournament/`
+
+| Module | Purpose |
+| --- | --- |
+| `base.py` | `GroupStanding`, `TournamentResult` dataclasses, and `TournamentSimulator` abstract base class. |
+| `frequentist.py` | `WorldCup2026`: 48-team tournament simulator using a fitted `DixonColesModel`. Handles group standings, best-third allocation, round-of-32 bracket, and knockout rounds. |
+| `bayesian.py` | `BayesianWorldCup2026`: vectorized Monte Carlo simulator (default 100 000 runs) driven by Stan posterior draws. `simulate_stage_and_remaining()` for in-tournament phase updates. |
+
+### `src/simulations/`
+
+| Module | Purpose |
+| --- | --- |
+| `train_2026.py` | Compiles Stan models and trains the 2026 posterior; saves draws to `data/outputs/models/`. |
+| `sim_2026.py` | Runs 100 000 tournament simulations from saved draws; writes JSON, CSVs, and the dashboard. |
+| `update_2026.py` | Re-trains and re-simulates after new match results are added to `data/world_cup_results.csv`. |
+| `export_all_matchups.py` | Exports all-vs-all match probability tables. |
+| `sim_2022.py`, `sim_2018.py` | Historical simulation entry points for 2022 and 2018. |
+| `utils.py` | `build_all_matchups_dataframe_mc()` — Monte Carlo all-vs-all match probabilities. |
+
+### `src/model_sel/`
+
+| Module | Purpose |
+| --- | --- |
+| `validate.py` | `train_and_save()`: trains a Stan model and saves posterior draws. |
+| `evaluate_2018.py` | Brier-score evaluation against 2018 World Cup results. |
+| `evaluate_2022.py` | Brier-score evaluation against 2022 World Cup results. |
+
+### `src/output/`
+
+| Module | Purpose |
+| --- | --- |
+| `export.py` | `export_phase_probs()`, `build_prob_dataframe()`, `build_stage_dataframe()`, `build_all_matchups_dataframe()`, `update_html_from_summary()`, and a `main()` CLI. |
+| `dashboard.py` | `generate_dashboard()`: builds a standalone D3 HTML dashboard from simulation JSON. |
+
+### `src/analysis/`
+
+| Module | Purpose |
+| --- | --- |
+| `evaluation.py` | `calculate_model_brier()`: computes Brier-score summaries for saved posterior draws. |
+| `forces.py` | Generates posterior team-strength distribution plots from Stan draws. |
+| `weights.py` | Match importance and time-decay weight helpers. |
 
 ## Stan Model Track
 
-The Stan workflow uses model files in `stan_models/`, prepares weighted match
-data with `src/data_prep.py`, runs CmdStan through `cmdstanpy`, saves posterior
-draws to `data/outputs/models/`, and then simulates tournaments from those
-draws with `src/simulate.py`.
-
-The Stan-oriented Python API uses English names. The main helpers are
-`prepare_cycle_data()`, `load_ranking_priors()`, `simulate_matches()`,
-`simulate_world_cup_2022()`, `simulate_world_cup_2026()`,
-`simulate_stage_and_remaining()`, `calculate_model_brier()`, `load_draws()`,
-and `train_and_save()`.
+The Bayesian workflow uses `.stan` files in `stan_models/`, prepares weighted
+match data with `src.data.loader`, runs CmdStan through `cmdstanpy`, saves
+posterior draws to `data/outputs/models/`, and simulates tournaments from those
+draws using `BayesianWorldCup2026`.
 
 The model names encode two choices:
 
-- `poisson` vs. `dc`: independent Poisson scoring vs. Dixon-Coles low-score
-  correction.
-- `ranking` vs. `noranking`: whether FIFA ranking information is included as a
-  prior-strength feature.
-- `n_` vs. `st_`: normal vs. Student-t style parameterization in the Stan model
-  family.
+- `poisson` vs. `dc`: independent Poisson scoring vs. Dixon-Coles low-score correction.
+- `ranking` vs. `noranking`: whether FIFA ranking information is included as a prior-strength feature.
+- `n_` vs. `st_`: normal vs. Student-t style parameterization in the Stan model family.
 
-Historical validation scripts in `model_sel/` train/evaluate 2018 and 2022
-models, while `simulations/train_2026.py`, `simulations/sim_2026.py`, and
-`simulations/update_2026.py` handle the 2026 workflow.
+The production model for 2026 is `n_poisson_ranking`.
 
 ## Data
 
 The project uses the
 [International Football Results from 1872 to 2026](https://www.kaggle.com/datasets/martj42/international-football-results-from-1872-to-2017)
 dataset from Kaggle. The upstream dataset name mentions 2017, but the dataset is
-updated over time. The downloader expects:
+updated over time. Three files are expected:
 
 | File | Description |
 | --- | --- |
@@ -129,24 +163,10 @@ Additional project data includes:
 - `data/world_cup_results.csv`: 2026 schedule/results file used to fix known
   World Cup results and detect the current phase.
 - `data/summary.csv`: current public probability summary by team.
-- `data/probs_*.csv`: match-level probability exports for the current or named
-  phase.
+- `data/probs_*.csv`: match-level probability exports for the current or named phase.
 - `data/chaveamento_probs.csv`: bracket probability export.
 - `data/raw/fifa_ranking_*.csv`: ranking inputs used as Stan priors.
-- `docs/csv/previsoes/*.csv`: website-facing copies of prediction and bracket
-  data.
-
-To download or refresh the Kaggle dataset:
-
-```bash
-make run-data
-```
-
-On Windows:
-
-```powershell
-uv run python src/fetch_kaggle_dataset.py
-```
+- `docs/csv/previsoes/*.csv`: website-facing copies of prediction and bracket data.
 
 ## Setup
 
@@ -166,13 +186,12 @@ cd WorldCup2026
 .\setup.ps1
 ```
 
-Both setup paths are intended to install `uv`, install the Python version from
-`.python-version`, create a virtual environment, install dependencies, and set up
-pre-commit hooks.
+Both setup paths install `uv`, install the Python version from `.python-version`,
+create a virtual environment, install dependencies, and set up pre-commit hooks.
 
-For Stan workflows, ensure CmdStan is installed and available to `cmdstanpy`.
-The repository includes compiled binaries in `stan_models/`, but they are
-platform-specific generated artifacts and may need to be rebuilt locally.
+For Stan workflows, ensure CmdStan is installed and accessible to `cmdstanpy`.
+The repository includes a compiled binary for `n_poisson_ranking` in `stan_models/`,
+but it is a platform-specific artifact and may need to be rebuilt locally.
 
 ## Common Commands
 
@@ -182,33 +201,38 @@ platform-specific generated artifacts and may need to be rebuilt locally.
 | Lint and typecheck | `make check` | `uv run ruff check src/; uv run mypy src/` |
 | Format | `make format` | `uv run ruff format src/` |
 | Run pre-commit hooks | `make test` | `uv run pre-commit run --all-files` |
-| Download Kaggle data | `make run-data` | `uv run python src/fetch_kaggle_dataset.py` |
+| Download Kaggle data | `make run-data` | `uv run python -c "from src.data.loader import data_pipeline; data_pipeline()"` |
+| Update chances page | `make update-chances` | `uv run python src/output/export.py --wc-results data/world_cup_results.csv` |
 | Clean generated caches | `make clean` | Remove `.venv`, cache folders, and build artifacts manually |
 
-Useful script entry points:
+## Key Entry Points
 
 ```bash
-# Export current-phase score probabilities with the frequency model
-uv run python src/export_probs.py --wc-results data/world_cup_results.csv
+# 1. Download / refresh Kaggle match data
+make run-data
 
-# Train the selected 2026 Stan model
-uv run python -m simulations.train_2026
+# 2. Train the 2026 Bayesian (Stan) model
+uv run python -m src.simulations.train_2026
 
-# Simulate 2026 from saved Stan posterior draws and update site CSV/HTML outputs
-uv run python -m simulations.sim_2026
+# 3. Simulate 2026 from saved Stan posterior draws (writes JSON, CSVs, dashboard)
+uv run python -m src.simulations.sim_2026
 
-# Re-train/re-simulate after adding known 2026 match results
-uv run python -m simulations.update_2026
+# 4. Re-train and re-simulate after new match results are recorded
+#    (edit data/world_cup_results.csv first, then run:)
+uv run python -m src.simulations.update_2026
 
-# Train/evaluate Stan models for 2018 and 2022 validation cycles
-uv run python -m model_sel.validate
-uv run python -m model_sel.evaluate_2018
-uv run python -m model_sel.evaluate_2022
+# 5. Export current-phase score probabilities and update docs/chances.html
+uv run python src/output/export.py --wc-results data/world_cup_results.csv
+
+# 6. Train / evaluate Stan models for 2018 and 2022 validation cycles
+uv run python -m src.model_sel.validate
+uv run python -m src.model_sel.evaluate_2018
+uv run python -m src.model_sel.evaluate_2022
 ```
 
-The active Stan scripts and shared modules use standardized English variable
-and function names. Portuguese filenames and website-facing paths such as
-`docs/csv/previsoes/` are kept as part of the public static-site contract.
+The active Stan scripts and shared modules use standardized English variable and
+function names. Portuguese labels, output filenames, and website-facing paths
+such as `docs/csv/previsoes/` are kept as part of the public static-site contract.
 
 ## Website
 
@@ -222,6 +246,8 @@ Portuguese. It includes:
 - `docs/calendario.html`: schedule page;
 - `docs/vis.html`: retrospective visualizations;
 - `docs/equipe.html`: team page;
+- `docs/midia.html`: media page;
+- `docs/album.html`: team album page;
 - `docs/css/`, `docs/js/`, `docs/images/`, and `docs/csv/`: styling, behavior,
   assets, and data consumed by the pages.
 
@@ -237,7 +263,7 @@ training and simulation scripts. In particular:
 - simulation JSON: `data/outputs/results/sim_results_*.json`;
 - dashboards: `data/outputs/dashboards/dashboard_*.html`;
 - public probability tables: `data/summary.csv`,
-  `docs/csv/previsoes/partidas.csv`, and
+  `docs/csv/previsoes/partidas.csv`, `docs/csv/previsoes/summary.csv`, and
   `docs/csv/previsoes/chaveamento_probs.csv`;
 - evaluation tables and plots: `data/outputs/results/brier_score_*.csv` and
   `data/outputs/results/comparacao_brier_*.png`.
@@ -247,10 +273,10 @@ the website.
 
 ## Notes for Contributors
 
-- Keep source changes in `src/`, `simulations/`, `model_sel/`, or
-  `stan_models/` separate from generated output changes when possible.
-- Use `data/world_cup_results.csv` to add known 2026 match results and let the
-  update scripts propagate changes into summaries and site files.
-- Run formatting and checks before committing source changes.
+- Keep source changes in `src/` and `stan_models/` separate from generated
+  output changes when possible.
+- Use `data/world_cup_results.csv` to add known 2026 match results and let
+  `src.simulations.update_2026` propagate changes into summaries and site files.
+- Run formatting and checks (`make check`) before committing source changes.
 - Treat `2022Cup/` as an archive unless intentionally maintaining the legacy
   2022 site or simulations.
