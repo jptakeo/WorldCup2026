@@ -179,6 +179,7 @@ def prepare_cycle_data(
     if end_date:
         date_filter &= df["date"] < end_date
     df_cycle = df[date_filter].copy()
+    df_cycle.dropna(subset=["home_score", "away_score"], inplace=True)
 
     # Re-check minimum volume after the cycle filter.
     counts = (
