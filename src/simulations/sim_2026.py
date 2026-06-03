@@ -12,6 +12,7 @@ from src.constants import (
     GROUPS,
     PARTIDAS_EXPORT_COLS,
     TEAM_MAP_EN_TO_PT,
+    get_pre_tournament_version,
 )
 from src.data import prepare_cycle_data
 from src.model.bayesian import BayesianDixonColesModel
@@ -121,7 +122,7 @@ if __name__ == "__main__":
     )
     print("Sucesso! Dashboard gerado em data/outputs/dashboards/dashboard_2026.html")
 
-    update_html_from_summary()
+    update_html_from_summary(version=get_pre_tournament_version())
 
     # Export all-vs-all matchup probabilities.
     print("\n=== EXPORTANDO all_matchups.csv ===\n")

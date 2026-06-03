@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from cmdstanpy import CmdStanModel
 
-from src.constants import TEAM_MAP_PT_TO_EN
+from src.constants import TEAM_MAP_PT_TO_EN, get_pre_tournament_version
 from src.data import load_ranking_priors, prepare_cycle_data
 from src.model.bayesian import load_draws
 from src.output import update_html_from_summary
@@ -362,10 +362,11 @@ if __name__ == "__main__":
             df_matches.to_csv(f"docs/csv/previsoes/probs_{stage}.csv", index=False)
 
     _stage_to_version = {
-        "round_of_32": "Antes do 16-Avos",
-        "round_of_16": "Antes das Oitavas",
-        "quarter_final": "Antes das Quartas",
-        "semi_final": "Antes da Semi",
-        "final": "Antes da Final",
+        "round_of_32": "Após a Fase de Grupos",
+        "round_of_16": "Após os 16-Avos",
+        "quarter_final": "Após as Oitavas",
+        "semi_final": "Após as Quartas",
+        "final": "Após as Semifinais",
     }
-    update_html_from_summary(version=_stage_to_version.get(stage, "Antes da Copa"))
+    version = _stage_to_version.get(stage) or get_pre_tournament_version()
+    update_html_from_summary(version=version)
