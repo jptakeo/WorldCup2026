@@ -1,11 +1,6 @@
 name: Run Simulation on Data Change
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "data/world_cup_results.csv"
   workflow_dispatch:
 
 jobs:
@@ -42,9 +37,10 @@ jobs:
           uv run --with cmdstanpy python -c "import cmdstanpy; cmdstanpy.install_cmdstan()"
 
       - name: Run simulation
-        # Injects cmdstanpy at runtime just in case it's not in pyproject.toml
         run: |
-          uv run --with cmdstanpy python -m src.simulations.update_2026
+          uv run python -c "from src.data.loader import data_pipeline; data_pipeline()"
+          uv run python -m src.simulations.train_2026
+          uv run python -m src.simulations.sim_2026
 
       - name: Commit changes (if any)
         run: |
