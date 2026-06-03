@@ -5,12 +5,13 @@
     const TABLE_CSV_URL = 'csv/previsoes/tabela_chances.csv';
 
     const PLANNED_VERSIONS = [
-        'Antes da Copa',
-        'Antes do 16-Avos',
-        'Antes das Oitavas',
-        'Antes das Quartas',
-        'Antes da Semi',
-        'Antes da Final'
+        'Antes da Data FIFA',
+        'Antes da Copa - pós data FIFA',
+        'Após a Fase de Grupos',
+        'Após os 16-Avos',
+        'Após as Oitavas',
+        'Após as Quartas',
+        'Após as Semifinais'
     ];
 
     const COLS = ['pos', 'team', 'champ', 'final', 'semi', 'qf', 'r16', 'r32'];
@@ -18,7 +19,7 @@
     let data = [];
     let currentSortCol = 2;
     let currentSortAsc = false;
-    let selectedVersion = 'Antes da Copa';
+    let selectedVersion = PLANNED_VERSIONS[0];
 
     function escapeHTML(value) {
         return String(value ?? '')
@@ -161,7 +162,7 @@
         const versions = availableVersions();
 
         if (!versions.includes(selectedVersion)) {
-            selectedVersion = versions.includes('Antes da Copa') ? 'Antes da Copa' : versions[0] || '';
+            selectedVersion = PLANNED_VERSIONS.find(v => versions.includes(v)) || versions[0] || '';
         }
 
         menu.innerHTML = PLANNED_VERSIONS.map(version => {
