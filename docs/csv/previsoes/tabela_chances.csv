@@ -1,97 +1,49 @@
 versão,pos,team,flag,champ,final,semi,qf,r16,r32
-Antes da Data FIFA,1,Espanha,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/es.svg,15.42,24.64,37.4,49.97,70.78,99.35
-Antes da Data FIFA,2,Argentina,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ar.svg,13.47,21.89,34.34,49.04,63.75,97.97
-Antes da Data FIFA,3,Inglaterra,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/gb-eng.svg,9.46,16.7,28.36,45.65,67.78,98.04
-Antes da Data FIFA,4,França,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/fr.svg,7.89,14.35,25.93,42.02,67.15,94.58
-Antes da Data FIFA,5,Colômbia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/co.svg,5.68,11.13,20.79,37.2,61.04,91.54
-Antes da Data FIFA,6,Alemanha,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/de.svg,5.57,11.4,22.39,39.61,71.88,98.15
-Antes da Data FIFA,7,Marrocos,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ma.svg,5.0,9.85,19.02,34.49,54.64,95.72
-Antes da Data FIFA,8,Portugal,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/pt.svg,4.91,10.01,19.02,34.73,58.6,90.35
-Antes da Data FIFA,9,Brasil,https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original,4.51,9.31,18.52,34.0,54.69,96.39
-Antes da Data FIFA,10,Países Baixos,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/nl.svg,4.11,8.56,17.61,33.01,50.82,92.61
-Antes da Data FIFA,11,Japão,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/jp.svg,3.57,7.66,15.96,30.88,49.1,91.32
-Antes da Data FIFA,12,Uruguai,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/uy.svg,2.56,5.91,12.83,24.74,42.03,91.17
-Antes da Data FIFA,13,Bélgica,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/be.svg,2.46,6.07,13.43,32.65,59.48,93.66
-Antes da Data FIFA,14,Noruega,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/no.svg,2.31,5.4,12.23,25.1,49.92,84.26
-Antes da Data FIFA,15,Equador,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ec.svg,2.23,5.11,11.45,24.5,50.88,90.79
-Antes da Data FIFA,16,Croácia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/hr.svg,1.85,4.61,10.59,21.52,45.6,89.9
-Antes da Data FIFA,17,Suíça,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ch.svg,1.74,4.6,11.29,27.69,62.56,96.64
-Antes da Data FIFA,18,Austrália,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/au.svg,1.39,3.65,8.75,22.66,48.52,81.69
-Antes da Data FIFA,19,México,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/mx.svg,1.13,3.09,7.99,19.63,48.85,89.72
-Antes da Data FIFA,20,Áustria,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/at.svg,0.98,2.65,6.54,14.44,28.86,77.35
-Antes da Data FIFA,21,Senegal,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/sn.svg,0.86,2.39,6.28,15.51,35.86,69.77
-Antes da Data FIFA,22,Paraguai,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/py.svg,0.46,1.45,4.26,12.45,32.56,66.71
-Antes da Data FIFA,23,Canadá,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ca.svg,0.35,1.26,4.33,14.18,43.46,85.49
-Antes da Data FIFA,24,Turquia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/tr.svg,0.3,1.03,3.39,11.15,30.84,65.0
-Antes da Data FIFA,25,EUA,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/us.svg,0.25,0.87,2.84,9.82,28.45,62.17
-Antes da Data FIFA,26,Escócia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/gb-sct.svg,0.24,0.89,3.02,9.56,24.3,71.88
-Antes da Data FIFA,27,Argélia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/dz.svg,0.22,0.78,2.35,6.92,17.16,57.36
-Antes da Data FIFA,28,Uzbequistão,https://upload.wikimedia.org/wikipedia/commons/8/84/Flag_of_Uzbekistan.svg,0.17,0.62,1.94,5.65,15.66,45.03
-Antes da Data FIFA,29,Coreia do Sul,https://upload.wikimedia.org/wikipedia/commons/0/09/Flag_of_South_Korea.svg,0.14,0.55,2.16,7.97,29.68,73.48
-Antes da Data FIFA,30,Egito,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/eg.svg,0.13,0.55,2.03,7.72,26.48,65.26
-Antes da Data FIFA,31,Irã,https://upload.wikimedia.org/wikipedia/commons/c/ca/Flag_of_Iran.svg,0.1,0.5,1.98,7.75,26.88,66.16
-Antes da Data FIFA,32,Suécia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/se.svg,0.08,0.32,1.28,4.84,14.82,42.66
-Antes da Data FIFA,33,República Democrática do Congo,https://upload.wikimedia.org/wikipedia/commons/6/6f/Flag_of_the_Democratic_Republic_of_the_Congo.svg,0.08,0.29,1.16,3.54,10.88,35.68
-Antes da Data FIFA,34,Tunísia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/tn.svg,0.08,0.34,1.25,4.54,14.04,40.03
-Antes da Data FIFA,35,Costa do Marfim,https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_Côte_d%27Ivoire.svg,0.07,0.32,1.3,5.88,18.91,56.76
-Antes da Data FIFA,36,Panamá,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/pa.svg,0.04,0.2,0.8,3.23,10.96,45.95
-Antes da Data FIFA,37,Tchéquia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/cz.svg,0.04,0.21,1.05,4.49,20.41,60.66
-Antes da Data FIFA,38,Jordânia,https://upload.wikimedia.org/wikipedia/commons/c/c0/Flag_of_Jordan.svg,0.03,0.12,0.57,2.31,7.14,32.14
-Antes da Data FIFA,39,Nova Zelândia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/nz.svg,0.03,0.15,0.68,3.25,14.44,44.76
-Antes da Data FIFA,40,Arábia Saudita,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/sa.svg,0.02,0.16,0.64,3.3,10.21,39.06
-Antes da Data FIFA,41,Iraque,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/iq.svg,0.02,0.1,0.44,1.91,7.05,21.85
-Antes da Data FIFA,42,África do Sul,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/za.svg,0.02,0.12,0.64,3.04,15.24,50.52
-Antes da Data FIFA,43,Bósnia e Herzegovina,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ba.svg,0.02,0.11,0.54,3.17,15.47,50.7
-Antes da Data FIFA,44,Gana,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/gh.svg,0.0,0.04,0.24,1.18,5.14,27.42
-Antes da Data FIFA,45,Cabo Verde,https://upload.wikimedia.org/wikipedia/commons/3/38/Flag_of_Cape_Verde.svg,0.0,0.02,0.15,1.04,4.2,21.16
-Antes da Data FIFA,46,Catar,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/qa.svg,0.0,0.02,0.15,1.29,8.23,33.99
-Antes da Data FIFA,47,Haiti,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ht.svg,0.0,0.0,0.03,0.22,1.45,10.12
-Antes da Data FIFA,48,Curaçao,https://upload.wikimedia.org/wikipedia/commons/b/b1/Flag_of_Curaçao.svg,0.0,0.0,0.06,0.58,3.17,17.04
-Antes da Copa - pós data FIFA,1,Espanha,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/es.svg,15.31,24.6,37.44,49.77,70.92,99.32
-Antes da Copa - pós data FIFA,2,Argentina,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ar.svg,13.52,21.99,34.36,49.36,63.95,98.13
-Antes da Copa - pós data FIFA,3,Inglaterra,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/gb-eng.svg,9.29,16.35,28.22,45.9,67.94,98.1
-Antes da Copa - pós data FIFA,4,França,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/fr.svg,8.0,14.51,26.04,42.26,67.67,95.1
-Antes da Copa - pós data FIFA,5,Alemanha,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/de.svg,5.73,11.48,22.56,39.84,72.28,98.29
-Antes da Copa - pós data FIFA,6,Colômbia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/co.svg,5.49,11.04,20.64,37.09,61.06,91.63
-Antes da Copa - pós data FIFA,7,Marrocos,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ma.svg,5.1,9.91,19.04,34.44,54.84,95.79
-Antes da Copa - pós data FIFA,8,Portugal,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/pt.svg,4.97,10.27,19.54,35.38,59.76,90.93
-Antes da Copa - pós data FIFA,9,Brasil,https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original,4.84,9.79,19.29,35.05,55.5,96.64
-Antes da Copa - pós data FIFA,10,Países Baixos,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/nl.svg,3.94,8.45,17.12,32.64,50.39,92.61
-Antes da Copa - pós data FIFA,11,Japão,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/jp.svg,3.64,7.61,15.72,30.16,48.31,90.9
-Antes da Copa - pós data FIFA,12,Bélgica,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/be.svg,2.61,6.35,13.98,33.48,60.45,94.01
-Antes da Copa - pós data FIFA,13,Uruguai,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/uy.svg,2.54,5.86,12.49,24.29,41.78,90.6
-Antes da Copa - pós data FIFA,14,Noruega,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/no.svg,2.22,5.16,11.95,24.81,49.76,84.46
-Antes da Copa - pós data FIFA,15,Equador,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ec.svg,2.11,4.95,11.24,24.09,50.68,90.82
-Antes da Copa - pós data FIFA,16,Croácia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/hr.svg,1.91,4.71,10.76,21.95,45.96,90.58
-Antes da Copa - pós data FIFA,17,Suíça,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ch.svg,1.79,4.73,11.71,28.29,63.62,96.76
-Antes da Copa - pós data FIFA,18,Austrália,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/au.svg,1.22,3.31,8.46,21.87,47.36,81.22
-Antes da Copa - pós data FIFA,19,México,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/mx.svg,1.22,3.3,8.42,20.27,49.52,90.02
-Antes da Copa - pós data FIFA,20,Áustria,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/at.svg,0.9,2.51,6.3,13.84,28.4,77.93
-Antes da Copa - pós data FIFA,21,Senegal,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/sn.svg,0.75,2.12,5.8,14.93,34.33,68.96
-Antes da Copa - pós data FIFA,22,Paraguai,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/py.svg,0.47,1.52,4.25,12.46,32.61,67.13
-Antes da Copa - pós data FIFA,23,Canadá,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ca.svg,0.34,1.24,4.11,13.76,42.92,85.28
-Antes da Copa - pós data FIFA,24,Escócia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/gb-sct.svg,0.28,0.97,3.23,9.9,25.13,72.32
-Antes da Copa - pós data FIFA,25,Turquia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/tr.svg,0.28,0.97,3.27,10.96,30.55,64.91
-Antes da Copa - pós data FIFA,26,Argélia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/dz.svg,0.24,0.76,2.37,6.94,17.33,57.82
-Antes da Copa - pós data FIFA,27,EUA,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/us.svg,0.21,0.86,2.97,10.06,28.8,62.45
-Antes da Copa - pós data FIFA,28,Egito,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/eg.svg,0.15,0.61,2.18,8.15,27.17,66.04
-Antes da Copa - pós data FIFA,29,Uzbequistão,https://upload.wikimedia.org/wikipedia/commons/8/84/Flag_of_Uzbekistan.svg,0.15,0.59,1.87,5.34,15.12,44.24
-Antes da Copa - pós data FIFA,30,Irã,https://upload.wikimedia.org/wikipedia/commons/c/ca/Flag_of_Iran.svg,0.14,0.52,1.88,7.58,26.58,65.65
-Antes da Copa - pós data FIFA,31,Coreia do Sul,https://upload.wikimedia.org/wikipedia/commons/0/09/Flag_of_South_Korea.svg,0.11,0.51,2.14,8.05,30.38,74.2
-Antes da Copa - pós data FIFA,32,Tunísia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/tn.svg,0.09,0.34,1.26,4.59,13.98,40.37
-Antes da Copa - pós data FIFA,33,República Democrática do Congo,https://upload.wikimedia.org/wikipedia/commons/6/6f/Flag_of_the_Democratic_Republic_of_the_Congo.svg,0.08,0.32,1.06,3.49,10.77,35.66
-Antes da Copa - pós data FIFA,34,Suécia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/se.svg,0.07,0.33,1.32,4.98,14.96,43.26
-Antes da Copa - pós data FIFA,35,Costa do Marfim,https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_Côte_d%27Ivoire.svg,0.06,0.32,1.29,5.77,18.7,56.69
-Antes da Copa - pós data FIFA,36,Tchéquia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/cz.svg,0.05,0.24,1.07,4.59,20.53,60.45
-Antes da Copa - pós data FIFA,37,Panamá,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/pa.svg,0.04,0.15,0.73,2.8,10.13,44.82
-Antes da Copa - pós data FIFA,38,Nova Zelândia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/nz.svg,0.03,0.14,0.66,3.19,13.83,44.21
-Antes da Copa - pós data FIFA,39,África do Sul,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/za.svg,0.02,0.12,0.62,3.09,14.99,49.56
-Antes da Copa - pós data FIFA,40,Jordânia,https://upload.wikimedia.org/wikipedia/commons/c/c0/Flag_of_Jordan.svg,0.02,0.1,0.46,2.0,6.59,31.04
-Antes da Copa - pós data FIFA,41,Iraque,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/iq.svg,0.02,0.09,0.42,1.85,7.05,22.01
-Antes da Copa - pós data FIFA,42,Bósnia e Herzegovina,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ba.svg,0.02,0.09,0.52,3.26,15.44,50.51
-Antes da Copa - pós data FIFA,43,Arábia Saudita,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/sa.svg,0.02,0.14,0.6,3.07,9.93,37.99
-Antes da Copa - pós data FIFA,44,Gana,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/gh.svg,0.01,0.03,0.22,1.14,4.94,27.67
-Antes da Copa - pós data FIFA,45,Cabo Verde,https://upload.wikimedia.org/wikipedia/commons/3/38/Flag_of_Cape_Verde.svg,0.0,0.02,0.18,1.27,4.89,23.5
-Antes da Copa - pós data FIFA,46,Curaçao,https://upload.wikimedia.org/wikipedia/commons/b/b1/Flag_of_Curaçao.svg,0.0,0.01,0.06,0.54,2.85,16.33
-Antes da Copa - pós data FIFA,47,Haiti,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ht.svg,0.0,0.01,0.03,0.2,1.31,9.54
-Antes da Copa - pós data FIFA,48,Catar,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/qa.svg,0.0,0.02,0.14,1.26,8.04,33.57
+Antes da Copa - pós data FIFA,1,Espanha,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/es.svg,15.43,24.92,37.75,50.3,71.02,99.41
+Antes da Copa - pós data FIFA,2,Argentina,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ar.svg,13.6,21.78,34.03,48.72,63.5,97.94
+Antes da Copa - pós data FIFA,3,Inglaterra,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/gb-eng.svg,9.5,16.64,28.28,45.72,67.75,98.01
+Antes da Copa - pós data FIFA,4,França,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/fr.svg,7.88,14.4,25.88,42.11,67.25,94.82
+Antes da Copa - pós data FIFA,5,Colômbia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/co.svg,5.48,11.02,20.65,37.17,60.79,91.44
+Antes da Copa - pós data FIFA,6,Alemanha,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/de.svg,5.47,11.3,22.44,39.72,71.86,98.14
+Antes da Copa - pós data FIFA,7,Marrocos,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ma.svg,4.88,9.74,18.92,34.04,54.63,95.74
+Antes da Copa - pós data FIFA,8,Portugal,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/pt.svg,4.79,9.98,19.19,34.78,58.81,90.52
+Antes da Copa - pós data FIFA,9,Brasil,https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original,4.6,9.4,18.77,34.25,54.76,96.46
+Antes da Copa - pós data FIFA,10,Países Baixos,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/nl.svg,4.09,8.43,17.26,32.88,50.71,92.31
+Antes da Copa - pós data FIFA,11,Japão,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/jp.svg,3.63,7.67,15.92,30.71,48.93,90.93
+Antes da Copa - pós data FIFA,12,Bélgica,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/be.svg,2.65,6.15,13.54,32.79,60.0,93.81
+Antes da Copa - pós data FIFA,13,Uruguai,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/uy.svg,2.62,6.01,12.89,24.67,41.95,90.9
+Antes da Copa - pós data FIFA,14,Noruega,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/no.svg,2.39,5.52,12.33,25.27,50.0,84.0
+Antes da Copa - pós data FIFA,15,Equador,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ec.svg,2.24,5.14,11.52,24.43,50.67,90.75
+Antes da Copa - pós data FIFA,16,Croácia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/hr.svg,1.86,4.72,10.66,21.65,45.52,89.74
+Antes da Copa - pós data FIFA,17,Suíça,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ch.svg,1.65,4.4,11.11,27.45,62.63,96.53
+Antes da Copa - pós data FIFA,18,Austrália,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/au.svg,1.4,3.6,8.84,22.54,48.32,81.74
+Antes da Copa - pós data FIFA,19,México,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/mx.svg,1.12,3.01,7.96,19.63,48.75,89.58
+Antes da Copa - pós data FIFA,20,Áustria,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/at.svg,0.97,2.69,6.57,14.19,28.8,77.64
+Antes da Copa - pós data FIFA,21,Senegal,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/sn.svg,0.86,2.38,6.23,15.67,35.7,70.05
+Antes da Copa - pós data FIFA,22,Paraguai,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/py.svg,0.44,1.45,4.25,12.74,32.7,66.94
+Antes da Copa - pós data FIFA,23,Turquia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/tr.svg,0.32,1.07,3.35,11.18,31.09,65.06
+Antes da Copa - pós data FIFA,24,Canadá,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ca.svg,0.32,1.28,4.23,14.15,43.02,85.11
+Antes da Copa - pós data FIFA,25,Escócia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/gb-sct.svg,0.25,0.92,3.05,9.57,24.66,72.15
+Antes da Copa - pós data FIFA,26,Argélia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/dz.svg,0.23,0.76,2.35,6.88,16.94,57.12
+Antes da Copa - pós data FIFA,27,EUA,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/us.svg,0.23,0.82,2.77,9.73,28.44,61.87
+Antes da Copa - pós data FIFA,28,Uzbequistão,https://upload.wikimedia.org/wikipedia/commons/8/84/Flag_of_Uzbekistan.svg,0.18,0.63,1.99,5.58,15.58,44.75
+Antes da Copa - pós data FIFA,29,Egito,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/eg.svg,0.12,0.53,2.04,7.81,26.49,64.94
+Antes da Copa - pós data FIFA,30,Coreia do Sul,https://upload.wikimedia.org/wikipedia/commons/0/09/Flag_of_South_Korea.svg,0.12,0.53,2.17,7.9,30.03,73.73
+Antes da Copa - pós data FIFA,31,Irã,https://upload.wikimedia.org/wikipedia/commons/c/ca/Flag_of_Iran.svg,0.12,0.47,1.9,7.78,26.7,66.09
+Antes da Copa - pós data FIFA,32,Tunísia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/tn.svg,0.09,0.34,1.34,4.63,14.28,40.7
+Antes da Copa - pós data FIFA,33,República Democrática do Congo,https://upload.wikimedia.org/wikipedia/commons/6/6f/Flag_of_the_Democratic_Republic_of_the_Congo.svg,0.08,0.33,1.17,3.71,11.21,36.0
+Antes da Copa - pós data FIFA,34,Suécia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/se.svg,0.08,0.36,1.34,4.85,14.75,42.66
+Antes da Copa - pós data FIFA,35,Costa do Marfim,https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_Côte_d%27Ivoire.svg,0.07,0.3,1.31,5.9,18.79,56.86
+Antes da Copa - pós data FIFA,36,Tchéquia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/cz.svg,0.06,0.25,1.04,4.6,20.32,60.44
+Antes da Copa - pós data FIFA,37,Panamá,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/pa.svg,0.03,0.2,0.81,3.15,10.98,46.08
+Antes da Copa - pós data FIFA,38,Jordânia,https://upload.wikimedia.org/wikipedia/commons/c/c0/Flag_of_Jordan.svg,0.03,0.14,0.57,2.28,7.26,32.13
+Antes da Copa - pós data FIFA,39,Nova Zelândia,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/nz.svg,0.03,0.16,0.65,3.23,14.42,44.75
+Antes da Copa - pós data FIFA,40,Arábia Saudita,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/sa.svg,0.03,0.14,0.64,3.22,10.23,39.02
+Antes da Copa - pós data FIFA,41,Iraque,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/iq.svg,0.02,0.11,0.46,1.94,7.06,21.8
+Antes da Copa - pós data FIFA,42,África do Sul,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/za.svg,0.02,0.12,0.64,3.05,15.35,50.65
+Antes da Copa - pós data FIFA,43,Bósnia e Herzegovina,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ba.svg,0.02,0.08,0.52,3.15,15.5,50.55
+Antes da Copa - pós data FIFA,44,Gana,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/gh.svg,0.01,0.06,0.28,1.21,5.04,27.54
+Antes da Copa - pós data FIFA,45,Cabo Verde,https://upload.wikimedia.org/wikipedia/commons/3/38/Flag_of_Cape_Verde.svg,0.0,0.02,0.15,1.02,4.27,21.26
+Antes da Copa - pós data FIFA,46,Catar,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/qa.svg,0.0,0.02,0.15,1.26,8.16,34.29
+Antes da Copa - pós data FIFA,47,Haiti,https://raw.githubusercontent.com/hampusborgos/country-flags/refs/heads/main/svg/ht.svg,0.0,0.0,0.02,0.2,1.33,9.98
+Antes da Copa - pós data FIFA,48,Curaçao,https://upload.wikimedia.org/wikipedia/commons/b/b1/Flag_of_Curaçao.svg,0.0,0.01,0.06,0.6,3.06,17.11
