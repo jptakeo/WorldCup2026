@@ -50,8 +50,8 @@ Entry points for the full pipeline. Run as modules with `uv run python -m src.si
 | Module | What it does |
 | --- | --- |
 | `train_2026.py` | Compiles Stan models and trains the 2026 posterior in parallel; saves draws to `data/outputs/models/draws_2026_n_poisson_ranking.npz`. |
-| `sim_2026.py` | Loads saved draws, runs 100 000 simulations, and writes `data/outputs/results/sim_results_2026.json`, `data/summary.csv`, `docs/csv/previsoes/partidas.csv`, `docs/csv/previsoes/chaveamento_probs.csv`, `docs/csv/previsoes/all_matchups.csv`, and `data/outputs/dashboards/dashboard_2026.html`. |
-| `update_2026.py` | Detects the current tournament phase from `data/world_cup_results.csv`, appends completed results to the training set, retrains the model, re-simulates remaining stages, and updates `data/summary.csv` and `docs/chances.html`. |
+| `sim_2026.py` | Loads saved draws, runs 100 000 simulations, and writes `data/outputs/results/sim_results_2026.json`, `docs/csv/previsoes/summary.csv`, `docs/csv/previsoes/partidas.csv`, `docs/csv/previsoes/chaveamento_probs.csv`, `docs/csv/previsoes/all_matchups.csv`, `docs/csv/previsoes/tabela_chances.csv`, and `data/outputs/dashboards/dashboard_2026.html`. |
+| `update_2026.py` | Detects the current tournament phase from `data/world_cup_results.csv`, appends completed results to the training set, retrains the model, re-simulates remaining stages, and updates `docs/csv/previsoes/summary.csv` and `docs/csv/previsoes/tabela_chances.csv`. |
 | `export_all_matchups.py` | Standalone export of all-vs-all match probability tables. |
 | `sim_2022.py`, `sim_2018.py` | Historical simulation entry points for 2022 and 2018. |
 | `utils.py` | `build_all_matchups_dataframe_mc()` — Monte Carlo all-vs-all match probability builder. |
@@ -68,7 +68,7 @@ Entry points for the full pipeline. Run as modules with `uv run python -m src.si
 
 | Module | Key Symbols |
 | --- | --- |
-| `export.py` | `export_phase_probs()` — orchestrates full probability export for a tournament phase; `build_prob_dataframe()` — phase-specific match probabilities; `build_stage_dataframe()` — tournament-stage advancement probabilities; `build_all_matchups_dataframe()` — all team-pair probabilities; `update_html_from_summary()` — rewrites the probability table in `docs/chances.html`; `main()` / `if __name__ == "__main__"` — CLI entry point accepting `--wc-results`, `--min-date`, and `--seed`. |
+| `export.py` | `export_phase_probs()` — orchestrates full probability export for a tournament phase; `build_prob_dataframe()` — phase-specific match probabilities; `build_stage_dataframe()` — tournament-stage advancement probabilities; `build_all_matchups_dataframe()` — all team-pair probabilities; `update_html_from_summary()` — appends a versioned snapshot to `docs/csv/previsoes/tabela_chances.csv`; `main()` / `if __name__ == "__main__"` — CLI entry point accepting `--wc-results`, `--min-date`, and `--seed`. |
 | `dashboard.py` | `generate_dashboard()` — builds a standalone D3 HTML dashboard from a simulation JSON file. |
 
 ## `src/analysis/`
@@ -95,5 +95,6 @@ Entry points for the full pipeline. Run as modules with `uv run python -m src.si
 - When adding a new tournament phase, update `src/constants.py`, the tournament
   simulators in `src/tournament/`, the export logic in `src/output/export.py`, and
   the website CSV expectations together.
-- Keep generated CSV/JSON/HTML outputs out of source modules; write them only in
-  `data/` and `docs/csv/`.
+- Keep generated CSV/JSON/HTML outputs out of source modules; write public CSVs
+  only to `docs/csv/previsoes/` and internal artifacts (JSON, HTML dashboard,
+  model draws) to `data/outputs/`.
