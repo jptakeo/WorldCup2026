@@ -52,7 +52,7 @@ if __name__ == "__main__":
     print("\n=== PREPARANDO DADOS ===\n")
 
     stage = ""
-    old_results = pd.read_csv("data/raw/results.csv")
+    old_results = pd.read_csv("data/results.csv")
     actual_results = pd.read_csv("data/world_cup_results.csv")
 
     if actual_results["home_real"].isna().sum() == actual_results.shape[0]:

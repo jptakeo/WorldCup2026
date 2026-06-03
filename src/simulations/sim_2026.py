@@ -28,7 +28,7 @@ if __name__ == "__main__":
     os.makedirs("data/outputs/dashboards", exist_ok=True)
 
     _, teams_26, _ = prepare_cycle_data(
-        "data/raw/results.csv", "2022-11-19", apply_decay=True
+        "data/results.csv", "2022-11-19", apply_decay=True
     )
 
     model_path = f"data/outputs/models/{MODEL_NAME}"

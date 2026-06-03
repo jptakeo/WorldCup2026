@@ -19,7 +19,7 @@ PARTIDAS_PATH = Path("docs/csv/previsoes/partidas.csv")
 
 if __name__ == "__main__":
     _, teams_26, _ = prepare_cycle_data(
-        "data/raw/results.csv", "2022-11-19", apply_decay=True
+        "data/results.csv", "2022-11-19", apply_decay=True
     )
     model = BayesianDixonColesModel(f"data/outputs/models/{MODEL_NAME}")
     atk, dfn, rho, et = _sample_posterior(

@@ -46,7 +46,7 @@ if __name__ == "__main__":
     print("=" * 50)
 
     df_26, teams_26, team_map_26 = prepare_cycle_data(
-        "data/raw/results.csv", "2022-11-19", apply_decay=True
+        "data/results.csv", "2022-11-19", apply_decay=True
     )
 
     ranking_priors_26 = load_ranking_priors("data/raw/fifa_ranking_2022.csv", teams_26)
