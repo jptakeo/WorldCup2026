@@ -32,10 +32,17 @@ jobs:
       - name: Install dependencies
         run: uv sync --extra dev
 
+      - name: Cache CmdStan
+        id: cache-cmdstan
+        uses: actions/cache@v4
+        with:
+          path: ~/.cmdstan
+          key: cmdstan-${{ runner.os }}-2.35.0
+
       - name: Install CmdStan C++ Toolchain
-        # This downloads and compiles the backend required by cmdstanpy
+        if: steps.cache-cmdstan.outputs.cache-hit != 'true'
         run: |
-          uv run --with cmdstanpy python -c "import cmdstanpy; cmdstanpy.install_cmdstan()"
+          uv run --with cmdstanpy python -c "import cmdstanpy; cmdstanpy.install_cmdstan(version='2.35.0')"
 
       - name: Load data
         run: uv run python -c "from src.data.loader import data_pipeline; data_pipeline()"
