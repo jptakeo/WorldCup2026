@@ -1,4 +1,4 @@
-name: Run Simulation on Data Change
+name: Run Simulation
 
 on:
   workflow_dispatch:
@@ -50,7 +50,7 @@ jobs:
           git add -A
 
           if ! git diff --cached --quiet; then
-            git commit -m "chore: update simulation results [skip ci]"
+            git commit -m "update simulation results"
             git push
           else
             echo "No changes to commit"
