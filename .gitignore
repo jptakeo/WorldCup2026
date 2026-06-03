@@ -215,3 +215,6 @@ stan_models/n_poisson_ranking
 
 # Posterior samples
 data/outputs/models
+
+# Intermediate files generated during simulation
+data/new_results.csv
