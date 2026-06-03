@@ -1,4 +1,4 @@
-name: Run Simulation
+name: Update World Cup 2026 Simulation Results
 
 on:
   workflow_dispatch:
@@ -26,21 +26,25 @@ jobs:
           curl -LsSf https://astral.sh/uv/install.sh | sh
           echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
-      - name: Setup project
-        run: |
-          uv python install
-          uv sync --extra dev
+      - name: Install Python
+        run: uv python install
+
+      - name: Install dependencies
+        run: uv sync --extra dev
 
       - name: Install CmdStan C++ Toolchain
         # This downloads and compiles the backend required by cmdstanpy
         run: |
           uv run --with cmdstanpy python -c "import cmdstanpy; cmdstanpy.install_cmdstan()"
 
+      - name: Load data
+        run: uv run python -c "from src.data.loader import data_pipeline; data_pipeline()"
+
+      - name: Train model
+        run: uv run python -m src.simulations.train_2026
+
       - name: Run simulation
-        run: |
-          uv run python -c "from src.data.loader import data_pipeline; data_pipeline()"
-          uv run python -m src.simulations.train_2026
-          uv run python -m src.simulations.sim_2026
+        run: uv run python -m src.simulations.sim_2026
 
       - name: Commit changes (if any)
         run: |
