@@ -60,6 +60,7 @@ if __name__ == "__main__":
     }
     with open("data/outputs/results/sim_results_2026.json", "w") as f:
         json.dump(json_output_26, f)
+        f.write("\n")
 
     # Save group-match probability table.
     if simulator.last_group_matches is not None:

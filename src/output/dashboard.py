@@ -221,5 +221,7 @@ def generate_dashboard(
 
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(html_final)
+        if not html_final.endswith("\n"):
+            f.write("\n")
 
     print(f"Dashboard '{title}' gerado com sucesso em: {output_file}")

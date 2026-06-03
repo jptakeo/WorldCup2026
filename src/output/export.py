@@ -450,7 +450,7 @@ def update_html_from_summary(
     combined = existing_rows + new_rows
     tabela_path.parent.mkdir(parents=True, exist_ok=True)
     with open(tabela_path, "w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(combined)
 
