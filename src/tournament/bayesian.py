@@ -18,7 +18,9 @@ from src.model.bayesian import BayesianDixonColesModel
 from src.tournament.base import TournamentResult, TournamentSimulator
 
 # Precomputed factorials for score probabilities from 0 to 10 goals.
-_FACTORIALS = np.array([1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800])
+_FACTORIALS = np.array(
+    [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800], dtype=np.float32
+)
 _NUM_TO_WORD = {0: "zero", 1: "one", 2: "two", 3: "three", 4: "four"}
 
 
@@ -39,8 +41,12 @@ def simulate_matches(
     if mu1.ndim == 1:
         mu1, mu2, rho_draws = mu1[:, None], mu2[:, None], rho_draws[:, None]
 
+    mu1 = np.asarray(mu1, dtype=np.float32)
+    mu2 = np.asarray(mu2, dtype=np.float32)
+    rho_draws = np.asarray(rho_draws, dtype=np.float32)
+
     n_matches = mu1.shape[1]
-    goals = np.arange(max_goals + 1)
+    goals = np.arange(max_goals + 1, dtype=np.float32)
 
     mu1_exp = mu1[:, :, None, None]
     mu2_exp = mu2[:, :, None, None]
@@ -70,7 +76,7 @@ def simulate_matches(
     p_flat /= p_flat.sum(axis=2, keepdims=True)
 
     cum_p = np.cumsum(p_flat, axis=2)
-    rand_vals = np.random.rand(n_sim, n_matches, 1)
+    rand_vals = np.random.rand(n_sim, n_matches, 1).astype(np.float32)
 
     score_idx = np.argmax(cum_p > rand_vals, axis=2)
     return score_idx // (max_goals + 1), score_idx % (max_goals + 1)
@@ -118,6 +124,43 @@ def _aggregate_match_probs(g1: np.ndarray, g2: np.ndarray) -> dict[str, float]:
                 np.mean((g1 == i) & (g2 == j)) * 100
             )
     return row
+
+
+def _aggregate_batch_probs(g1: np.ndarray, g2: np.ndarray) -> list[dict[str, float]]:
+    """Vectorized version of _aggregate_match_probs for a batch of matches.
+
+    g1, g2: shape (n_sim, n_pairs)
+    Returns a list of n_pairs dicts, same keys as _aggregate_match_probs.
+    """
+    n_sim, n_pairs = g1.shape
+
+    home_win = np.mean(g1 > g2, axis=0) * 100
+    draw = np.mean(g1 == g2, axis=0) * 100
+    away_win = np.mean(g1 < g2, axis=0) * 100
+
+    # One-pass 2D histogram via offset bincount.
+    # Goals > 4 are routed to a discard bucket at index n_pairs * 25.
+    waste = n_pairs * 25
+    score_idx = np.where(
+        (g1 <= 4) & (g2 <= 4),
+        g1 * 5 + g2 + np.arange(n_pairs, dtype=np.intp)[None, :] * 25,
+        waste,
+    )
+    counts = np.bincount(score_idx.ravel(), minlength=waste + 1)[:-1]
+    scorelines = counts.reshape(n_pairs, 5, 5) * (100.0 / n_sim)
+
+    results: list[dict[str, float]] = []
+    for m in range(n_pairs):
+        row: dict[str, float] = {
+            "home_win": float(home_win[m]),
+            "draw": float(draw[m]),
+            "away_win": float(away_win[m]),
+        }
+        for i in range(5):
+            for j in range(5):
+                row[f"{_NUM_TO_WORD[i]}_{_NUM_TO_WORD[j]}"] = float(scorelines[m, i, j])
+        results.append(row)
+    return results
 
 
 def _load_schedule_orientations(
@@ -169,10 +212,14 @@ def _sample_posterior(
         np.random.seed(seed)
     n_samples = len(post_draws["attack"])
     sample_idx = np.random.choice(n_samples, n_sim)
-    atk = post_draws["attack"][sample_idx]
-    dfn = post_draws["defense"][sample_idx]
-    rho = post_draws["rho"][sample_idx] if "rho" in post_draws else None
-    et = post_draws["eta"][sample_idx]
+    atk = post_draws["attack"][sample_idx].astype(np.float32)
+    dfn = post_draws["defense"][sample_idx].astype(np.float32)
+    rho = (
+        post_draws["rho"][sample_idx].astype(np.float32)
+        if "rho" in post_draws
+        else None
+    )
+    et = post_draws["eta"][sample_idx].astype(np.float32)
     return atk, dfn, rho, et
 
 

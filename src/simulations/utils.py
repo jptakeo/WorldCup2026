@@ -16,7 +16,7 @@ from src.constants import (
     TEAM_MAP_EN_TO_PT,
 )
 from src.tournament.bayesian import (
-    _aggregate_match_probs,
+    _aggregate_batch_probs,
     _load_schedule_orientations,
     _match_lambdas,
     _resolve_fixture_orientation,
@@ -61,6 +61,7 @@ def build_all_matchups_dataframe_mc(
     pairs: list[tuple[str, str]] = list(combinations(wc_teams, 2))
     rows: list[dict] = []
     pending: list[tuple[str, str, str, str, int, int]] = []
+    cached_entries: list[tuple[str, str, NDArray, NDArray]] = []
 
     def flush_pending() -> None:
         if not pending:
@@ -68,14 +69,9 @@ def build_all_matchups_dataframe_mc(
         home_idxs = np.array([item[4] for item in pending], dtype=int)
         away_idxs = np.array([item[5] for item in pending], dtype=int)
         g1, g2 = _simulate_match_goals(atk, dfn, rho, et, home_idxs, away_idxs, n_sim)
-        for m, (home_pt, away_pt, *_) in enumerate(pending):
-            rows.append(
-                {
-                    "home_team": home_pt,
-                    "away_team": away_pt,
-                    **_aggregate_match_probs(g1[:, m], g2[:, m]),
-                }
-            )
+        batch_stats = _aggregate_batch_probs(g1, g2)
+        for (home_pt, away_pt, *_), stats in zip(pending, batch_stats, strict=False):
+            rows.append({"home_team": home_pt, "away_team": away_pt, **stats})
         pending.clear()
 
     for team_a_en, team_b_en in pairs:
@@ -88,13 +84,7 @@ def build_all_matchups_dataframe_mc(
 
         if cache_key in cache:
             hg, ag = cache[cache_key]
-            rows.append(
-                {
-                    "home_team": home_pt,
-                    "away_team": away_pt,
-                    **_aggregate_match_probs(hg, ag),
-                }
-            )
+            cached_entries.append((home_pt, away_pt, hg, ag))
             continue
 
         pending.append(
@@ -104,6 +94,15 @@ def build_all_matchups_dataframe_mc(
             flush_pending()
 
     flush_pending()
+
+    if cached_entries:
+        g1_c = np.stack([e[2] for e in cached_entries], axis=1)
+        g2_c = np.stack([e[3] for e in cached_entries], axis=1)
+        for (home_pt, away_pt, _, _), stats in zip(
+            cached_entries, _aggregate_batch_probs(g1_c, g2_c), strict=False
+        ):
+            rows.append({"home_team": home_pt, "away_team": away_pt, **stats})
+
     df = pd.DataFrame(rows).round(4)
     return df[ALL_MATCHUPS_EXPORT_COLS]
 
