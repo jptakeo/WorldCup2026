@@ -1,33 +1,33 @@
 side,round_index,round_label,order,id,home_team,prob_home,away_team,prob_away,winner
-left,0,R32,1,L1,Alemanha,74.68,Escócia,25.32,home
-left,0,R32,2,L2,França,80.87,Egito,19.13,home
-left,0,R32,3,L3,Coreia do Sul,45.57,Canadá,54.43,away
-left,0,R32,4,L4,Países Baixos,47.56,Marrocos,52.44,away
-left,0,R32,5,L5,Portugal,58.43,Croácia,41.57,home
-left,0,R32,6,L6,Espanha,76.01,Áustria,23.99,home
-left,0,R32,7,L7,Austrália,76.58,Bósnia e Herzegovina,23.42,home
-left,0,R32,8,L8,Bélgica,75.01,Tchéquia,24.99,home
-left,1,Oitavas,9,RL1,Alemanha,43.23,França,56.77,away
-left,1,Oitavas,10,RL2,Canadá,28.89,Marrocos,71.11,away
-left,1,Oitavas,11,RL3,Portugal,34.98,Espanha,65.02,away
-left,1,Oitavas,12,RL4,Austrália,45.5,Bélgica,54.5,away
-left,2,Quartas,13,QL1,França,53.91,Marrocos,46.09,home
-left,2,Quartas,14,QL2,Espanha,71.09,Bélgica,28.91,home
-left,3,Semifinal,15,SL,França,42.32,Espanha,57.68,away
-right,0,R32,16,R1,Brasil,52.38,Japão,47.62,home
-right,0,R32,17,R2,Equador,48.42,Noruega,51.58,away
-right,0,R32,18,R3,México,50.12,Senegal,49.88,home
-right,0,R32,19,R4,Inglaterra,77.59,Argélia,22.41,home
-right,0,R32,20,R5,Suíça,72.54,Costa do Marfim,27.46,home
-right,0,R32,21,R6,Colômbia,75.46,EUA,24.54,home
-right,0,R32,22,R7,Argentina,65.79,Uruguai,34.21,home
-right,0,R32,23,R8,Paraguai,57.65,Irã,42.35,home
-right,1,Oitavas,24,RR1,Brasil,57.37,Noruega,42.63,home
-right,1,Oitavas,25,RR2,México,31.51,Inglaterra,68.49,away
-right,1,Oitavas,26,RR3,Suíça,37.33,Colômbia,62.67,away
-right,1,Oitavas,27,RR4,Argentina,78.13,Paraguai,21.87,home
-right,2,Quartas,28,QR1,Brasil,42.49,Inglaterra,57.51,away
-right,2,Quartas,29,QR2,Colômbia,37.93,Argentina,62.07,away
-right,3,Semifinal,30,SR,Inglaterra,45.27,Argentina,54.73,away
-final,4,Final,31,F,Espanha,50.26,Argentina,49.74,home
+left,0,R32,1,L1,Alemanha,74.6,Escócia,25.4,home
+left,0,R32,2,L2,França,83.13,Irã,16.87,home
+left,0,R32,3,L3,Coreia do Sul,46.47,Canadá,53.53,away
+left,0,R32,4,L4,Países Baixos,47.38,Marrocos,52.62,away
+left,0,R32,5,L5,Portugal,58.73,Croácia,41.27,home
+left,0,R32,6,L6,Espanha,76.17,Áustria,23.83,home
+left,0,R32,7,L7,Austrália,75.99,Bósnia e Herzegovina,24.01,home
+left,0,R32,8,L8,Bélgica,75.07,Tchéquia,24.93,home
+left,1,Oitavas,9,RL1,Alemanha,43.61,França,56.39,away
+left,1,Oitavas,10,RL2,Canadá,28.6,Marrocos,71.4,away
+left,1,Oitavas,11,RL3,Portugal,35.38,Espanha,64.62,away
+left,1,Oitavas,12,RL4,Austrália,44.56,Bélgica,55.44,away
+left,2,Quartas,13,QL1,França,53.89,Marrocos,46.11,home
+left,2,Quartas,14,QL2,Espanha,70.77,Bélgica,29.23,home
+left,3,Semifinal,15,SL,França,42.6,Espanha,57.4,away
+right,0,R32,16,R1,Brasil,52.83,Japão,47.17,home
+right,0,R32,17,R2,Equador,48.12,Noruega,51.88,away
+right,0,R32,18,R3,México,51.25,Senegal,48.75,home
+right,0,R32,19,R4,Inglaterra,77.79,Argélia,22.21,home
+right,0,R32,20,R5,Suíça,73.24,Costa do Marfim,26.76,home
+right,0,R32,21,R6,Colômbia,75.52,EUA,24.48,home
+right,0,R32,22,R7,Argentina,65.87,Uruguai,34.13,home
+right,0,R32,23,R8,Paraguai,57.1,Egito,42.9,home
+right,1,Oitavas,24,RR1,Brasil,58.47,Noruega,41.53,home
+right,1,Oitavas,25,RR2,México,32.44,Inglaterra,67.56,away
+right,1,Oitavas,26,RR3,Suíça,37.6,Colômbia,62.4,away
+right,1,Oitavas,27,RR4,Argentina,77.99,Paraguai,22.01,home
+right,2,Quartas,28,QR1,Brasil,43.14,Inglaterra,56.86,away
+right,2,Quartas,29,QR2,Colômbia,37.87,Argentina,62.13,away
+right,3,Semifinal,30,SR,Inglaterra,45.35,Argentina,54.65,away
+final,4,Final,31,F,Espanha,49.93,Argentina,50.07,away
 terceiro,4,3º Lugar,32,T,França,48.11,Inglaterra,51.89,away
