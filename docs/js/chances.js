@@ -5,7 +5,7 @@
     const TABLE_CSV_URL = 'csv/previsoes/tabela_chances.csv';
 
     const PLANNED_VERSIONS = [
-        'Antes da Data FIFA',
+        'Antes da data FIFA',
         'Antes da Copa - pós data FIFA',
         'Após a Fase de Grupos',
         'Após os 16-Avos',
