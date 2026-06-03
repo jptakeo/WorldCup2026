@@ -308,7 +308,7 @@ if __name__ == "__main__":
             probs_third_place, _, df_matches_third_place = simulate_stage_and_remaining(
                 draws_26, teams_26, pred_third_place
             )
-            df_previous_summary = pd.read_csv("data/summary.csv")
+            df_previous_summary = pd.read_csv("docs/csv/previsoes/summary.csv")
             # Align by team before replacing only the newly simulated columns.
             df_summary = df_summary.set_index("team")
             df_previous_summary = df_previous_summary.set_index("team")
@@ -326,11 +326,8 @@ if __name__ == "__main__":
             df_previous_summary = df_previous_summary.reset_index()
             df_previous_summary["position"] = df_previous_summary.index + 1
 
-            df_previous_summary.to_csv("data/summary.csv", index=False)
             df_previous_summary.to_csv("docs/csv/previsoes/summary.csv", index=False)
-            df_matches.to_csv(f"data/probs_{stage}.csv", index=False)
             df_matches.to_csv(f"docs/csv/previsoes/probs_{stage}.csv", index=False)
-            df_matches_third_place.to_csv("data/probs_third_place.csv", index=False)
             df_matches_third_place.to_csv(
                 "docs/csv/previsoes/probs_third_place.csv", index=False
             )
@@ -338,7 +335,7 @@ if __name__ == "__main__":
             probs, df_summary, df_matches = simulate_stage_and_remaining(
                 draws_26, teams_26, matches_to_pred
             )
-            df_previous_summary = pd.read_csv("data/summary.csv")
+            df_previous_summary = pd.read_csv("docs/csv/previsoes/summary.csv")
             # Align by team before replacing only the newly simulated columns.
             df_summary = df_summary.set_index("team")
             df_previous_summary = df_previous_summary.set_index("team")
@@ -356,9 +353,7 @@ if __name__ == "__main__":
             df_previous_summary = df_previous_summary.reset_index()
             df_previous_summary["position"] = df_previous_summary.index + 1
 
-            df_previous_summary.to_csv("data/summary.csv", index=False)
             df_previous_summary.to_csv("docs/csv/previsoes/summary.csv", index=False)
-            df_matches.to_csv(f"data/probs_{stage}.csv", index=False)
             df_matches.to_csv(f"docs/csv/previsoes/probs_{stage}.csv", index=False)
 
     _stage_to_version = {

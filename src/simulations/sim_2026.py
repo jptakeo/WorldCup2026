@@ -66,14 +66,12 @@ if __name__ == "__main__":
     if simulator.last_group_matches is not None:
         partidas_out = simulator.last_group_matches[PARTIDAS_EXPORT_COLS].round(4)
         partidas_out.to_csv("docs/csv/previsoes/partidas.csv", index=False)
-        partidas_out.to_csv("data/probs_fase_de_grupos.csv", index=False)
 
     # Save deterministic display bracket.
     if simulator.last_bracket is not None:
         simulator.last_bracket.to_csv(
             "docs/csv/previsoes/chaveamento_probs.csv", index=False
         )
-        simulator.last_bracket.to_csv("data/chaveamento_probs.csv", index=False)
 
     # Build and save the tournament summary CSV.
     rows = []
@@ -101,7 +99,6 @@ if __name__ == "__main__":
         .round(2)
     )
     df_csv.insert(0, "position", df_csv.index + 1)
-    df_csv.to_csv("data/summary.csv", index=False)
     df_csv.to_csv("docs/csv/previsoes/summary.csv", index=False)
 
     stage_labels_26 = {

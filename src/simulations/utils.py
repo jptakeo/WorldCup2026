@@ -125,7 +125,6 @@ def export_stan_match_csvs(
     """Write ``partidas.csv`` and optionally ``all_matchups.csv`` from Stan draws."""
     partidas_out = partidas_df[PARTIDAS_EXPORT_COLS].round(4)
     partidas_out.to_csv(partidas_path, index=False)
-    partidas_out.to_csv("data/probs_fase_de_grupos.csv", index=False)
 
     if not export_all_matchups:
         return
