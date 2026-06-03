@@ -639,10 +639,10 @@ class BayesianWorldCup2026(TournamentSimulator):
             (group_runners["E"], group_runners["I"]),  # R2: M78 → R16 M91
             (group_winners["A"], assigned_thirds["A"]),  # R3: M79 → R16 M92
             (group_winners["L"], assigned_thirds["L"]),  # R4: M80 → R16 M92
-            (group_winners["B"], assigned_thirds["B"]),  # R5: M85 → R16 M96
-            (group_winners["K"], assigned_thirds["K"]),  # R6: M87 → R16 M96
-            (group_winners["J"], group_runners["H"]),  # R7: M86 → R16 M95
-            (group_runners["D"], group_runners["G"]),  # R8: M88 → R16 M95
+            (group_winners["J"], group_runners["H"]),  # R5: M86 → R16 M95
+            (group_runners["D"], group_runners["G"]),  # R6: M88 → R16 M95
+            (group_winners["B"], assigned_thirds["B"]),  # R7: M85 → R16 M96
+            (group_winners["K"], assigned_thirds["K"]),  # R8: M87 → R16 M96
         ]
 
         order_map = {
