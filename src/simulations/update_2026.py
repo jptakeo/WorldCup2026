@@ -364,4 +364,7 @@ if __name__ == "__main__":
         "final": "Após as Semifinais",
     }
     version = _stage_to_version.get(stage) or get_pre_tournament_version()
-    update_html_from_summary(version=version)
+    update_html_from_summary(
+        csv_file="docs/csv/previsoes/summary.csv",
+        version=version,
+    )

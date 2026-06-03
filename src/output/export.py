@@ -293,7 +293,7 @@ def export_phase_probs(
 def build_stage_dataframe(
     results: dict[str, dict[str, int]],
     n_sims: int,
-    output_path: str = "data/summary.csv",
+    output_path: str = "docs/csv/previsoes/summary.csv",
 ) -> pd.DataFrame:
     stages = [
         "champion",
@@ -400,7 +400,7 @@ def get_flag(team_name):
 
 
 def update_html_from_summary(
-    csv_file="data/summary.csv",
+    csv_file="docs/csv/previsoes/summary.csv",
     tabela_csv="docs/csv/previsoes/tabela_chances.csv",
     version="Antes da Copa",
 ):
